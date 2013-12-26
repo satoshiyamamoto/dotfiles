@@ -6,10 +6,14 @@ if [ -f ~/.bashrc ]; then
 fi
 
 # User specific environment and startup programs
+PATH=$HOME/bin:$PATH
+
+# Ruby environment
 RUBY_HOME='/usr/local/opt/ruby'
 RI="--format ansi"
 PAGER="less -R"
-PATH=$HOME/bin:$JAVA_HOME/bin:$RUBY_HOME/bin:$PATH
+PATH=$RUBY_HOME/bin:$PATH
+export RUBY_HOME RI PAGER PATH
 
 # Java environment
 if [ -f /usr/libexec/java_home ]; then
@@ -17,5 +21,5 @@ if [ -f /usr/libexec/java_home ]; then
 elif [ -d /usr/local/java ]; then
 	JAVA_HOME='/usr/local/java'
 fi
-
-export PATH PAGER JAVA_HOME RUBY_HOME RI
+PATH=$JAVA_HOME/bin:$RUBY_HOME/bin:$PATH
+export JAVA_HOME PATH
