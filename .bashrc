@@ -12,6 +12,8 @@ alias mv='mv -i'
 alias du='du -d=1'
 alias grep='grep --color=always'
 alias egrep='egrep --color=always'
+alias l.='ls -d .*'
+alias ll='ls -l'
 case "`uname`" in
 Linux*)  alias ls='ls --color=auto' ;;
 Darwin*) alias ls='ls -G' ;;
