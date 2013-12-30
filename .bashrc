@@ -19,3 +19,6 @@ case "`uname`" in
 Linux*)  alias ls='ls --color=auto' ;;
 Darwin*) alias ls='ls -G' ;;
 esac
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
