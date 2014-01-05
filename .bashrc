@@ -15,6 +15,7 @@ alias grep='grep --color=always'
 alias egrep='egrep --color=always'
 alias l.='ls -d .*'
 alias ll='ls -l'
+alias sqlite3='sqlite3 -header -column'
 case "`uname`" in
 Linux*)  alias ls='ls --color=auto' ;;
 Darwin*) alias ls='ls -G' ;;
