@@ -10,16 +10,18 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias du='du -d=1'
-alias vi='vim'
 alias grep='grep --color=always'
 alias egrep='egrep --color=always'
 alias l.='ls -d .*'
 alias ll='ls -l'
 alias sqlite3='sqlite3 -header -column'
+alias vi='vim'
+# platform dependents
 case "`uname`" in
-Linux*)  alias ls='ls --color=auto' ;;
-Darwin*) alias ls='ls -G' ;;
+Darwin*) 
+	alias ls='ls -G' 
+	;;
+Linux*)  
+	alias ls='ls --color=auto' 
+	;;
 esac
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
