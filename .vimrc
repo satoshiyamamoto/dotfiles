@@ -21,6 +21,9 @@ set nocompatible
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
+" show line number
+set number
+
 if has("vms")
   set nobackup		" do not keep a backup file, use versions instead
 else
@@ -88,3 +91,7 @@ endif " has("autocmd")
 command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
 	 	\ | wincmd p | diffthis
 
+" Set the color theme to Solarized dark
+syntax enable
+set background=dark
+colorscheme solarized
