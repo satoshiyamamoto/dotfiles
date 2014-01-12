@@ -6,15 +6,14 @@ if [ -f ~/.bashrc ]; then
 fi
 
 # User specific environment and startup programs
-PATH=$HOME/bin:$PATH
+PATH=/usr/local/bin:$HOME/bin:$PATH
 
 ### Ruby environment
-RUBY_HOME='/usr/local/opt/ruby'
 RI="--format ansi"
 PAGER="less -R"
 HEROKU_HOME='/usr/local/heroku'
 PATH=$RUBY_HOME/bin:$HEROKU_HOME/bin:$PATH
-export RUBY_HOME RI PAGER PATH
+export RI PAGER PATH
 
 ### Java environment
 if [ -f /usr/libexec/java_home ]; then
