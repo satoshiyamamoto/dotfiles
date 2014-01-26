@@ -7,14 +7,14 @@ fi
 
 # User specific environment and startup programs
 
-### Ruby environment
+## Ruby
 if [ -d /usr/local/opt/ruby ]; then
   PATH=/usr/local/opt/ruby/bin:$PATH
 fi
 RI="--format ansi"
 PAGER="less -R"
 
-### Java environment
+## Java
 if [ -f /usr/libexec/java_home ]; then
   JAVA_HOME="$(/usr/libexec/java_home)"
 elif [ -d /usr/local/java ]; then
@@ -23,7 +23,7 @@ elif [ -d /usr/local/java ]; then
 fi
 
 ### GNU coreutils for Darwin
-if type gls > /dev/null > 2>&1; then
+if type gls > /dev/null 2>&1; then
   PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
   setdircolors
 fi
