@@ -5,23 +5,29 @@ if [ -f /etc/bashrc ]; then
   . /etc/bashrc
 fi
 
-# platform dependents
-LSOPTS='--color=auto'
-case "`uname`" in
-  Darwin*)
-    if !type gls; then
-      LSOPTS='-G'
-    fi
-  ;;
-  Linux*) 
-  ;;
-  CYGWIN*) 
-    LSOPTS="$LSOPTS -INTUSER.DAT* -Intuser.*"
-;;
-
-esac
 # User specific aliases and functions
-alias ls="ls $LSOPTS" 
+
+## functions
+function getlsopts() {
+  LSOPTS='--color=auto'
+  case "`uname`" in
+    Darwin*)
+      if ! type gls > /dev/null ; then
+        LSOPTS='-G'
+      fi
+    ;;
+    Linux*)
+      # no specifiy 
+    ;;
+    CYGWIN*) 
+      LSOPTS="$LSOPTS -INTUSER.DAT* -Intuser.*"
+    ;;
+  esac
+  echo $LSOPTS
+}
+
+## aliases
+alias ls="ls $(getlsopts)" 
 alias l.='ls -d .*'
 alias ll='ls -l'
 alias rm='rm -i'
