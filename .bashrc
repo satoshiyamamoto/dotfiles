@@ -32,7 +32,6 @@ function setdircolors()
     eval $(dircolors ~/.dircolors)
   fi
 }
-setdircolors
 
 ## aliases
 alias ls="ls $(getlsopts)" 
