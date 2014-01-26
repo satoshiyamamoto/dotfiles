@@ -26,6 +26,14 @@ function getlsopts() {
   echo $LSOPTS
 }
 
+function setdircolors()
+{
+  if [ -f ~/.dircolors ]; then
+    eval $(dircolors ~/.dircolors)
+  fi
+}
+setdircolors
+
 ## aliases
 alias ls="ls $(getlsopts)" 
 alias l.='ls -d .*'
@@ -38,8 +46,3 @@ alias grep='grep --color=always'
 alias egrep='egrep --color=always'
 alias sqlite3='sqlite3 -header -column'
 alias vi='vim'
-
-# dircolors
-if [ -f ~/.dircolors ]; then
-  eval $(dircolors ~/.dircolors)
-fi
