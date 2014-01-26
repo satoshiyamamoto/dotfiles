@@ -23,7 +23,7 @@ elif [ -d /usr/local/java ]; then
 fi
 
 ### GNU coreutils for Darwin
-if type gls > /dev/null ; then
+if type gls > /dev/null > 2>&1; then
   PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
   setdircolors
 fi
