@@ -12,7 +12,7 @@ function getlsopts() {
   LSOPTS='--color=auto'
   case "`uname`" in
     Darwin*)
-      if ! type gls > /dev/null ; then
+      if ! type gls > /dev/null 2>&1 ; then
         LSOPTS='-G'
       fi
     ;;
