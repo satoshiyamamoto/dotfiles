@@ -6,13 +6,9 @@ if [ -f ~/.bashrc ]; then
 fi
 
 # User specific environment and startup programs
-
-## Ruby
-if [ -d /usr/local/opt/ruby ]; then
-  PATH=/usr/local/opt/ruby/bin:$PATH
+if [ -d /usr/local/bin ]; then
+  PATH=/usr/local/bin:$PATH
 fi
-RI="--format ansi"
-PAGER="less -R"
 
 ## Java
 if [ -f /usr/libexec/java_home ]; then
@@ -28,4 +24,4 @@ if type gls > /dev/null 2>&1; then
 fi
 setdircolors
 
-export RI PAGER JAVA_HOME PATH
+export JAVA_HOME PATH
