@@ -9,9 +9,6 @@ fi
 if [ -d /usr/local/bin ]; then
   PATH=/usr/local/bin:$PATH
 fi
-if [ -d /usr/local/sbin ]; then
-  PATH=/usr/local/sbin:$PATH
-fi
 
 ## Java
 if [ -f /usr/libexec/java_home ]; then
@@ -19,6 +16,11 @@ if [ -f /usr/libexec/java_home ]; then
 elif [ -d /usr/local/java ]; then
   JAVA_HOME='/usr/local/java'
   PATH=$JAVA_HOME/bin:$PATH
+fi
+
+## Ruby and Gems for Darwin
+if [ -d /usr/local/opt/ruby ]; then
+  PATH=/usr/local/opt/ruby/bin:$PATH
 fi
 
 ### GNU coreutils for Darwin
