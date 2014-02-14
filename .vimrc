@@ -95,3 +95,9 @@ command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
 syntax enable
 set background=dark
 colorscheme solarized
+
+" Set tab and space segging
+set noexpandtab
+set tabstop=4
+set shiftwidth=4
+set softtabstop=0
