@@ -26,13 +26,6 @@ function getlsopts() {
   echo $LSOPTS
 }
 
-function setdircolors()
-{
-  if [ -f ~/.dircolors ]; then
-    eval $(dircolors ~/.dircolors)
-  fi
-}
-
 ## aliases
 alias ls="ls $(getlsopts)" 
 alias l.='ls -d .*'
@@ -47,3 +40,5 @@ alias sqlite3='sqlite3 -header -column'
 alias vi='vim'
 alias getclip='getclip | nkf -w'
 alias putclip='nkf -s | putclip'
+
+
