@@ -10,23 +10,24 @@ if [ -d /usr/local/bin ]; then
   PATH=/usr/local/bin:$PATH
 fi
 
+## These are only Homebrew
+if type brew > /dev/null 2>&1; then
+  ## GNU coreutils
+  if brew list | grep "coreutils" > /dev/null; then
+    PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
+  fi
+  ##  Ruby and Gems
+  if brew list | grep "ruby" > /dev/null; then
+    PATH="$(brew --prefix ruby)/bin:$PATH"
+  fi
+fi
+
 ## Java
-if [ -f /usr/libexec/java_home ]; then
+if [ -x /usr/libexec/java_home ]; then
   JAVA_HOME="$(/usr/libexec/java_home)"
 elif [ -d /usr/local/java ]; then
   JAVA_HOME='/usr/local/java'
   PATH=$JAVA_HOME/bin:$PATH
 fi
 
-## Ruby and Gems for Darwin
-if [ -d /usr/local/opt/ruby ]; then
-  PATH=/usr/local/opt/ruby/bin:$PATH
-fi
-
-### GNU coreutils for Darwin
-if type gls > /dev/null 2>&1; then
-  PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
-fi
-setdircolors
-
-export JAVA_HOME PATH
+export PATH JAVA_HOME
