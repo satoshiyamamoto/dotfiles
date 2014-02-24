@@ -12,12 +12,9 @@ function getlsoptions()
 {
   LSOPTS='--color=auto'
   case "`uname`" in
-    Darwin*) type gls > /dev/null 2>&1 || LSOPTS='-G'
-    ;;
-    Linux*)  # no specifiy 
-    ;;
-    CYGWIN*) LSOPTS="$LSOPTS -INTUSER.DAT* -Intuser.*"
-    ;;
+    Darwin*) type gls > /dev/null 2>&1 || LSOPTS='-G' ;;
+    Linux*) ;; # no specifiy  
+    CYGWIN*) LSOPTS="$LSOPTS -INTUSER.DAT* -Intuser.*" ;;
   esac
   echo $LSOPTS
 }
