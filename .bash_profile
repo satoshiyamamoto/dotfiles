@@ -31,3 +31,6 @@ elif [ -d /usr/local/java ]; then
 fi
 
 export PATH JAVA_HOME
+
+## Enable color support of ls
+test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)"

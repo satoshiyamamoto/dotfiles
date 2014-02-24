@@ -34,10 +34,4 @@ alias vi='vim'
 alias getclip='getclip | nkf -w'
 alias putclip='nkf -s | putclip'
 
-## enable color support of ls
-if [ -x /usr/local/opt/coreutils/libexec/gnubin/dircolors ]; then
-  dircolors='/usr/local/opt/coreutils/libexec/gnubin/dircolors'
-elif [ -x /usr/bin/dircolors ]; then
-  dircolors='/usr/bin/dircolors'
-fi
-test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)"
+
