@@ -30,7 +30,9 @@ elif [ -d /usr/local/java ]; then
   PATH=$JAVA_HOME/bin:$PATH
 fi
 
-export PATH JAVA_HOME
+EDITOR=vim
+
+export PATH EDITOR JAVA_HOME
 
 ## Enable color support of ls
 test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)"
