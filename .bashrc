@@ -8,7 +8,7 @@ fi
 # User specific aliases and functions
 
 ## functions
-function getlsoptions() 
+function get_ls_options() 
 {
   LSOPTS='--color=auto'
   case "`uname`" in
@@ -19,8 +19,13 @@ function getlsoptions()
   echo $LSOPTS
 }
 
+function init_tmux_window_name() {
+  printf "\033k$HOSTNAME\033\\"
+}
+init_tmux_window_name
+
 ## aliases
-alias ls="ls $(getlsoptions)" 
+alias ls="ls $(get_ls_options)" 
 alias l.='ls -d .*'
 alias ll='ls -l'
 alias rm='rm -i'
