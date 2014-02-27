@@ -20,7 +20,9 @@ function get_ls_options()
 }
 
 function init_tmux_window_name() {
-  printf "\033k$HOSTNAME\033\\"
+  case "$TERM" in
+  	screen*) printf "\033k$HOSTNAME\033\\" ;;
+  esac
 }
 init_tmux_window_name
 
@@ -38,5 +40,3 @@ alias sqlite3='sqlite3 -header -column'
 alias vi='vim'
 alias getclip='getclip | nkf -w'
 alias putclip='nkf -s | putclip'
-
-
