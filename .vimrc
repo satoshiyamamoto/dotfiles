@@ -91,10 +91,10 @@ endif " has("autocmd")
 command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
 	 	\ | wincmd p | diffthis
 
-" Set the color theme to Solarized dark
+" Set the color theme
 syntax enable
 set background=dark
-colorscheme solarized
+colorscheme wombat256
 
 " Set tab and space segging
 set noexpandtab
