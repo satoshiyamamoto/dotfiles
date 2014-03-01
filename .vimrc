@@ -22,7 +22,7 @@ set nocompatible
 set backspace=indent,eol,start
 
 " show line number
-set number
+"set number
 
 if has("vms")
   set nobackup		" do not keep a backup file, use versions instead
