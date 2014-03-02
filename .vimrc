@@ -93,8 +93,7 @@ command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
 
 " Set the color theme
 syntax enable
-set background=dark
-colorscheme wombat256
+colorscheme molokai
 
 " Set tab and space segging
 set noexpandtab
