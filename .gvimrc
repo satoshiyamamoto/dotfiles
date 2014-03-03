@@ -7,3 +7,6 @@ set noexpandtab
 set tabstop=4
 set shiftwidth=4
 set softtabstop=0
+
+" Set startup window size
+set lines=60 columns=120
