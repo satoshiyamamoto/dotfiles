@@ -1,20 +1,9 @@
-" 
-" An example for MacVim
-"
+" Set the color theme
+syntax enable
+colorscheme molokai
 
-" Window
-set columns=100
-set lines=48
-
-" Tab
-set showtabline=2
-
-" Appearance 
-set transparency=5
-set guioptions-=T
-set antialias
-set visualbell t_vb=
-colorscheme solarized
-
-" Backup
-set nobackup
+" Set tab and space segging
+set noexpandtab
+set tabstop=4
+set shiftwidth=4
+set softtabstop=0
