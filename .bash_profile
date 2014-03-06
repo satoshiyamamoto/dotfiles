@@ -16,10 +16,6 @@ if type brew > /dev/null 2>&1; then
   if brew list | grep "coreutils" > /dev/null; then
     PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
   fi
-  ##  Ruby and Gems
-  if brew list | grep "ruby" > /dev/null; then
-    PATH="$(brew --prefix ruby)/bin:$PATH"
-  fi
 fi
 
 ## Java
@@ -30,6 +26,12 @@ elif [ -d /usr/local/java ]; then
   PATH=$JAVA_HOME/bin:$PATH
 fi
 
+## Ruby and Gems managed under Rbenv
+if [ -d "$HOME/.rbenv" ]; then
+	PATH=$HOME/.rbenv/shims:$PATH
+fi
+
+## My default editor.
 EDITOR=vim
 
 export PATH EDITOR JAVA_HOME
