@@ -29,12 +29,13 @@ fi
 ## Ruby and Gems managed under Rbenv
 if [ -d "$HOME/.rbenv" ]; then
 	PATH=$HOME/.rbenv/shims:$PATH
+	JRUBY_OPTS=--2.0
 fi
 
 ## My default editor.
 EDITOR=vim
 
-export PATH EDITOR JAVA_HOME
+export PATH EDITOR JAVA_HOME JRUBY_OPTS
 
 ## Enable color support of ls
 test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)"
