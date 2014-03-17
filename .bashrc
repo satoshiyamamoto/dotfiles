@@ -43,5 +43,11 @@ alias putclip='nkf -s | putclip'
 
 ## Enable color support of ls
 case "$TERM" in
-  *256*) test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" ;;
+  *256*) 
+		dircolors=dircolors
+		if [ -f /usr/local/opt/coreutils/libexec/gnubin/dircolors ]; then
+			dircolors=/usr/local/opt/coreutils/libexec/gnubin/dircolors
+		fi
+		test -r ~/.dircolors && eval "$($dircolors -b ~/.dircolors)" 
+		;;
 esac
