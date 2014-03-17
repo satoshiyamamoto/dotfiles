@@ -16,26 +16,33 @@ if type brew > /dev/null 2>&1; then
   if brew list | grep "coreutils" > /dev/null; then
     PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
   fi
+	## Hadoop and HBase
+	if brew list | grep "hadoop" > /dev/null; then
+		PATH="$(brew --prefix hadoop)/sbin:$PATH"
+		HADOOP_HOME="$(brew --prefix hadoop)/libexec"
+	fi
 fi
+export HADOOP_HOME PATH 
 
 ## Java
 if [ -x /usr/libexec/java_home ]; then
   JAVA_HOME="$(/usr/libexec/java_home)"
+elif [ -s /usr/bin/java ]; then
+  JAVA_HOME='/usr/java/default'
 elif [ -d /usr/local/java ]; then
   JAVA_HOME='/usr/local/java'
-  PATH=$JAVA_HOME/bin:$PATH
 fi
+export JAVA_HOME
+export PATH=$JAVA_HOME/bin:$PATH
 
 ## Ruby and Gems managed under Rbenv
 if [ -d "$HOME/.rbenv" ]; then
 	PATH=$HOME/.rbenv/shims:$PATH
 	JRUBY_OPTS=--2.0
 fi
+export PATH JRUBY_OPTS
 
 ## My default editor.
-EDITOR=vim
+export EDITOR=vim
 
-export PATH EDITOR JAVA_HOME JRUBY_OPTS
 
-## Enable color support of ls
-test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)"

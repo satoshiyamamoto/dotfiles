@@ -40,3 +40,8 @@ alias sqlite3='sqlite3 -header -line'
 alias vi='vim'
 alias getclip='getclip | nkf -w'
 alias putclip='nkf -s | putclip'
+
+## Enable color support of ls
+case "$TERM" in
+  *256*) test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" ;;
+esac
