@@ -4,9 +4,14 @@ colorscheme molokai
 
 " Set tab and space segging
 set noexpandtab
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set softtabstop=0
 
-" Set startup window size
-set lines=60 columns=120
+" Set the window appearance
+set lines=60 columns=80
+set antialias
+set transparency=10
+
+
+set nobackup
