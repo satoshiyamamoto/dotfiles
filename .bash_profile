@@ -19,10 +19,10 @@ if type brew > /dev/null 2>&1; then
 	## Hadoop and HBase
 	if brew list | grep "hadoop" > /dev/null; then
 		PATH="$(brew --prefix hadoop)/sbin:$PATH"
-		HADOOP_COMMON_HOME="$(brew --prefix hadoop)/libexec"
-		HADOOP_HDFS_HOME=$HADOOP_COMMON_HOME
-		HADOOP_MAPRED_HOME=$HADOOP_COMMON_HOME
-		HADOOP_YARN_HOME=$HADOOP_COMMON_HOME
+		HADOOP_HOME="$(brew --prefix hadoop)/libexec"
+		HADOOP_HDFS_HOME=$HADOOP_HOME
+		HADOOP_MAPRED_HOME=$HADOOP_HOME
+		HADOOP_YARN_HOME=$HADOOP_HOME
 	fi
 fi
 export HADOOP_COMMON_HOME HADOOP_HDFS_HOME HADOOP_MAPRED_HOME HADOOP_YARN_HOME PATH 

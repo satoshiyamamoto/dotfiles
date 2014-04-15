@@ -1,0 +1,7 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =5
+let g:netrw_dirhist_1='/usr/local/Cellar/hbase/0.98.0/libexec/logs'
+let g:netrw_dirhist_2='/Users/satoshi/Dropbox/Documents/octopress/source/_posts'
+let g:netrw_dirhist_3='/private/etc/apache2/users'
+let g:netrw_dirhist_4='/Users/satoshi/Sites/backbonejs-tutorial/js/models'
+let g:netrw_dirhist_5='/Users/satoshi/Sites/backbonejs-tutorial/js/collections'
