@@ -91,11 +91,38 @@ endif " has("autocmd")
 command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
 	 	\ | wincmd p | diffthis
 
+" Set the plugin management by NeoBundle
+set nocompatible		" be iMproved
+filetype off
+
+if has('vim_starting')
+	set runtimepath+=~/.vim/bundle/neobundle.vim
+	call neobundle#rc(expand('~/.vim/bundle/'))
+endif
+	" originalrepos on github
+NeoBundle 'Shougo/neobundle.vim'
+NeoBundle 'Shougo/vimproc'
+NeoBundle 'VimClojure'
+NeoBundle 'Shougo/vimshell'
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Shougo/neocomplete'
+NeoBundle 'Shougo/neosnippet'
+NeoBundle "Shougo/neosnippet-snippets"
+NeoBundle 'jpalardy/vim-slime'
+NeoBundle 'scrooloose/syntastic'
+""NeoBundle 'https://bitbucket.org/kovisoft/slimv'
+
+filetype plugin indent on		" Required!
+filetype indent on
+"syntax on
+
+
 " Set the color theme
 syntax enable
 colorscheme molokai
 
-" Set tab and space segging
+" Set tab and space setting
 set noexpandtab
 set tabstop=2
 set shiftwidth=2
