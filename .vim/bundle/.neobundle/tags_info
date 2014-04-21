@@ -1,11 +1,8 @@
-VimClojure
+ctrlp.vim
 neobundle.vim
 neocomplcache
-neocomplete
-neosnippet
 neosnippet-snippets
-syntastic
-unite.vim
-vim-slime
-vimproc
+neosnippet.vim
+vim-colorschemes
+vim-fugitive
 vimshell
