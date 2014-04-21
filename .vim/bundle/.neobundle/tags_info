@@ -1,6 +1,6 @@
 ctrlp.vim
 neobundle.vim
-neocomplcache
+neocomplete.vim
 neosnippet-snippets
 neosnippet.vim
 vim-colorschemes
