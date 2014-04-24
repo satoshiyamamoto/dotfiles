@@ -10,23 +10,6 @@ if [ -d /usr/local/bin ]; then
   PATH=/usr/local/bin:$PATH
 fi
 
-## These are only Homebrew
-if type brew > /dev/null 2>&1; then
-  ## GNU coreutils
-  if brew list | grep "coreutils" > /dev/null; then
-    PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
-  fi
-	## Hadoop and HBase
-	if brew list | grep "hadoop" > /dev/null; then
-		PATH="$(brew --prefix hadoop)/sbin:$PATH"
-		HADOOP_HOME="$(brew --prefix hadoop)/libexec"
-		HADOOP_HDFS_HOME=$HADOOP_HOME
-		HADOOP_MAPRED_HOME=$HADOOP_HOME
-		HADOOP_YARN_HOME=$HADOOP_HOME
-	fi
-fi
-export HADOOP_COMMON_HOME HADOOP_HDFS_HOME HADOOP_MAPRED_HOME HADOOP_YARN_HOME PATH 
-
 ## Java
 if [ -x /usr/libexec/java_home ]; then
   JAVA_HOME="$(/usr/libexec/java_home)"
@@ -45,7 +28,26 @@ if [ -d "$HOME/.rbenv" ]; then
 fi
 export PATH JRUBY_OPTS
 
-## My default editor.
-export EDITOR=vim
+
+## These are only Homebrew
+if type brew > /dev/null 2>&1; then
+	## Vim
+	if brew list | grep "vim" > /dev/null; then
+		EDITOR="$(brew --prefix vim)/bin/vim"
+	fi
+  ## GNU coreutils
+  if brew list | grep "coreutils" > /dev/null; then
+    PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
+  fi
+	## Hadoop and HBase
+	if brew list | grep "hadoop" > /dev/null; then
+		PATH="$(brew --prefix hadoop)/sbin:$PATH"
+		HADOOP_HOME="$(brew --prefix hadoop)/libexec"
+		HADOOP_HDFS_HOME=$HADOOP_HOME
+		HADOOP_MAPRED_HOME=$HADOOP_HOME
+		HADOOP_YARN_HOME=$HADOOP_HOME
+	fi
+fi
+export HADOOP_COMMON_HOME HADOOP_HDFS_HOME HADOOP_MAPRED_HOME HADOOP_YARN_HOME PATH 
 
 
