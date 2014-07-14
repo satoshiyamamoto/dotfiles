@@ -24,9 +24,8 @@ export PATH=$JAVA_HOME/bin:$PATH
 ## Ruby and Gems managed under Rbenv
 if [ -d "$HOME/.rbenv" ]; then
 	PATH=$HOME/.rbenv/shims:$PATH
-	JRUBY_OPTS=--2.0
 fi
-export PATH JRUBY_OPTS
+export PATH
 
 
 ## These are only Homebrew
