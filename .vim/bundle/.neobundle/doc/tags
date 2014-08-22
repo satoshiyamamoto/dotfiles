@@ -113,6 +113,7 @@
 :NeoSnippetEdit	neosnippet.txt	/*:NeoSnippetEdit*
 :NeoSnippetMakeCache	neosnippet.txt	/*:NeoSnippetMakeCache*
 :NeoSnippetSource	neosnippet.txt	/*:NeoSnippetSource*
+:SortScalaImports	scala.txt	/*:SortScalaImports*
 :VimShell	vimshell.txt	/*:VimShell*
 :VimShellCreate	vimshell.txt	/*:VimShellCreate*
 :VimShellExecute	vimshell.txt	/*:VimShellExecute*
@@ -587,6 +588,9 @@ s_<Plug>(neosnippet_expand)	neosnippet.txt	/*s_<Plug>(neosnippet_expand)*
 s_<Plug>(neosnippet_expand_or_jump)	neosnippet.txt	/*s_<Plug>(neosnippet_expand_or_jump)*
 s_<Plug>(neosnippet_jump)	neosnippet.txt	/*s_<Plug>(neosnippet_jump)*
 s_<Plug>(neosnippet_jump_or_expand)	neosnippet.txt	/*s_<Plug>(neosnippet_jump_or_expand)*
+scala	scala.txt	/*scala*
+scala-commands	scala.txt	/*scala-commands*
+scala.txt	scala.txt	/*scala.txt*
 unite-action-neobundle-lazy	neobundle.txt	/*unite-action-neobundle-lazy*
 unite-action-neobundle-search	neobundle.txt	/*unite-action-neobundle-search*
 unite-kind-neobundle	neobundle.txt	/*unite-kind-neobundle*

@@ -11,10 +11,10 @@ fi
 function get_ls_options() 
 {
   LSOPTS='--color=auto'
-  case "`uname`" in
-    Darwin*) type gls > /dev/null 2>&1 || LSOPTS='-G' ;;
-    Linux*) ;; # no specifiy  
-    CYGWIN*) LSOPTS="$LSOPTS -INTUSER.DAT* -Intuser.*" ;;
+  case `uname` in
+    Darwin) LSOPTS='-G' ;;
+    Linux) ;; # no specifiy  
+    CYGWIN) LSOPTS="$LSOPTS -INTUSER.DAT* -Intuser.*" ;;
   esac
   echo $LSOPTS
 }
@@ -37,18 +37,6 @@ alias ln='ln -s'
 alias grep='grep --color=always'
 alias egrep='egrep --color=always'
 alias sqlite3='sqlite3 -header -line'
-alias vi='vim'
 alias getclip='getclip | nkf -w'
 alias putclip='nkf -s | putclip'
 alias mongod='mongod --config /usr/local/etc/mongod.conf'
-
-## Enable color support of ls
-case "$TERM" in
-  *256*) 
-		dircolors=dircolors
-		if [ -f /usr/local/opt/coreutils/libexec/gnubin/dircolors ]; then
-			dircolors=/usr/local/opt/coreutils/libexec/gnubin/dircolors
-		fi
-		test -r ~/.dircolors && eval "$($dircolors -b ~/.dircolors)" 
-		;;
-esac

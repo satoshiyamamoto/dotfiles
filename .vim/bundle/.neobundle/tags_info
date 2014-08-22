@@ -5,4 +5,5 @@ neosnippet-snippets
 neosnippet.vim
 vim-colorschemes
 vim-fugitive
+vim-scala
 vimshell
