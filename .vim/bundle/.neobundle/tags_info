@@ -1,9 +1,5 @@
-ctrlp.vim
+molokai
 neobundle.vim
-neocomplete.vim
-neosnippet-snippets
-neosnippet.vim
 vim-colorschemes
-vim-fugitive
 vim-scala
 vimshell
