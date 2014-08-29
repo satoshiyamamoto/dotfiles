@@ -34,9 +34,5 @@ if type brew > /dev/null 2>&1; then
 	if brew list | grep "vim" > /dev/null; then
 		EDITOR="$(brew --prefix vim)/bin/vim"
 	fi
-  ## GNU coreutils
-  if brew list | grep "coreutils" > /dev/null; then
-    PATH="$(brew --prefix coreutils)/libexec/gnubin:$PATH"
-  fi
 fi
 export PATH EDITOR
