@@ -10,6 +10,11 @@ if [ -d /usr/local/bin ]; then
   PATH=/usr/local/bin:$PATH
 fi
 
+# Bash command history
+export HISTCONTROL=ignoredups
+export HISTIGNORE=clear:ls:pwd:cd*:fg*:bg*:rm*:cp*:history*
+export HISTSIZE=10000
+
 ## Default editor using vim
 if type vim > /dev/null 2>&1; then
   EDITOR=vim
