@@ -22,11 +22,9 @@ set nocompatible
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-if has("vms")
-  set nobackup		" do not keep a backup file, use versions instead
-else
-  set backup		" keep a backup file
-endif
+set nobackup		" do not keep a backup file, use versions instead
+set nowb                " Turn backup off, since most stuff is in SVN, git et.c anyway...
+set noswapfile
 set history=50		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
@@ -52,6 +50,12 @@ endif
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
+  try
+    colorscheme molokai
+  catch
+    colorscheme pablo
+  endtry
+  set background=dark
 endif
 
 " Only do this part when compiled with support for autocommands.
