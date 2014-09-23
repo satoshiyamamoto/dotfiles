@@ -11,7 +11,7 @@ if [ -d /usr/local/bin ]; then
 fi
 
 ## Default editor using vim
-if type v > /dev/null 2>&1; then
+if type vim > /dev/null 2>&1; then
   EDITOR=vim
 else
   EDITOR=vi
