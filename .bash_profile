@@ -23,16 +23,6 @@ export PATH=$JAVA_HOME/bin:$PATH
 
 ## Ruby and Gems managed under Rbenv
 if [ -d "$HOME/.rbenv" ]; then
-	PATH=$HOME/.rbenv/shims:$PATH
+  PATH=$HOME/.rbenv/shims:$PATH
 fi
 export PATH
-
-
-## These are only Homebrew
-if type brew > /dev/null 2>&1; then
-	## Vim
-	if brew list | grep "vim" > /dev/null; then
-		EDITOR="$(brew --prefix vim)/bin/vim"
-	fi
-fi
-export PATH EDITOR
