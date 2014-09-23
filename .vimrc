@@ -23,12 +23,12 @@ set nocompatible
 set backspace=indent,eol,start
 
 set nobackup		" do not keep a backup file, use versions instead
-set nowb                " Turn backup off, since most stuff is in SVN, git et.c anyway...
-set noswapfile
 set history=50		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
 set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
+set showmatch		" display brachets in code
+set autoindent		" keep previous indent
 
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
@@ -51,7 +51,7 @@ if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
   try
-    colorscheme molokai
+    colorscheme molokai 
   catch
     colorscheme pablo
   endtry

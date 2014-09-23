@@ -10,13 +10,21 @@ if [ -d /usr/local/bin ]; then
   PATH=/usr/local/bin:$PATH
 fi
 
+## Default editor using vim
+if type v > /dev/null 2>&1; then
+  EDITOR=vim
+else
+  EDITOR=vi
+fi
+export EDITOR
+
 ## Java
 if [ -x /usr/libexec/java_home ]; then
   JAVA_HOME="$(/usr/libexec/java_home)"
-elif [ -s /usr/bin/java ]; then
-  JAVA_HOME='/usr/java/default'
 elif [ -d /usr/local/java ]; then
   JAVA_HOME='/usr/local/java'
+elif [ -s /usr/bin/java ]; then
+  JAVA_HOME='/usr/java/default'
 fi
 export JAVA_HOME
 export PATH=$JAVA_HOME/bin:$PATH
