@@ -1,7 +1,8 @@
+
 " An example for a vimrc file.
 "
 " Maintainer:	Bram Moolenaar <Bram@vim.org>
-" Last change:	2006 Aug 12
+" Last change:	2008 Jul 02
 "
 " To use it, copy it to
 "     for Unix and OS/2:  ~/.vimrc
@@ -21,13 +22,10 @@ set nocompatible
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-" show line number
-"set number
-
 if has("vms")
   set nobackup		" do not keep a backup file, use versions instead
 else
-  " set backup		" keep a backup file
+  set backup		" keep a backup file
 endif
 set history=50		" keep 50 lines of command line history
 set ruler		" show the cursor position all the time
@@ -40,12 +38,14 @@ set incsearch		" do incremental searching
 " Don't use Ex mode, use Q for formatting
 map Q gq
 
-" In an xterm the mouse should work quite well, thus enable it.
-set mouse=a
+" CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
+" so that you can undo CTRL-U after inserting a line break.
+inoremap <C-U> <C-G>u<C-U>
 
-" This is an alternative that also works in block mode, but the deleted
-" text is lost and it only works for putting the current register.
-"vnoremap p "_dp
+" In many terminal emulators the mouse works just fine, thus enable it.
+if has('mouse')
+  set mouse=a
+endif
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -73,9 +73,11 @@ if has("autocmd")
   " When editing a file, always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler
   " (happens when dropping a file on gvim).
+  " Also don't do it when the mark is in the first line, that is the default
+  " position when opening a file.
   autocmd BufReadPost *
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \   exe "normal! g`\"" |
     \ endif
 
   augroup END
@@ -88,52 +90,8 @@ endif " has("autocmd")
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
-command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-	 	\ | wincmd p | diffthis
-
-
-" Apearance
-"----------
-syntax enable
-colorscheme molokai
-let g:molocak_original = 1
-let g:rehash256 = 1
-set noexpandtab
-set tabstop=2
-set shiftwidth=2
-set softtabstop=0
-
-
-" Plugin Management
-"------------------
-" NeoBundle
-if has('vim_starting')
-	set nocompatible               " Be iMproved
-
-	" Required:
-	set runtimepath+=~/.vim/bundle/neobundle.vim/
+" Only define it when not defined already.
+if !exists(":DiffOrig")
+  command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+		  \ | wincmd p | diffthis
 endif
-
-" Required:
-call neobundle#begin(expand('~/.vim/bundle/'))
-
-" Let NeoBundle manage NeoBundle
-" Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-" My Bundles here:
-NeoBundle 'flazz/vim-colorschemes'
-NeoBundle 'tomasr/molokai'
-NeoBundle 'derekwyatt/vim-scala'
-
-" You can specify revision/branch/tag.
-NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
-
-call neobundle#end()
-
-" Required:
-filetype plugin indent on
-
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
