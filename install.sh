@@ -1,6 +1,7 @@
 #!/bin/bash
+# install.sh
 
-FILES=(".bash_profile" ".bashrc" ".vimrc" ".vim")
+readonly FILES=('.bash_profile' '.bashrc' '.vimrc' '.vim')
 
 for file in "${FILES[@]}"
 do
@@ -11,4 +12,4 @@ do
   fi
 done
 
-echo "done."
+echo 'done.'
