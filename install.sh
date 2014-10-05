@@ -7,7 +7,6 @@ readonly files=('.bash_profile' '.bashrc' '.vimrc' '.vim')
 for file in ${files[@]}; do
   src="$(pwd dirname)/${file}"
   dest="${HOME}/${file}"
-  echo "${dest}"
 
   # Clean up for the original files
   if [ "${force}" == 'f' ]; then
