@@ -20,7 +20,7 @@ for file in ${files[@]}; do
   # Create the symbolic link
   ln -s ${src} ${dest}
   if [ "$?" -eq 0 ]; then
-    echo " installing $file"
+    echo " installing ${file}"
   fi
 done
 
