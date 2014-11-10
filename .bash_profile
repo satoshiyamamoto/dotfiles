@@ -11,7 +11,7 @@ if [ -d /usr/local/bin ]; then
 fi
 
 # Default language
-export LANG='ja_JP.UTF-8'
+export LANG='en_US.UTF-8'
 
 # Bash command history
 export HISTCONTROL=ignoredups
