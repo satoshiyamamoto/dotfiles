@@ -10,6 +10,9 @@ if [ -d /usr/local/bin ]; then
   PATH=/usr/local/bin:$PATH
 fi
 
+# Default language
+export LANG='ja_JP.UTF-8'
+
 # Bash command history
 export HISTCONTROL=ignoredups
 export HISTIGNORE=clear:ls:pwd:cd*:fg*:bg*:rm*:cp*:history*
