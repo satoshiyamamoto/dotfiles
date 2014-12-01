@@ -1,14 +1,12 @@
 # .bash_profile
 
 # Get the aliases and functions
-if [ -f ~/.bashrc ]; then
-  . ~/.bashrc
-fi
+[ -f ~/.bashrc ] && . ~/.bashrc
 
 # User specific environment and startup programs
-if [ -d /usr/local/bin ]; then
-  PATH=/usr/local/bin:$PATH
-fi
+[ -d /usr/local/bin ] && PATH=/usr/local/bin:$PATH
+[ -d /usr/local/sbin ] && PATH=/usr/local/sbin:$PATH
+
 
 # Default language
 export LANG='en_US.UTF-8'
@@ -18,27 +16,11 @@ export HISTCONTROL=ignoredups
 export HISTIGNORE=clear:ls:pwd:cd*:fg*:bg*:rm*:cp*:history*
 export HISTSIZE=10000
 
-## Default editor using vim
-if type vim > /dev/null 2>&1; then
-  EDITOR=vim
-else
-  EDITOR=vi
-fi
-export EDITOR
-
-## Java
-if [ -x /usr/libexec/java_home ]; then
-  JAVA_HOME="$(/usr/libexec/java_home)"
-elif [ -d /usr/local/java ]; then
-  JAVA_HOME='/usr/local/java'
-elif [ -s /usr/bin/java ]; then
-  JAVA_HOME='/usr/java/default'
-fi
+## Java Home Environment
+[ -x /usr/libexec/java_home ] && JAVA_HOME="$(/usr/libexec/java_home)" # darwin
+[ -d /usr/local/java ] && JAVA_HOME='/usr/local/java' # source install
 export JAVA_HOME
 export PATH=$JAVA_HOME/bin:$PATH
 
 ## Ruby and Gems managed under Rbenv
-if [ -d "$HOME/.rbenv" ]; then
-  PATH=$HOME/.rbenv/shims:$PATH
-fi
-export PATH
+if type rbenv > /dev/null; then eval "$(rbenv init -)"; fi
