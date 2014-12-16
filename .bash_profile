@@ -7,9 +7,10 @@
 [ -d /usr/local/bin ] && PATH=/usr/local/bin:$PATH
 [ -d /usr/local/sbin ] && PATH=/usr/local/sbin:$PATH
 
-
-# Default language
+# Default language and editor.
 export LANG='en_US.UTF-8'
+export EDITOR='vi'
+if type vim > /dev/null; then export EDITOR='vim'; fi
 
 # Bash command history
 export HISTCONTROL=ignoredups
