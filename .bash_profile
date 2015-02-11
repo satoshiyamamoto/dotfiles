@@ -24,3 +24,6 @@ export PATH=$JAVA_HOME/bin:$PATH
 
 ## Ruby and Gems managed under Rbenv
 if type rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+
+## Homebrew 
+[ -f /usr/local/bin/brew-cask ] && export HOMEBREW_CASK_OPTS="--appdir=/Applications"
