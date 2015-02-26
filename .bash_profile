@@ -14,7 +14,7 @@ if type vim > /dev/null; then export EDITOR='vim'; fi
 
 # Bash command history
 export HISTCONTROL=ignoredups
-export HISTIGNORE=clear:ls:pwd:cd*:fg*:bg*:rm*:cp*:history*
+export HISTIGNORE=clear:ls:pwd:fg*:bg*:rm*:history*
 export HISTSIZE=10000
 
 ## Java Home Environment
