@@ -29,6 +29,10 @@ set showcmd		" display incomplete commands
 set incsearch		" do incremental searching
 set showmatch		" display brachets in code
 set autoindent		" keep previous indent
+set tabstop=4
+set shiftwidth=4
+set softtabstop=0
+set smarttab
 
 " For Win32 GUI: remove 't' flag from 'guioptions': no tearoff menu entries
 " let &guioptions = substitute(&guioptions, "t", "", "g")
