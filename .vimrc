@@ -10,6 +10,41 @@
 "  for MS-DOS and Win32:  $VIM\_vimrc
 "	    for OpenVMS:  sys$login:.vimrc
 
+" Note: Skip initialization for vim-tiny or vim-small.
+if !1 | finish | endif
+
+if has('vim_starting')
+  if &compatible
+    set nocompatible               " Be iMproved
+  endif
+  
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
+
+call neobundle#begin(expand('~/.vim/bundle/'))
+
+" Let NeoBundle manage NeoBundle
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+" My Bundles here:
+" Refer to |:NeoBundle-examples|.
+" Note: You don't set neobundle setting in .gvimrc!
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle 'altercation/vim-colors-solarized' " solarized
+NeoBundle 'croaker/mustang-vim'	             " mustang
+NeoBundle 'nanotech/jellybeans.vim'          " jellybeans
+NeoBundle 'tomasr/molokai'                   " molokai
+NeoBundle 'ujihisa/unite-colorscheme'
+
+call neobundle#end()
+
+filetype plugin indent on
+
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
+
 " When started as "evim", evim.vim will already have done these settings.
 if v:progname =~? "evim"
   finish
@@ -54,12 +89,14 @@ endif
 if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
+  set background=dark
+  set t_Co=256
   try
     colorscheme solarized
+	let g:solarized_termcolors=256
   catch
     colorscheme pablo
   endtry
-  set background=light
 endif
 
 " Only do this part when compiled with support for autocommands.
