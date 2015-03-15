@@ -55,11 +55,11 @@ if &t_Co > 2 || has("gui_running")
   syntax on
   set hlsearch
   try
-    colorscheme molokai 
+    colorscheme solarized
   catch
     colorscheme pablo
   endtry
-  set background=dark
+  set background=light
 endif
 
 " Only do this part when compiled with support for autocommands.
