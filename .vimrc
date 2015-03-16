@@ -30,7 +30,8 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " Refer to |:NeoBundle-examples|.
 " Note: You don't set neobundle setting in .gvimrc!
 NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/neosnippet.vim'
+NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet-snippets'
 NeoBundle 'altercation/vim-colors-solarized' " solarized
 NeoBundle 'croaker/mustang-vim'	             " mustang
 NeoBundle 'nanotech/jellybeans.vim'          " jellybeans
