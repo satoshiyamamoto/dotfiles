@@ -17,13 +17,6 @@ function get_ls_options()
   echo $LSOPTS
 }
 
-function init_tmux_window_name() {
-  case "$TERM" in
-  	screen*) printf "\033k$HOSTNAME\033\\" ;;
-  esac
-}
-init_tmux_window_name
-
 ## aliases
 alias ls="ls $(get_ls_options)" 
 alias l.='ls -d .*'
