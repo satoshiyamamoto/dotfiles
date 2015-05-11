@@ -112,8 +112,8 @@ if !exists(":DiffOrig")
 endif
 
 " NeoBundle Settings.
-"  Run below script.
-"  curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh
+"
+" $ curl  https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh
 
 " Note: Skip initialization for vim-tiny or vim-small.
 if !1 | finish | endif
@@ -127,69 +127,44 @@ if has('vim_starting')
   set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
 endif
 
-" Required:
-call neobundle#begin(expand('$HOME/.vim/bundle'))
+try
+  " Required:
+  call neobundle#begin(expand('$HOME/.vim/bundle'))
+  
+  " Let NeoBundle manage NeoBundle
+  " Required:
+  NeoBundleFetch 'Shougo/neobundle.vim'
+  
+  " Add or remove your Bundles here:
+  NeoBundle 'Shougo/neosnippet.vim'
+  NeoBundle 'Shougo/neosnippet-snippets'
+  NeoBundle 'tpope/vim-fugitive'
+  NeoBundle 'ctrlpvim/ctrlp.vim'
+  NeoBundle 'scrooloose/nerdtree'
+  " Colorschema here:
+  NeoBundle 'flazz/vim-colorschemes'
+  NeoBundle 'altercation/vim-colors-solarized'
+  NeoBundle 'tomasr/molokai'
+  " Auto completion plugin
+  if has('lua')
+    NeoBundle 'Shougo/neocomplcache'
+	source $HOME/.vim/neocomplcache.vim
+  else
+    NeoBundle 'Shougo/neocomplete'
+	source $HOME/.vim/neocomplete.vim
+  endif
 
-" Let NeoBundle manage NeoBundle
-" Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-" Add or remove your Bundles here:
-NeoBundle 'Shougo/neosnippet.vim'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'tpope/vim-fugitive'
-NeoBundle 'ctrlpvim/ctrlp.vim'
-NeoBundle 'scrooloose/nerdtree'
-" Colorschema here:
-NeoBundle 'flazz/vim-colorschemes'
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'tomasr/molokai'
-
-" You can specify revision/branch/tag.
-NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
-
-" Required:
-call neobundle#end()
-
-" Required:
-filetype plugin indent on
-
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
-
-" NeoComplcache Settings.
-" require if_lua option !
-"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
-" Disable AutoComplPop.
-
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-let g:neocomplcache_enable_at_startup = 1 " Use neocomplcache.
-let g:neocomplcache_enable_smart_case = 1 " Use smartcase.
-let g:neocomplcache_min_syntax_length = 3 " Set minimum syntax keyword length.
-let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
-
-" Define dictionary.
-let g:neocomplcache_dictionary_filetype_lists = {
-  \ 'default' : ''
-  \ }
-
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplcache#undo_completion()
-inoremap <expr><C-l>     neocomplcache#complete_common_string()
-
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return neocomplcache#smart_close_popup() . "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplcache#close_popup()
-inoremap <expr><C-e>  neocomplcache#cancel_popup()
+  " You can specify revision/branch/tag.
+  NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+  
+  " Required:
+  call neobundle#end()
+  
+  " Required:
+  filetype plugin indent on
+  
+  " If there are uninstalled bundles found on startup,
+  " this will conveniently prompt you to install them.
+  NeoBundleCheck
+catch
+endtry
