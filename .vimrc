@@ -40,6 +40,7 @@ map Q gq
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
 inoremap <C-U> <C-G>u<C-U>
+nnoremap <silent> <C-\> :NERDTreeToggle<CR>
 
 " In many terminal emulators the mouse works just fine, thus enable it.
 if has('mouse')
@@ -76,6 +77,13 @@ if has("autocmd")
 
   " For all text files set 'textwidth' to 78 characters.
   autocmd FileType text setlocal textwidth=78
+
+  " Assist a close tag input for XML and HTML files.
+  augroup MyXML
+    autocmd!
+	autocmd FileType xml inoremap <buffer> </ </<C-x><C-o>
+	autocmd FileType html inoremap <buffer> </ </<C-x><C-o>
+  augroup END
 
   " When editing a file, always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler
@@ -129,9 +137,10 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " Add or remove your Bundles here:
 NeoBundle 'Shougo/neosnippet.vim'
 NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'Shougo/neocomplcache.vim'
+NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'ctrlpvim/ctrlp.vim'
+NeoBundle 'scrooloose/nerdtree'
 " Colorschema here:
 NeoBundle 'flazz/vim-colorschemes'
 NeoBundle 'altercation/vim-colors-solarized'
@@ -155,7 +164,6 @@ NeoBundleCheck
 "Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 " Disable AutoComplPop.
 
-NeoBundle 'Shougo/neocomplcache'
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 let g:neocomplcache_enable_at_startup = 1 " Use neocomplcache.
