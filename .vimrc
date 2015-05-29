@@ -58,14 +58,12 @@ if has("autocmd")
   " For all text files set 'textwidth' to 78 characters.
   autocmd FileType text setlocal textwidth=78
   autocmd FileType html setlocal tabstop=2 softtabstop=2 shiftwidth=2
-  autocmd FileType ruby setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
-  autocmd FileType javascript setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
+  autocmd FileType javascript,ruby setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
 
   " Complete a close tag input for XML and HTML files.
   augroup MyXML
     autocmd!
-      autocmd FileType xml inoremap <buffer> </ </<C-x><C-o>
-      autocmd FileType html inoremap <buffer> </ </<C-x><C-o>
+      autocmd FileType xml,html inoremap <buffer> </ </<C-x><C-o>
   augroup END
 
   " When editing a file, always jump to the last known cursor position.
@@ -119,6 +117,8 @@ if isdirectory(expand('$HOME/.vim/bundle/neobundle.vim/'))
   NeoBundle 'Shougo/neosnippet.vim'
   NeoBundle 'Shougo/neosnippet-snippets'
   NeoBundle 'tpope/vim-fugitive'
+  NeoBundle 'tpope/vim-surround'
+  NeoBundle 'tomtom/tcomment_vim'
   NeoBundle 'ctrlpvim/ctrlp.vim'
   NeoBundle 'scrooloose/nerdtree'
   " Auto completion.
@@ -131,6 +131,9 @@ if isdirectory(expand('$HOME/.vim/bundle/neobundle.vim/'))
   NeoBundle 'tomasr/molokai'
   " You can specify revision/branch/tag.
   NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+  " Ruby plugins
+  NeoBundle 'tpope/vim-endwise'
+  NeoBundle 'tpope/vim-rails'
   
   " Required:
   call neobundle#end()
