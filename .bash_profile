@@ -10,6 +10,7 @@
 # Default language and editor.
 export LANG='en_US.UTF-8'
 export EDITOR='vi'
+export PAGER='less -R'
 if type vim > /dev/null; then export EDITOR='vim'; fi
 
 # Bash command history
@@ -25,6 +26,7 @@ export PATH=$JAVA_HOME/bin:$PATH
 
 ## Ruby and Gems managed under Rbenv
 if type rbenv >/dev/null 2>&1; then eval "$(rbenv init -)"; fi
+export RI='--format ansi'
 
 ## Homebrew 
 [ -f /usr/local/bin/brew-cask ] && export HOMEBREW_CASK_OPTS="--appdir=/Applications"
