@@ -57,6 +57,9 @@ if has("autocmd")
 
   " For all text files set 'textwidth' to 78 characters.
   autocmd FileType text setlocal textwidth=78
+  autocmd FileType html setlocal tabstop=2 softtabstop=2 shiftwidth=2
+  autocmd FileType ruby setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
+  autocmd FileType javascript setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
 
   " Complete a close tag input for XML and HTML files.
   augroup MyXML
