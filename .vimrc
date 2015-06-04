@@ -58,7 +58,7 @@ if has("autocmd")
   " For all text files set 'textwidth' to 78 characters.
   autocmd FileType text setlocal textwidth=78
   autocmd FileType html setlocal tabstop=2 softtabstop=2 shiftwidth=2
-  autocmd FileType javascript,ruby setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
+  autocmd FileType javascript,ruby,eruby setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
 
   " Complete a close tag input for XML and HTML files.
   augroup MyXML
@@ -113,27 +113,24 @@ if isdirectory(expand('$HOME/.vim/bundle/neobundle.vim/'))
   " Let NeoBundle manage NeoBundle
   " Required:
   NeoBundleFetch 'Shougo/neobundle.vim'
-  " Add or remove your Bundles here:
   NeoBundle 'Shougo/neosnippet.vim'
   NeoBundle 'Shougo/neosnippet-snippets'
-  NeoBundle 'tpope/vim-fugitive'
-  NeoBundle 'tpope/vim-surround'
-  NeoBundle 'tomtom/tcomment_vim'
-  NeoBundle 'ctrlpvim/ctrlp.vim'
-  NeoBundle 'scrooloose/nerdtree'
-  " Auto completion.
   NeoBundle has('lua') 
         \ ? 'Shougo/neocomplcache' 
         \ : 'Shougo/neocomplete'
-  " Colorschema here:
-  NeoBundle 'flazz/vim-colorschemes'
-  NeoBundle 'altercation/vim-colors-solarized'
-  NeoBundle 'tomasr/molokai'
-  " You can specify revision/branch/tag.
-  NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
-  " Ruby plugins
+  NeoBundle 'tpope/vim-fugitive'
+  NeoBundle 'tpope/vim-surround'
   NeoBundle 'tpope/vim-endwise'
   NeoBundle 'tpope/vim-rails'
+  NeoBundle 'pangloss/vim-javascript'
+  NeoBundle 'othree/javascript-libraries-syntax.vim'
+  NeoBundle 'othree/html5.vim'
+  NeoBundle 'moll/vim-node'
+  NeoBundle 'mattn/emmet-vim'
+  NeoBundle 'ctrlpvim/ctrlp.vim'
+  NeoBundle 'scrooloose/nerdtree'
+  NeoBundle 'flazz/vim-colorschemes'
+  NeoBundle 'altercation/vim-colors-solarized'
   
   " Required:
   call neobundle#end()
