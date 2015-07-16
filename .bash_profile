@@ -29,9 +29,7 @@ if type rbenv >/dev/null 2>&1; then eval "$(rbenv init -)"; fi
 export RI='--format ansi'
 
 ## Homebrew 
-if [ -f /usr/local/bin/brew-cask ]; then
-  export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-fi
-if [ -f $(brew --prefix)/etc/bash_completion ]; then
-  . $(brew --prefix)/etc/bash_completion
+if [ -x /usr/local/bin/brew ]; then
+  [ -f $(brew --prefix)/bin/brew-cask ] && export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+  [ -f $(brew --prefix)/etc/bash_completion ] && . $(brew --prefix)/etc/bash_completion
 fi
