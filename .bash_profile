@@ -25,7 +25,6 @@ export JAVA_HOME
 export PATH=$JAVA_HOME/bin:$PATH
 
 ## Ruby and Gems managed under Rbenv
-if type rbenv >/dev/null 2>&1; then eval "$(rbenv init -)"; fi
 export RI='--format ansi'
 
 ## Homebrew 
