@@ -116,8 +116,8 @@ if isdirectory(expand('$HOME/.vim/bundle/neobundle.vim/'))
   NeoBundle 'Shougo/neosnippet.vim'
   NeoBundle 'Shougo/neosnippet-snippets'
   NeoBundle has('lua') 
-        \ ? 'Shougo/neocomplcache' 
-        \ : 'Shougo/neocomplete'
+        \ ? 'Shougo/neocomplete'
+        \ : 'Shougo/neocomplcache'
   NeoBundle 'tpope/vim-fugitive'
   NeoBundle 'tpope/vim-surround'
   NeoBundle 'tpope/vim-endwise'
