@@ -4,6 +4,7 @@
 [ -f ~/.bashrc ] && . ~/.bashrc
 
 # User specific environment and startup programs
+[ -d $HOME/bin ] && PATH=$HOME/bin:$PATH
 [ -d /usr/local/bin ] && PATH=/usr/local/bin:$PATH
 [ -d /usr/local/sbin ] && PATH=/usr/local/sbin:$PATH
 
@@ -26,6 +27,7 @@ export PATH=$JAVA_HOME/bin:$PATH
 
 ## Ruby and Gems managed under Rbenv
 export RI='--format ansi'
+export PATH="vendor/bin:$PATH"
 
 ## Homebrew 
 if [ -x /usr/local/bin/brew ]; then
