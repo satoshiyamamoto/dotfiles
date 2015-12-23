@@ -29,7 +29,7 @@ export RI='--format ansi'
 
 ## Homebrew 
 if [ -x /usr/local/bin/brew ]; then
-  [ -f $(brew --prefix)/bin/brew-cask ] && export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+  [ -d $(brew --prefix)/opt/brew-cask ] && export HOMEBREW_CASK_OPTS="--appdir=/Applications"
   [ -f $(brew --prefix)/etc/bash_completion ] && . $(brew --prefix)/etc/bash_completion
 fi
 export HOMEBREW_GITHUB_API_TOKEN='61017bffa2da43c3585f5c78f2ac409004edb1cc'
