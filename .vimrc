@@ -29,6 +29,8 @@ set autoindent      " keep previous indent
 set smarttab
 set tabstop=4
 set shiftwidth=4
+set encoding=utf-8
+set fileencodings=iso-2022-jp,cp932,sjis,euc-jp,utf-8
 
 " Don't use Ex mode, use Q for formatting
 map Q gq
