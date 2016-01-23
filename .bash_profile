@@ -36,3 +36,5 @@ if [ -x /usr/local/bin/brew ]; then
 fi
 export HOMEBREW_GITHUB_API_TOKEN='61017bffa2da43c3585f5c78f2ac409004edb1cc'
 
+## Visual Studio Code
+code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
