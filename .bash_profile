@@ -22,7 +22,7 @@ export HISTSIZE=10000
 ## Less settings
 [ -f /usr/local/opt/source-highlight/bin/src-hilite-lesspipe.sh ] && LESSPIPE_PATH='/usr/local/opt/source-highlight/bin/src-hilite-lesspipe.sh'
 [ -f /usr/bin/src-hilite-lesspipe.sh ] && LESSPIPE_PATH='/usr/bin/src-hilite-lesspipe.sh'
-[ -n $LESSPIPE_PATH ] && LESSOPEN='| /usr/local/opt/source-highlight/bin/src-hilite-lesspipe.sh %s'
+[ -n $LESSPIPE_PATH ] && LESSOPEN="$LESSPIPE_PATH"
 export LESS='-R'
 export LESSOPEN
 
