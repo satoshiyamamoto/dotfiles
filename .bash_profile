@@ -19,6 +19,13 @@ export HISTCONTROL=ignoredups
 export HISTIGNORE=clear:ls:pwd:fg*:bg*:rm*:history*
 export HISTSIZE=10000
 
+## Less settings
+[ -f /usr/local/opt/source-highlight/bin/src-hilite-lesspipe.sh ] && LESSPIPE_PATH='/usr/local/opt/source-highlight/bin/src-hilite-lesspipe.sh'
+[ -f /usr/bin/src-hilite-lesspipe.sh ] && LESSPIPE_PATH='/usr/bin/src-hilite-lesspipe.sh'
+[ -n $LESSPIPE_PATH ] && LESSOPEN='| /usr/local/opt/source-highlight/bin/src-hilite-lesspipe.sh %s'
+export LESS='-R'
+export LESSOPEN
+
 ## Java Home Environment
 [ -x /usr/libexec/java_home ] && JAVA_HOME="$(/usr/libexec/java_home)" # darwin
 [ -d /usr/local/java ] && JAVA_HOME='/usr/local/java' # source install
