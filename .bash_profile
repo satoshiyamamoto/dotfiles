@@ -45,6 +45,6 @@ code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
 gi() { curl -L -s https://www.gitignore.io/api/$@ ;}
 
 ## Google Cloud SDK
-GCLOUD_HOME='/opt/homebrew-cask/Caskroom/google-cloud-sdk/latest/google-cloud-sdk'
+GCLOUD_HOME='/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk'
 . "$GCLOUD_HOME/path.bash.inc"
 . "$GCLOUD_HOME/completion.bash.inc"
