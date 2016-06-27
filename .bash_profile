@@ -20,11 +20,7 @@ export HISTIGNORE=clear:ls:pwd:fg*:bg*:rm*:history*
 export HISTSIZE=10000
 
 ## Less settings
-[ -f /usr/local/opt/source-highlight/bin/src-hilite-lesspipe.sh ] && LESSPIPE_PATH='/usr/local/opt/source-highlight/bin/src-hilite-lesspipe.sh'
-[ -f /usr/bin/src-hilite-lesspipe.sh ] && LESSPIPE_PATH='/usr/bin/src-hilite-lesspipe.sh'
-[ -n $LESSPIPE_PATH ] && LESSOPEN="| $LESSPIPE_PATH %s"
 export LESS='-R'
-export LESSOPEN
 
 ## Java Home Environment
 [ -x /usr/libexec/java_home ] && JAVA_HOME="$(/usr/libexec/java_home)" # darwin
@@ -47,3 +43,8 @@ code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}
 
 ## Gitignore.io
 gi() { curl -L -s https://www.gitignore.io/api/$@ ;}
+
+## Google Cloud SDK
+GCLOUD_HOME='/opt/homebrew-cask/Caskroom/google-cloud-sdk/latest/google-cloud-sdk'
+. "$GCLOUD_HOME/path.bash.inc"
+. "$GCLOUD_HOME/completion.bash.inc"
