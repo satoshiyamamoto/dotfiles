@@ -46,5 +46,7 @@ gi() { curl -L -s https://www.gitignore.io/api/$@ ;}
 
 ## Google Cloud SDK
 GCLOUD_HOME='/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk'
-. "$GCLOUD_HOME/path.bash.inc"
-. "$GCLOUD_HOME/completion.bash.inc"
+if [ -d "$GCLOUD_HOME" ]; then
+  . "$GCLOUD_HOME/path.bash.inc"
+  . "$GCLOUD_HOME/completion.bash.inc"
+fi
