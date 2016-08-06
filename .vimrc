@@ -127,6 +127,7 @@ if isdirectory(expand('$HOME/.vim/bundle/neobundle.vim/'))
   NeoBundle 'pangloss/vim-javascript', {'rev': 'develop'}
   NeoBundle 'othree/javascript-libraries-syntax.vim'
   NeoBundle 'othree/html5.vim'
+  NeoBundle 'digitaltoad/vim-pug'
   NeoBundle 'moll/vim-node'
   NeoBundle 'mattn/emmet-vim'
   NeoBundle 'ctrlpvim/ctrlp.vim'
