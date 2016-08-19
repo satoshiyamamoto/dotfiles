@@ -134,6 +134,7 @@ if isdirectory(expand('$HOME/.vim/bundle/neobundle.vim/'))
   NeoBundle 'scrooloose/nerdtree'
   NeoBundle 'flazz/vim-colorschemes'
   NeoBundle 'chriskempson/vim-tomorrow-theme'
+  NeoBundle 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
   
   " Required:
   call neobundle#end()
@@ -146,17 +147,23 @@ if isdirectory(expand('$HOME/.vim/bundle/neobundle.vim/'))
   NeoBundleCheck
   
   nnoremap <silent> <C-\> :NERDTreeToggle<CR>
-  
+ 
+  " Powerline
+  set laststatus=2
+  set showtabline=2
+  set noshowmode
+
+  " Appearance settings. (Color and Fonts)
+  "
+  " when managing a colorscheme under NeoBundle, 
+  " must specify after the NeoBundle settings.
+  "
+  syntax on
+  set t_Co=256
+  colorscheme Tomorrow-Night
+
 endif " isdirectory(expand('$HOME/.vim/bundle/neobundle.vim/'))
 
-" Appearance settings. (Color and Fonts)
-"
-" when managing a colorscheme under NeoBundle, 
-" must specify after the NeoBundle settings.
-"
-syntax on
-set t_Co=256
-colorscheme Tomorrow-Night
 
 " NeoComplcache settings. (Require: if_lua option.)
 " see: https://github.com/Shougo/neocomplcache.vim
@@ -282,8 +289,3 @@ if isdirectory(expand('$HOME/.vim/bundle/neocomplete'))
  
 endif " isdirectory(expand('$HOME/.vim/bundle/neocomplete'))
 
-if isdirectory(expand('$POWERLINE_ROOT'))
-  set rtp+=$POWERLINE_ROOT/bindings/vim/
-  set laststatus=2
-  set t_Co=256
-endif " isdirectory(expand('$POWERLINE_ROOT'))"
