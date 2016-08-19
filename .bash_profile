@@ -10,6 +10,7 @@
 
 # Default language and editor.
 export LANG='en_US.UTF-8'
+export LC_ALL='en_US.UTF-8'
 export EDITOR='vi'
 export PAGER='less -R'
 if type vim > /dev/null; then export EDITOR='vim'; fi
@@ -32,11 +33,17 @@ export PATH=$JAVA_HOME/bin:$PATH
 export RI='--format ansi'
 export PATH="vendor/bin:$PATH"
 
+## Python
+[ -d $HOME/Library/Python/2.7/bin ] && export PATH="$HOME/Library/Python/2.7/bin:$PATH"
+if [ -d "$HOME/Library/Python/2.7/lib/python/site-packages/powerline" ]; then
+  export POWERLINE_ROOT="$HOME/Library/Python/2.7/lib/python/site-packages/powerline"
+fi
+
 ## Homebrew 
 if [ -x /usr/local/bin/brew ]; then
   [ -f $(brew --prefix)/etc/bash_completion ] && . $(brew --prefix)/etc/bash_completion
+  export HOMEBREW_GITHUB_API_TOKEN='61017bffa2da43c3585f5c78f2ac409004edb1cc'
 fi
-export HOMEBREW_GITHUB_API_TOKEN='61017bffa2da43c3585f5c78f2ac409004edb1cc'
 
 ## Visual Studio Code
 code () { VSCODE_CWD="$PWD" open -n -b "com.microsoft.VSCode" --args $* ;}

@@ -26,11 +26,11 @@ set hlsearch        " highlight search keywords
 set incsearch       " do incremental searching
 set showmatch       " display brachets in code
 set autoindent      " keep previous indent
-set smarttab
-set tabstop=4
-set shiftwidth=4
-set encoding=utf-8
-set fileencodings=iso-2022-jp,cp932,sjis,euc-jp,utf-8
+set smarttab        " use smart tab
+set tabstop=4       " 
+set shiftwidth=4    " 
+set encoding=utf-8  " default UTF-8
+set fileencodings=utf-8,cp932,sjis,euc-jp,iso-2022-jp
 
 " Don't use Ex mode, use Q for formatting
 map Q gq
@@ -59,8 +59,8 @@ if has("autocmd")
 
   " For all text files set 'textwidth' to 78 characters.
   autocmd FileType text setlocal textwidth=78
-  autocmd FileType html setlocal tabstop=2 softtabstop=2 shiftwidth=2
-  autocmd FileType javascript,ruby,eruby setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
+  autocmd FileType html setlocal ts=2 sts=2 sw=2
+  autocmd FileType javascript,ruby,eruby setlocal et ts=2 sts=2 sw=2
 
   " Complete a close tag input for XML and HTML files.
   augroup MyXML
@@ -133,7 +133,7 @@ if isdirectory(expand('$HOME/.vim/bundle/neobundle.vim/'))
   NeoBundle 'ctrlpvim/ctrlp.vim'
   NeoBundle 'scrooloose/nerdtree'
   NeoBundle 'flazz/vim-colorschemes'
-  NeoBundle 'altercation/vim-colors-solarized'
+  NeoBundle 'chriskempson/vim-tomorrow-theme'
   
   " Required:
   call neobundle#end()
@@ -155,22 +155,8 @@ endif " isdirectory(expand('$HOME/.vim/bundle/neobundle.vim/'))
 " must specify after the NeoBundle settings.
 "
 syntax on
-
-if has('gui_running')
-  set background=light
-else
-  set background=dark
-endif
-
-try
-  colorscheme solarized
-  set t_Co=256
-  let g:solarized_termcolors=256
-  let g:solarized_termtrans=1
-catch
-  set t_Co=16
-  colorscheme default
-endtry
+set t_Co=256
+colorscheme Tomorrow-Night
 
 " NeoComplcache settings. (Require: if_lua option.)
 " see: https://github.com/Shougo/neocomplcache.vim
@@ -295,3 +281,9 @@ if isdirectory(expand('$HOME/.vim/bundle/neocomplete'))
   "let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
  
 endif " isdirectory(expand('$HOME/.vim/bundle/neocomplete'))
+
+if isdirectory(expand('$POWERLINE_ROOT'))
+  set rtp+=$POWERLINE_ROOT/bindings/vim/
+  set laststatus=2
+  set t_Co=256
+endif " isdirectory(expand('$POWERLINE_ROOT'))"
