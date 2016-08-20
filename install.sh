@@ -2,7 +2,7 @@
 # install.sh
 
 getopts f force
-readonly files=('.bash_profile' '.bashrc' '.vimrc')
+readonly files=('.bash_profile' '.bashrc' '.vimrc' '.vim')
 
 for file in ${files[@]}; do
   src="$(pwd dirname)/${file}"
