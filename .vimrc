@@ -84,8 +84,6 @@ if !exists(":DiffOrig")
           \ | wincmd p | diffthis
 endif
 
-"curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-"    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 runtime! rc/init/*.vim
 runtime! rc/plugins/*.vim
 

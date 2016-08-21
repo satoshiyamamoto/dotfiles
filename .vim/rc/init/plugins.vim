@@ -13,6 +13,7 @@ Plug 'tpope/vim-endwise', {'for': 'ruby'}
 Plug 'tpope/vim-rails', {'for': ['ruby', 'eruby']}
 Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 Plug 'othree/javascript-libraries-syntax.vim', {'for': 'javascript'}
+Plug 'burnettk/vim-angular', {'for': ['javascript','html']}
 Plug 'moll/vim-node', {'for': 'javascript'}
 Plug 'othree/html5.vim'
 Plug 'elzr/vim-json', {'for': 'json'}
