@@ -28,5 +28,8 @@ alias grep='grep --color=always'
 alias egrep='egrep --color=always'
 alias less='less -r'
 alias sudo='sudo -E'
-alias redpen='redpen -c /usr/local/opt/redpen/libexec/conf/redpen-conf-ja.xml'
 alias mux='tmuxinator'
+
+## connect to docker host
+eval "$(docker-machine env)" &> /dev/null
+

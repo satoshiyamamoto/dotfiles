@@ -1,8 +1,5 @@
 # .bash_profile
 
-# Get the aliases and functions
-[ -f ~/.bashrc ] && . ~/.bashrc
-
 # User specific environment and startup programs
 [ -d $HOME/bin ] && PATH=$HOME/bin:$PATH
 [ -d /usr/local/bin ] && PATH=/usr/local/bin:$PATH
@@ -57,3 +54,7 @@ if [ -d "$GCLOUD_HOME" ]; then
   . "$GCLOUD_HOME/path.bash.inc"
   . "$GCLOUD_HOME/completion.bash.inc"
 fi
+
+# Get the aliases and functions
+[ -f ~/.bashrc ] && . ~/.bashrc
+
