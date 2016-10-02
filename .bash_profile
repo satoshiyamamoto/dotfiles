@@ -29,7 +29,7 @@ export LESS='-R'
 export JAVA_HOME
 export PATH=$JAVA_HOME/bin:$PATH
 
-## Ruby and Gems managed under Rbenv
+## Ruby
 export RI='--format ansi'
 export PATH="vendor/bin:$PATH"
 
