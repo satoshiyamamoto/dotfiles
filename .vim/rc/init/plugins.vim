@@ -13,9 +13,11 @@ Plug 'tpope/vim-endwise', {'for': 'ruby'}
 Plug 'tpope/vim-rails', {'for': ['ruby', 'eruby']}
 Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 Plug 'othree/javascript-libraries-syntax.vim', {'for': 'javascript'}
+Plug 'mxw/vim-jsx', {'for': 'javascript'}
 Plug 'burnettk/vim-angular', {'for': ['javascript','html']}
 Plug 'moll/vim-node', {'for': 'javascript'}
 Plug 'othree/html5.vim'
+Plug 'fatih/vim-go', {'for': 'go'}
 Plug 'elzr/vim-json', {'for': 'json'}
 Plug 'digitaltoad/vim-pug'
 Plug 'mattn/emmet-vim', {'for': ['html','eruby']}
@@ -23,6 +25,7 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plug 'scrooloose/syntastic'
+Plug 'jaxbot/syntastic-react'
 " Color schemes
 Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/vim-tomorrow-theme'
