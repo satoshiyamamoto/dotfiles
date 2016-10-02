@@ -29,7 +29,5 @@ alias egrep='egrep --color=always'
 alias less='less -r'
 alias sudo='sudo -E'
 alias mux='tmuxinator'
-
-## connect to docker host
-eval "$(docker-machine env)" &> /dev/null
+alias dme='eval $(docker-machine env default)'
 
