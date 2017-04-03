@@ -92,3 +92,11 @@ alias less='less -r'
 alias sudo='sudo -E'
 alias mux='tmuxinator'
 
+ghq () {
+  if [ "$1" = look -a -n "$2" ]; then
+    cd $(command ghq list -p $2)
+    return
+  fi
+  
+  command ghq "$@"
+}
