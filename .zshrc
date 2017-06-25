@@ -93,6 +93,8 @@ alias egrep='egrep --color=always'
 alias less='less -r'
 alias sudo='sudo -E'
 alias mux='tmuxinator'
+alias urlencode='nkf -WwMQ | tr = %'
+alias urldecode='tr % = | nkf -WwmQ'
 
 ghq () {
   if [ "$1" = look -a -n "$2" ]; then
