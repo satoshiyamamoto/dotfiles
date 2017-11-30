@@ -2,8 +2,6 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export GOPATH="$HOME/Develop"
 export PATH="$PATH:$GOPATH/bin"
-export SOLR="$(brew --prefix)/Cellar/solr/6.6.0"
-export SOLR_HOME="${SOLR}/server/solr"
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -91,14 +89,7 @@ source ~/.tmuxinator/tmuxinator.zsh
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
-alias grep='grep --color=always'
-alias egrep='egrep --color=always'
-alias less='less -r'
 alias sudo='sudo -E'
-alias mux='tmuxinator'
-alias urlencode='nkf -WwMQ | tr = %'
-alias urldecode='tr % = | nkf -WwmQ'
-alias curl='curl -H "Content-Type:application/json; charset=utf8"'
 
 ghq () {
   if [ "$1" = look -a -n "$2" ]; then
