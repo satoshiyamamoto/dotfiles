@@ -13,6 +13,8 @@ Plug 'tpope/vim-endwise', {'for': 'ruby'}
 Plug 'tpope/vim-rails', {'for': ['ruby', 'eruby']}
 Plug 'pangloss/vim-javascript', {'for': 'javascript'}
 Plug 'othree/javascript-libraries-syntax.vim', {'for': 'javascript'}
+Plug 'digitaltoad/vim-pug', {'for': ['jade', 'pug']}
+Plug 'dNitro/vim-pug-complete', {'for': ['jade', 'pug']}
 Plug 'mxw/vim-jsx', {'for': 'javascript'}
 Plug 'burnettk/vim-angular', {'for': ['javascript','html']}
 Plug 'moll/vim-node', {'for': 'javascript'}
