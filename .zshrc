@@ -1,7 +1,8 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+export JAVA_HOME="$(/usr/libexec/java_home -v 1.8)"
 export GOPATH="$HOME/Develop"
-export PATH="$PATH:$GOPATH/bin"
+export PATH="$JAVA_HOME/bin:$GOPATH/bin:$PATH"
 
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
