@@ -25,7 +25,6 @@ Plug 'digitaltoad/vim-pug'
 Plug 'mattn/emmet-vim', {'for': ['html','eruby']}
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
-Plug 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plug 'scrooloose/syntastic'
 Plug 'jaxbot/syntastic-react'
 " Color schemes
