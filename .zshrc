@@ -80,6 +80,11 @@ prompt pure
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
+# fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+#export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
+
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
 #   export EDITOR='vim'
@@ -105,6 +110,8 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias sudo='sudo -E'
+alias fd='fzf-cd-widget'
+alias fh='fzf-history-widget'
 
 ghq () {
   if [ "$1" = look -a -n "$2" ]; then
@@ -114,4 +121,3 @@ ghq () {
   
   command ghq "$@"
 }
-
