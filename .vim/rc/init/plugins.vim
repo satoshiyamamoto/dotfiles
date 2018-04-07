@@ -13,6 +13,8 @@ Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-endwise', {'for': 'ruby'}
 Plug 'tpope/vim-rails', {'for': ['ruby', 'eruby']}
 Plug 'mattn/emmet-vim', {'for': ['html','eruby']}
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 " Languages
 Plug 'digitaltoad/vim-pug', {'for': ['jade', 'pug']}
 Plug 'dNitro/vim-pug-complete', {'for': ['jade', 'pug']}
