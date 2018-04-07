@@ -82,7 +82,7 @@ prompt pure
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export FZF_DEFAULT_OPTS='--height 40% --reverse --border'
+export FZF_DEFAULT_OPTS='--reverse'
 #export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 
 # Preferred editor for local and remote sessions
