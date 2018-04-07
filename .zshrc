@@ -111,7 +111,6 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias sudo='sudo -E'
 alias fd='fzf-cd-widget'
-alias fh='fzf-history-widget'
 
 ghq () {
   if [ "$1" = look -a -n "$2" ]; then
