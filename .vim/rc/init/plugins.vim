@@ -9,27 +9,23 @@ endif
 call plug#begin('~/.vim/plugged')
 " Plugins
 Plug 'Shougo/neocomplcache.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-endwise', {'for': 'ruby'}
 Plug 'tpope/vim-rails', {'for': ['ruby', 'eruby']}
-Plug 'pangloss/vim-javascript', {'for': 'javascript'}
-Plug 'othree/javascript-libraries-syntax.vim', {'for': 'javascript'}
+Plug 'mattn/emmet-vim', {'for': ['html','eruby']}
+" Languages
 Plug 'digitaltoad/vim-pug', {'for': ['jade', 'pug']}
 Plug 'dNitro/vim-pug-complete', {'for': ['jade', 'pug']}
-Plug 'mxw/vim-jsx', {'for': 'javascript'}
-Plug 'burnettk/vim-angular', {'for': ['javascript','html']}
-Plug 'moll/vim-node', {'for': 'javascript'}
-Plug 'othree/html5.vim'
-Plug 'fatih/vim-go', {'for': 'go'}
-Plug 'elzr/vim-json', {'for': 'json'}
-Plug 'digitaltoad/vim-pug'
-Plug 'mattn/emmet-vim', {'for': ['html','eruby']}
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'scrooloose/syntastic'
 Plug 'jaxbot/syntastic-react'
-" Color schemes
+" Themes
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'whatyouhide/vim-gotham'
+Plug 'joshdick/onedark.vim'
+Plug 'sheerun/vim-polyglot'
 call plug#end()
 
