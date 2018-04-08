@@ -32,3 +32,5 @@ alias mux='tmuxinator'
 alias urlencode='nkf -WwMQ | tr = %'
 alias urldecode='tr % = | nkf -WwmQ':w
 
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
