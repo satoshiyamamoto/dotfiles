@@ -59,6 +59,7 @@ plugins=(
   brew
   docker
   docker-compose
+  httpie
   npm
   mvn
   osx
@@ -120,3 +121,10 @@ ghq () {
   
   command ghq "$@"
 }
+
+pt () {
+  echo "$1" | awk -F_ '{print $4}' | cut -c -10 | xargs date -r
+}
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
