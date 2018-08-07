@@ -59,6 +59,8 @@ plugins=(
   brew
   docker
   docker-compose
+  docker-machine
+  kubectl
   httpie
   npm
   mvn
@@ -126,5 +128,7 @@ pt () {
   echo "$1" | awk -F_ '{print $4}' | cut -c -10 | xargs date -r
 }
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
-
+# Google Cloud Platform
+export GCLOUD_HOME='/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk'
+test -e "${GCLOUD_HOME}" && source "${GCLOUD_HOME}/path.zsh.inc"
+test -e "${GCLOUD_HOME}" && source "${GCLOUD_HOME}/completion.zsh.inc"
