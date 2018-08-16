@@ -29,5 +29,6 @@ Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'whatyouhide/vim-gotham'
 Plug 'joshdick/onedark.vim'
 Plug 'sheerun/vim-polyglot'
+Plug 'tfnico/vim-gradle'
 call plug#end()
 
