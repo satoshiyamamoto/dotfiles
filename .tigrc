@@ -1,1 +1,5 @@
 set line-graphics = utf-8
+
+bind generic <Ctrl-f> scroll-page-down
+bind generic <Ctrl-b> scroll-page-up
+
