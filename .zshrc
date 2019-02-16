@@ -11,18 +11,10 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -d /usr/local/share/zsh/site-functions ] && fpath=(/usr/local/share/zsh/site-functions $fpath)
+if [ -f "${HOME}/.fzf.zsh" ]; then
+  source "${HOME}/.fzf.zsh"
+fi
 
 export HOMEBREW_GITHUB_API_TOKEN=c32c3959a143abdda5a7fa8359261a7dec7132ba
 
 alias vpn='/opt/cisco/anyconnect/bin/vpn'
-
-
-
-
-
-
-
-
-
