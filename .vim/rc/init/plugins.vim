@@ -21,6 +21,7 @@ Plug 'dNitro/vim-pug-complete', {'for': ['jade', 'pug']}
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'scrooloose/syntastic'
 Plug 'jaxbot/syntastic-react'
+Plug 'hashivim/vim-terraform'
 " Themes
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
