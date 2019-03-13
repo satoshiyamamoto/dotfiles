@@ -37,6 +37,7 @@ set tabstop=4       " number of spaces
 set shiftwidth=4    " auto indent stop
 set encoding=utf-8  " default UTF-8
 set fileencodings=utf-8,cp932,sjis,euc-jp,iso-2022-jp
+set clipboard+=unnamed
 "set relativenumber
 
 " Don't use Ex mode, use Q for formatting
