@@ -16,9 +16,11 @@ if [ -f "${HOME}/.fzf.zsh" ]; then
 fi
 
 export HOMEBREW_GITHUB_API_TOKEN=c32c3959a143abdda5a7fa8359261a7dec7132ba
+export GOPATH="$HOME/Develop"
+export PATH="$GOPATH/bin:$PATH"
 
 alias vpn='/opt/cisco/anyconnect/bin/vpn'
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 function gi() { curl -sLw "\n" https://www.gitignore.io/api/$@ ;}
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
