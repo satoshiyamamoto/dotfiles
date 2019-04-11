@@ -1,0 +1,1 @@
+/Users/satoshi/.vim/plugged/gocode/vim/ftplugin/go/gocomplete.vim

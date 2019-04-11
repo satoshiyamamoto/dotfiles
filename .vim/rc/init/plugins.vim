@@ -8,7 +8,6 @@ endif
 
 call plug#begin('~/.vim/plugged')
 " Plugins
-Plug 'Shougo/neocomplcache.vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-endwise', {'for': 'ruby'}
 Plug 'tpope/vim-rails', {'for': ['ruby', 'eruby']}
@@ -22,6 +21,9 @@ Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'scrooloose/syntastic'
 Plug 'jaxbot/syntastic-react'
 Plug 'hashivim/vim-terraform'
+Plug 'fatih/vim-go', {'do': ':GoUpdateBinaries'}
+Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
+
 " Themes
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
