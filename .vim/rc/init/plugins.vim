@@ -15,14 +15,16 @@ Plug 'mattn/emmet-vim', {'for': ['html','eruby']}
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 " Languages
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'fatih/vim-go', { 'for': 'go', 'do': ':GoInstallBinaries' }
+Plug 'ryanolsonx/vim-lsp-typescript'
 Plug 'digitaltoad/vim-pug', {'for': ['jade', 'pug']}
 Plug 'dNitro/vim-pug-complete', {'for': ['jade', 'pug']}
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'scrooloose/syntastic'
 Plug 'jaxbot/syntastic-react'
 Plug 'hashivim/vim-terraform'
-Plug 'fatih/vim-go', {'do': ':GoUpdateBinaries'}
-Plug 'nsf/gocode', { 'rtp': 'vim', 'do': '~/.vim/plugged/gocode/vim/symlink.sh' }
 
 " Themes
 Plug 'vim-airline/vim-airline'
