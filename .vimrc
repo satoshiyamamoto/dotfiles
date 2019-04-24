@@ -155,6 +155,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'fatih/vim-go', {'for': 'go', 'do': ':GoInstallBinaries'}
 Plug 'ryanolsonx/vim-lsp-javascript'
 Plug 'ryanolsonx/vim-lsp-typescript'
+Plug 'prettier/vim-prettier', {'do': 'yarn install'}
 Plug 'digitaltoad/vim-pug', {'for': ['jade', 'pug']}
 Plug 'hashivim/vim-terraform'
 
