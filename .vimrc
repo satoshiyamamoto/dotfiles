@@ -161,6 +161,7 @@ Plug 'hashivim/vim-terraform'
 
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'mattn/emmet-vim', {'for': ['html','eruby']}
 
