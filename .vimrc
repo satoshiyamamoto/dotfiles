@@ -159,9 +159,11 @@ Plug 'prettier/vim-prettier', {'do': 'yarn install'}
 Plug 'digitaltoad/vim-pug', {'for': ['jade', 'pug']}
 Plug 'hashivim/vim-terraform'
 
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'airblade/vim-gitgutter'
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'tpope/vim-surround'
 Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
 Plug 'mattn/emmet-vim', {'for': ['html','eruby']}
 
