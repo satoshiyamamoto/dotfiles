@@ -15,12 +15,11 @@ if [ -f "${HOME}/.fzf.zsh" ]; then
   source "${HOME}/.fzf.zsh"
 fi
 
-export HOMEBREW_GITHUB_API_TOKEN=c32c3959a143abdda5a7fa8359261a7dec7132ba
+export HISTORY_IGNORE="(ls|cd|pwd|rm|clear|man|exit)"
 export GOPATH="$HOME/Develop"
 export PATH="$GOPATH/bin:$PATH"
+export HOMEBREW_GITHUB_API_TOKEN=c32c3959a143abdda5a7fa8359261a7dec7132ba
 
 alias vpn='/opt/cisco/anyconnect/bin/vpn'
 
-function gi() { curl -sLw "\n" https://www.gitignore.io/api/$@ ;}
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+gi() { curl -sLw "\n" https://www.gitignore.io/api/$@ ; }
