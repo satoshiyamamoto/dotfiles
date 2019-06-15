@@ -2,11 +2,11 @@
 # install.sh
 
 getopts f force
-readonly files=('.bash_profile' '.bashrc' '.zshrc' '.vimrc' '.vim' '.tmux.conf' '.tigrc')
+readonly files=('zshrc' 'zpreztorc' 'vimrc' 'vim' 'gitconfig' 'tmux.conf' 'tigrc')
 
 for file in ${files[@]}; do
   src="$(pwd dirname)/${file}"
-  dest="${HOME}/${file}"
+  dest="${HOME}/.${file}"
 
   # Clean up for the original files
   if [ "${force}" == 'f' ]; then
