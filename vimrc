@@ -36,6 +36,7 @@ set backspace=indent,eol,start
 
 set history=200		" keep 200 lines of command line history
 set ruler		" show the cursor position all the time
+set number              " display line numbers
 set showcmd		" display incomplete commands
 set wildmenu		" display completion matches in a status line
 set hidden              " edit multiple buffers without saving the changes
@@ -173,6 +174,7 @@ Plug 'mattn/emmet-vim', {'for': ['html','eruby']}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'joshdick/onedark.vim'
+Plug 'tomasr/molokai'
 call plug#end()
 
 colorscheme onedark
