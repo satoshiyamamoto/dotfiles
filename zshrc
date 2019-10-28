@@ -28,6 +28,7 @@ if [ -s "/Users/satoshi/.sdkman/bin/sdkman-init.sh" ]; then
   source "/Users/satoshi/.sdkman/bin/sdkman-init.sh"
 fi
 
+alias k='kubectl'
 alias vpn='/opt/cisco/anyconnect/bin/vpn'
 
 gi() { curl -sLw "\n" https://www.gitignore.io/api/$@ ; }
