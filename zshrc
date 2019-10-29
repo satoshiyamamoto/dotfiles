@@ -29,6 +29,7 @@ if [ -s "/Users/satoshi/.sdkman/bin/sdkman-init.sh" ]; then
 fi
 
 alias k='kubectl'
+alias gcr='ghq look $(ghq list | fzf)'
 alias vpn='/opt/cisco/anyconnect/bin/vpn'
 
 gi() { curl -sLw "\n" https://www.gitignore.io/api/$@ ; }
