@@ -28,5 +28,5 @@
 [difftool]
 	prompt = false
 [ghq]
-	root = /Users/satoshi/Develop/src
+	root = ~/Develop/src
 
