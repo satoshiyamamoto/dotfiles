@@ -12,7 +12,7 @@ export PYTHON2_PATH="$HOME/Library/Python/2.7"
 export GOPATH="$HOME/Develop"
 export PATH="$GOPATH/bin:$PYTHON3_PATH/bin:$PYTHON2_PATH/bin:$PATH"
 export HOMEBREW_GITHUB_API_TOKEN=c32c3959a143abdda5a7fa8359261a7dec7132ba
-export SDKMAN_DIR="/Users/satoshi/.sdkman"
+export SDKMAN_DIR="$HOME/.sdkman"
 
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
@@ -24,8 +24,8 @@ if [ -f "${HOME}/.fzf.zsh" ]; then
   source "${HOME}/.fzf.zsh"
 fi
 
-if [ -s "/Users/satoshi/.sdkman/bin/sdkman-init.sh" ]; then
-  source "/Users/satoshi/.sdkman/bin/sdkman-init.sh"
+if [ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]; then
+  source "$SDKMAN_DIR/bin/sdkman-init.sh"
 fi
 
 alias k='kubectl'
