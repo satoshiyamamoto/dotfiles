@@ -12,6 +12,8 @@ export PYTHON2_PATH="$HOME/Library/Python/2.7"
 export GOPATH="$HOME/Develop"
 export PATH="$GOPATH/bin:$PYTHON3_PATH/bin:$PYTHON2_PATH/bin:$PATH"
 export HOMEBREW_GITHUB_API_TOKEN=c32c3959a143abdda5a7fa8359261a7dec7132ba
+export KUBE_PS1_PATH='/usr/local/opt/kube-ps1'
+export KUBE_PS1_SYMBOL_USE_IMG=false
 export SDKMAN_DIR="$HOME/.sdkman"
 
 # Source Prezto.
@@ -22,6 +24,12 @@ fi
 # Customize to your needs...
 if [ -f "${HOME}/.fzf.zsh" ]; then
   source "${HOME}/.fzf.zsh"
+fi
+
+if [ -f "${KUBE_PS1_PATH}/share/kube-ps1.sh" ]; then
+  source "${KUBE_PS1_PATH}/share/kube-ps1.sh"
+  PS1='$(kube_ps1)'$PS1
+  kubeoff
 fi
 
 if [ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]; then
