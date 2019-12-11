@@ -7,10 +7,9 @@
 export LC_ALL=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 export HISTORY_IGNORE="(ls|cd|pwd|rm|clear|man|exit)"
-export PYTHON3_PATH="$HOME/Library/Python/3.7"
-export PYTHON2_PATH="$HOME/Library/Python/2.7"
 export GOPATH="$HOME/Develop"
-export PATH="$GOPATH/bin:$PYTHON3_PATH/bin:$PYTHON2_PATH/bin:$PATH"
+export KREW_PATH="$HOME/.krew"
+export PATH="$GOPATH/bin:$KREW_PATH/bin:$PATH"
 export HOMEBREW_GITHUB_API_TOKEN=c32c3959a143abdda5a7fa8359261a7dec7132ba
 export KUBE_PS1_PATH='/usr/local/opt/kube-ps1'
 export KUBE_PS1_SYMBOL_USE_IMG=false
