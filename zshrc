@@ -36,6 +36,7 @@ if [ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]; then
 fi
 
 alias k='kubectl'
+alias ssh='TERM=xterm-256color ssh'
 alias gcr='ghq look $(ghq list | fzf)'
 alias vpn='/opt/cisco/anyconnect/bin/vpn'
 
