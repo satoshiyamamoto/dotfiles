@@ -46,6 +46,7 @@ set ttimeoutlen=100	" wait up to 100ms after Esc for special key
 
 set encoding=utf-8
 set clipboard+=unnamed
+set noshowmode
 
 " Show @@@ in the last line if it is truncated.
 set display=truncate
@@ -174,6 +175,7 @@ Plug 'mattn/emmet-vim', {'for': ['html','eruby']}
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'joshdick/onedark.vim'
+Plug 'haishanh/night-owl.vim'
 Plug 'tomasr/molokai'
 call plug#end()
 
