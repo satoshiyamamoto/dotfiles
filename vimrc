@@ -179,4 +179,5 @@ Plug 'haishanh/night-owl.vim'
 Plug 'tomasr/molokai'
 call plug#end()
 
-colorscheme onedark
+colorscheme night-owl
+
