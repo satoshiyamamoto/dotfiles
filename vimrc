@@ -154,6 +154,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'w0rp/ale'
+Plug 'luochen1990/rainbow'
 
 Plug 'sheerun/vim-polyglot'
 Plug 'fatih/vim-go', {'for': 'go', 'do': ':GoInstallBinaries'}
