@@ -2,7 +2,7 @@
 # install.sh
 
 getopts f force
-readonly files=('zshrc' 'zpreztorc' 'vimrc' 'vim' 'gitconfig' 'tmux.conf' 'tigrc')
+readonly files=('zshrc' 'zpreztorc' 'config' 'vimrc' 'vim' 'tmux.conf' 'tigrc')
 
 for file in ${files[@]}; do
   src="$(pwd dirname)/${file}"
