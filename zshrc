@@ -7,6 +7,7 @@
 export LC_ALL=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 export HISTORY_IGNORE="(ls|cd|pwd|rm|clear|man|exit)"
+export XDG_CONFIG_HOME="$HOME/.config"
 export GOPATH="$HOME/Develop"
 export KREW_PATH="$HOME/.krew"
 export PATH="$GOPATH/bin:$KREW_PATH/bin:$PATH"
