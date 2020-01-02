@@ -1,5 +1,2 @@
-"
-" Keybind for the NERDTree
-"
-nnoremap <silent> <C-\> :NERDTreeToggle<CR>
+map <C-\> :NERDTreeToggle<CR>
 
