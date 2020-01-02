@@ -1,3 +1,0 @@
-" ~/.gvimrc
-
-set antialias
