@@ -8,7 +8,7 @@ Plug 'mattn/emmet-vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'editorconfig/editorconfig-vim'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
