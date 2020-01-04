@@ -7,6 +7,7 @@ Plug 'mattn/vim-lsp-settings'
 Plug 'mattn/emmet-vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'ryanolsonx/vim-lsp-javascript'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'dense-analysis/ale'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
