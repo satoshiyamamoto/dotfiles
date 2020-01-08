@@ -9,6 +9,7 @@ export LC_CTYPE=en_US.UTF-8
 export HISTORY_IGNORE="(ls|cd|pwd|rm|clear|man|exit)"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
+export KREW_PATH="$HOME/.krew"
 export GOPATH="$HOME/Develop"
 export PATH="$GOPATH/bin:$KREW_PATH/bin:$PATH"
 export HOMEBREW_GITHUB_API_TOKEN=c32c3959a143abdda5a7fa8359261a7dec7132ba
@@ -23,7 +24,6 @@ if [ -f "${HOME}/.fzf.zsh" ]; then
   source "${HOME}/.fzf.zsh"
 fi
 
-export KREW_PATH="$HOME/.krew"
 export KUBE_PS1_PATH='/usr/local/opt/kube-ps1'
 export KUBE_PS1_SYMBOL_USE_IMG=false
 if [ -f "${KUBE_PS1_PATH}/share/kube-ps1.sh" ]; then
