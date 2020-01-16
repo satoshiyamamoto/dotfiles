@@ -4,6 +4,7 @@
 # Authors:
 #   Sorin Ionescu <sorin.ionescu@gmail.com>
 #
+export EDITOR=nvim
 export LC_ALL=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 export HISTORY_IGNORE="(ls|cd|pwd|rm|clear|man|exit)"
@@ -40,7 +41,7 @@ fi
 alias k='kubectl'
 alias vim='nvim'
 alias vpn='/opt/cisco/anyconnect/bin/vpn'
-alias gcr='ghq look $(ghq list | fzf)'
+alias gcr='ghq get --look $(ghq list | fzf)'
 alias ssh='TERM=xterm-256color ssh'
 
 gi() { curl -sLw "\n" https://www.gitignore.io/api/$@ ; }
