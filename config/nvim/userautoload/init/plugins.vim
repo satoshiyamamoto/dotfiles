@@ -7,6 +7,7 @@ Plug 'mattn/vim-lsp-settings'
 Plug 'mattn/vim-goimports'
 Plug 'mattn/emmet-vim'
 Plug 'ryanolsonx/vim-lsp-javascript'
+Plug 'hashivim/vim-terraform' , { 'for': 'terraform' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'dense-analysis/ale'
 Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
