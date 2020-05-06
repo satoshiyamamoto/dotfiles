@@ -26,8 +26,10 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons'
 Plug 'luochen1990/rainbow'
 Plug 'joshdick/onedark.vim'
+Plug 'morhetz/gruvbox'
 Plug 'haishanh/night-owl.vim'
+Plug 'artanikin/vim-synthwave84'
 Plug 'tomasr/molokai'
 call plug#end()
 
-colorscheme night-owl
+colorscheme synthwave84
