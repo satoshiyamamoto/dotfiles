@@ -6,19 +6,19 @@
 # User specific aliases and functions
 
 ## functions
-function get_ls_options() 
+function get_ls_options()
 {
   LSOPTS='--color=auto'
   case `uname` in
     Darwin) LSOPTS='-G' ;;
-    Linux) ;; # no specifiy  
+    Linux) ;; # no specifiy
     CYGWIN) LSOPTS="$LSOPTS -INTUSER.DAT* -Intuser.*" ;;
   esac
   echo $LSOPTS
 }
 
 ## aliases
-alias ls="ls $(get_ls_options)" 
+alias ls="ls $(get_ls_options)"
 alias l.='ls -d .*'
 alias ll='ls -l'
 alias rm='rm -i'

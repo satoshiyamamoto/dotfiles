@@ -1,5 +1,6 @@
 " Basics
 set number
+set updatetime=100
 
 " Plug-ins
 call plug#begin(stdpath('data') . '/plugged')
