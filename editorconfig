@@ -25,6 +25,12 @@ trim_trailing_whitespace = false
 indent_style = tab
 indent_size = 8
 
+# Java
+[*.java]
+indent_style = tab
+indent_size = 4
+continuation_indent_size = 8
+
 # TypeScript
 [*.ts]
 indent_style = space
