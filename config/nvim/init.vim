@@ -1,8 +1,7 @@
-" Basics
 set number
 set updatetime=100
 
-" Plug-ins
+" Plugins
 call plug#begin(stdpath('data') . '/plugged')
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
@@ -32,20 +31,6 @@ Plug 'morhetz/gruvbox'
 Plug 'tomasr/molokai'
 call plug#end()
 
-" Colors
-set termguicolors
-colorscheme synthwave84
-highlight GitGutterAdd    guifg=#009900 ctermfg=2
-highlight GitGutterChange guifg=#bbbb00 ctermfg=3
-highlight GitGutterDelete guifg=#ff2222 ctermfg=1
-
-" Mappings
-noremap  <C-p>          :Files<CR>
-noremap  <silent><C-\>  :NERDTreeToggle<CR>
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
-
 " Plugin Configurations
 let g:airline_theme='minimalist'
 let g:airline#extensions#branch#enabled = 1
@@ -55,4 +40,21 @@ let g:rainbow_conf = {
 \		'nerdtree': 0
 \	}
 \}
+
+" Mappings
+noremap  <C-p>             :Files<CR>
+noremap  <F2>              :LspRename<CR>
+noremap  <F12>             :LspDefinition<CR>
+noremap  <F24>             :LspReferences<CR>
+noremap  <silent><Leader>e :NERDTreeToggle<CR>
+inoremap <expr> <Tab>      pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab>    pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
+
+" Colors
+set termguicolors
+colorscheme synthwave84
+highlight GitGutterAdd    guifg=#009900 ctermfg=2
+highlight GitGutterChange guifg=#bbbb00 ctermfg=3
+highlight GitGutterDelete guifg=#ff2222 ctermfg=1
 
