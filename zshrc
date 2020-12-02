@@ -12,7 +12,8 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export KREW_PATH="$HOME/.krew"
 export GOPATH="$HOME/Develop"
-export PATH="$GOPATH/bin:$KREW_PATH/bin:$PATH"
+export GOROOT="$(brew --prefix)/opt/go/libexec"
+export PATH="$GOROOT/bin:$GOPATH/bin:$KREW_PATH/bin:$PATH"
 export HOMEBREW_GITHUB_API_TOKEN=c32c3959a143abdda5a7fa8359261a7dec7132ba
 
 # Source Prezto.
