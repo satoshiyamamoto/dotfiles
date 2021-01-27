@@ -11,9 +11,10 @@ export HISTORY_IGNORE="(ls|cd|pwd|rm|clear|man|exit)"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export KREW_PATH="$HOME/.krew"
+export PYTHON_HOME="/Users/a12019/Library/Python/3.9"
 export GOPATH="$HOME/Develop"
 export GOROOT="$(brew --prefix)/opt/go/libexec"
-export PATH="$GOROOT/bin:$GOPATH/bin:$KREW_PATH/bin:$PATH"
+export PATH="$GOROOT/bin:$GOPATH/bin:$KREW_PATH/bin:$PYTHON_HOME/bin:$PATH"
 export HOMEBREW_GITHUB_API_TOKEN=c32c3959a143abdda5a7fa8359261a7dec7132ba
 
 # Source Prezto.
