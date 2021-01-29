@@ -15,7 +15,6 @@ export PYTHON_HOME="/Users/a12019/Library/Python/3.9"
 export GOPATH="$HOME/Develop"
 export GOROOT="$(brew --prefix)/opt/go/libexec"
 export PATH="$GOROOT/bin:$GOPATH/bin:$KREW_PATH/bin:$PYTHON_HOME/bin:$PATH"
-export HOMEBREW_GITHUB_API_TOKEN=c32c3959a143abdda5a7fa8359261a7dec7132ba
 
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
@@ -23,10 +22,12 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 if [ -f "${HOME}/.fzf.zsh" ]; then
   source "${HOME}/.fzf.zsh"
 fi
 
+source <(kubectl completion zsh)
 export KUBE_PS1_PATH='/usr/local/opt/kube-ps1'
 export KUBE_PS1_SYMBOL_USE_IMG=false
 if [ -f "${KUBE_PS1_PATH}/share/kube-ps1.sh" ]; then
