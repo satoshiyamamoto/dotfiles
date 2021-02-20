@@ -15,6 +15,8 @@ export PYTHON_HOME="/Users/a12019/Library/Python/3.9"
 export GOPATH="$HOME/Develop"
 export GOROOT="$(brew --prefix)/opt/go/libexec"
 export PATH="$GOROOT/bin:$GOPATH/bin:$KREW_PATH/bin:$PYTHON_HOME/bin:$PATH"
+export LESSOPEN='| /usr/local/bin/src-hilite-lesspipe.sh %s'
+export LESS='-R'
 
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
