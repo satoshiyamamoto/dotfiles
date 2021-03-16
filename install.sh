@@ -24,7 +24,7 @@ for file in ${files[@]}; do
   fi
 done
 
-if [ "$(uname)" -eq "Darwin" ]; then
+if [ "$(uname)" == "Darwin" ]; then
   echo " installing terminfo"
   tic -x ./terminfo/xterm-256color-italic.terminfo
 fi
