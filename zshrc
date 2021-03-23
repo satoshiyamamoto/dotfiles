@@ -38,7 +38,7 @@ alias vim='nvim'
 alias vpn='/opt/cisco/anyconnect/bin/vpn'
 alias gsr='ghq get --look $(ghq list | fzf)'
 alias gsb='git checkout $(git branch -a | fzf)'
-alias ssh='TERM=xterm-256color-italic ssh'
+alias ssh='TERM=xterm-256color ssh'
 
 jdk() {
   version=$1
