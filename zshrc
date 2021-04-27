@@ -8,7 +8,7 @@ export GOPATH="$HOME/Develop"
 export PYTHON_HOME="$HOME/Library/Python/3.9"
 export JAVA_HOME=$(/usr/libexec/java_home -v11)
 export KREW_PATH="$HOME/.krew"
-export PATH="$GOPATH/bin:$PYTHON_HOME/bin:$KREW_PATH/bin:$PATH"
+export PATH="$GOPATH/bin:$PYTHON_HOME/bin:$KREW_PATH/bin:/usr/local/sbin:$PATH"
 export LESS='-R'
 export LESSOPEN='| /usr/local/bin/src-hilite-lesspipe.sh %s'
 typeset -U path PATH
