@@ -24,7 +24,6 @@ if [ -f "${HOME}/.fzf.zsh" ]; then
   source "${HOME}/.fzf.zsh"
 fi
 
-source <(kubectl completion zsh)
 export KUBE_PS1_PATH='/usr/local/opt/kube-ps1'
 export KUBE_PS1_SYMBOL_USE_IMG=false
 if [ -f "${KUBE_PS1_PATH}/share/kube-ps1.sh" ]; then
@@ -38,6 +37,14 @@ alias vim='nvim'
 alias vpn='/opt/cisco/anyconnect/bin/vpn'
 alias gsr='_gsr=$(ghq list | fzf) && cd $GOPATH/src/$_gsr'
 alias ssh='TERM=xterm-256color ssh'
+
+kubectl() {
+    if ! type __start_kubectl >/dev/null 2>&1; then
+        source <(command kubectl completion zsh)
+    fi
+
+    command kubectl "$@"
+}
 
 jdk() {
   version=$1
