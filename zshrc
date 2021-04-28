@@ -9,6 +9,7 @@ export PYTHON_HOME="$HOME/Library/Python/3.9"
 export JAVA_HOME=$(/usr/libexec/java_home -v11)
 export KREW_PATH="$HOME/.krew"
 export PATH="$GOPATH/bin:$PYTHON_HOME/bin:$KREW_PATH/bin:/usr/local/sbin:$PATH"
+export PAGER='less'
 export LESS='-R'
 export LESSOPEN='| /usr/local/bin/src-hilite-lesspipe.sh %s'
 typeset -U path PATH
@@ -32,6 +33,10 @@ if [ -f "${KUBE_PS1_PATH}/share/kube-ps1.sh" ]; then
   kubeoff
 fi
 
+alias ls='exa'
+alias l='ls -1a'
+alias ll='ls -lgh --git --icons'
+alias la='ll -a'
 alias k='kubectl'
 alias vim='nvim'
 alias vpn='/opt/cisco/anyconnect/bin/vpn'
