@@ -1,7 +1,7 @@
 export EDITOR=nvim
 export LC_ALL=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
-export HISTORY_IGNORE="(ls|cd|pwd|rm|clear|man|exit)"
+export HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit)"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export GOPATH="$HOME/Develop"
