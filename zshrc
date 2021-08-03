@@ -4,8 +4,6 @@ export LC_CTYPE=en_US.UTF-8
 export HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit)"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
-export FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-export FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
 export GOPATH="$HOME/Develop"
 export JAVA_HOME=$(/usr/libexec/java_home -v11)
 export KREW_PATH="$HOME/.krew"
@@ -22,6 +20,13 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+  autoload -Uz compinit
+  compinit -i
+fi
+
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 if [ -f "${HOME}/.fzf.zsh" ]; then
   source "${HOME}/.fzf.zsh"
