@@ -6,12 +6,13 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export GOPATH="$HOME/Develop"
 export JAVA_HOME=$(/usr/libexec/java_home -v11)
-export KREW_PATH="$HOME/.krew"
 export PATH="$GOPATH/bin:$KREW_PATH/bin:/usr/local/sbin:$PATH"
 export PAGER='less'
 export LESS='-R'
 export LESSOPEN='| /usr/local/bin/src-hilite-lesspipe.sh %s'
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
+export KUBE_TMUX_SYMBOL_ENABLE="false"
+export KUBE_TMUX_NS_ENABLE="false"
 typeset -U path PATH
 
 # Source Prezto.
@@ -32,13 +33,6 @@ if [ -f "${HOME}/.fzf.zsh" ]; then
   source "${HOME}/.fzf.zsh"
 fi
 
-export KUBE_PS1_PATH='/usr/local/opt/kube-ps1'
-export KUBE_PS1_SYMBOL_USE_IMG=false
-if [ -f "${KUBE_PS1_PATH}/share/kube-ps1.sh" ]; then
-  source "${KUBE_PS1_PATH}/share/kube-ps1.sh"
-  PS1='$(kube_ps1)'$PS1
-  kubeoff
-fi
 
 alias ls='exa'
 alias l='ls -1a'
