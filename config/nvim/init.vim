@@ -52,11 +52,13 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> [g <plug>(lsp-previous-diagnostic)
   nmap <buffer> ]g <plug>(lsp-next-diagnostic)
   nmap <buffer> K <plug>(lsp-hover)
+  nmap <buffer> == <plug>(lsp-document-format)
   inoremap <buffer> <expr><c-f> lsp#scroll(+4)
   inoremap <buffer> <expr><c-d> lsp#scroll(-4)
 
   let g:lsp_format_sync_timeout = 1000
-  autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+  autocmd! BufWritePre *.rs,*.go,*.py call execute('LspDocumentFormatSync')
+  autocmd! BufWritePre *.java call execute('FormatCode')
 
   " refer to doc to add more commands
 endfunction
@@ -68,24 +70,21 @@ augroup lsp_install
 augroup END
 
 " Plugin Configurations
-let g:airline_theme='minimalist'
+let g:airline_theme = 'minimalist'
 let g:airline#extensions#branch#enabled = 1
 let g:rainbow_active = 1
 let g:rainbow_conf = {
-\	'separately': {
-\		'nerdtree': 0
-\	}
+\  'separately': {
+\	   'nerdtree': 0
+\  }
 \}
 
 " Mappings
-noremap  <C-p>             :Files<CR>
-noremap  <F2>              :LspRename<CR>
-noremap  <F12>             :LspDefinition<CR>
-noremap  <F24>             :LspReferences<CR>
-noremap  <silent><Leader>e :NERDTreeToggle<CR>
-inoremap <expr> <Tab>      pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab>    pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
+nmap <C-p> :Files<CR>
+nmap <silent><Leader>e :NERDTreeToggle<CR>
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
 
 " Colors
 set termguicolors
