@@ -14,6 +14,7 @@
   default = simple
 
 [pager]
+  branch = cat
   diff = delta
   show = delta
 
