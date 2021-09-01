@@ -5,13 +5,13 @@ export HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit)"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export GOPATH="$HOME/Develop"
-export GOBIN="$GOPATH/bin"
 export JAVA_HOME=$(/usr/libexec/java_home -v11)
-export PATH="$GOPATH/bin:$KREW_PATH/bin:/usr/local/sbin:$PATH"
+export HOMEBREW_PREFIX="${HOMEBREW_PREFIX:-/opt/homebrew}"
+export FPATH="${HOMEBREW_PREFIX}/share/zsh/site-functions:$FPATH"
+export PATH="$HOMEBREW_PREFIX/bin:$HOMEBREW_PREFIX/sbin:$GOPATH/bin:$PATH"
 export PAGER='less'
 export LESS='-R'
 export LESSOPEN='| /usr/local/bin/src-hilite-lesspipe.sh %s'
-export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export KUBE_TMUX_SYMBOL_ENABLE="false"
 export KUBE_TMUX_NS_ENABLE="false"
 typeset -U path PATH
@@ -23,14 +23,12 @@ fi
 
 # Customize to your needs...
 if type brew &>/dev/null; then
-  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-
   autoload -Uz compinit
   compinit -i
 fi
 
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
 if [ -f "${HOME}/.fzf.zsh" ]; then
+  export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
   source "${HOME}/.fzf.zsh"
 fi
 
