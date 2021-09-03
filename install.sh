@@ -1,32 +1,21 @@
 #!/bin/bash
-# install.sh
+XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+WORKDIR="$(cd $(dirname $0) && pwd)"
+cd "$WORKDIR"
 
-getopts f force
-readonly files=('zshrc' 'zpreztorc' 'config/git' 'config/nvim' 'tmux.conf' 'tigrc' 'editorconfig')
+# User HOME directories
+ln -si ${WORKDIR}/zshenv ${HOME}/.zshenv
+ln -si ${WORKDIR}/tmux.conf ${HOME}/.tmux.conf
+ln -si ${WORKDIR}/editorconfig ${HOME}/.editorconfig
+ln -si ${WORKDIR}/tigrc ${HOME}/.tigrc
 
-for file in ${files[@]}; do
-  src="$(pwd dirname)/${file}"
-  dest="${HOME}/.${file}"
+## Set the XDG config
+source ${HOME}/.zshenv
+mkdir -p ${XDG_CONFIG_HOME}/{git,nvim,zsh}
+ln -si ${WORKDIR}/config/zsh/zshrc ${ZDOTDIR}/.zshrc
+ln -si ${WORKDIR}/config/zsh/zpreztorc ${ZDOTDIR}/.zpreztorc
+ln -si ${WORKDIR}/config/git/config ${XDG_CONFIG_HOME}/git/config
+ln -si ${WORKDIR}/config/nvim/init.vim ${XDG_CONFIG_HOME}/nvim/init.vim
 
-  # Clean up for the original files
-  if [ "${force}" == 'f' ]; then
-    if [ -L "${dest}" ]; then
-      rm -f "${dest}"
-    elif [ -e "${dest}" ]; then
-      mv -f "${dest}" "${dest}.bak"
-    fi
-  fi
-
-  # Create the symbolic link
-  ln -s ${src} ${dest}
-  if [ "$?" -eq 0 ]; then
-    echo " installing ${file}"
-  fi
-done
-
-if [ "$(uname)" == "Darwin" ]; then
-  echo " installing terminfo"
-  tic -x ./terminfo/xterm-256color-italic.terminfo
-fi
-
-echo 'done.'
+## Set the Terminal fonts
+tic -x ${WORKDIR}/terminfo/xterm-256color-italic.terminfo

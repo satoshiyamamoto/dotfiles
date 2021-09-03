@@ -1,0 +1,29 @@
+#
+# Executes commands at the start of an interactive session.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
+
+# Source PATH environment settings.
+export DOTDIR="${HOME}/.config/dotfiles"
+if [[ -s "${DOTDIR}/env" ]]; then
+  source "${DOTDIR}/env"
+fi
+
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+# Customize to your needs...
+autoload -Uz compinit
+compinit
+
+if [[ -s "${DOTDIR}/aliases" ]]; then
+  source "${DOTDIR}/aliases"
+fi
+
+if [[ -s "${DOTDIR}/functions" ]]; then
+  source "${DOTDIR}/functions"
+fi

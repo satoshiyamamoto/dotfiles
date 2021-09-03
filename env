@@ -1,0 +1,24 @@
+# env
+eval $(/opt/homebrew/bin/brew shellenv)
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:=$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:=$HOME/.local/share}"
+export MYDOTDIR="${MYDOTDIRE:=$XDG_CONFIG_HOME/dotfiles}"
+export GOPATH="$HOME/Develop"
+export JAVA_HOME=$(/usr/libexec/java_home -v11)
+fpath=(
+  $HOMEBREW_PREFIX/share/zsh/site-functions
+  $fpath
+)
+path=(
+  $HOMEBREW_PREFIX/{bin,sbin}
+  $GOPATH/bin
+  $path
+)
+typeset -U path PATH
+
+export EDITOR=nvim
+export LC_ALL=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
+export HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit)"
+export KUBE_TMUX_SYMBOL_ENABLE="false"
+export KUBE_TMUX_NS_ENABLE="false"

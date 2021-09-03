@@ -1,0 +1,19 @@
+# functions
+kubectl() {
+    if ! type __start_kubectl >/dev/null 2>&1; then
+        source <(command kubectl completion zsh)
+    fi
+
+    command kubectl "$@"
+}
+
+jdk() {
+  version=$1
+  export JAVA_HOME=$(/usr/libexec/java_home -v"$version");
+  java -version
+ }
+
+gi() {
+  curl -sLw "\n" https://www.gitignore.io/api/$@ ;
+}
+
