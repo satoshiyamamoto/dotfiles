@@ -17,3 +17,11 @@ gi() {
   curl -sLw "\n" https://www.gitignore.io/api/$@ ;
 }
 
+sshp() {
+  host=$1; shift
+  binds=''
+  for port in "$@"; do
+    binds="${binds}-L ${port}:127.0.0.1:${port} "
+  done
+  echo "${binds}" | xargs ssh -Nftt "${host}"
+}
