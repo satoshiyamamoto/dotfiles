@@ -6,8 +6,8 @@
   editor = nvim
   whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
   excludesfile = ~/.gitignore
-	autocrlf = false
-	eol = lf
+  autocrlf = false
+  eol = lf
 
 [init]
   defaultBranch = main
@@ -27,21 +27,21 @@
   diffFilter = delta --color-only
 
 [delta]
-    features = side-by-side line-numbers decorations
-    plus-style = syntax "#003800"
-    minus-style = syntax "#3f0001"
+  features = side-by-side line-numbers decorations
+  plus-style = syntax "#003800"
+  minus-style = syntax "#3f0001"
 
 [delta "decorations"]
-    commit-decoration-style = bold yellow box ul
-    file-style = bold yellow ul
-    file-decoration-style = none
-    hunk-header-decoration-style = cyan box ul
+  commit-decoration-style = bold yellow box ul
+  file-style = bold yellow ul
+  file-decoration-style = none
+  hunk-header-decoration-style = cyan box ul
 
 [delta "line-numbers"]
-    line-numbers-left-style = cyan
-    line-numbers-right-style = cyan
-    line-numbers-minus-style = 124
-    line-numbers-plus-style = 28
+  line-numbers-left-style = cyan
+  line-numbers-right-style = cyan
+  line-numbers-minus-style = 124
+  line-numbers-plus-style = 28
 
 [ghq]
   root = ~/Develop/src
