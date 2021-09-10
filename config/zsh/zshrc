@@ -6,7 +6,7 @@
 #
 
 # Source PATH environment settings.
-export DOTDIR="${HOME}/.config/dotfiles"
+export DOTDIR="${HOME}/Develop/src/github.com/satoshiyamamoto/dotfiles"
 if [[ -s "${DOTDIR}/env" ]]; then
   source "${DOTDIR}/env"
 fi
