@@ -20,8 +20,8 @@ fi
 autoload -Uz compinit
 compinit
 
-if [[ -s "${DOTDIR}/aliases" ]]; then
-  source "${DOTDIR}/aliases"
+if [[ -s "${DOTDIR}/aliases.mac" ]]; then
+  source "${DOTDIR}/aliases.mac"
 fi
 
 if [[ -s "${DOTDIR}/functions" ]]; then

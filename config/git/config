@@ -3,47 +3,25 @@
   email = satoshi_yamamoto@cyberagent.co.jp
 
 [core]
-  editor = nvim
-  pager = LESSCHARSET=utf-8 less
-  whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
-  excludesfile = ~/.gitignore
-  eol = lf
   autocrlf = false
+  editor = vi
+  eol = lf
+  excludesfile = ~/.gitignore
+  pager = LESSCHARSET=utf-8 less
   quotepath = false
+  whitespace = cr-at-eol
 
 [init]
   defaultBranch = main
 
 [push]
-  default = simple
+  default = upstream
 
 [pager]
-  branch = cat
-  diff = delta
-  show = delta
+  branch = false
 
 [difftool]
   prompt = false
-
-[interactive]
-  diffFilter = delta --color-only
-
-[delta]
-  features = side-by-side line-numbers decorations
-  plus-style = syntax "#003800"
-  minus-style = syntax "#3f0001"
-
-[delta "decorations"]
-  commit-decoration-style = bold yellow box ul
-  file-style = bold yellow ul
-  file-decoration-style = none
-  hunk-header-decoration-style = cyan box ul
-
-[delta "line-numbers"]
-  line-numbers-left-style = cyan
-  line-numbers-right-style = cyan
-  line-numbers-minus-style = 124
-  line-numbers-plus-style = 28
 
 [ghq]
   root = ~/Develop/src

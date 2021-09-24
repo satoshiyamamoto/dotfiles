@@ -1,0 +1,50 @@
+[user]
+  name = Satoshi Yamamoto
+  email = satoshi_yamamoto@cyberagent.co.jp
+
+[core]
+  autocrlf = false
+  editor = nvim
+  eol = lf
+  excludesfile = ~/.gitignore
+  pager = LESSCHARSET=utf-8 less
+  quotepath = false
+  whitespace = cr-at-eol
+
+[init]
+  defaultBranch = main
+
+[push]
+  default = upstream
+
+[pager]
+  branch = false
+  diff = delta
+  show = delta
+
+[difftool]
+  prompt = false
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  features = side-by-side line-numbers decorations
+  plus-style = syntax "#003800"
+  minus-style = syntax "#3f0001"
+
+[delta "decorations"]
+  commit-decoration-style = bold yellow box ul
+  file-style = bold yellow ul
+  file-decoration-style = none
+  hunk-header-decoration-style = cyan box ul
+
+[delta "line-numbers"]
+  line-numbers-left-style = cyan
+  line-numbers-right-style = cyan
+  line-numbers-minus-style = 124
+  line-numbers-plus-style = 28
+
+[ghq]
+  root = ~/Develop/src
+

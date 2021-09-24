@@ -1,0 +1,17 @@
+# ailiases
+alias l='exa -1a'
+alias la='exa -lgha --color-scale --git --icons'
+alias lu='exa -lgh --color-scale --git --icons --sort=changed'
+alias lu='exa -lgh --color-scale --git --icons --sort=size'
+alias ll='exa -lgh --color-scale --git --icons'
+alias ls='exa'
+alias lt='exa -lgh --color-scale --git --icons --sort=newest'
+alias lu='exa -lgh --color-scale --git --icons --sort=accessed'
+alias g='git'
+alias dk='docker'
+alias k='kubectl'
+alias gore='gore -autoimport'
+alias grp='repo=$(ghq list | fzf) && cd $(ghq root)/$repo; unset repo'
+alias vpn='/opt/cisco/anyconnect/bin/vpn'
+alias ssh='TERM=xterm-256color ssh'
+
