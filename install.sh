@@ -8,6 +8,6 @@ ln -si ${WORKDIR}/aliases ${HOME}/.bash_aliases
 ln -si ${WORKDIR}/editorconfig ${HOME}/.editorconfig
 
 ## Set the XDG config
-mkdir -p ${XDG_CONFIG_HOME}/{git}
+mkdir -p ${XDG_CONFIG_HOME}/git
 ln -si ${WORKDIR}/config/git/config ${XDG_CONFIG_HOME}/git/config
 
