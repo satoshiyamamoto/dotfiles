@@ -3,6 +3,8 @@ alias g='git'
 alias k='kubectl'
 alias grp='repo=$(ghq list | fzf) && cd $(ghq root)/$repo; unset repo'
 # from zprezto plugin
+alias cp='cp -i'
+alias cpi='cp -i'
 alias dk=docker
 alias dkC='docker container'
 alias dkCP='docker container unpause'
@@ -354,5 +356,8 @@ alias ll='ls -lh'
 alias lr='ll -R'
 alias ls='ls -G --color=auto'
 alias lt='ll -tr'
-alias sl=ls
+alias mv='mv -i'
+alias mvi='mv -i'
+alias rm='rm -i'
+alias rmi='rm -i'
 
