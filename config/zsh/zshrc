@@ -17,9 +17,6 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
-autoload -Uz compinit
-compinit
-
 if [[ -s "${DOTDIR}/aliases.mac" ]]; then
   source "${DOTDIR}/aliases.mac"
 fi
