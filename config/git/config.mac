@@ -1,5 +1,5 @@
 [user]
-  name = Satoshi Yamamoto
+  name = satoshi_yamamoto
   email = satoshi_yamamoto@cyberagent.co.jp
 
 [core]
@@ -48,3 +48,8 @@
 [ghq]
   root = ~/Develop/src
 
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
