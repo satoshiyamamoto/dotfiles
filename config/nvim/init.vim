@@ -33,6 +33,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'artanikin/vim-synthwave84'
+Plug 'projekt0n/github-nvim-theme'
 Plug 'haishanh/night-owl.vim'
 Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
@@ -89,7 +90,7 @@ inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
 
 " Colors
 set termguicolors
-colorscheme synthwave84
+colorscheme github_dimmed
 highlight GitGutterAdd    guifg=#009900 ctermfg=2
 highlight GitGutterChange guifg=#bbbb00 ctermfg=3
 highlight GitGutterDelete guifg=#ff2222 ctermfg=1
