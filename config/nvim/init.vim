@@ -30,8 +30,10 @@ Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
 Plug 'artanikin/vim-synthwave84'
 Plug 'projekt0n/github-nvim-theme'
 Plug 'haishanh/night-owl.vim'
@@ -72,14 +74,22 @@ augroup lsp_install
 augroup END
 
 " Plugin Configurations
-let g:airline_theme = 'minimalist'
-let g:airline#extensions#branch#enabled = 1
+"let g:airline_theme = 'minimalist'
+"let g:airline#extensions#branch#enabled = 1
 let g:rainbow_active = 1
 let g:rainbow_conf = {
 \  'separately': {
 \	   'nerdtree': 0
 \  }
 \}
+lua << EOF
+require('lualine').setup {
+  options = {
+    theme = 'github',
+    -- ... your lualine config
+  }
+}
+EOF
 
 " Mappings
 nmap <C-p> :Files<CR>
@@ -90,7 +100,7 @@ inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
 
 " Colors
 set termguicolors
-colorscheme github_dimmed
+colorscheme github_dark_default
 highlight GitGutterAdd    guifg=#009900 ctermfg=2
 highlight GitGutterChange guifg=#bbbb00 ctermfg=3
 highlight GitGutterDelete guifg=#ff2222 ctermfg=1
