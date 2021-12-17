@@ -30,8 +30,9 @@ Plug 'scrooloose/nerdtree'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install --frozen-lockfile --production',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'artanikin/vim-synthwave84'
@@ -74,8 +75,6 @@ augroup lsp_install
 augroup END
 
 " Plugin Configurations
-"let g:airline_theme = 'minimalist'
-"let g:airline#extensions#branch#enabled = 1
 let g:rainbow_active = 1
 let g:rainbow_conf = {
 \  'separately': {
