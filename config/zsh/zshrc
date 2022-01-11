@@ -24,3 +24,7 @@ fi
 if [[ -s "${DOTDIR}/functions" ]]; then
   source "${DOTDIR}/functions"
 fi
+
+if [[ -s "${HOME}/.fzf.zsh" ]]; then
+  source "${HOME}/.fzf.zsh"
+fi
