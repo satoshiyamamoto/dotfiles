@@ -35,12 +35,7 @@ Plug 'prettier/vim-prettier', {
   \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
 Plug 'nvim-lualine/lualine.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
-Plug 'artanikin/vim-synthwave84'
 Plug 'projekt0n/github-nvim-theme'
-Plug 'haishanh/night-owl.vim'
-Plug 'joshdick/onedark.vim'
-Plug 'morhetz/gruvbox'
-Plug 'tomasr/molokai'
 call plug#end()
 
 function! s:on_lsp_buffer_enabled() abort
@@ -76,17 +71,10 @@ augroup END
 
 " Plugin Configurations
 let g:rainbow_active = 1
-let g:rainbow_conf = {
-\  'separately': {
-\	   'nerdtree': 0
-\  }
-\}
+let g:rainbow_conf = { 'separately': { 'nerdtree': 0 } }
 lua << EOF
 require('lualine').setup {
-  options = {
-    theme = 'github',
-    -- ... your lualine config
-  }
+  options = { theme = 'github' }
 }
 EOF
 
