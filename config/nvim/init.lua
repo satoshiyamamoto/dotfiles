@@ -25,8 +25,8 @@ require('packer').startup(function(use)
   use 'hrsh7th/cmp-path'
   use 'hrsh7th/cmp-cmdline'
   use 'hrsh7th/nvim-cmp'
+  use 'hrsh7th/cmp-vsnip'
   use 'hrsh7th/vim-vsnip'
-  use 'hrsh7th/vim-vsnip-integ'
 
   -- syntax highlight
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
@@ -259,7 +259,7 @@ vim.cmd([[
 ]])
 
 -- theme
-vim.cmd([[
-  colorscheme github_dark_default
-]])
+require('github-theme').setup {
+  theme_style = 'dark_default',
+}
 
