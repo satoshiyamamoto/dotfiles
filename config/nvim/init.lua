@@ -123,7 +123,7 @@ local cmp = require('cmp')
 cmp.setup {
   snippet = {
     expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+      vim.fn['vsnip#anonymous'](args.body) -- For `vsnip` users.
     end,
   },
   mapping = {
@@ -134,8 +134,8 @@ cmp.setup {
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>']     = cmp.mapping.close(),
     ['<CR>']      = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
-    ["<Tab>"]     = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-    ["<S-Tab>"]   = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+    ['<Tab>']     = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+    ['<S-Tab>']   = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
   },
   sources = cmp.config.sources({
     { name = 'nvim_lsp' },
@@ -145,14 +145,14 @@ cmp.setup {
   })
 }
 
--- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+-- Use buffer source for `/`
 cmp.setup.cmdline('/', {
   sources = {
     { name = 'buffer' }
   }
 })
 
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+-- Use cmdline & path source for ':'
 cmp.setup.cmdline(':', {
   sources = cmp.config.sources({
     { name = 'path' }
@@ -185,18 +185,18 @@ require('nvim-treesitter.configs').setup {
 
 require('telescope').setup {
   defaults = {
-    file_ignore_patterns = { "node_modules" }
+    file_ignore_patterns = { 'node_modules' }
   }
 }
 
 require('nvim-tree').setup {}
 
-require("bufferline").setup {
+require('bufferline').setup {
   options = {
     offsets = {
       {
-        filetype = "NvimTree",
-        text = "File Explorer",
+        filetype = 'NvimTree',
+        text = 'File Explorer',
       }
     }
   }
@@ -259,7 +259,5 @@ vim.cmd([[
 ]])
 
 -- theme
-require('github-theme').setup {
-  theme_style = 'dark_default',
-}
+vim.cmd 'colorscheme github_dark_default'
 
