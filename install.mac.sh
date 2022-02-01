@@ -17,5 +17,9 @@ ln -si ${WORKDIR}/config/zsh/zpreztorc ${ZDOTDIR}/.zpreztorc
 ln -si ${WORKDIR}/config/git/config.mac ${XDG_CONFIG_HOME}/git/config
 ln -si ${WORKDIR}/config/nvim/init.lua ${XDG_CONFIG_HOME}/nvim/init.lua
 
+## Set the Vimrc
+mkdir ${HOME}/.vim
+ln -si ${WORKDIR}/vim/vimrc ${HOME}/.vim/vimrc
+
 ## Set the Terminal fonts
 tic -x ${WORKDIR}/terminfo/xterm-256color-italic.terminfo
