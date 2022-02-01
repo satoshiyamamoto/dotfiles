@@ -161,6 +161,15 @@ cmp.setup.cmdline(':', {
   })
 })
 
+-- Add mapping `CR` on nvim-cmp setup.
+cmp.event:on('confirm_done',
+  require('nvim-autopairs.completion.cmp').on_confirm_done({
+    map_char = { tex = '' }
+  })
+)
+
+require('nvim-autopairs').setup {}
+
 require('nvim-treesitter.configs').setup {
   ensure_installed = "maintained",
   highlight = {
@@ -173,8 +182,6 @@ require('nvim-treesitter.configs').setup {
     max_file_lines = nil,
   }
 }
-
-require('nvim-autopairs').setup {}
 
 require('telescope').setup {
   defaults = {
