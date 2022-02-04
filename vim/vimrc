@@ -101,11 +101,12 @@ augroup autoformat_settings
 augroup END
 
 " Mappings
-nmap <C-n>      :NERDTreeToggle<CR>
-nmap <leader>r  :NERDTreeRefreshRoot<CR>
-nmap <leader>n  :NERDTreeFind<CR>
-nmap <C-p>      :Files<CR>
-nmap <leader>ff :Files<CR>
+nmap <C-p>              :Files<CR>
+nmap <leader>ff         :Files<CR>
+nmap <leader>fg         :GFiles<CR>
+nmap <silent><C-n>      :NERDTreeToggle<CR>
+nmap <silent><leader>r  :NERDTreeRefreshRoot<CR>
+nmap <silent><leader>n  :NERDTreeFind<CR>
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
