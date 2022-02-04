@@ -7,8 +7,6 @@ vim.opt.termguicolors = true
 vim.opt.completeopt = 'menu,menuone,noselect'
 vim.opt.updatetime = 100
 
-vim.env.WORKSPACE = vim.fn.stdpath('data')..'/workspace'
-
 local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   packer_bootstrap = vim.fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
@@ -115,6 +113,13 @@ require("nvim-lsp-installer").on_server_ready(function(server)
     silent = true,
     on_attach = on_attach,
   }
+
+  if server.name == 'jdtls' then
+    opts.root_dir = function(fname)
+      return require('lspconfig').util.root_pattern('.git', 'mvnw', 'gradlew')(fname)
+    end
+  end
+
   server:setup(opts)
   vim.cmd 'do User LspAttachBuffers'
 end)
