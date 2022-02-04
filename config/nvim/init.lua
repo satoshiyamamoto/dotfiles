@@ -27,6 +27,7 @@ require('packer').startup(function(use)
   use 'hrsh7th/nvim-cmp'
   use 'hrsh7th/cmp-vsnip'
   use 'hrsh7th/vim-vsnip'
+  use 'onsails/lspkind-nvim'
 
   -- syntax highlight
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
@@ -150,7 +151,10 @@ cmp.setup {
     { name = 'vsnip' }, -- For vsnip users.
   }, {
     { name = 'buffer' },
-  })
+  }),
+  formatting = {
+    format = require('lspkind').cmp_format(),
+  },
 }
 
 -- Use buffer source for `/`
@@ -197,14 +201,17 @@ require('telescope').setup {
   }
 }
 
-require('nvim-tree').setup {}
+require('nvim-tree').setup {
+  view = {
+    hide_root_folder = true,
+  }
+}
 
 require('bufferline').setup {
   options = {
     offsets = {
       {
         filetype = 'NvimTree',
-        text = 'File Explorer',
       }
     }
   }
