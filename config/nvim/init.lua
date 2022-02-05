@@ -86,6 +86,8 @@ vim.api.nvim_set_keymap('n', '<C-n>',     '<cmd>NvimTreeToggle<CR>', opts)
 vim.api.nvim_set_keymap('n', '<leader>r', '<cmd>NvimTreeRefresh<CR>', opts)
 vim.api.nvim_set_keymap('n', '<leader>n', '<cmd>NvimTreeFindFile<CR>', opts)
 
+vim.api.nvim_set_keymap('i', 'jj', '<Esc>', opts)
+
 -- Use an on_attach function to only map the following keys
 -- after the language server attaches to the current buffer
 local on_attach = function(client, bufnr)
