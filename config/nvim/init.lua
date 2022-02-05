@@ -45,6 +45,7 @@ require('packer').startup(function(use)
   -- snippet
   use 'rafamadriz/friendly-snippets'
   use 'windwp/nvim-autopairs'
+  use 'easymotion/vim-easymotion'
   use 'tpope/vim-fugitive'
   use 'tpope/vim-surround'
   use 'tpope/vim-commentary'
