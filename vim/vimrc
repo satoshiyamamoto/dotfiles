@@ -101,15 +101,16 @@ augroup autoformat_settings
 augroup END
 
 " Mappings
-nmap <C-p>              :Files<CR>
-nmap <leader>ff         :Files<CR>
-nmap <leader>fg         :GFiles<CR>
-nmap <silent><C-n>      :NERDTreeToggle<CR>
-nmap <silent><leader>r  :NERDTreeRefreshRoot<CR>
-nmap <silent><leader>n  :NERDTreeFind<CR>
+nnoremap <C-p>             :Files<CR>
+nnoremap <leader>ff        :Files<CR>
+nnoremap <leader>fg        :GFiles<CR>
+nnoremap <silent><C-n>     :NERDTreeToggle<CR>
+nnoremap <silent><leader>r :NERDTreeRefreshRoot<CR>
+nnoremap <silent><leader>n :NERDTreeFind<CR>
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <silent>jj     <Esc>
 
 " Themes
 colorscheme ghdark
