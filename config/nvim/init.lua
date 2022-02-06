@@ -176,7 +176,7 @@ cmp.setup.cmdline(':', {
   })
 })
 
--- Add mapping `CR` on nvim-cmp setup.
+-- Complete the bracket with 'CR'
 cmp.event:on('confirm_done',
   require('nvim-autopairs.completion.cmp').on_confirm_done({
     map_char = { tex = '' }
@@ -209,6 +209,7 @@ require('nvim-tree').setup {
     hide_root_folder = true,
   }
 }
+vim.g.nvim_tree_group_empty = 1
 
 require('bufferline').setup {
   options = {
