@@ -105,7 +105,8 @@ augroup END
 " Mappings
 nnoremap <C-p>             :Files<CR>
 nnoremap <leader>ff        :Files<CR>
-nnoremap <leader>fg        :GFiles<CR>
+nnoremap <leader>fg        :Rg<CR>
+nnoremap <leader>fb        :Buffers<CR>
 nnoremap <silent><C-n>     :NERDTreeToggle<CR>
 nnoremap <silent><leader>r :NERDTreeRefreshRoot<CR>
 nnoremap <silent><leader>n :NERDTreeFind<CR>
