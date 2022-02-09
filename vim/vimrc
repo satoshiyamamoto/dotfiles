@@ -109,6 +109,7 @@ nnoremap <leader>fg        :GFiles<CR>
 nnoremap <silent><C-n>     :NERDTreeToggle<CR>
 nnoremap <silent><leader>r :NERDTreeRefreshRoot<CR>
 nnoremap <silent><leader>n :NERDTreeFind<CR>
+nnoremap <silent><leader>` :bo terminal ++rows=12<CR>
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
