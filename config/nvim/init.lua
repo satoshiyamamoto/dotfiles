@@ -88,6 +88,7 @@ vim.api.nvim_set_keymap('n', '<C-n>',     '<cmd>NvimTreeToggle<CR>', opts)
 vim.api.nvim_set_keymap('n', '<leader>r', '<cmd>NvimTreeRefresh<CR>', opts)
 vim.api.nvim_set_keymap('n', '<leader>n', '<cmd>NvimTreeFindFile<CR>', opts)
 
+vim.api.nvim_set_keymap('n', '<leader>`', '<cmd>split | wincmd j | resize 12 | terminal<CR>', opts)
 vim.api.nvim_set_keymap('i', 'jj', '<Esc>', opts)
 
 -- Use an on_attach function to only map the following keys
@@ -258,9 +259,10 @@ end
 
 -- terminal
 vim.cmd([[
-  autocmd TermOpen * startinsert
-  autocmd TermOpen * setlocal norelativenumber
-  autocmd TermOpen * setlocal nonumber
+  autocmd TermOpen  * startinsert
+  autocmd TermOpen  * setlocal norelativenumber
+  autocmd TermOpen  * setlocal nonumber
+  autocmd TermClose * call feedkeys("\<CR>")
 ]])
 
 -- auto format
