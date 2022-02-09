@@ -12,5 +12,5 @@ mkdir -p ${XDG_CONFIG_HOME}/git
 ln -si ${WORKDIR}/config/git/config ${XDG_CONFIG_HOME}/git/config
 
 ## Set the Vimrc
-mkdir ${HOME}/.vim
+mkdir -p ${HOME}/.vim
 ln -si ${WORKDIR}/vim/vimrc ${HOME}/.vim/vimrc

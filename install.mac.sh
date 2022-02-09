@@ -11,14 +11,15 @@ ln -si ${WORKDIR}/tigrc ${HOME}/.tigrc
 
 ## Set the XDG config
 source ${HOME}/.zshenv
-mkdir -p ${XDG_CONFIG_HOME}/{git,nvim,zsh}
+mkdir -p ${XDG_CONFIG_HOME}/{git,fd,nvim,zsh}
 ln -si ${WORKDIR}/config/zsh/zshrc ${ZDOTDIR}/.zshrc
 ln -si ${WORKDIR}/config/zsh/zpreztorc ${ZDOTDIR}/.zpreztorc
 ln -si ${WORKDIR}/config/git/config.mac ${XDG_CONFIG_HOME}/git/config
+ln -si ${WORKDIR}/config/fd/ignore ${XDG_CONFIG_HOME}/fd/ignore
 ln -si ${WORKDIR}/config/nvim/init.lua ${XDG_CONFIG_HOME}/nvim/init.lua
 
 ## Set the Vimrc
-mkdir ${HOME}/.vim
+mkdir -p ${HOME}/.vim
 ln -si ${WORKDIR}/vim/vimrc ${HOME}/.vim/vimrc
 
 ## Set the Terminal fonts
