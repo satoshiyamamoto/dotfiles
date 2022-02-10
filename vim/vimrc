@@ -45,9 +45,9 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install --frozen-lockfile --production',
   \ 'for': ['javascript', 'typescript', 'css', 'json', 'markdown', 'vue', 'yaml', 'html'] }
-" Plug 'google/vim-maktaba'
-" Plug 'google/vim-codefmt'
-" Plug 'google/vim-glaive'
+Plug 'google/vim-maktaba'
+Plug 'google/vim-codefmt'
+Plug 'google/vim-glaive'
 
 " finder
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -84,7 +84,7 @@ function! s:on_lsp_buffer_enabled() abort
   inoremap <buffer> <expr><c-d> lsp#scroll(-4)
 
   let g:lsp_format_sync_timeout = 1000
-  autocmd! BufWritePre *.rs,*.go,*.py,*.java call execute('LspDocumentFormatSync')
+  autocmd! BufWritePre *.rs,*.go,*.py call execute('LspDocumentFormatSync')
 endfunction
 
 augroup lsp_install
@@ -93,11 +93,15 @@ augroup lsp_install
 augroup END
 
 " augroup autoformat_settings
-"   autocmd FileType c,cpp,proto AutoFormatBuffer clang-format
+"   autocmd FileType bzl AutoFormatBuffer buildifier
+"   autocmd FileType c,cpp,proto,arduino AutoFormatBuffer clang-format
+"   autocmd FileType dart AutoFormatBuffer dartfmt
 "   autocmd FileType go AutoFormatBuffer gofmt
-"   autocmd FileType html,css,sass,scss,less,json AutoFormatBuffer pretteir
+"   autocmd FileType gn AutoFormatBuffer gn
+"   autocmd FileType javascript,html,css,sass,scss,less,json AutoFormatBuffer prettier
 "   autocmd FileType java AutoFormatBuffer google-java-format
 "   autocmd FileType python AutoFormatBuffer yapf
+"   autocmd FileType rust AutoFormatBuffer rustfmt
 " augroup END
 
 " Mappings
