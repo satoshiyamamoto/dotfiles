@@ -24,6 +24,7 @@ path=(
 typeset -U path PATH
 
 export EDITOR=nvim
+export VISUAL=nvim
 export LC_ALL=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
 export HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit)"
