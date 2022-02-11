@@ -364,4 +364,6 @@ alias mv='mv -i'
 alias mvi='mv -i'
 alias rm='rm -i'
 alias rmi='rm -i'
+alias lg='lazygit'
+alias lzd='lazydocker'
 
