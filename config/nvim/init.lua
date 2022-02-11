@@ -214,6 +214,9 @@ require('telescope').setup {
 require('nvim-tree').setup {
   view = {
     hide_root_folder = true,
+  },
+  filters = {
+    dotfiles = true,
   }
 }
 vim.g.nvim_tree_group_empty = 1
