@@ -232,7 +232,7 @@ require('bufferline').setup {
 }
 
 require('lualine').setup {
-  options = { theme = 'github' }
+  options = { theme = 'auto' }
 }
 
 -- terminal
