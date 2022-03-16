@@ -33,6 +33,7 @@ Plug 'mattn/vim-lsp-settings'
 " snippet
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'rafamadriz/friendly-snippets'
 Plug 'mattn/vim-goimports'
 Plug 'mattn/emmet-vim'
 Plug 'jiangmiao/auto-pairs'
