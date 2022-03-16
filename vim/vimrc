@@ -86,8 +86,8 @@ function! s:on_lsp_buffer_enabled() abort
   inoremap <buffer> <expr><c-f> lsp#scroll(+4)
   inoremap <buffer> <expr><c-d> lsp#scroll(-4)
 
-  let g:lsp_format_sync_timeout = 1000
-  autocmd! BufWritePre *.rs,*.go,*.py call execute('LspDocumentFormatSync')
+  " let g:lsp_format_sync_timeout = 1000
+  " autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
 endfunction
 
 augroup lsp_install
@@ -112,17 +112,17 @@ au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#source
     \ 'completor': function('asyncomplete#sources#file#completor')
     \ }))
 
-" augroup autoformat_settings
-"   autocmd FileType bzl AutoFormatBuffer buildifier
-"   autocmd FileType c,cpp,proto,arduino AutoFormatBuffer clang-format
-"   autocmd FileType dart AutoFormatBuffer dartfmt
-"   autocmd FileType go AutoFormatBuffer gofmt
-"   autocmd FileType gn AutoFormatBuffer gn
-"   autocmd FileType javascript,html,css,sass,scss,less,json AutoFormatBuffer prettier
-"   autocmd FileType java AutoFormatBuffer google-java-format
-"   autocmd FileType python AutoFormatBuffer yapf
-"   autocmd FileType rust AutoFormatBuffer rustfmt
-" augroup END
+augroup autoformat_settings
+  autocmd FileType bzl AutoFormatBuffer buildifier
+  autocmd FileType c,cpp,proto,arduino AutoFormatBuffer clang-format
+  autocmd FileType dart AutoFormatBuffer dartfmt
+  autocmd FileType go AutoFormatBuffer gofmt
+  autocmd FileType gn AutoFormatBuffer gn
+  autocmd FileType javascript,html,css,sass,scss,less,json AutoFormatBuffer prettier
+  autocmd FileType java AutoFormatBuffer google-java-format
+  autocmd FileType python AutoFormatBuffer yapf
+  autocmd FileType rust AutoFormatBuffer rustfmt
+augroup END
 
 " Mappings
 nnoremap <C-p>             :Files<CR>
