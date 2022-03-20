@@ -1,10 +1,13 @@
-let mapleader=' '
-
 set mouse=a
 set number
 set relativenumber
-set ttimeoutlen=100
+set ttimeoutlen=50
 set updatetime=100
+set nocompatible
+
+if !1 | finish | endif
+let mapleader = ' '
+
 set termguicolors
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
