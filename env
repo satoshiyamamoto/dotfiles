@@ -20,8 +20,8 @@ path=(
   $HOMEBREW_PREFIX/{bin,sbin}
   $KREW_ROOT/bin
   $GOPATH/bin
-  $GRAALVM_HOME/bin
   $path
+  $GRAALVM_HOME/bin
 )
 typeset -U path PATH
 
