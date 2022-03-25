@@ -8,7 +8,12 @@ export MYDOTDIR="${MYDOTDIRE:=$XDG_CONFIG_HOME/dotfiles}"
 export KREW_ROOT="${KREW_ROOT:=$XDG_CONFIG_HOME/krew}"
 export GOPATH="$HOME/Develop"
 export JAVA_HOME=$(/usr/libexec/java_home -v17)
-export GRAALVM_HOME="/Library/Java/JavaVirtualMachines/graalvm-ce-java17-22.0.0.2/Contents/Home"
+if [ "$(arch)" = 'arm64' ]; then
+  GRAALVM_VERSION='java17-22.1.0-dev'
+else
+  GRAALVM_VERSION='java17-22.0.0.2'
+fi
+export GRAALVM_HOME="/Library/Java/JavaVirtualMachines/graalvm-ce-${GRAALVM_VERSION}/Contents/Home"
 source "${HOMEBREW_PREFIX:-/usr/local}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
 source "${HOMEBREW_PREFIX:-/usr/local}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 
