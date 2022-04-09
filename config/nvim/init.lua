@@ -61,10 +61,10 @@ require('packer').startup(function(use)
   use 'kyazdani42/nvim-tree.lua'
 
   -- theme
-  use 'projekt0n/github-nvim-theme'
+  use {'projekt0n/github-nvim-theme', commit = '425f9de'}
   use 'nvim-lualine/lualine.nvim'
   use 'airblade/vim-gitgutter'
-  use 'akinsho/bufferline.nvim'
+  use {'akinsho/bufferline.nvim', branch = 'main'}
 
   if packer_bootstrap then
     require('packer').sync()
