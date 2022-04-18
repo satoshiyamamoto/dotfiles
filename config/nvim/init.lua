@@ -258,5 +258,9 @@ vim.cmd([[
 ]])
 
 -- theme
-vim.cmd 'colorscheme github_dark_default'
+vim.cmd([[
+  colorscheme github_dark_default
+  setglobal laststatus=3
+  highlight WinSeparator guifg=#2f363e
+]])
 
