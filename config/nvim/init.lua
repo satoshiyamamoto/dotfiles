@@ -2,6 +2,8 @@ vim.g.mapleader = ' '
 
 vim.opt.mouse = 'a'
 vim.opt.number = true
+vim.opt.splitbelow = true
+vim.opt.splitright = true
 vim.opt.relativenumber = true
 vim.opt.termguicolors = true
 vim.opt.completeopt = 'menu,menuone,noselect'
