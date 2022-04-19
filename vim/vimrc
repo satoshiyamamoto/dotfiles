@@ -1,5 +1,7 @@
 set mouse=a
 set number
+set splitbelow
+set splitright
 set relativenumber
 set ttimeoutlen=50
 set updatetime=100
