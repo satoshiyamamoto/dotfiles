@@ -67,6 +67,7 @@ require('packer').startup(function(use)
   use 'nvim-lualine/lualine.nvim'
   use 'airblade/vim-gitgutter'
   use {'akinsho/bufferline.nvim', branch = 'main'}
+  use {'akinsho/toggleterm.nvim', branch = 'main'}
 
   if packer_bootstrap then
     require('packer').sync()
@@ -92,7 +93,6 @@ map('n', '<C-n>',     '<cmd>NvimTreeToggle<CR>', opts)
 map('n', '<leader>r', '<cmd>NvimTreeRefresh<CR>', opts)
 map('n', '<leader>n', '<cmd>NvimTreeFindFile<CR>', opts)
 
-map('n', '<leader>`', '<cmd>split | wincmd j | resize 12 | terminal<CR>', opts)
 map('i', 'jj', '<Esc>', opts)
 
 -- Use an on_attach function to only map the following keys
@@ -234,17 +234,13 @@ require('bufferline').setup {
   }
 }
 
+require("toggleterm").setup {
+  open_mapping = [[<Space>`]]
+}
+
 require('lualine').setup {
   options = { theme = 'auto' }
 }
-
--- terminal
-vim.cmd([[
-  autocmd TermOpen  * startinsert
-  autocmd TermOpen  * setlocal norelativenumber
-  autocmd TermOpen  * setlocal nonumber
-  autocmd TermClose * call feedkeys("\<CR>")
-]])
 
 -- auto format
 vim.cmd([[
