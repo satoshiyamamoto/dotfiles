@@ -1,35 +1,4 @@
 # env
-eval $(/opt/homebrew/bin/brew shellenv)
-export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:=$HOME/.config}"
-export XDG_DATA_HOME="${XDG_DATA_HOME:=$HOME/.local/share}"
-export XDG_CACHE_HOME="${XDG_CACHE_HOME:=$HOME/.cache}"
-export WORKSPACE="${XDG_CACHE_HOME}/workspace"
-export MYDOTDIR="${MYDOTDIRE:=$XDG_CONFIG_HOME/dotfiles}"
-export KREW_ROOT="${KREW_ROOT:=$XDG_CONFIG_HOME/krew}"
-export GOPATH="$HOME/Develop"
-export JAVA_HOME=$(/usr/libexec/java_home -v18)
-if [ "$(arch)" = 'arm64' ]; then
-  GRAALVM_VERSION='java17-22.1.0-dev'
-else
-  GRAALVM_VERSION='java17-22.0.0.2'
-fi
-export GRAALVM_HOME="/Library/Java/JavaVirtualMachines/graalvm-ce-${GRAALVM_VERSION}/Contents/Home"
-source "${HOMEBREW_PREFIX:-/usr/local}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-source "${HOMEBREW_PREFIX:-/usr/local}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
-
-fpath=(
-  $HOMEBREW_PREFIX/share/zsh/site-functions
-  $fpath
-)
-path=(
-  $HOMEBREW_PREFIX/{bin,sbin}
-  $KREW_ROOT/bin
-  $GOPATH/bin
-  $path
-  $GRAALVM_HOME/bin
-)
-typeset -U path PATH
-
 export EDITOR=nvim
 export VISUAL=nvim
 export LC_ALL=en_US.UTF-8
@@ -39,3 +8,32 @@ export KUBE_TMUX_SYMBOL_ENABLE="false"
 export KUBE_TMUX_NS_ENABLE="false"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:=$HOME/.config}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:=$HOME/.local/share}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:=$HOME/.cache}"
+export WORKSPACE="${XDG_CACHE_HOME}/workspace"
+export KREW_ROOT="${KREW_ROOT:=$XDG_CONFIG_HOME/krew}"
+export GOPATH="$HOME/Develop"
+export JAVA_HOME=$(/usr/libexec/java_home -v18)
+if [ "$(arch)" = 'arm64' ]; then
+  GRAALVM_VERSION='java17-22.1.0-dev'
+else
+  GRAALVM_VERSION='java17-22.0.0.2'
+fi
+export GRAALVM_HOME="/Library/Java/JavaVirtualMachines/graalvm-ce-${GRAALVM_VERSION}/Contents/Home"
+export HOMEBREW_PREFIX="$(brew --prefix)"
+source "${HOMEBREW_PREFIX}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+source "${HOMEBREW_PREFIX}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+
+fpath=(
+  $HOMEBREW_PREFIX/share/zsh/site-functions
+  $fpath
+)
+path=(
+  $KREW_ROOT/bin
+  $GOPATH/bin
+  $path
+  $GRAALVM_HOME/bin
+)
+typeset -U path PATH
+
