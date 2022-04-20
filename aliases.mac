@@ -16,4 +16,5 @@ alias vpn='/opt/cisco/anyconnect/bin/vpn'
 alias ssh='TERM=xterm-256color ssh'
 alias lg='lazygit'
 alias lzd='lazydocker'
+alias icat='kitty +kitten icat'
 
