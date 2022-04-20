@@ -15,57 +15,57 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
 end
 
 require('packer').startup(function(use)
-  use 'wbthomason/packer.nvim'
+  use {'wbthomason/packer.nvim'}
 
   -- language server
-  use 'neovim/nvim-lspconfig'
-  use 'williamboman/nvim-lsp-installer'
+  use {'neovim/nvim-lspconfig'}
+  use {'williamboman/nvim-lsp-installer'}
 
   -- completion
-  use 'hrsh7th/cmp-nvim-lsp'
-  use 'hrsh7th/cmp-buffer'
-  use 'hrsh7th/cmp-path'
-  use 'hrsh7th/cmp-cmdline'
-  use 'hrsh7th/nvim-cmp'
-  use 'hrsh7th/cmp-vsnip'
-  use 'hrsh7th/vim-vsnip'
-  use 'onsails/lspkind-nvim'
+  use {'hrsh7th/cmp-nvim-lsp'}
+  use {'hrsh7th/cmp-buffer'}
+  use {'hrsh7th/cmp-path'}
+  use {'hrsh7th/cmp-cmdline'}
+  use {'hrsh7th/nvim-cmp'}
+  use {'hrsh7th/cmp-vsnip'}
+  use {'hrsh7th/vim-vsnip'}
+  use {'onsails/lspkind-nvim'}
 
   -- syntax highlight
   use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
-  use 'nvim-treesitter/nvim-treesitter-textobjects'
-  use 'nvim-treesitter/nvim-treesitter-refactor'
-  use 'p00f/nvim-ts-rainbow'
+  use {'nvim-treesitter/nvim-treesitter-textobjects'}
+  use {'nvim-treesitter/nvim-treesitter-refactor'}
+  use {'p00f/nvim-ts-rainbow'}
 
   -- formatter
-  use 'editorconfig/editorconfig-vim'
-  use 'google/vim-maktaba'
-  use 'google/vim-codefmt'
-  use 'google/vim-glaive'
+  use {'editorconfig/editorconfig-vim'}
+  use {'google/vim-maktaba'}
+  use {'google/vim-codefmt'}
+  use {'google/vim-glaive'}
   use {'prettier/vim-prettier', run = 'yarn install', ft = {'javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'}}
-  use 'mattn/vim-goimports'
+  use {'mattn/vim-goimports'}
 
   -- snippet
-  use 'rafamadriz/friendly-snippets'
-  use 'windwp/nvim-autopairs'
-  use 'tpope/vim-fugitive'
-  use 'tpope/vim-surround'
-  use 'tpope/vim-commentary'
-  use 'tpope/vim-unimpaired'
-  use 'mattn/emmet-vim'
+  use {'rafamadriz/friendly-snippets'}
+  use {'windwp/nvim-autopairs'}
+  use {'tpope/vim-fugitive'}
+  use {'tpope/vim-surround'}
+  use {'tpope/vim-commentary'}
+  use {'tpope/vim-unimpaired'}
+  use {'mattn/emmet-vim'}
 
   -- finder
-  use 'easymotion/vim-easymotion'
-  use 'nvim-lua/plenary.nvim'
-  use 'nvim-telescope/telescope.nvim'
-  use 'ryanoasis/vim-devicons'
-  use 'kyazdani42/nvim-web-devicons'
-  use 'kyazdani42/nvim-tree.lua'
+  use {'easymotion/vim-easymotion'}
+  use {'nvim-lua/plenary.nvim'}
+  use {'nvim-telescope/telescope.nvim'}
+  use {'ryanoasis/vim-devicons'}
+  use {'kyazdani42/nvim-web-devicons'}
+  use {'kyazdani42/nvim-tree.lua'}
 
   -- theme
-  use 'projekt0n/github-nvim-theme'
-  use 'nvim-lualine/lualine.nvim'
-  use 'airblade/vim-gitgutter'
+  use {'projekt0n/github-nvim-theme'}
+  use {'nvim-lualine/lualine.nvim'}
+  use {'airblade/vim-gitgutter'}
   use {'akinsho/bufferline.nvim', branch = 'main'}
   use {'akinsho/toggleterm.nvim', branch = 'main'}
 
