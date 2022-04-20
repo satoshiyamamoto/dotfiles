@@ -7,7 +7,7 @@ export WORKSPACE="${XDG_CACHE_HOME}/workspace"
 export MYDOTDIR="${MYDOTDIRE:=$XDG_CONFIG_HOME/dotfiles}"
 export KREW_ROOT="${KREW_ROOT:=$XDG_CONFIG_HOME/krew}"
 export GOPATH="$HOME/Develop"
-export JAVA_HOME=$(/usr/libexec/java_home -v17)
+export JAVA_HOME=$(/usr/libexec/java_home -v18)
 if [ "$(arch)" = 'arm64' ]; then
   GRAALVM_VERSION='java17-22.1.0-dev'
 else
