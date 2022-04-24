@@ -34,6 +34,7 @@ path=(
   $KREW_ROOT/bin
   $GOPATH/bin
   $path
+  $JAVA_HOME/bin
   $GRAALVM_HOME/bin
 )
 typeset -U path PATH
