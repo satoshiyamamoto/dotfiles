@@ -1,8 +1,10 @@
 set mouse=a
 set number
+set relativenumber
 set splitbelow
 set splitright
-set relativenumber
+set confirm
+set clipboard+=unnamed
 set ttimeoutlen=50
 set updatetime=100
 set nocompatible
