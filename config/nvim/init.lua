@@ -127,6 +127,13 @@ require("nvim-lsp-installer").on_server_ready(function(server)
   local opts = {
     noremap = true,
     silent = true,
+    settings = {
+      Lua = {
+        diagnostics = {
+          globals = { 'vim' }
+        }
+      }
+    },
     on_attach = on_attach,
   }
 
