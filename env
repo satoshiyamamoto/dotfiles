@@ -17,9 +17,9 @@ export KREW_ROOT="${KREW_ROOT:=$XDG_CONFIG_HOME/krew}"
 export GOPATH="$HOME/Develop"
 export JAVA_HOME=$(/usr/libexec/java_home -v18)
 if [ "$(arch)" = 'arm64' ]; then
-  GRAALVM_VERSION='java17-22.1.0-dev'
+  GRAALVM_VERSION='java17-22.1.0'
 else
-  GRAALVM_VERSION='java17-22.0.0.2'
+  GRAALVM_VERSION='java17-22.1.0'
 fi
 export GRAALVM_HOME="/Library/Java/JavaVirtualMachines/graalvm-ce-${GRAALVM_VERSION}/Contents/Home"
 export HOMEBREW_PREFIX="$(brew --prefix)"
