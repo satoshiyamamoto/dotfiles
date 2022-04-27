@@ -80,7 +80,7 @@ end)
 -- Mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 local map = vim.api.nvim_set_keymap
-local opts = { noremap=true, silent=true }
+local opts = { noremap = true, silent = true }
 map('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 map('n', '[d',       '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
 map('n', ']d',       '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
@@ -247,8 +247,13 @@ require('bufferline').setup {
 }
 
 require("toggleterm").setup {
-  open_mapping = [[<Space>`]]
+  open_mapping = [[<leader>`]]
 }
+
+local Terminal  = require('toggleterm.terminal').Terminal
+local lazygit = Terminal:new({ cmd = "lazygit", direction = 'float', hidden = true })
+
+vim.keymap.set('n', '<leader>g', function() lazygit:toggle() end)
 
 require('lualine').setup {
   options = { theme = 'auto' }
