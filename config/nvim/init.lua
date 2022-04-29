@@ -250,10 +250,14 @@ require("toggleterm").setup {
   open_mapping = [[<leader>`]]
 }
 
-local Terminal  = require('toggleterm.terminal').Terminal
-local lazygit = Terminal:new({ cmd = "lazygit", direction = 'float', hidden = true })
-
-vim.keymap.set('n', '<leader>g', function() lazygit:toggle() end)
+vim.keymap.set('n', '<leader>g', function()
+  require('toggleterm.terminal').Terminal:new({
+    cmd = "lazygit",
+    direction = 'float',
+    hidden = true,
+    count = 0
+  }):toggle()
+end)
 
 require('lualine').setup {
   options = { theme = 'auto' }
