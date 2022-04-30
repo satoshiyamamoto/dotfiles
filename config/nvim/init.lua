@@ -44,7 +44,7 @@ require('packer').startup(function(use)
   use { 'google/vim-maktaba' }
   use { 'google/vim-codefmt' }
   use { 'google/vim-glaive' }
-  use { 'prettier/vim-prettier', run = 'yarn install', ft = { 'javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html' } }
+  use { 'prettier/vim-prettier', run = 'yarn install', ft = { 'javascript', 'typescript', 'css', 'less', 'scss', 'json', 'html' } }
   use { 'mattn/vim-goimports' }
 
   -- snippet
