@@ -57,7 +57,7 @@ require('packer').startup(function(use)
   use {'mattn/emmet-vim'}
 
   -- finder
-  use {'easymotion/vim-easymotion'}
+  use {'phaazon/hop.nvim'}
   use {'nvim-lua/plenary.nvim'}
   use {'nvim-telescope/telescope.nvim'}
   use {'ryanoasis/vim-devicons'}
@@ -85,13 +85,13 @@ map('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 map('n', '[d',       '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
 map('n', ']d',       '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 map('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
-
+map('n', '<leader>w', '<cmd>HopWord<CR>', opts)
+map('n', '<leader>f', '<cmd>HopChar1<CR>', opts)
 map('n', '<C-p>',      '<cmd>Telescope find_files<CR>', opts)
 map('n', '<leader>ff', '<cmd>Telescope find_files<CR>', opts)
 map('n', '<leader>fg', '<cmd>Telescope live_grep<CR>', opts)
 map('n', '<leader>fb', '<cmd>Telescope buffers<CR>', opts)
 map('n', '<leader>fh', '<cmd>Telescope help_tags<CR>', opts)
-
 map('n', '<C-n>',     '<cmd>NvimTreeToggle<CR>', opts)
 map('n', '<leader>r', '<cmd>NvimTreeRefresh<CR>', opts)
 map('n', '<leader>n', '<cmd>NvimTreeFindFile<CR>', opts)
@@ -120,7 +120,7 @@ local on_attach = function(client, bufnr)
   bufmap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   bufmap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   bufmap(bufnr, 'n', 'gr',        '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  bufmap(bufnr, 'n', '<space>f',  '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  bufmap(bufnr, 'n', '<A-f>',  '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
 require("nvim-lsp-installer").on_server_ready(function(server)
@@ -219,6 +219,8 @@ require('nvim-treesitter.configs').setup {
     max_file_lines = nil,
   }
 }
+
+require('hop').setup {}
 
 require('telescope').setup {
   defaults = {
