@@ -8,69 +8,69 @@ vim.opt.splitright = true
 vim.opt.termguicolors = true
 vim.opt.confirm = true
 vim.opt.completeopt = 'menu,menuone,noselect'
-vim.opt.clipboard:append{'unnamedplus'}
+vim.opt.clipboard:append { 'unnamedplus' }
 vim.opt.updatetime = 100
 
-local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
+local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  packer_bootstrap = vim.fn.system({'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path})
+  packer_bootstrap = vim.fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
 end
 
 require('packer').startup(function(use)
-  use {'wbthomason/packer.nvim'}
+  use { 'wbthomason/packer.nvim' }
 
   -- language server
-  use {'neovim/nvim-lspconfig'}
-  use {'williamboman/nvim-lsp-installer'}
+  use { 'neovim/nvim-lspconfig' }
+  use { 'williamboman/nvim-lsp-installer' }
 
   -- completion
-  use {'hrsh7th/cmp-nvim-lsp'}
-  use {'hrsh7th/cmp-buffer'}
-  use {'hrsh7th/cmp-path'}
-  use {'hrsh7th/cmp-cmdline'}
-  use {'hrsh7th/nvim-cmp'}
-  use {'hrsh7th/cmp-vsnip'}
-  use {'hrsh7th/vim-vsnip'}
-  use {'onsails/lspkind-nvim'}
+  use { 'hrsh7th/cmp-nvim-lsp' }
+  use { 'hrsh7th/cmp-buffer' }
+  use { 'hrsh7th/cmp-path' }
+  use { 'hrsh7th/cmp-cmdline' }
+  use { 'hrsh7th/nvim-cmp' }
+  use { 'hrsh7th/cmp-vsnip' }
+  use { 'hrsh7th/vim-vsnip' }
+  use { 'onsails/lspkind-nvim' }
 
   -- syntax highlight
-  use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
-  use {'nvim-treesitter/nvim-treesitter-textobjects'}
-  use {'nvim-treesitter/nvim-treesitter-refactor'}
-  use {'p00f/nvim-ts-rainbow'}
+  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+  use { 'nvim-treesitter/nvim-treesitter-textobjects' }
+  use { 'nvim-treesitter/nvim-treesitter-refactor' }
+  use { 'p00f/nvim-ts-rainbow' }
 
   -- formatter
-  use {'editorconfig/editorconfig-vim'}
-  use {'google/vim-maktaba'}
-  use {'google/vim-codefmt'}
-  use {'google/vim-glaive'}
-  use {'prettier/vim-prettier', run = 'yarn install', ft = {'javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'}}
-  use {'mattn/vim-goimports'}
+  use { 'editorconfig/editorconfig-vim' }
+  use { 'google/vim-maktaba' }
+  use { 'google/vim-codefmt' }
+  use { 'google/vim-glaive' }
+  use { 'prettier/vim-prettier', run = 'yarn install', ft = { 'javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html' } }
+  use { 'mattn/vim-goimports' }
 
   -- snippet
-  use {'rafamadriz/friendly-snippets'}
-  use {'windwp/nvim-autopairs'}
-  use {'tpope/vim-fugitive'}
-  use {'tpope/vim-surround'}
-  use {'tpope/vim-commentary'}
-  use {'tpope/vim-unimpaired'}
-  use {'mattn/emmet-vim'}
+  use { 'rafamadriz/friendly-snippets' }
+  use { 'windwp/nvim-autopairs' }
+  use { 'tpope/vim-fugitive' }
+  use { 'tpope/vim-surround' }
+  use { 'tpope/vim-commentary' }
+  use { 'tpope/vim-unimpaired' }
+  use { 'mattn/emmet-vim' }
 
   -- finder
-  use {'phaazon/hop.nvim'}
-  use {'nvim-lua/plenary.nvim'}
-  use {'nvim-telescope/telescope.nvim'}
-  use {'ryanoasis/vim-devicons'}
-  use {'kyazdani42/nvim-web-devicons'}
-  use {'kyazdani42/nvim-tree.lua'}
+  use { 'phaazon/hop.nvim' }
+  use { 'nvim-lua/plenary.nvim' }
+  use { 'nvim-telescope/telescope.nvim' }
+  use { 'ryanoasis/vim-devicons' }
+  use { 'kyazdani42/nvim-web-devicons' }
+  use { 'kyazdani42/nvim-tree.lua' }
 
   -- theme
-  use {'projekt0n/github-nvim-theme'}
-  use {'nvim-lualine/lualine.nvim'}
-  use {'rcarriga/nvim-notify'}
-  use {'airblade/vim-gitgutter'}
-  use {'akinsho/bufferline.nvim', branch = 'main'}
-  use {'akinsho/toggleterm.nvim', branch = 'main'}
+  use { 'projekt0n/github-nvim-theme' }
+  use { 'nvim-lualine/lualine.nvim' }
+  use { 'rcarriga/nvim-notify' }
+  use { 'airblade/vim-gitgutter' }
+  use { 'akinsho/bufferline.nvim', branch = 'main' }
+  use { 'akinsho/toggleterm.nvim', branch = 'main' }
 
   if packer_bootstrap then
     require('packer').sync()
@@ -82,17 +82,17 @@ end)
 local map = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 map('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-map('n', '[d',       '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-map('n', ']d',       '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 map('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 map('n', '<leader>w', '<cmd>HopWord<CR>', opts)
 map('n', '<leader>f', '<cmd>HopChar1<CR>', opts)
-map('n', '<C-p>',      '<cmd>Telescope find_files<CR>', opts)
+map('n', '<C-p>', '<cmd>Telescope find_files<CR>', opts)
 map('n', '<leader>ff', '<cmd>Telescope find_files<CR>', opts)
 map('n', '<leader>fg', '<cmd>Telescope live_grep<CR>', opts)
 map('n', '<leader>fb', '<cmd>Telescope buffers<CR>', opts)
 map('n', '<leader>fh', '<cmd>Telescope help_tags<CR>', opts)
-map('n', '<C-n>',     '<cmd>NvimTreeToggle<CR>', opts)
+map('n', '<C-n>', '<cmd>NvimTreeToggle<CR>', opts)
 map('n', '<leader>r', '<cmd>NvimTreeRefresh<CR>', opts)
 map('n', '<leader>n', '<cmd>NvimTreeFindFile<CR>', opts)
 
@@ -108,19 +108,19 @@ local on_attach = function(client, bufnr)
 
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  bufmap(bufnr, 'n', 'gD',        '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  bufmap(bufnr, 'n', 'gd',        '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  bufmap(bufnr, 'n', 'K',         '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  bufmap(bufnr, 'n', 'gi',        '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  bufmap(bufnr, 'n', '<C-k>',     '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  bufmap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  bufmap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  bufmap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  bufmap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  bufmap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
   bufmap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
   bufmap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
   bufmap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  bufmap(bufnr, 'n', '<space>D',  '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  bufmap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   bufmap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   bufmap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  bufmap(bufnr, 'n', 'gr',        '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  bufmap(bufnr, 'n', '<A-f>',  '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  bufmap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  bufmap(bufnr, 'n', '<A-f>', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
 require("nvim-lsp-installer").on_server_ready(function(server)
@@ -320,87 +320,84 @@ end
 local client_notifs = {}
 
 local function get_notif_data(client_id, token)
- if not client_notifs[client_id] then
-   client_notifs[client_id] = {}
- end
+  if not client_notifs[client_id] then
+    client_notifs[client_id] = {}
+  end
 
- if not client_notifs[client_id][token] then
-   client_notifs[client_id][token] = {}
- end
+  if not client_notifs[client_id][token] then
+    client_notifs[client_id][token] = {}
+  end
 
- return client_notifs[client_id][token]
+  return client_notifs[client_id][token]
 end
-
 
 local spinner_frames = { "⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷" }
 
 local function update_spinner(client_id, token)
- local notif_data = get_notif_data(client_id, token)
+  local notif_data = get_notif_data(client_id, token)
 
- if notif_data.spinner then
-   local new_spinner = (notif_data.spinner + 1) % #spinner_frames
-   notif_data.spinner = new_spinner
+  if notif_data.spinner then
+    local new_spinner = (notif_data.spinner + 1) % #spinner_frames
+    notif_data.spinner = new_spinner
 
-   notif_data.notification = vim.notify(nil, nil, {
-     hide_from_history = true,
-     icon = spinner_frames[new_spinner],
-     replace = notif_data.notification,
-   })
+    notif_data.notification = vim.notify(nil, nil, {
+      hide_from_history = true,
+      icon = spinner_frames[new_spinner],
+      replace = notif_data.notification,
+    })
 
-   vim.defer_fn(function()
-     update_spinner(client_id, token)
-   end, 100)
- end
+    vim.defer_fn(function()
+      update_spinner(client_id, token)
+    end, 100)
+  end
 end
 
 local function format_title(title, client_name)
- return client_name .. (#title > 0 and ": " .. title or "")
+  return client_name .. (#title > 0 and ": " .. title or "")
 end
 
 local function format_message(message, percentage)
- return (percentage and percentage .. "%\t" or "") .. (message or "")
+  return (percentage and percentage .. "%\t" or "") .. (message or "")
 end
 
 -- LSP integration
 -- Make sure to also have the snippet with the common helper functions in your config!
 
 vim.lsp.handlers["$/progress"] = function(_, result, ctx)
- local client_id = ctx.client_id
+  local client_id = ctx.client_id
 
- local val = result.value
+  local val = result.value
 
- if not val.kind then
-   return
- end
+  if not val.kind then
+    return
+  end
 
- local notif_data = get_notif_data(client_id, result.token)
+  local notif_data = get_notif_data(client_id, result.token)
 
- if val.kind == "begin" then
-   local message = format_message(val.message, val.percentage)
+  if val.kind == "begin" then
+    local message = format_message(val.message, val.percentage)
 
-   notif_data.notification = vim.notify(message, "info", {
-     title = format_title(val.title, vim.lsp.get_client_by_id(client_id).name),
-     icon = spinner_frames[1],
-     timeout = false,
-     hide_from_history = false,
-   })
+    notif_data.notification = vim.notify(message, "info", {
+      title = format_title(val.title, vim.lsp.get_client_by_id(client_id).name),
+      icon = spinner_frames[1],
+      timeout = false,
+      hide_from_history = false,
+    })
 
-   notif_data.spinner = 1
-   update_spinner(client_id, result.token)
- elseif val.kind == "report" and notif_data then
-   notif_data.notification = vim.notify(format_message(val.message, val.percentage), "info", {
-     replace = notif_data.notification,
-     hide_from_history = false,
-   })
- elseif val.kind == "end" and notif_data then
-   notif_data.notification =
-     vim.notify(val.message and format_message(val.message) or "Complete", "info", {
-       icon = "",
-       replace = notif_data.notification,
-       timeout = 3000,
-     })
+    notif_data.spinner = 1
+    update_spinner(client_id, result.token)
+  elseif val.kind == "report" and notif_data then
+    notif_data.notification = vim.notify(format_message(val.message, val.percentage), "info", {
+      replace = notif_data.notification,
+      hide_from_history = false,
+    })
+  elseif val.kind == "end" and notif_data then
+    notif_data.notification = vim.notify(val.message and format_message(val.message) or "Complete", "info", {
+      icon = "",
+      replace = notif_data.notification,
+      timeout = 3000,
+    })
 
-   notif_data.spinner = nil
- end
+    notif_data.spinner = nil
+  end
 end
-
