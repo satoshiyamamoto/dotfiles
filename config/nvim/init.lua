@@ -95,7 +95,6 @@ map('n', '<leader>fh', '<cmd>Telescope help_tags<CR>', opts)
 map('n', '<C-n>', '<cmd>NvimTreeToggle<CR>', opts)
 map('n', '<leader>r', '<cmd>NvimTreeRefresh<CR>', opts)
 map('n', '<leader>n', '<cmd>NvimTreeFindFile<CR>', opts)
-
 map('i', 'jj', '<Esc>', opts)
 
 -- Use an on_attach function to only map the following keys
@@ -123,10 +122,9 @@ local on_attach = function(client, bufnr)
   bufmap(bufnr, 'n', '<A-f>', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
-require("nvim-lsp-installer").on_server_ready(function(server)
+require('nvim-lsp-installer').on_server_ready(function(server)
   local opts = {
-    noremap = true,
-    silent = true,
+    on_attach = on_attach,
     settings = {
       Lua = {
         diagnostics = {
@@ -134,7 +132,6 @@ require("nvim-lsp-installer").on_server_ready(function(server)
         }
       }
     },
-    on_attach = on_attach,
   }
 
   if server.name == 'jdtls' then
@@ -144,7 +141,6 @@ require("nvim-lsp-installer").on_server_ready(function(server)
   end
 
   server:setup(opts)
-  vim.cmd 'do User LspAttachBuffers'
 end)
 
 -- nvim-cmp setup
