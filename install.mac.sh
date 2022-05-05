@@ -6,6 +6,7 @@ cd "$WORKDIR"
 # User HOME directories
 ln -si ${WORKDIR}/tmux.conf ${HOME}/.tmux.conf
 ln -si ${WORKDIR}/editorconfig ${HOME}/.editorconfig
+ln -si ${WORKDIR}/sqliterc ${HOME}/.sqliterc
 
 ## Set the XDG config
 source ${HOME}/.zshenv
