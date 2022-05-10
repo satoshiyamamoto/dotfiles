@@ -140,8 +140,8 @@ nnoremap <C-p>             :Files<CR>
 nnoremap <leader>ff        :Files<CR>
 nnoremap <leader>fg        :Rg<CR>
 nnoremap <leader>fb        :Buffers<CR>
+nnoremap <silent><leader>` :bo terminal ++rows=12<CR>
 nnoremap <silent><C-l>     :nohlsearch<CR>
-nnoremap <silent><C-t>     :bo terminal ++rows=12<CR>
 nnoremap <silent><C-n>     :NERDTreeToggle<CR>
 nnoremap <silent><leader>r :NERDTreeRefreshRoot<CR>
 nnoremap <silent><leader>n :NERDTreeFind<CR>
