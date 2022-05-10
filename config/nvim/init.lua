@@ -122,21 +122,26 @@ local on_attach = function(client, bufnr)
   bufmap(bufnr, 'n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 end
 
+local lspconfig = require('lspconfig')
+
 require('nvim-lsp-installer').on_server_ready(function(server)
   local opts = {
     on_attach = on_attach,
-    settings = {
+  }
+
+  if server.name == 'sumneko_lua' then
+    opts.settings = {
       Lua = {
         diagnostics = {
           globals = { 'vim' }
         }
       }
-    },
-  }
+    }
+  end
 
   if server.name == 'jdtls' then
     opts.root_dir = function(fname)
-      return require('lspconfig').util.root_pattern('.git', 'mvnw', 'gradlew')(fname)
+      return lspconfig.util.root_pattern('.git', 'mvnw', 'gradlew')(fname)
     end
   end
 
@@ -245,7 +250,8 @@ require('bufferline').setup {
 }
 
 require("toggleterm").setup {
-  open_mapping = [[<C-t>]]
+  open_mapping = [[<leader>`]],
+  insert_mappings = false,
 }
 
 vim.keymap.set('n', '<leader>g', function()
