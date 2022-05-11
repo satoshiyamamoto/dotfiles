@@ -41,6 +41,11 @@ indent_size = 4
 indent_style = space
 indent_size = 4
 
+# Rust
+[*.rs]
+indent_style = space
+indent_size = 4
+
 # Salt state files, YAML format, 2 spaces
 [*.sls, *.yaml, *.yml]
 indent_style = space
