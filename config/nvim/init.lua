@@ -22,6 +22,15 @@ require('packer').startup(function(use)
   -- language server
   use { 'neovim/nvim-lspconfig' }
   use { 'williamboman/nvim-lsp-installer' }
+  use { 'mfussenegger/nvim-jdtls' }
+
+  -- debugger
+  use { 'mfussenegger/nvim-dap' }
+  use { 'mfussenegger/nvim-dap-python' }
+  use { 'leoluz/nvim-dap-go' }
+  use { 'rcarriga/nvim-dap-ui' }
+  use { 'theHamsta/nvim-dap-virtual-text' }
+  use { 'vim-test/vim-test' }
 
   -- completion
   use { 'hrsh7th/cmp-nvim-lsp' }
@@ -85,6 +94,15 @@ map('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
 map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 map('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+map('n', '<F5>', '<Cmd>lua require"dap".continue()<CR>', opts)
+map('n', '<F10>', '<Cmd>lua require"dap".step_over()<CR>', opts)
+map('n', '<F11>', '<Cmd>lua require"dap".step_into()<CR>', opts)
+map('n', '<F12>', '<Cmd>lua require"dap".step_out()<CR>', opts)
+map('n', '<Leader>b', '<Cmd>lua require"dap".toggle_breakpoint()<CR>', opts)
+map('n', '<Leader>B', '<Cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>', opts)
+map('n', '<Leader>lp', '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>', opts)
+map('n', '<Leader>dr', '<Cmd>lua require"dap".repl.open()<CR>', opts)
+map('n', '<Leader>dl', '<Cmd>lua require"dap".run_last()<CR>', opts)
 map('n', '<leader><leader>w', '<cmd>HopWord<CR>', opts)
 map('n', '<leader><leader>f', '<cmd>HopChar1<CR>', opts)
 map('n', '<leader>ff', '<cmd>Telescope find_files<CR>', opts)
@@ -97,6 +115,7 @@ map('n', '<leader>r', '<cmd>NvimTreeRefresh<CR>', opts)
 map('n', '<leader>n', '<cmd>NvimTreeFindFile<CR>', opts)
 map('i', 'jj', '<Esc>', opts)
 
+-- LSP setup
 require('nvim-lsp-installer').setup {}
 
 local lspconfig = require('lspconfig')
@@ -145,6 +164,21 @@ lspconfig.pyright.setup { on_attach = on_attach }
 lspconfig.tsserver.setup { on_attach = on_attach }
 lspconfig.terraformls.setup { on_attach = on_attach }
 lspconfig.rust_analyzer.setup { on_attach = on_attach }
+
+-- DAP setup
+require('dap-python').setup('~/.local/share/virtualenvs/debugpy/bin/python')
+require('dap-go').setup()
+require('dapui').setup()
+local dap, dapui = require("dap"), require("dapui")
+dap.listeners.after.event_initialized["dapui_config"] = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+  dapui.close()
+end
 
 -- nvim-cmp setup
 local cmp = require('cmp')
