@@ -1,3 +1,7 @@
+-- vim:foldmethod=marker
+
+-- Basic: {{{
+
 vim.g.mapleader = ' '
 
 vim.opt.mouse = 'a'
@@ -10,6 +14,10 @@ vim.opt.confirm = true
 vim.opt.completeopt = 'menu,menuone,noselect'
 vim.opt.clipboard:append { 'unnamedplus' }
 vim.opt.updatetime = 100
+
+-- }}}
+
+-- Plugins: {{{
 
 local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
@@ -86,14 +94,18 @@ require('packer').startup(function(use)
   end
 end)
 
--- Mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
+-- }}}
+
+-- Mappings: {{{
+
 local map = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
+-- Diagnostics
 map('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
 map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
 map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 map('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+-- Debuggers
 map('n', '<F5>', '<Cmd>lua require"dap".continue()<CR>', opts)
 map('n', '<F10>', '<Cmd>lua require"dap".step_over()<CR>', opts)
 map('n', '<F11>', '<Cmd>lua require"dap".step_into()<CR>', opts)
@@ -103,19 +115,26 @@ map('n', '<Leader>B', '<Cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakp
 map('n', '<Leader>lp', '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>', opts)
 map('n', '<Leader>dr', '<Cmd>lua require"dap".repl.open()<CR>', opts)
 map('n', '<Leader>dl', '<Cmd>lua require"dap".run_last()<CR>', opts)
+-- Hop (easymotion)
 map('n', '<leader><leader>w', '<cmd>HopWord<CR>', opts)
 map('n', '<leader><leader>f', '<cmd>HopChar1<CR>', opts)
+-- Telescope
 map('n', '<leader>ff', '<cmd>Telescope find_files<CR>', opts)
 map('n', '<leader>fg', '<cmd>Telescope live_grep<CR>', opts)
 map('n', '<leader>fb', '<cmd>Telescope buffers<CR>', opts)
 map('n', '<leader>fh', '<cmd>Telescope help_tags<CR>', opts)
 map('n', '<C-p>', '<cmd>Telescope find_files<CR>', opts)
+-- NvimTree
 map('n', '<C-n>', '<cmd>NvimTreeToggle<CR>', opts)
 map('n', '<leader>r', '<cmd>NvimTreeRefresh<CR>', opts)
 map('n', '<leader>n', '<cmd>NvimTreeFindFile<CR>', opts)
+-- Inserts
 map('i', 'jj', '<Esc>', opts)
 
--- LSP setup
+-- }}}
+
+-- LSP: {{{
+
 require('nvim-lsp-installer').setup {}
 
 local lspconfig = require('lspconfig')
@@ -127,7 +146,6 @@ local on_attach = function(client, bufnr)
   option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
   keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
   keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
   keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
@@ -143,6 +161,7 @@ local on_attach = function(client, bufnr)
   keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
+-- Language servers
 lspconfig.sumneko_lua.setup {
   on_attach = on_attach,
   settings = {
@@ -165,7 +184,10 @@ lspconfig.tsserver.setup { on_attach = on_attach }
 lspconfig.terraformls.setup { on_attach = on_attach }
 lspconfig.rust_analyzer.setup { on_attach = on_attach }
 
--- DAP setup
+-- }}}
+
+-- DAP: {{{
+
 require('dap-python').setup('~/.local/share/virtualenvs/debugpy/bin/python')
 require('dap-go').setup()
 require('dapui').setup()
@@ -180,7 +202,10 @@ dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
 
--- nvim-cmp setup
+-- }}}
+
+-- Completions: {{{
+
 local cmp = require('cmp')
 
 cmp.setup {
@@ -239,6 +264,10 @@ cmp.event:on('confirm_done',
 
 require('nvim-autopairs').setup {}
 
+-- }}}
+
+-- Syntax: {{{
+
 require('nvim-treesitter.configs').setup {
   ensure_installed = { 'c', 'go', 'java', 'javascript', 'typescript', 'python', 'lua', 'rust', 'yaml' },
   highlight = {
@@ -251,6 +280,10 @@ require('nvim-treesitter.configs').setup {
     max_file_lines = nil,
   }
 }
+
+-- }}}
+
+-- Finder: {{{
 
 require('hop').setup {}
 
@@ -270,15 +303,9 @@ require('nvim-tree').setup {
 }
 vim.g.nvim_tree_group_empty = 1
 
-require('bufferline').setup {
-  options = {
-    offsets = {
-      {
-        filetype = 'NvimTree',
-      }
-    }
-  }
-}
+-- }}}
+
+-- Terminal: {{{
 
 require("toggleterm").setup {
   open_mapping = [[<leader>`]],
@@ -294,11 +321,10 @@ vim.keymap.set('n', '<leader>g', function()
   }):toggle()
 end)
 
-require('lualine').setup {
-  options = { theme = 'auto' }
-}
+-- }}}
 
--- auto format
+-- Formatting: {{{
+
 vim.cmd([[
   autocmd FileType bzl AutoFormatBuffer buildifier
   autocmd FileType c,cpp,proto,arduino AutoFormatBuffer clang-format
@@ -311,15 +337,34 @@ vim.cmd([[
   autocmd FileType rust AutoFormatBuffer rustfmt
 ]])
 
--- theme
+-- }}}
+
+-- Theme: {{{
+
+require('lualine').setup {
+  options = { theme = 'auto' }
+}
+
+require('bufferline').setup {
+  options = {
+    offsets = {
+      {
+        filetype = 'NvimTree',
+      }
+    }
+  }
+}
+
 vim.cmd([[
   colorscheme github_dark_default
   setglobal laststatus=3
   highlight WinSeparator guifg=#2f363e
 ]])
 
+--- }}}
 
--- notification
+-- Notifications: {{{
+
 vim.notify = require('notify')
 
 -- Output of Command
@@ -434,3 +479,5 @@ vim.lsp.handlers["$/progress"] = function(_, result, ctx)
     notif_data.spinner = nil
   end
 end
+
+-- }}}
