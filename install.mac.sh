@@ -23,6 +23,7 @@ export DOTFILES="${HOME}/Develop/src/github.com/satoshiyamamoto/dotfiles"
 [ -f "${DOTFILES}/functions" ] && source "${DOTFILES}/functions"
 [ -f "${DOTFILES}/aliases.mac" ] && source "${DOTFILES}/aliases.mac"
 [ -f "${HOME}/.fzf.zsh" ] && source "${HOME}/.fzf.zsh"
+[ -f "${HOME}/.cargo/env" ] && source "${HOME}/.cargo/env"
 EOL
 
 ## Set the Vimrc
