@@ -101,10 +101,10 @@ end)
 local map = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
 -- Diagnostics
-map('n', '<space>e', '<cmd>lua vim.diagnostic.open_float()<CR>', opts)
-map('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-map('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-map('n', '<space>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+map('n', '<Space>e', '<Cmd>lua vim.diagnostic.open_float()<CR>', opts)
+map('n', '[d', '<Cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+map('n', ']d', '<Cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+map('n', '<Space>q', '<Cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 -- Debuggers
 map('n', '<F5>', '<Cmd>lua require"dap".continue()<CR>', opts)
 map('n', '<F10>', '<Cmd>lua require"dap".step_over()<CR>', opts)
@@ -115,21 +115,29 @@ map('n', '<Leader>B', '<Cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakp
 map('n', '<Leader>lp', '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>', opts)
 map('n', '<Leader>dr', '<Cmd>lua require"dap".repl.open()<CR>', opts)
 map('n', '<Leader>dl', '<Cmd>lua require"dap".run_last()<CR>', opts)
+-- Test
+map('n', '<Leader>t', '<Cmd>TestNearest<CR>', opts)
+map('n', '<Leader>T', '<Cmd>TestFile<CR>', opts)
+map('n', '<Leader>a', '<Cmd>TestSuite<CR>', opts)
+map('n', '<Leader>l', '<Cmd>TestLast<CR>', opts)
+map('n', '<Leader>g', '<Cmd>TestVisit<CR>', opts)
 -- Hop (easymotion)
-map('n', '<leader><leader>w', '<cmd>HopWord<CR>', opts)
-map('n', '<leader><leader>f', '<cmd>HopChar1<CR>', opts)
+map('n', '<Leader><Leader>w', '<Cmd>HopWord<CR>', opts)
+map('n', '<Leader><Leader>f', '<Cmd>HopChar1<CR>', opts)
 -- Telescope
-map('n', '<leader>ff', '<cmd>Telescope find_files<CR>', opts)
-map('n', '<leader>fg', '<cmd>Telescope live_grep<CR>', opts)
-map('n', '<leader>fb', '<cmd>Telescope buffers<CR>', opts)
-map('n', '<leader>fh', '<cmd>Telescope help_tags<CR>', opts)
-map('n', '<C-p>', '<cmd>Telescope find_files<CR>', opts)
+map('n', '<Leader>ff', '<Cmd>Telescope find_files<CR>', opts)
+map('n', '<Leader>fg', '<Cmd>Telescope live_grep<CR>', opts)
+map('n', '<Leader>fb', '<Cmd>Telescope buffers<CR>', opts)
+map('n', '<Leader>fh', '<Cmd>Telescope help_tags<CR>', opts)
+map('n', '<C-p>', '<Cmd>Telescope find_files<CR>', opts)
 -- NvimTree
-map('n', '<C-n>', '<cmd>NvimTreeToggle<CR>', opts)
-map('n', '<leader>r', '<cmd>NvimTreeRefresh<CR>', opts)
-map('n', '<leader>n', '<cmd>NvimTreeFindFile<CR>', opts)
--- Inserts
+map('n', '<C-n>', '<Cmd>NvimTreeToggle<CR>', opts)
+map('n', '<Leader>r', '<Cmd>NvimTreeRefresh<CR>', opts)
+map('n', '<Leader>n', '<Cmd>NvimTreeFindFile<CR>', opts)
+-- Insert
 map('i', 'jj', '<Esc>', opts)
+-- Terminal
+map('t', '<Esc>', '<C-\\><C-n>', opts)
 
 -- }}}
 
@@ -146,19 +154,19 @@ local on_attach = function(client, bufnr)
   option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
-  keymap(bufnr, 'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  keymap(bufnr, 'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  keymap(bufnr, 'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  keymap(bufnr, 'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  keymap(bufnr, 'n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  keymap(bufnr, 'n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  keymap(bufnr, 'n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  keymap(bufnr, 'n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  keymap(bufnr, 'n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  keymap(bufnr, 'n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  keymap(bufnr, 'n', '<C-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  keymap(bufnr, 'n', '<Space>wa', '<Cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  keymap(bufnr, 'n', '<Space>wr', '<Cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  keymap(bufnr, 'n', '<Space>wl', '<Cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  keymap(bufnr, 'n', '<Space>D', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  keymap(bufnr, 'n', '<Space>rn', '<Cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  keymap(bufnr, 'n', '<Space>ca', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  keymap(bufnr, 'n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', opts)
+  keymap(bufnr, 'n', '<Space>f', '<Cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 end
 
 -- Language servers
@@ -308,11 +316,11 @@ vim.g.nvim_tree_group_empty = 1
 -- Terminal: {{{
 
 require("toggleterm").setup {
-  open_mapping = [[<leader>`]],
+  open_mapping = [[<Leader>`]],
   insert_mappings = false,
 }
 
-vim.keymap.set('n', '<leader>g', function()
+vim.keymap.set('n', '<Leader>g', function()
   require('toggleterm.terminal').Terminal:new({
     cmd = "lazygit",
     direction = 'float',
