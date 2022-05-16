@@ -149,6 +149,7 @@ inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
 inoremap <silent>jj     <Esc>
+tnoremap <silent><Esc>  <C-\><C-n>
 
 " Themes
 colorscheme ghdark
