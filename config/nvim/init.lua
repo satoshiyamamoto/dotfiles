@@ -181,12 +181,6 @@ lspconfig.sumneko_lua.setup {
     }
   }
 }
-lspconfig.jdtls.setup {
-  on_attach = on_attach,
-  root_dir = function(fname)
-    return lspconfig.util.root_pattern('.git', 'mvnw', 'gradlew')(fname)
-  end
-}
 lspconfig.gopls.setup { on_attach = on_attach }
 lspconfig.pyright.setup { on_attach = on_attach }
 lspconfig.tsserver.setup { on_attach = on_attach }
