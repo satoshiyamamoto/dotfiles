@@ -77,6 +77,7 @@ require('packer').startup(function(use)
   use { 'phaazon/hop.nvim' }
   use { 'nvim-lua/plenary.nvim' }
   use { 'nvim-telescope/telescope.nvim' }
+  use { 'nvim-telescope/telescope-ui-select.nvim' }
   use { 'ryanoasis/vim-devicons' }
   use { 'kyazdani42/nvim-web-devicons' }
   use { 'kyazdani42/nvim-tree.lua' }
@@ -298,8 +299,14 @@ require('hop').setup {}
 require('telescope').setup {
   defaults = {
     file_ignore_patterns = { 'node_modules' }
+  },
+  extensions = {
+    ['ui-select'] = {
+      require('telescope.themes').get_dropdown {}
+    }
   }
 }
+require('telescope').load_extension('ui-select')
 
 require('nvim-tree').setup {
   view = {
