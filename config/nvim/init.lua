@@ -272,7 +272,7 @@ require('nvim-autopairs').setup {}
 -- Syntax: {{{
 
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { 'c', 'go', 'java', 'javascript', 'typescript', 'python', 'lua', 'rust', 'yaml' },
+  ensure_installed = { 'c', 'go', 'java', 'javascript', 'typescript', 'python', 'hcl', 'lua', 'rust', 'yaml' },
   highlight = {
     enable = true,
     disable = {},
