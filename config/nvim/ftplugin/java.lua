@@ -1,5 +1,4 @@
 local jdtls = require('jdtls')
-local jdtls_version = '1.6.400.v20210924-0641'
 local jdtls_install_location = vim.fn.stdpath('data') .. '/lsp_servers/jdtls'
 
 -- If you started neovim within `~/dev/xy/project-1` this would resolve to `project-1`
@@ -49,7 +48,7 @@ local config = {
     '--add-modules=ALL-SYSTEM',
     '--add-opens', 'java.base/java.util=ALL-UNNAMED',
     '--add-opens', 'java.base/java.lang=ALL-UNNAMED',
-    '-jar', jdtls_install_location .. '/plugins/org.eclipse.equinox.launcher_' .. jdtls_version .. '.jar',
+    '-jar', jdtls_install_location .. '/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar',
     '-configuration', jdtls_install_location .. '/config_mac',
     '-data', workspace_dir,
   },
