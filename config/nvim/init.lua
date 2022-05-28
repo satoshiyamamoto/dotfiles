@@ -14,6 +14,7 @@ vim.opt.confirm = true
 vim.opt.completeopt = 'menu,menuone,noselect'
 vim.opt.clipboard:append { 'unnamedplus' }
 vim.opt.updatetime = 100
+vim.opt_global.shortmess:remove('F'):append('c')
 
 -- }}}
 
@@ -31,6 +32,8 @@ require('packer').startup(function(use)
   use { 'neovim/nvim-lspconfig' }
   use { 'williamboman/nvim-lsp-installer' }
   use { 'mfussenegger/nvim-jdtls' }
+  use { 'nvim-lua/plenary.nvim' }
+  use { 'scalameta/nvim-metals' }
 
   -- debugger
   use { 'mfussenegger/nvim-dap' }
@@ -75,7 +78,6 @@ require('packer').startup(function(use)
 
   -- finder
   use { 'phaazon/hop.nvim' }
-  use { 'nvim-lua/plenary.nvim' }
   use { 'nvim-telescope/telescope.nvim' }
   use { 'nvim-telescope/telescope-ui-select.nvim' }
   use { 'ryanoasis/vim-devicons' }
@@ -101,11 +103,20 @@ end)
 
 local map = vim.api.nvim_set_keymap
 local opts = { noremap = true, silent = true }
--- Diagnostics
-map('n', '<Space>e', '<Cmd>lua vim.diagnostic.open_float()<CR>', opts)
-map('n', '[d', '<Cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-map('n', ']d', '<Cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-map('n', '<Space>q', '<Cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+-- LSP
+map('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+map('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+map('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+map('n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+map('n', '<C-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+map('n', '<Space>wa', '<Cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+map('n', '<Space>wr', '<Cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+map('n', '<Space>wl', '<Cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+map('n', '<Space>D', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+map('n', '<Space>rn', '<Cmd>lua vim.lsp.buf.rename()<CR>', opts)
+map('n', '<Space>ca', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+map('n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', opts)
+map('n', '<Space>f', '<Cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 -- Debuggers
 map('n', '<F5>', '<Cmd>lua require"dap".continue()<CR>', opts)
 map('n', '<F10>', '<Cmd>lua require"dap".step_over()<CR>', opts)
@@ -116,6 +127,11 @@ map('n', '<Leader>B', '<Cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakp
 map('n', '<Leader>lp', '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>', opts)
 map('n', '<Leader>dr', '<Cmd>lua require"dap".repl.open()<CR>', opts)
 map('n', '<Leader>dl', '<Cmd>lua require"dap".run_last()<CR>', opts)
+-- Diagnostics
+map('n', '<Space>e', '<Cmd>lua vim.diagnostic.open_float()<CR>', opts)
+map('n', '[d', '<Cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
+map('n', ']d', '<Cmd>lua vim.diagnostic.goto_next()<CR>', opts)
+map('n', '<Space>q', '<Cmd>lua vim.diagnostic.setloclist()<CR>', opts)
 -- Test
 map('n', '<Leader>t', '<Cmd>TestNearest<CR>', opts)
 map('n', '<Leader>T', '<Cmd>TestFile<CR>', opts)
@@ -149,25 +165,8 @@ require('nvim-lsp-installer').setup {}
 local lspconfig = require('lspconfig')
 
 local on_attach = function(client, bufnr)
-  local option = vim.api.nvim_buf_set_option
-  local keymap = vim.api.nvim_buf_set_keymap
   -- Enable completion triggered by <c-x><c-o>
-  option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  keymap(bufnr, 'n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  keymap(bufnr, 'n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  keymap(bufnr, 'n', '<C-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  keymap(bufnr, 'n', '<Space>wa', '<Cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  keymap(bufnr, 'n', '<Space>wr', '<Cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  keymap(bufnr, 'n', '<Space>wl', '<Cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  keymap(bufnr, 'n', '<Space>D', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  keymap(bufnr, 'n', '<Space>rn', '<Cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  keymap(bufnr, 'n', '<Space>ca', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  keymap(bufnr, 'n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', opts)
-  keymap(bufnr, 'n', '<Space>f', '<Cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
 -- Language servers
@@ -187,6 +186,30 @@ lspconfig.tsserver.setup { on_attach = on_attach }
 lspconfig.terraformls.setup { on_attach = on_attach }
 lspconfig.rust_analyzer.setup { on_attach = on_attach }
 
+-- metals
+local metals_config = require('metals').bare_config()
+metals_config.settings = {
+  showImplicitArguments = true,
+  excludedPackages = { 'akka.actor.typed.javadsl', 'com.github.swagger.akka.javadsl' },
+}
+metals_config.init_options.statusBarProvider = 'on'
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+metals_config.capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+metals_config.on_attach = function(client, bufnr)
+  require('metals').setup_dap()
+end
+
+local nvim_metals_group = vim.api.nvim_create_augroup('nvim-metals', { clear = true })
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'scala', 'sbt', 'sc' },
+  callback = function()
+    require('metals').initialize_or_attach(metals_config)
+  end,
+  group = nvim_metals_group,
+})
+
 -- }}}
 
 -- DAP: {{{
@@ -204,7 +227,26 @@ end
 dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
-
+-- scala
+dap.configurations.scala = {
+  {
+    type = 'scala',
+    request = 'launch',
+    name = 'RunOrTest',
+    metals = {
+      runType = 'runOrTestFile',
+      --args = { 'firstArg', 'secondArg', 'thirdArg' }, -- here just as an example
+    },
+  },
+  {
+    type = 'scala',
+    request = 'launch',
+    name = 'Test Target',
+    metals = {
+      runType = 'testTarget',
+    },
+  },
+}
 -- }}}
 
 -- Completions: {{{

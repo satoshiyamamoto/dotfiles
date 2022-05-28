@@ -13,22 +13,7 @@ local on_attach = function(client, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  -- Mappings.
-  keymap(bufnr, 'n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  keymap(bufnr, 'n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  keymap(bufnr, 'n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  keymap(bufnr, 'n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  keymap(bufnr, 'n', '<C-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  keymap(bufnr, 'n', '<Space>wa', '<Cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-  keymap(bufnr, 'n', '<Space>wr', '<Cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-  keymap(bufnr, 'n', '<Space>wl', '<Cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-  keymap(bufnr, 'n', '<Space>D', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  keymap(bufnr, 'n', '<Space>rn', '<Cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  keymap(bufnr, 'n', '<Space>ca', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  keymap(bufnr, 'n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', opts)
-  keymap(bufnr, 'n', '<Space>f', '<Cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-
-  -- Additional Mappings for nvim-jdtls.
+  -- Mappings for nvim-jdtls.
   keymap(bufnr, 'n', '<A-o>', "<Cmd>lua require'jdtls'.organize_imports()<CR>", opts)
   keymap(bufnr, 'n', 'crv', "<Cmd>lua require('jdtls').extract_variable()<CR>", opts)
   keymap(bufnr, 'v', 'crv', "<Esc><Cmd>lua require('jdtls').extract_variable(true)<CR>", opts)
