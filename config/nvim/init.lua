@@ -14,7 +14,7 @@ vim.opt.confirm = true
 vim.opt.completeopt = 'menu,menuone,noselect'
 vim.opt.clipboard:append { 'unnamedplus' }
 vim.opt.updatetime = 100
-vim.opt_global.shortmess:remove('F'):append('c')
+--vim.opt_global.shortmess:remove('F'):append('c')
 
 -- }}}
 
