@@ -3,7 +3,7 @@ local jdtls_install_location = vim.fn.stdpath('data') .. '/lsp_servers/jdtls'
 
 -- If you started neovim within `~/dev/xy/project-1` this would resolve to `project-1`
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
-local workspace_dir = vim.env.WORKSPACE .. project_name
+local workspace_dir = vim.env.WORKSPACE .. '/' .. project_name
 
 local opts = { noremap = true, silent = true }
 local on_attach = function(client, bufnr)
