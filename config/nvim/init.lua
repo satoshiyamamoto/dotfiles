@@ -151,6 +151,11 @@ map('n', '<C-p>', '<Cmd>Telescope find_files<CR>', opts)
 map('n', '<C-n>', '<Cmd>NvimTreeToggle<CR>', opts)
 map('n', '<Leader>r', '<Cmd>NvimTreeRefresh<CR>', opts)
 map('n', '<Leader>n', '<Cmd>NvimTreeFindFile<CR>', opts)
+-- Windwos
+map('n', '<C-j>', '<C-w>j', opts)
+map('n', '<C-k>', '<C-w>k', opts)
+map('n', '<C-h>', '<C-w>h', opts)
+map('n', '<C-l>', '<C-w>l', opts)
 -- Insert
 map('i', 'jj', '<Esc>', opts)
 -- Terminal
