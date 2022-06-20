@@ -17,6 +17,7 @@ export KREW_ROOT="${KREW_ROOT:=$XDG_CONFIG_HOME/krew}"
 export GOPATH="$HOME/Develop"
 export SDKMAN_DIR="$HOME/.sdkman"
 export HOMEBREW_PREFIX="$(brew --prefix)"
+export LESSOPEN="|${HOMEBREW_PREFIX}/bin/src-hilite-lesspipe.sh %s"
 source "${HOMEBREW_PREFIX}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
 source "${HOMEBREW_PREFIX}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 
