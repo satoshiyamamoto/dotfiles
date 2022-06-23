@@ -151,6 +151,11 @@ map('n', '<C-p>', '<Cmd>Telescope find_files<CR>', opts)
 map('n', '<C-n>', '<Cmd>NvimTreeToggle<CR>', opts)
 map('n', '<Leader>r', '<Cmd>NvimTreeRefresh<CR>', opts)
 map('n', '<Leader>n', '<Cmd>NvimTreeFindFile<CR>', opts)
+-- buffers
+map('n', '[b', '<Cmd>:bprevious<CR>', opts)
+map('n', ']b', '<Cmd>:bnext<CR>', opts)
+map('n', '[B', '<Cmd>:bfirst<CR>', opts)
+map('n', ']B', '<Cmd>:blast<CR>', opts)
 -- Windwos
 map('n', '<C-j>', '<C-w>j', opts)
 map('n', '<C-k>', '<C-w>k', opts)
