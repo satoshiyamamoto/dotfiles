@@ -89,8 +89,8 @@ require('packer').startup(function(use)
   use { 'nvim-lualine/lualine.nvim' }
   use { 'rcarriga/nvim-notify' }
   use { 'airblade/vim-gitgutter' }
-  use { 'akinsho/bufferline.nvim', branch = 'main' }
-  use { 'akinsho/toggleterm.nvim', branch = 'main' }
+  use { 'akinsho/bufferline.nvim', tag = 'v2.*' }
+  use { 'akinsho/toggleterm.nvim', tag = 'v2.*' }
 
   if packer_bootstrap then
     require('packer').sync()
