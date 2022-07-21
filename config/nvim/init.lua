@@ -22,7 +22,8 @@ vim.opt.updatetime = 100
 
 local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
-  packer_bootstrap = vim.fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
+  packer_bootstrap = vim.fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim',
+    install_path })
 end
 
 require('packer').startup(function(use)
@@ -34,6 +35,7 @@ require('packer').startup(function(use)
   use { 'mfussenegger/nvim-jdtls' }
   use { 'nvim-lua/plenary.nvim' }
   use { 'scalameta/nvim-metals' }
+  use { 'nanotee/sqls.nvim' }
 
   -- debugger
   use { 'mfussenegger/nvim-dap' }
@@ -64,7 +66,8 @@ require('packer').startup(function(use)
   use { 'google/vim-maktaba' }
   use { 'google/vim-codefmt' }
   use { 'google/vim-glaive' }
-  use { 'prettier/vim-prettier', run = 'yarn install', ft = { 'javascript', 'typescript', 'css', 'less', 'scss', 'json', 'html' } }
+  use { 'prettier/vim-prettier', run = 'yarn install',
+    ft = { 'javascript', 'typescript', 'css', 'less', 'scss', 'json', 'html' } }
   use { 'mattn/vim-goimports' }
 
   -- snippet
@@ -189,6 +192,11 @@ lspconfig.sumneko_lua.setup {
       }
     }
   }
+}
+lspconfig.sqls.setup {
+  on_attach = function(client, bufnr)
+    require('sqls').on_attach(client, bufnr)
+  end
 }
 lspconfig.gopls.setup { on_attach = on_attach }
 lspconfig.pyright.setup { on_attach = on_attach }
@@ -344,7 +352,10 @@ require('hop').setup {}
 
 require('telescope').setup {
   defaults = {
-    file_ignore_patterns = { 'node_modules' }
+    file_ignore_patterns = {
+      'node_modules',
+      '%.class',
+    }
   },
   extensions = {
     ['ui-select'] = {
