@@ -40,6 +40,7 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'prabirshrestha/asyncomplete-buffer.vim'
 Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'mattn/vim-lsp-settings'
+Plug 'lighttiger2505/sqls.vim'
 
 " snippet
 Plug 'hrsh7th/vim-vsnip'
