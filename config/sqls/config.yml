@@ -1,0 +1,6 @@
+# Set to true to use lowercase keywords instead of uppercase.
+lowercaseKeywords: false
+connections:
+  - alias: root@localhost
+    driver: mysql
+    dataSourceName: root:@tcp(127.0.0.1:3306)/test
