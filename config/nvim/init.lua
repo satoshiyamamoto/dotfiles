@@ -203,7 +203,12 @@ lspconfig.sqls.setup {
 }
 lspconfig.gopls.setup { on_attach = on_attach }
 lspconfig.pyright.setup { on_attach = on_attach }
-lspconfig.intelephense.setup { on_attach = on_attach }
+lspconfig.intelephense.setup {
+  on_attach = on_attach,
+  init_options = {
+    globalStoragePath = vim.env.WORKSPACE
+  }
+}
 lspconfig.tsserver.setup { on_attach = on_attach }
 lspconfig.terraformls.setup { on_attach = on_attach }
 lspconfig.rust_analyzer.setup { on_attach = on_attach }
@@ -212,17 +217,30 @@ lspconfig.rust_analyzer.setup { on_attach = on_attach }
 
 -- DAP: {{{
 
+local dap, dapui = require('dap'), require('dapui')
 require('dap-python').setup('~/.local/share/virtualenvs/debugpy/bin/python')
 require('dap-go').setup()
-require('dapui').setup()
-local dap, dapui = require("dap"), require("dapui")
-dap.listeners.after.event_initialized["dapui_config"] = function()
+dap.adapters.php = {
+  type = 'executable',
+  command = 'node',
+  args = { vim.env.GOPATH .. '/src/github.com/xdebug/vscode-php-debug/out/phpDebug.js' }
+}
+dap.configurations.php = {
+  {
+    type = 'php',
+    request = 'launch',
+    name = 'Listen for Xdebug',
+    port = 9003
+  }
+}
+dapui.setup()
+dap.listeners.after.event_initialized['dapui_config'] = function()
   dapui.open()
 end
-dap.listeners.before.event_terminated["dapui_config"] = function()
+dap.listeners.before.event_terminated['dapui_config'] = function()
   dapui.close()
 end
-dap.listeners.before.event_exited["dapui_config"] = function()
+dap.listeners.before.event_exited['dapui_config'] = function()
   dapui.close()
 end
 
@@ -297,22 +315,23 @@ require('nvim-autopairs').setup {}
 -- Syntax: {{{
 
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { 'c', 'go', 'java', 'javascript', 'typescript', 'python', 'hcl', 'lua', 'rust', 'yaml' },
+  ensure_installed = { 'c', 'go', 'java', 'javascript', 'typescript', 'python', 'php', 'hcl', 'lua', 'rust', 'yaml' },
   highlight = {
     enable = true,
     disable = {},
+    additional_vim_regex_highlighting = { 'php' },
   },
   rainbow = {
     enable = true,
     extended_mode = true,
     max_file_lines = nil,
-  }
+  },
 }
 
 require('indent_blankline').setup {
-    space_char_blankline = ' ',
-    show_current_context = true,
-    show_current_context_start = true,
+  space_char_blankline = ' ',
+  show_current_context = true,
+  show_current_context_start = true,
 }
 
 -- }}}
