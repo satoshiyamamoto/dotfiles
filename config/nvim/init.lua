@@ -32,17 +32,15 @@ require('packer').startup(function(use)
   -- language server
   use { 'neovim/nvim-lspconfig' }
   use { 'williamboman/nvim-lsp-installer' }
-  use { 'mfussenegger/nvim-jdtls' }
-  use { 'nvim-lua/plenary.nvim' }
-  use { 'scalameta/nvim-metals' }
   use { 'nanotee/sqls.nvim' }
 
   -- debugger
   use { 'mfussenegger/nvim-dap' }
   use { 'mfussenegger/nvim-dap-python' }
+  use { 'mfussenegger/nvim-jdtls' }
   use { 'leoluz/nvim-dap-go' }
-  use { 'rcarriga/nvim-dap-ui' }
   use { 'theHamsta/nvim-dap-virtual-text' }
+  use { 'rcarriga/nvim-dap-ui' }
   use { 'vim-test/vim-test' }
 
   -- completion
@@ -60,6 +58,7 @@ require('packer').startup(function(use)
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
   use { 'nvim-treesitter/nvim-treesitter-textobjects' }
   use { 'nvim-treesitter/nvim-treesitter-refactor' }
+  use { 'nvim-lua/plenary.nvim' }
   use { 'p00f/nvim-ts-rainbow' }
 
   -- formatter
@@ -207,30 +206,6 @@ lspconfig.tsserver.setup { on_attach = on_attach }
 lspconfig.terraformls.setup { on_attach = on_attach }
 lspconfig.rust_analyzer.setup { on_attach = on_attach }
 
--- metals
-local metals_config = require('metals').bare_config()
-metals_config.settings = {
-  showImplicitArguments = true,
-  excludedPackages = { 'akka.actor.typed.javadsl', 'com.github.swagger.akka.javadsl' },
-}
-metals_config.init_options.statusBarProvider = 'on'
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-metals_config.capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
-
-metals_config.on_attach = function(client, bufnr)
-  require('metals').setup_dap()
-end
-
-local nvim_metals_group = vim.api.nvim_create_augroup('nvim-metals', { clear = true })
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'scala', 'sbt', 'sc' },
-  callback = function()
-    require('metals').initialize_or_attach(metals_config)
-  end,
-  group = nvim_metals_group,
-})
-
 -- }}}
 
 -- DAP: {{{
@@ -248,26 +223,7 @@ end
 dap.listeners.before.event_exited["dapui_config"] = function()
   dapui.close()
 end
--- scala
-dap.configurations.scala = {
-  {
-    type = 'scala',
-    request = 'launch',
-    name = 'RunOrTest',
-    metals = {
-      runType = 'runOrTestFile',
-      --args = { 'firstArg', 'secondArg', 'thirdArg' }, -- here just as an example
-    },
-  },
-  {
-    type = 'scala',
-    request = 'launch',
-    name = 'Test Target',
-    metals = {
-      runType = 'testTarget',
-    },
-  },
-}
+
 -- }}}
 
 -- Completions: {{{
