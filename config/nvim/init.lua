@@ -60,6 +60,7 @@ require('packer').startup(function(use)
   use { 'nvim-treesitter/nvim-treesitter-refactor' }
   use { 'nvim-lua/plenary.nvim' }
   use { 'p00f/nvim-ts-rainbow' }
+  use { 'lukas-reineke/indent-blankline.nvim' }
 
   -- formatter
   use { 'editorconfig/editorconfig-vim' }
@@ -306,6 +307,12 @@ require('nvim-treesitter.configs').setup {
     extended_mode = true,
     max_file_lines = nil,
   }
+}
+
+require('indent_blankline').setup {
+    space_char_blankline = ' ',
+    show_current_context = true,
+    show_current_context_start = true,
 }
 
 -- }}}
