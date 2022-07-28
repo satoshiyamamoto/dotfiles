@@ -319,7 +319,7 @@ require('nvim-treesitter.configs').setup {
   highlight = {
     enable = true,
     disable = {},
-    additional_vim_regex_highlighting = { 'php' },
+    additional_vim_regex_highlighting = { 'php', 'yaml' },
   },
   rainbow = {
     enable = true,
