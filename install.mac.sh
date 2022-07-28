@@ -27,9 +27,6 @@ export DOTFILES="${HOME}/Develop/src/github.com/satoshiyamamoto/dotfiles"
 [ -f "${DOTFILES}/aliases.mac" ] && source "${DOTFILES}/aliases.mac"
 [ -f "${HOME}/.fzf.zsh" ] && source "${HOME}/.fzf.zsh"
 [ -f "${HOME}/.cargo/env" ] && source "${HOME}/.cargo/env"
-[ -f "${HOME}/.sdkman/bin/sdkman-init.sh" ] && source "${HOME}/.sdkman/bin/sdkman-init.sh"
-
-which anyenv > /dev/null && eval "$(anyenv init -)"
 EOL
 
 ## Set the Vimrc

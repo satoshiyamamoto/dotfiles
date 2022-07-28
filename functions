@@ -7,6 +7,15 @@ kubectl() {
     command kubectl "$@"
 }
 
+sdk () {
+    # "metaprogramming" lol - source init if sdk currently looks like this sdk function
+    if [[ "$(which sdk | wc -l)" -le 10 ]]; then
+        unset -f sdk
+        source "$SDKMAN_DIR/bin/sdkman-init.sh"
+    fi
+    sdk "$@"
+}
+
 jdk() {
   version=$1
   export JAVA_HOME=$(/usr/libexec/java_home -v"$version");
