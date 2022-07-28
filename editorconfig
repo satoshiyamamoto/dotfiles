@@ -30,14 +30,22 @@ indent_size = 8
 indent_style = space
 indent_size = 2
 continuation_indent_size = 4
+max_line_length = 100
 
 # TypeScript
 [*.ts]
 indent_style = space
 indent_size = 4
+max_line_length = 80
 
 # Python: PEP8 defines 4 spaces for indentation
 [*.py]
+indent_style = space
+indent_size = 4
+max_line_length = 80
+
+# PHP
+[*.php]
 indent_style = space
 indent_size = 4
 
