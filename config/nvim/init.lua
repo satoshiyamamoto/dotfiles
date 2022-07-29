@@ -361,11 +361,13 @@ require('nvim-tree').setup {
   view = {
     hide_root_folder = true,
   },
+  renderer = {
+    group_empty = true,
+  },
   filters = {
     dotfiles = true,
   }
 }
-vim.g.nvim_tree_group_empty = 1
 
 -- }}}
 
