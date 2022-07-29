@@ -208,7 +208,7 @@ lspconfig.intelephense.setup {
   on_attach = on_attach,
   init_options = {
     globalStoragePath = vim.env.WORKSPACE,
-    licenceKey = vim.env.INTELEPHENSE_KEY,
+    licenceKey = vim.env.XDG_CONFIG_HOME .. '/intelephense/licence.key'
   }
 }
 lspconfig.tsserver.setup { on_attach = on_attach }
