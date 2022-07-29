@@ -133,6 +133,7 @@ map('n', '<Leader>B', '<Cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakp
 map('n', '<Leader>lp', '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>', opts)
 map('n', '<Leader>dr', '<Cmd>lua require"dap".repl.open()<CR>', opts)
 map('n', '<Leader>dl', '<Cmd>lua require"dap".run_last()<CR>', opts)
+map('n', '<Leader>du', '<Cmd>lua require"dapui".toggle()<CR>', opts)
 -- Diagnostics
 map('n', '<Space>e', '<Cmd>lua vim.diagnostic.open_float()<CR>', opts)
 map('n', '[d', '<Cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
