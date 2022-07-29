@@ -207,7 +207,8 @@ lspconfig.pyright.setup { on_attach = on_attach }
 lspconfig.intelephense.setup {
   on_attach = on_attach,
   init_options = {
-    globalStoragePath = vim.env.WORKSPACE
+    globalStoragePath = vim.env.WORKSPACE,
+    licenceKey = vim.env.INTELEPHENSE_KEY,
   }
 }
 lspconfig.tsserver.setup { on_attach = on_attach }
