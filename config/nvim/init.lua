@@ -173,6 +173,7 @@ map('n', '<C-l>', '<C-w>l', opts)
 map('i', 'jj', '<Esc>', opts)
 -- Terminal
 map('t', '<Esc>', '<C-\\><C-n>', opts)
+map('t', '<C-[>', '<C-\\><C-n>', opts)
 
 -- }}}
 
