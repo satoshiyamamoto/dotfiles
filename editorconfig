@@ -4,7 +4,6 @@
 
 root = true
 
-
 [*]
 
 # Change these settings to your own preference
@@ -19,11 +18,16 @@ insert_final_newline = true
 
 [*.md]
 trim_trailing_whitespace = false
+indent_size = 4
 
 # Go: standard style
 [{Makefile,go.mod,go.sum,*.go}]
 indent_style = tab
-indent_size = 8
+indent_size = 4
+
+# Docker
+[Dockerfile]
+indent_size = 4
 
 # Java
 [*.java]
