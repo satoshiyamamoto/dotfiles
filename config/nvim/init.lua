@@ -53,6 +53,7 @@ require('packer').startup(function(use)
   use { 'hrsh7th/vim-vsnip' }
   use { 'hrsh7th/vim-vsnip-integ' }
   use { 'onsails/lspkind-nvim' }
+  use { 'golang/vscode-go' }
 
   -- syntax highlight
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
