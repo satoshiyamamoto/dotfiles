@@ -258,7 +258,9 @@ lspconfig['sumneko_lua'].setup {
 
 local mason_path = vim.fn.stdpath('data') .. '/mason'
 require('dap-go').setup()
-require('dap-python').setup(mason_path .. '/packages/debugpy/venv/bin/python')
+require('dap-python').setup(
+  mason_path .. '/packages/debugpy/venv/bin/python'
+)
 dap.adapters.php = {
   type = 'executable',
   command = mason_path .. '/bin/php-debug-adapter',
@@ -423,6 +425,11 @@ vim.keymap.set('n', '<Leader>lg', function()
     count = 0
   }):toggle()
 end)
+
+vim.cmd([[
+  autocmd TermOpen * startinsert
+  autocmd TermOpen * setlocal nonumber norelativenumber
+]])
 
 -- }}}
 
