@@ -24,6 +24,7 @@ local install_path = vim.fn.stdpath('data') .. '/site/pack/packer/start/packer.n
 if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   packer_bootstrap = vim.fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim',
     install_path })
+  vim.cmd [[packadd packer.nvim]]
 end
 
 require('packer').startup(function(use)
@@ -31,7 +32,8 @@ require('packer').startup(function(use)
 
   -- language server
   use { 'neovim/nvim-lspconfig' }
-  use { 'williamboman/nvim-lsp-installer' }
+  use { 'williamboman/mason.nvim' }
+  use { 'williamboman/mason-lspconfig.nvim' }
   use { 'nanotee/sqls.nvim' }
 
   -- debugger
@@ -107,157 +109,159 @@ end)
 
 -- Mappings: {{{
 
-local bufopts = { noremap = true, silent = true }
--- LSP
-vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-vim.keymap.set('n', 'gs', vim.lsp.buf.document_symbol, bufopts)
-vim.keymap.set('n', 'gS', vim.lsp.buf.workspace_symbol, bufopts)
-vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-vim.keymap.set('n', '<Space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
-vim.keymap.set('n', '<Space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
-vim.keymap.set('n', '<Space>wl', function()
-  print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-end, bufopts)
-vim.keymap.set('n', '<Space>D', vim.lsp.buf.type_definition, bufopts)
-vim.keymap.set('n', '<Space>rn', vim.lsp.buf.rename, bufopts)
-vim.keymap.set('n', '<Space>ca', vim.lsp.buf.code_action, bufopts)
-vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-vim.keymap.set('n', '<Space>f', vim.lsp.buf.formatting, bufopts)
+local opts = { noremap = true, silent = true }
+
+-- Insert
+vim.keymap.set('i', 'jj', '<Esc>', opts)
+
+-- Terminal
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', opts)
+vim.keymap.set('t', '<C-[>', '<C-\\><C-n>', opts)
+
+-- Buffers
+vim.keymap.set('n', '[b', '<Cmd>:bprevious<CR>', opts)
+vim.keymap.set('n', ']b', '<Cmd>:bnext<CR>', opts)
+vim.keymap.set('n', '[B', '<Cmd>:bfirst<CR>', opts)
+vim.keymap.set('n', ']B', '<Cmd>:blast<CR>', opts)
+
+-- Windows
+vim.keymap.set('n', '<C-j>', '<C-w>j', opts)
+vim.keymap.set('n', '<C-k>', '<C-w>k', opts)
+vim.keymap.set('n', '<C-h>', '<C-w>h', opts)
+vim.keymap.set('n', '<C-l>', '<C-w>l', opts)
+
+-- Diagnostics
+vim.keymap.set('n', '<Leader>e', vim.diagnostic.open_float, opts)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+vim.keymap.set('n', '<Leader>q', vim.diagnostic.setloclist, opts)
+
 -- Debuggers
 local dap = require('dap')
 local dapui = require('dapui')
-vim.keymap.set('n', '<F5>', dap.continue, bufopts)
-vim.keymap.set('n', '<F10>', dap.step_over, bufopts)
-vim.keymap.set('n', '<F11>', dap.step_into, bufopts)
-vim.keymap.set('n', '<F12>', dap.step_out, bufopts)
-vim.keymap.set('n', '<Leader>b', dap.toggle_breakpoint, bufopts)
+vim.keymap.set('n', '<F5>', dap.continue, opts)
+vim.keymap.set('n', '<F10>', dap.step_over, opts)
+vim.keymap.set('n', '<F11>', dap.step_into, opts)
+vim.keymap.set('n', '<F12>', dap.step_out, opts)
+vim.keymap.set('n', '<Leader>b', dap.toggle_breakpoint, opts)
 vim.keymap.set('n', '<Leader>B', function()
   dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-end, bufopts)
+end, opts)
 vim.keymap.set('n', '<Leader>lp', function()
   dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
-end, bufopts)
-vim.keymap.set('n', '<Leader>dr', dap.repl.open, bufopts)
-vim.keymap.set('n', '<Leader>dl', dap.run_last, bufopts)
-vim.keymap.set('n', '<Leader>du', dapui.toggle, bufopts)
--- Diagnostics
-vim.keymap.set('n', '<Leader>e', vim.diagnostic.open_float, bufopts)
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, bufopts)
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts)
-vim.keymap.set('n', '<Leader>q', vim.diagnostic.setloclist, bufopts)
+end, opts)
+vim.keymap.set('n', '<Leader>dr', dap.repl.open, opts)
+vim.keymap.set('n', '<Leader>dl', dap.run_last, opts)
+vim.keymap.set('n', '<Leader>du', dapui.toggle, opts)
+
 -- Test
-vim.keymap.set('n', '<Leader>t', '<Cmd>TestNearest<CR>', bufopts)
-vim.keymap.set('n', '<Leader>T', '<Cmd>TestFile<CR>', bufopts)
-vim.keymap.set('n', '<Leader>a', '<Cmd>TestSuite<CR>', bufopts)
-vim.keymap.set('n', '<Leader>l', '<Cmd>TestLast<CR>', bufopts)
-vim.keymap.set('n', '<Leader>g', '<Cmd>TestVisit<CR>', bufopts)
+vim.keymap.set('n', '<Leader>t', '<Cmd>TestNearest<CR>', opts)
+vim.keymap.set('n', '<Leader>T', '<Cmd>TestFile<CR>', opts)
+vim.keymap.set('n', '<Leader>a', '<Cmd>TestSuite<CR>', opts)
+vim.keymap.set('n', '<Leader>l', '<Cmd>TestLast<CR>', opts)
+vim.keymap.set('n', '<Leader>g', '<Cmd>TestVisit<CR>', opts)
+
 -- Hop (easymotion)
-vim.keymap.set('n', '<Leader><Leader>w', '<Cmd>HopWord<CR>', bufopts)
-vim.keymap.set('n', '<Leader><Leader>f', '<Cmd>HopChar1<CR>', bufopts)
+vim.keymap.set('n', '<Leader><Leader>w', '<Cmd>HopWord<CR>', opts)
+vim.keymap.set('n', '<Leader><Leader>f', '<Cmd>HopChar1<CR>', opts)
+
 -- Telescope
-vim.keymap.set('n', '<Leader>ff', '<Cmd>Telescope find_files<CR>', bufopts)
-vim.keymap.set('n', '<Leader>fg', '<Cmd>Telescope live_grep<CR>', bufopts)
-vim.keymap.set('n', '<Leader>fb', '<Cmd>Telescope buffers<CR>', bufopts)
-vim.keymap.set('n', '<Leader>fh', '<Cmd>Telescope help_tags<CR>', bufopts)
-vim.keymap.set('n', '<C-p>', '<Cmd>Telescope find_files<CR>', bufopts)
+vim.keymap.set('n', '<Leader>ff', '<Cmd>Telescope find_files<CR>', opts)
+vim.keymap.set('n', '<Leader>fg', '<Cmd>Telescope live_grep<CR>', opts)
+vim.keymap.set('n', '<Leader>fb', '<Cmd>Telescope buffers<CR>', opts)
+vim.keymap.set('n', '<Leader>fh', '<Cmd>Telescope help_tags<CR>', opts)
+vim.keymap.set('n', '<C-p>', '<Cmd>Telescope find_files<CR>', opts)
+
 -- NvimTree
-vim.keymap.set('n', '<C-n>', '<Cmd>NvimTreeToggle<CR>', bufopts)
-vim.keymap.set('n', '<Leader>r', '<Cmd>NvimTreeRefresh<CR>', bufopts)
-vim.keymap.set('n', '<Leader>n', '<Cmd>NvimTreeFindFile<CR>', bufopts)
--- buffers
-vim.keymap.set('n', '[b', '<Cmd>:bprevious<CR>', bufopts)
-vim.keymap.set('n', ']b', '<Cmd>:bnext<CR>', bufopts)
-vim.keymap.set('n', '[B', '<Cmd>:bfirst<CR>', bufopts)
-vim.keymap.set('n', ']B', '<Cmd>:blast<CR>', bufopts)
--- Windwos
-vim.keymap.set('n', '<C-j>', '<C-w>j', bufopts)
-vim.keymap.set('n', '<C-k>', '<C-w>k', bufopts)
-vim.keymap.set('n', '<C-h>', '<C-w>h', bufopts)
-vim.keymap.set('n', '<C-l>', '<C-w>l', bufopts)
--- Insert
-vim.keymap.set('i', 'jj', '<Esc>', bufopts)
--- Terminal
-vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', bufopts)
-vim.keymap.set('t', '<C-[>', '<C-\\><C-n>', bufopts)
+vim.keymap.set('n', '<C-n>', '<Cmd>NvimTreeToggle<CR>', opts)
+vim.keymap.set('n', '<Leader>r', '<Cmd>NvimTreeRefresh<CR>', opts)
+vim.keymap.set('n', '<Leader>n', '<Cmd>NvimTreeFindFile<CR>', opts)
+
 -- Snippets
 vim.cmd([[
-" Expand
 imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
 smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-
-" Expand or jump
 imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
 smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-
-" Jump forward or backward
 imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
 smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
 imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
 smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-
-" Select or cut text to use as $TM_SELECTED_TEXT in the next snippet.
-" See https://github.com/hrsh7th/vim-vsnip/pull/50
-nmap        s   <Plug>(vsnip-select-text)
-xmap        s   <Plug>(vsnip-select-text)
-nmap        S   <Plug>(vsnip-cut-text)
-xmap        S   <Plug>(vsnip-cut-text)
 ]])
 
 -- }}}
 
 -- LSP: {{{
 
-require('nvim-lsp-installer').setup {}
+require('mason').setup()
+require('mason-lspconfig').setup()
 
 local lspconfig = require('lspconfig')
 
-local on_attach = function(client, bufnr)
+local on_attach = function(_, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local bufopts = { noremap = true, silent = true, buffer = bufnr }
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+  vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+  vim.keymap.set('n', 'gs', vim.lsp.buf.document_symbol, bufopts)
+  vim.keymap.set('n', 'gS', vim.lsp.buf.workspace_symbol, bufopts)
+  vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+  vim.keymap.set('n', '<Space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+  vim.keymap.set('n', '<Space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+  vim.keymap.set('n', '<Space>wl', function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, bufopts)
+  vim.keymap.set('n', '<Space>D', vim.lsp.buf.type_definition, bufopts)
+  vim.keymap.set('n', '<Space>rn', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set('n', '<Space>ca', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+  vim.keymap.set('n', '<Space>f', vim.lsp.buf.formatting, bufopts)
 end
 
 -- Language servers
-lspconfig.sumneko_lua.setup {
-  on_attach = on_attach,
-  settings = {
-    Lua = {
-      diagnostics = {
-        globals = { 'vim' }
-      }
-    }
-  }
-}
-lspconfig.sqls.setup {
+lspconfig['gopls'].setup { on_attach = on_attach }
+lspconfig['pyright'].setup { on_attach = on_attach }
+lspconfig['tsserver'].setup { on_attach = on_attach }
+lspconfig['terraformls'].setup { on_attach = on_attach }
+lspconfig['rust_analyzer'].setup { on_attach = on_attach }
+lspconfig['sqls'].setup {
   on_attach = function(client, bufnr)
     require('sqls').on_attach(client, bufnr)
   end
 }
-lspconfig.gopls.setup { on_attach = on_attach }
-lspconfig.pyright.setup { on_attach = on_attach }
-lspconfig.intelephense.setup {
+lspconfig['intelephense'].setup {
   on_attach = on_attach,
   init_options = {
     globalStoragePath = vim.env.WORKSPACE,
-    licenceKey = vim.env.XDG_CONFIG_HOME .. '/intelephense/licence.key'
+    licenceKey = vim.fn.stdpath('config') .. '/../intelephense/licence.key'
   }
 }
-lspconfig.tsserver.setup { on_attach = on_attach }
-lspconfig.terraformls.setup { on_attach = on_attach }
-lspconfig.rust_analyzer.setup { on_attach = on_attach }
+lspconfig['sumneko_lua'].setup {
+  on_attach = on_attach,
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { 'vim', 'require' }
+      }
+    }
+  }
+}
 
 -- }}}
 
 -- DAP: {{{
 
-require('dap-python').setup('~/.local/share/virtualenvs/debugpy/bin/python')
+local mason_path = vim.fn.stdpath('data') .. '/mason'
 require('dap-go').setup()
+require('dap-python').setup(mason_path .. '/packages/debugpy/venv/bin/python')
 dap.adapters.php = {
   type = 'executable',
-  command = 'node',
-  args = { vim.env.GOPATH .. '/src/github.com/xdebug/vscode-php-debug/out/phpDebug.js' }
+  command = mason_path .. '/bin/php-debug-adapter',
 }
 dap.configurations.php = {
   {
@@ -407,11 +411,11 @@ require('nvim-tree').setup {
 -- Terminal: {{{
 
 require("toggleterm").setup {
-  open_mapping = [[<Leader>`]],
-  insert_mappings = false,
+  open_mapping = [[<C-`>]],
+  insert_mappings = true,
 }
 
-vim.keymap.set('n', '<Leader>g', function()
+vim.keymap.set('n', '<Leader>lg', function()
   require('toggleterm.terminal').Terminal:new({
     cmd = "lazygit",
     direction = 'float',
