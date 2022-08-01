@@ -1,5 +1,7 @@
 local jdtls = require('jdtls')
 local jdtls_path = vim.fn.stdpath('data') .. '/mason/packages/jdtls'
+local java_debug_path = vim.fn.glob(vim.fn.stdpath('data') .. '/site/pack/packer/start/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar')
+
 
 -- If you started neovim within `~/dev/xy/project-1` this would resolve to `project-1`
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
@@ -126,8 +128,7 @@ local config = {
   -- If you don't plan on using the debugger or other eclipse.jdt.ls plugins you can remove this
   init_options = {
     bundles = {
-      vim.fn.glob(vim.env.GOPATH ..
-        '/src/github.com/microsoft/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar')
+      java_debug_path
     };
   },
 

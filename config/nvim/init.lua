@@ -40,9 +40,10 @@ require('packer').startup(function(use)
   use { 'mfussenegger/nvim-dap' }
   use { 'mfussenegger/nvim-dap-python' }
   use { 'mfussenegger/nvim-jdtls' }
-  use { 'leoluz/nvim-dap-go' }
   use { 'theHamsta/nvim-dap-virtual-text' }
   use { 'rcarriga/nvim-dap-ui' }
+  use { 'leoluz/nvim-dap-go' }
+  use { 'microsoft/java-debug' }
   use { 'vim-test/vim-test' }
 
   -- completion
