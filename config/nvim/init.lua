@@ -107,74 +107,104 @@ end)
 
 -- Mappings: {{{
 
-local map = vim.api.nvim_set_keymap
-local opts = { noremap = true, silent = true }
+local bufopts = { noremap = true, silent = true }
 -- LSP
-map('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-map('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-map('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-map('n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-map('n', 'gs', '<Cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
-map('n', 'gS', '<Cmd>lua vim.lsp.buf.workspace_symbol()<CR>', opts)
-map('n', '<C-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-map('n', '<Space>wa', '<Cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-map('n', '<Space>wr', '<Cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-map('n', '<Space>wl', '<Cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
-map('n', '<Space>D', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-map('n', '<Space>rn', '<Cmd>lua vim.lsp.buf.rename()<CR>', opts)
-map('n', '<Space>ca', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-map('n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', opts)
-map('n', '<Space>f', '<Cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+vim.keymap.set('n', 'gs', vim.lsp.buf.document_symbol, bufopts)
+vim.keymap.set('n', 'gS', vim.lsp.buf.workspace_symbol, bufopts)
+vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+vim.keymap.set('n', '<Space>wa', vim.lsp.buf.add_workspace_folder, bufopts)
+vim.keymap.set('n', '<Space>wr', vim.lsp.buf.remove_workspace_folder, bufopts)
+vim.keymap.set('n', '<Space>wl', function()
+  print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+end, bufopts)
+vim.keymap.set('n', '<Space>D', vim.lsp.buf.type_definition, bufopts)
+vim.keymap.set('n', '<Space>rn', vim.lsp.buf.rename, bufopts)
+vim.keymap.set('n', '<Space>ca', vim.lsp.buf.code_action, bufopts)
+vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+vim.keymap.set('n', '<Space>f', vim.lsp.buf.formatting, bufopts)
 -- Debuggers
-map('n', '<F5>', '<Cmd>lua require"dap".continue()<CR>', opts)
-map('n', '<F10>', '<Cmd>lua require"dap".step_over()<CR>', opts)
-map('n', '<F11>', '<Cmd>lua require"dap".step_into()<CR>', opts)
-map('n', '<F12>', '<Cmd>lua require"dap".step_out()<CR>', opts)
-map('n', '<Leader>b', '<Cmd>lua require"dap".toggle_breakpoint()<CR>', opts)
-map('n', '<Leader>B', '<Cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>', opts)
-map('n', '<Leader>lp', '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>', opts)
-map('n', '<Leader>dr', '<Cmd>lua require"dap".repl.open()<CR>', opts)
-map('n', '<Leader>dl', '<Cmd>lua require"dap".run_last()<CR>', opts)
-map('n', '<Leader>du', '<Cmd>lua require"dapui".toggle()<CR>', opts)
+local dap = require('dap')
+local dapui = require('dapui')
+vim.keymap.set('n', '<F5>', dap.continue, bufopts)
+vim.keymap.set('n', '<F10>', dap.step_over, bufopts)
+vim.keymap.set('n', '<F11>', dap.step_into, bufopts)
+vim.keymap.set('n', '<F12>', dap.step_out, bufopts)
+vim.keymap.set('n', '<Leader>b', dap.toggle_breakpoint, bufopts)
+vim.keymap.set('n', '<Leader>B', function()
+  dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+end, bufopts)
+vim.keymap.set('n', '<Leader>lp', function()
+  dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
+end, bufopts)
+vim.keymap.set('n', '<Leader>dr', dap.repl.open, bufopts)
+vim.keymap.set('n', '<Leader>dl', dap.run_last, bufopts)
+vim.keymap.set('n', '<Leader>du', dapui.toggle, bufopts)
 -- Diagnostics
-map('n', '<Space>e', '<Cmd>lua vim.diagnostic.open_float()<CR>', opts)
-map('n', '[d', '<Cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-map('n', ']d', '<Cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-map('n', '<Space>q', '<Cmd>lua vim.diagnostic.setloclist()<CR>', opts)
+vim.keymap.set('n', '<Leader>e', vim.diagnostic.open_float, bufopts)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, bufopts)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, bufopts)
+vim.keymap.set('n', '<Leader>q', vim.diagnostic.setloclist, bufopts)
 -- Test
-map('n', '<Leader>t', '<Cmd>TestNearest<CR>', opts)
-map('n', '<Leader>T', '<Cmd>TestFile<CR>', opts)
-map('n', '<Leader>a', '<Cmd>TestSuite<CR>', opts)
-map('n', '<Leader>l', '<Cmd>TestLast<CR>', opts)
-map('n', '<Leader>g', '<Cmd>TestVisit<CR>', opts)
+vim.keymap.set('n', '<Leader>t', '<Cmd>TestNearest<CR>', bufopts)
+vim.keymap.set('n', '<Leader>T', '<Cmd>TestFile<CR>', bufopts)
+vim.keymap.set('n', '<Leader>a', '<Cmd>TestSuite<CR>', bufopts)
+vim.keymap.set('n', '<Leader>l', '<Cmd>TestLast<CR>', bufopts)
+vim.keymap.set('n', '<Leader>g', '<Cmd>TestVisit<CR>', bufopts)
 -- Hop (easymotion)
-map('n', '<Leader><Leader>w', '<Cmd>HopWord<CR>', opts)
-map('n', '<Leader><Leader>f', '<Cmd>HopChar1<CR>', opts)
+vim.keymap.set('n', '<Leader><Leader>w', '<Cmd>HopWord<CR>', bufopts)
+vim.keymap.set('n', '<Leader><Leader>f', '<Cmd>HopChar1<CR>', bufopts)
 -- Telescope
-map('n', '<Leader>ff', '<Cmd>Telescope find_files<CR>', opts)
-map('n', '<Leader>fg', '<Cmd>Telescope live_grep<CR>', opts)
-map('n', '<Leader>fb', '<Cmd>Telescope buffers<CR>', opts)
-map('n', '<Leader>fh', '<Cmd>Telescope help_tags<CR>', opts)
-map('n', '<C-p>', '<Cmd>Telescope find_files<CR>', opts)
+vim.keymap.set('n', '<Leader>ff', '<Cmd>Telescope find_files<CR>', bufopts)
+vim.keymap.set('n', '<Leader>fg', '<Cmd>Telescope live_grep<CR>', bufopts)
+vim.keymap.set('n', '<Leader>fb', '<Cmd>Telescope buffers<CR>', bufopts)
+vim.keymap.set('n', '<Leader>fh', '<Cmd>Telescope help_tags<CR>', bufopts)
+vim.keymap.set('n', '<C-p>', '<Cmd>Telescope find_files<CR>', bufopts)
 -- NvimTree
-map('n', '<C-n>', '<Cmd>NvimTreeToggle<CR>', opts)
-map('n', '<Leader>r', '<Cmd>NvimTreeRefresh<CR>', opts)
-map('n', '<Leader>n', '<Cmd>NvimTreeFindFile<CR>', opts)
+vim.keymap.set('n', '<C-n>', '<Cmd>NvimTreeToggle<CR>', bufopts)
+vim.keymap.set('n', '<Leader>r', '<Cmd>NvimTreeRefresh<CR>', bufopts)
+vim.keymap.set('n', '<Leader>n', '<Cmd>NvimTreeFindFile<CR>', bufopts)
 -- buffers
-map('n', '[b', '<Cmd>:bprevious<CR>', opts)
-map('n', ']b', '<Cmd>:bnext<CR>', opts)
-map('n', '[B', '<Cmd>:bfirst<CR>', opts)
-map('n', ']B', '<Cmd>:blast<CR>', opts)
+vim.keymap.set('n', '[b', '<Cmd>:bprevious<CR>', bufopts)
+vim.keymap.set('n', ']b', '<Cmd>:bnext<CR>', bufopts)
+vim.keymap.set('n', '[B', '<Cmd>:bfirst<CR>', bufopts)
+vim.keymap.set('n', ']B', '<Cmd>:blast<CR>', bufopts)
 -- Windwos
-map('n', '<C-j>', '<C-w>j', opts)
-map('n', '<C-k>', '<C-w>k', opts)
-map('n', '<C-h>', '<C-w>h', opts)
-map('n', '<C-l>', '<C-w>l', opts)
+vim.keymap.set('n', '<C-j>', '<C-w>j', bufopts)
+vim.keymap.set('n', '<C-k>', '<C-w>k', bufopts)
+vim.keymap.set('n', '<C-h>', '<C-w>h', bufopts)
+vim.keymap.set('n', '<C-l>', '<C-w>l', bufopts)
 -- Insert
-map('i', 'jj', '<Esc>', opts)
+vim.keymap.set('i', 'jj', '<Esc>', bufopts)
 -- Terminal
-map('t', '<Esc>', '<C-\\><C-n>', opts)
-map('t', '<C-[>', '<C-\\><C-n>', opts)
+vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', bufopts)
+vim.keymap.set('t', '<C-[>', '<C-\\><C-n>', bufopts)
+-- Snippets
+vim.cmd([[
+" Expand
+imap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+smap <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+
+" Expand or jump
+imap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+smap <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+
+" Jump forward or backward
+imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+
+" Select or cut text to use as $TM_SELECTED_TEXT in the next snippet.
+" See https://github.com/hrsh7th/vim-vsnip/pull/50
+nmap        s   <Plug>(vsnip-select-text)
+xmap        s   <Plug>(vsnip-select-text)
+nmap        S   <Plug>(vsnip-cut-text)
+xmap        S   <Plug>(vsnip-cut-text)
+]])
 
 -- }}}
 
@@ -222,7 +252,6 @@ lspconfig.rust_analyzer.setup { on_attach = on_attach }
 
 -- DAP: {{{
 
-local dap, dapui = require('dap'), require('dapui')
 require('dap-python').setup('~/.local/share/virtualenvs/debugpy/bin/python')
 require('dap-go').setup()
 dap.adapters.php = {
