@@ -88,10 +88,12 @@ require('packer').startup(function(use)
   -- finder
   use { 'phaazon/hop.nvim' }
   use { 'nvim-telescope/telescope.nvim' }
+  use { 'nvim-telescope/telescope-frecency.nvim' }
   use { 'nvim-telescope/telescope-ui-select.nvim' }
   use { 'ryanoasis/vim-devicons' }
   use { 'kyazdani42/nvim-web-devicons' }
   use { 'kyazdani42/nvim-tree.lua' }
+  use { 'tami5/sqlite.lua' }
 
   -- theme
   use { 'projekt0n/github-nvim-theme' }
@@ -160,11 +162,13 @@ vim.keymap.set('n', '<Leader><Leader>w', '<Cmd>HopWord<CR>', opts)
 vim.keymap.set('n', '<Leader><Leader>f', '<Cmd>HopChar1<CR>', opts)
 
 -- Telescope
-vim.keymap.set('n', '<Leader>ff', '<Cmd>Telescope find_files<CR>', opts)
-vim.keymap.set('n', '<Leader>fg', '<Cmd>Telescope live_grep<CR>', opts)
-vim.keymap.set('n', '<Leader>fb', '<Cmd>Telescope buffers<CR>', opts)
-vim.keymap.set('n', '<Leader>fh', '<Cmd>Telescope help_tags<CR>', opts)
-vim.keymap.set('n', '<C-p>', '<Cmd>Telescope find_files<CR>', opts)
+local telescope = require('telescope')
+local telescope_builtin = require('telescope.builtin')
+vim.keymap.set('n', '<Leader>ff', telescope_builtin.find_files, opts)
+vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, opts)
+vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, opts)
+vim.keymap.set('n', '<leader>fh', telescope_builtin.help_tags, opts)
+vim.keymap.set('n', '<leader>fr', telescope.extensions.frecency.frecency, opts)
 
 -- NvimTree
 vim.keymap.set('n', '<C-n>', '<Cmd>NvimTreeToggle<CR>', opts)
@@ -371,7 +375,7 @@ require('virt-column').setup()
 
 require('hop').setup {}
 
-require('telescope').setup {
+telescope.setup {
   defaults = {
     file_ignore_patterns = {
       'node_modules',
@@ -384,7 +388,8 @@ require('telescope').setup {
     }
   }
 }
-require('telescope').load_extension('ui-select')
+telescope.load_extension('frecency')
+telescope.load_extension('ui-select')
 
 require('nvim-tree').setup {
   view = {
