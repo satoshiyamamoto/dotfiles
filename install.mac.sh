@@ -25,6 +25,7 @@ export DOTFILES="${HOME}/Develop/src/github.com/satoshiyamamoto/dotfiles"
 [ -f "${DOTFILES}/env" ] && source "${DOTFILES}/env"
 [ -f "${DOTFILES}/functions" ] && source "${DOTFILES}/functions"
 [ -f "${DOTFILES}/aliases.mac" ] && source "${DOTFILES}/aliases.mac"
+[ -f "${HOMEBREW_PREFIX}/etc/profile.d/z.sh" ] && source "${HOMEBREW_PREFIX}/etc/profile.d/z.sh"
 [ -f "${HOME}/.fzf.zsh" ] && source "${HOME}/.fzf.zsh"
 [ -f "${HOME}/.cargo/env" ] && source "${HOME}/.cargo/env"
 EOL
