@@ -349,7 +349,8 @@ require('nvim-autopairs').setup {}
 -- Syntax: {{{
 
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { 'c', 'go', 'java', 'javascript', 'typescript', 'python', 'php', 'hcl', 'lua', 'rust', 'yaml' },
+  ensure_installed = { 'c', 'go', 'java', 'javascript', 'typescript', 'python', 'php', 'pug', 'hcl', 'lua', 'rust',
+    'yaml' },
   highlight = {
     enable = true,
     disable = {},
@@ -377,6 +378,9 @@ require('hop').setup {}
 
 telescope.setup {
   defaults = {
+    path_display = {
+      truncate = 0,
+    },
     file_ignore_patterns = {
       'node_modules',
       '%.class',
