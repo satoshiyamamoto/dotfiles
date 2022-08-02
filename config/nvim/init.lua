@@ -155,13 +155,6 @@ vim.keymap.set('n', '<Leader>dr', dap.repl.open, opts)
 vim.keymap.set('n', '<Leader>dl', dap.run_last, opts)
 vim.keymap.set('n', '<Leader>du', dapui.toggle, opts)
 
--- Test
-vim.keymap.set('n', '<Leader>t', '<Cmd>TestNearest<CR>', opts)
-vim.keymap.set('n', '<Leader>T', '<Cmd>TestFile<CR>', opts)
-vim.keymap.set('n', '<Leader>a', '<Cmd>TestSuite<CR>', opts)
-vim.keymap.set('n', '<Leader>l', '<Cmd>TestLast<CR>', opts)
-vim.keymap.set('n', '<Leader>g', '<Cmd>TestVisit<CR>', opts)
-
 -- Hop (easymotion)
 vim.keymap.set('n', '<Leader><Leader>w', '<Cmd>HopWord<CR>', opts)
 vim.keymap.set('n', '<Leader><Leader>f', '<Cmd>HopChar1<CR>', opts)
@@ -343,11 +336,7 @@ cmp.setup.cmdline(':', {
 })
 
 -- Complete the bracket with 'CR'
-cmp.event:on('confirm_done',
-  require('nvim-autopairs.completion.cmp').on_confirm_done({
-    map_char = { tex = '' }
-  })
-)
+cmp.event:on('confirm_done', require('nvim-autopairs.completion.cmp').on_confirm_done())
 
 require('nvim-autopairs').setup {}
 
@@ -414,10 +403,9 @@ require('nvim-tree').setup {
 -- Terminal: {{{
 
 require("toggleterm").setup {
-  open_mapping = [[<C-`>]],
+  open_mapping = [[<C-t>]],
   insert_mappings = true,
 }
-
 vim.keymap.set('n', '<Leader>lg', function()
   require('toggleterm.terminal').Terminal:new({
     cmd = "lazygit",
@@ -428,8 +416,8 @@ vim.keymap.set('n', '<Leader>lg', function()
 end)
 
 vim.cmd([[
-  autocmd TermOpen * startinsert
-  autocmd TermOpen * setlocal nonumber norelativenumber
+autocmd TermOpen * startinsert
+autocmd TermOpen * setlocal nonumber norelativenumber
 ]])
 
 -- }}}
@@ -437,15 +425,15 @@ vim.cmd([[
 -- Formatting: {{{
 
 vim.cmd([[
-  autocmd FileType bzl AutoFormatBuffer buildifier
-  autocmd FileType c,cpp,proto,arduino AutoFormatBuffer clang-format
-  autocmd FileType dart AutoFormatBuffer dartfmt
-  autocmd FileType go AutoFormatBuffer gofmt
-  autocmd FileType gn AutoFormatBuffer gn
-  autocmd FileType javascript,html,css,sass,scss,less,json AutoFormatBuffer prettier
-  autocmd FileType java AutoFormatBuffer google-java-format
-  autocmd FileType python AutoFormatBuffer yapf
-  autocmd FileType rust AutoFormatBuffer rustfmt
+autocmd FileType bzl AutoFormatBuffer buildifier
+autocmd FileType c,cpp,proto,arduino AutoFormatBuffer clang-format
+autocmd FileType dart AutoFormatBuffer dartfmt
+autocmd FileType go AutoFormatBuffer gofmt
+autocmd FileType gn AutoFormatBuffer gn
+autocmd FileType javascript,html,css,sass,scss,less,json AutoFormatBuffer prettier
+autocmd FileType java AutoFormatBuffer google-java-format
+autocmd FileType python AutoFormatBuffer yapf
+autocmd FileType rust AutoFormatBuffer rustfmt
 ]])
 
 -- }}}
@@ -467,10 +455,10 @@ require('bufferline').setup {
 }
 
 vim.cmd([[
-  colorscheme github_dark_default
-  highlight clear ColorColumn
-  highlight WinSeparator guifg=#2f363e
-  setglobal laststatus=3
+colorscheme github_dark_default
+highlight clear ColorColumn
+highlight WinSeparator guifg=#2f363e
+setglobal laststatus=3
 ]])
 
 --- }}}
