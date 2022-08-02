@@ -128,6 +128,10 @@ augroup filetype_settings
   autocmd FileType tf set filetype=terraform
 augroup END
 
+augroup terminal_settings
+  autocmd TerminalOpen * setlocal nonumber norelativenumber
+augroup END
+
 augroup autoformat_settings
   autocmd FileType bzl AutoFormatBuffer buildifier
   autocmd FileType c,cpp,proto,arduino AutoFormatBuffer clang-format
@@ -141,28 +145,36 @@ augroup autoformat_settings
 augroup END
 
 " Mappings
-nnoremap <C-p>             :Files<CR>
-nnoremap <leader>ff        :Files<CR>
-nnoremap <leader>fg        :Rg<CR>
-nnoremap <leader>fb        :Buffers<CR>
-nnoremap <silent><leader>` :bo terminal ++rows=12<CR>
-nnoremap <silent><C-l>     :nohlsearch<CR>
-nnoremap <silent><C-n>     :NERDTreeToggle<CR>
-nnoremap <silent><leader>r :NERDTreeRefreshRoot<CR>
-nnoremap <silent><leader>n :NERDTreeFind<CR>
-nnoremap <silent>[b     :bprevious<CR>
-nnoremap <silent>]b     :bnext<CR>
-nnoremap <silent>[B     :bfirst<CR>
-nnoremap <silent>]B     :blast<CR>
-nnoremap <C-j>          <C-w>j
-nnoremap <C-k>          <C-w>k
-nnoremap <C-h>          <C-w>h
-nnoremap <C-l>          <C-w>l
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-inoremap <expr> <CR>    pumvisible() ? "\<C-y>" : "\<CR>"
-inoremap <silent>jj     <Esc>
-tnoremap <silent><Esc>  <C-\><C-n>
+imap <silent>jj         <Esc>
+nmap <C-j>              <C-w>j
+nmap <C-k>              <C-w>k
+nmap <C-h>              <C-w>h
+nmap <C-l>              <C-w>l
+nmap <silent>[b         :bprevious<CR>
+nmap <silent>]b         :bnext<CR>
+nmap <silent>[B         :bfirst<CR>
+nmap <silent>]B         :blast<CR>
+nmap <silent><C-t>      :bo terminal ++close ++rows=12<CR>
+tmap <C-t>              <C-c><C-d>
+tmap <Esc>              <C-\><C-n>
+tmap <C-[>              <C-\><C-n>
+nmap <silent><leader>ff :Files<CR>
+nmap <silent><leader>fg :Rg<CR>
+nmap <silent><leader>fb :Buffers<CR>
+nmap <silent><C-n>      :NERDTreeToggle<CR>
+nmap <silent><leader>r  :NERDTreeRefreshRoot<CR>
+nmap <silent><leader>n  :NERDTreeFind<CR>
+imap <expr> <C-j>       vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+smap <expr> <C-j>       vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+imap <expr> <C-l>       vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+smap <expr> <C-l>       vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+imap <expr> <Tab>       vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+smap <expr> <Tab>       vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+imap <expr> <S-Tab>     vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+smap <expr> <S-Tab>     vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+imap <expr> <Tab>       pumvisible() ? "\<C-n>" : "\<Tab>"
+imap <expr> <S-Tab>     pumvisible() ? "\<C-p>" : "\<S-Tab>"
+imap <expr> <CR>        pumvisible() ? "\<C-y>" : "\<CR>"
 
 " Themes
 colorscheme ghdark
