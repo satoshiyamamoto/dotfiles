@@ -5,7 +5,7 @@ local java_debug_path = vim.fn.glob(vim.fn.stdpath('data') .. '/site/pack/packer
 
 -- If you started neovim within `~/dev/xy/project-1` this would resolve to `project-1`
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
-local workspace = vim.env.WORKSPACE .. '/' .. project_name
+local workspace = vim.fn.stdpath('cache') .. '/jdtls/' .. project_name
 
 local on_attach = function(_, bufnr)
   -- With `hotcodereplace = -- Enable completion triggered by <c-x><c-o>
