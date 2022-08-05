@@ -8,7 +8,7 @@ ln -si ${WORKDIR}/editorconfig ${HOME}/.editorconfig
 ln -si ${WORKDIR}/sqliterc ${HOME}/.sqliterc
 
 ## Set the XDG config
-mkdir -p ${XDG_CONFIG_HOME}/{git,bat,fd,kitty,intelephense,nvim/ftplugin,sqls,tmux}
+mkdir -p ${XDG_CONFIG_HOME}/{git,bat,fd,kitty/themes,intelephense,nvim/ftplugin,sqls,tmux}
 ln -si ${WORKDIR}/config/git/config.mac ${XDG_CONFIG_HOME}/git/config
 ln -si ${WORKDIR}/config/bat/config ${XDG_CONFIG_HOME}/bat/config
 ln -si ${WORKDIR}/config/fd/ignore ${XDG_CONFIG_HOME}/fd/ignore
