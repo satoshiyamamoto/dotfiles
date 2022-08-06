@@ -410,7 +410,7 @@ require('nvim-tree').setup {
 -- Terminal: {{{
 
 require("toggleterm").setup {
-  open_mapping = [[<C-t>]],
+  open_mapping = [[<Leader>`]],
   insert_mappings = true,
 }
 vim.keymap.set('n', '<Leader>lg', function()
