@@ -313,7 +313,7 @@ cmp.setup {
   formatting = {
     format = require('lspkind').cmp_format({
       mode = 'symbol_text',
-      maxwidth = 30,
+      maxwidth = 50,
       preset = 'default',
     }),
   },
