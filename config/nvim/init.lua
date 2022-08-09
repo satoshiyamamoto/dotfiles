@@ -233,7 +233,7 @@ lspconfig['sqls'].setup {
 lspconfig['intelephense'].setup {
   on_attach = on_attach,
   init_options = {
-    globalStoragePath = vim.env.WORKSPACE,
+    globalStoragePath = vim.fn.stdpath('cache') .. '/intelephense',
     licenceKey = vim.fn.stdpath('config') .. '/../intelephense/licence.key'
   }
 }
