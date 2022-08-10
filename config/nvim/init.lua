@@ -447,6 +447,13 @@ autocmd FileType rust AutoFormatBuffer rustfmt
 
 -- Theme: {{{
 
+require('github-theme').setup({
+  theme_style = 'dark_default',
+  function_style = 'italic',
+  sidebars = { 'qf', 'vista_kind', 'terminal', 'packer' },
+  transparent = true,
+})
+
 require('lualine').setup {
   options = { theme = 'auto' }
 }
@@ -462,7 +469,6 @@ require('bufferline').setup {
 }
 
 vim.cmd([[
-colorscheme github_dark_default
 highlight clear ColorColumn
 highlight WinSeparator guifg=#2f363e
 setglobal laststatus=3
@@ -564,36 +570,36 @@ end
 -- Make sure to also have the snippet with the common helper functions in your config!
 
 dap.listeners.before['event_progressStart']['progress-notifications'] = function(session, body)
- local notif_data = get_notif_data("dap", body.progressId)
+  local notif_data = get_notif_data("dap", body.progressId)
 
- local message = format_message(body.message, body.percentage)
- notif_data.notification = vim.notify(message, "info", {
-   title = format_title(body.title, session.config.type),
-   icon = spinner_frames[1],
-   timeout = false,
-   hide_from_history = false,
- })
+  local message = format_message(body.message, body.percentage)
+  notif_data.notification = vim.notify(message, "info", {
+    title = format_title(body.title, session.config.type),
+    icon = spinner_frames[1],
+    timeout = false,
+    hide_from_history = false,
+  })
 
- notif_data.notification.spinner = 1
- update_spinner("dap", body.progressId)
+  notif_data.notification.spinner = 1
+  update_spinner("dap", body.progressId)
 end
 
 dap.listeners.before['event_progressUpdate']['progress-notifications'] = function(session, body)
- local notif_data = get_notif_data('dap', body.progressId)
- notif_data.notification = vim.notify(format_message(body.message, body.percentage), 'info', {
-   replace = notif_data.notification,
-   hide_from_history = false,
- })
+  local notif_data = get_notif_data('dap', body.progressId)
+  notif_data.notification = vim.notify(format_message(body.message, body.percentage), 'info', {
+    replace = notif_data.notification,
+    hide_from_history = false,
+  })
 end
 
 dap.listeners.before['event_progressEnd']['progress-notifications'] = function(session, body)
- local notif_data = client_notifs['dap'][body.progressId]
- notif_data.notification = vim.notify(body.message and format_message(body.message) or 'Complete', 'info', {
+  local notif_data = client_notifs['dap'][body.progressId]
+  notif_data.notification = vim.notify(body.message and format_message(body.message) or 'Complete', 'info', {
     icon = '',
     replace = notif_data.notification,
     timeout = 3000
- })
- notif_data.spinner = nil
+  })
+  notif_data.spinner = nil
 end
 
 -- }}}
