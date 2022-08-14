@@ -198,11 +198,7 @@ smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-T
 
 -- LSP: {{{
 
-require('mason').setup()
-require('mason-lspconfig').setup()
-
 local lspconfig = require('lspconfig')
-
 local on_attach = function(_, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -227,20 +223,42 @@ local on_attach = function(_, bufnr)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
   vim.keymap.set('n', '<Space>f', vim.lsp.buf.formatting, bufopts)
 end
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+
 
 -- Language servers
-lspconfig['gopls'].setup { on_attach = on_attach }
-lspconfig['pyright'].setup { on_attach = on_attach }
-lspconfig['tsserver'].setup { on_attach = on_attach }
-lspconfig['terraformls'].setup { on_attach = on_attach }
-lspconfig['rust_analyzer'].setup { on_attach = on_attach }
+require('mason').setup()
+require('mason-lspconfig').setup()
+
+lspconfig['gopls'].setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+lspconfig['pyright'].setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+lspconfig['tsserver'].setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+lspconfig['terraformls'].setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+lspconfig['rust_analyzer'].setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
 lspconfig['sqls'].setup {
   on_attach = function(client, bufnr)
     require('sqls').on_attach(client, bufnr)
-  end
+  end,
+  capabilities = capabilities,
 }
 lspconfig['intelephense'].setup {
   on_attach = on_attach,
+  capabilities = capabilities,
   init_options = {
     globalStoragePath = vim.fn.stdpath('cache') .. '/intelephense',
     licenceKey = vim.fn.stdpath('config') .. '/../intelephense/licence.key'
@@ -248,6 +266,7 @@ lspconfig['intelephense'].setup {
 }
 lspconfig['sumneko_lua'].setup {
   on_attach = on_attach,
+  capabilities = capabilities,
   settings = {
     Lua = {
       diagnostics = {
