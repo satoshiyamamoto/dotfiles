@@ -110,6 +110,15 @@ end)
 
 -- }}}
 
+-- Notifications: {{{
+
+require('notify').setup({
+  background_colour = '#000000',
+})
+vim.notify = require('notify')
+
+-- }}}
+
 -- Mappings: {{{
 
 local opts = { noremap = true, silent = true }
@@ -476,9 +485,7 @@ setglobal laststatus=3
 
 --- }}}
 
--- Notifications: {{{
-
-vim.notify = require('notify')
+-- Functions: {{{
 
 -- Utility functions shared between progress reports for LSP and DAP
 local client_notifs = {}
