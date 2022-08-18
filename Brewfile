@@ -176,6 +176,9 @@ cask "visual-studio-code"
 cask "webex"
 cask "zoom"
 mas "1Blocker", id: 1365531024
+mas "AdGuard for Safari", id: 1440147259
 mas "LINE", id: 539883307
+mas "MindNode", id: 1289197285
+mas "Twitter", id: 1482454543
 mas "Vimari", id: 1480933944
 mas "Xcode", id: 497799835
