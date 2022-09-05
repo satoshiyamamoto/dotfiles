@@ -158,6 +158,8 @@ nmap <silent><leader>`  :bo terminal ++close ++rows=12<CR>
 tmap <leader>`          <C-c><C-d>
 tmap <Esc>              <C-\><C-n>
 tmap <C-[>              <C-\><C-n>
+nmap <silent>ff         <Plug>(easymotion-w)
+nmap <silent><C-p>      :Files<CR>
 nmap <silent><leader>ff :Files<CR>
 nmap <silent><leader>fg :Rg<CR>
 nmap <silent><leader>fb :Buffers<CR>
