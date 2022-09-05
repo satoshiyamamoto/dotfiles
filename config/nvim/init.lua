@@ -165,12 +165,14 @@ end, opts)
 vim.keymap.set('n', '<Leader>du', dapui.toggle, opts)
 
 -- Hop (easymotion)
+vim.keymap.set('n', 'ff', '<Cmd>HopWord<CR>', opts)
 vim.keymap.set('n', '<Leader><Leader>w', '<Cmd>HopWord<CR>', opts)
 vim.keymap.set('n', '<Leader><Leader>f', '<Cmd>HopChar1<CR>', opts)
 
 -- Telescope
 local telescope = require('telescope')
 local telescope_builtin = require('telescope.builtin')
+vim.keymap.set('n', '<C-p>', telescope_builtin.find_files, opts)
 vim.keymap.set('n', '<Leader>ff', telescope_builtin.find_files, opts)
 vim.keymap.set('n', '<leader>fg', telescope_builtin.live_grep, opts)
 vim.keymap.set('n', '<leader>fb', telescope_builtin.buffers, opts)
