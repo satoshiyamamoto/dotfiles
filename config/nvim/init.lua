@@ -102,6 +102,7 @@ require('packer').startup(function(use)
   use { 'airblade/vim-gitgutter' }
   use { 'akinsho/bufferline.nvim', tag = 'v2.*' }
   use { 'akinsho/toggleterm.nvim', tag = 'v2.*' }
+  use { 'ThePrimeagen/vim-be-good' }
 
   if packer_bootstrap then
     require('packer').sync()
