@@ -111,6 +111,37 @@ end)
 
 -- }}}
 
+-- Theme: {{{
+
+require('github-theme').setup({
+  theme_style = 'dark_default',
+  function_style = 'italic',
+  sidebars = { 'qf', 'vista_kind', 'terminal', 'packer' },
+  transparent = true,
+})
+
+require('lualine').setup {
+  options = { theme = 'auto' }
+}
+
+require('bufferline').setup {
+  options = {
+    offsets = {
+      {
+        filetype = 'NvimTree',
+      }
+    }
+  }
+}
+
+vim.cmd([[
+highlight clear ColorColumn
+highlight WinSeparator guifg=#2f363e
+setglobal laststatus=3
+]])
+
+--- }}}
+
 -- Notifications: {{{
 
 require('notify').setup({
@@ -476,37 +507,6 @@ autocmd FileType rust AutoFormatBuffer rustfmt
 ]])
 
 -- }}}
-
--- Theme: {{{
-
-require('github-theme').setup({
-  theme_style = 'dark_default',
-  function_style = 'italic',
-  sidebars = { 'qf', 'vista_kind', 'terminal', 'packer' },
-  transparent = true,
-})
-
-require('lualine').setup {
-  options = { theme = 'auto' }
-}
-
-require('bufferline').setup {
-  options = {
-    offsets = {
-      {
-        filetype = 'NvimTree',
-      }
-    }
-  }
-}
-
-vim.cmd([[
-highlight clear ColorColumn
-highlight WinSeparator guifg=#2f363e
-setglobal laststatus=3
-]])
-
---- }}}
 
 -- Functions: {{{
 
