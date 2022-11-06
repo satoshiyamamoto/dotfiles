@@ -7,7 +7,7 @@ kubectl() {
     command kubectl "$@"
 }
 
-sdk () {
+sdk() {
     # "metaprogramming" lol - source init if sdk currently looks like this sdk function
     if [[ "$(which sdk | wc -l)" -le 10 ]]; then
         unset -f sdk
@@ -18,19 +18,10 @@ sdk () {
 
 jdk() {
   version=$1
-  export JAVA_HOME=$(/usr/libexec/java_home -v"$version");
+  export JAVA_HOME=$(/usr/libexec/java_home -v "$version");
   java -version
 }
 
 gi() {
   curl -sLw "\n" https://www.gitignore.io/api/$@ ;
-}
-
-sshp() {
-  host=$1; shift
-  binds=''
-  for port in "$@"; do
-    binds="${binds}-L ${port}:127.0.0.1:${port} "
-  done
-  echo "${binds}" | xargs ssh -Nftt "${host}"
 }
