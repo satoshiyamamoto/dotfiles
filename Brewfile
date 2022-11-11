@@ -176,7 +176,7 @@ cask "tradingview"
 cask "visual-studio-code"
 cask "webex"
 cask "zoom"
-mas "1Blocker", id: 1365531024
+#mas "1Blocker", id: 1365531024
 mas "Keynote", id: 409183694
 mas "LINE", id: 539883307
 mas "Numbers", id: 409203825
