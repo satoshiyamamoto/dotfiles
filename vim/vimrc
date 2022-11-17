@@ -145,38 +145,38 @@ augroup autoformat_settings
 augroup END
 
 " Mappings
-imap <silent>jj                <Esc>
-nmap <C-j>                     <C-w>j
-nmap <C-k>                     <C-w>k
-nmap <C-h>                     <C-w>h
-nmap <C-l>                     <C-w>l
-nmap <silent>[b                :bprevious<CR>
-nmap <silent>]b                :bnext<CR>
-nmap <silent>[B                :bfirst<CR>
-nmap <silent>]B                :blast<CR>
-nmap <silent><leader><leader>` :bo terminal ++close ++rows=12<CR>
-tmap <leader><leader>`         <C-c><C-d>
-tmap <Esc>                     <C-\><C-n>
-tmap <C-[>                     <C-\><C-n>
-nmap <silent>ff                <Plug>(easymotion-w)
-nmap <silent><C-p>             :Files<CR>
-nmap <silent><leader>ff        :Files<CR>
-nmap <silent><leader>fg        :Rg<CR>
-nmap <silent><leader>fb        :Buffers<CR>
-nmap <silent><C-n>             :NERDTreeToggle<CR>
-nmap <silent><leader>r         :NERDTreeRefreshRoot<CR>
-nmap <silent><leader>n         :NERDTreeFind<CR>
-imap <expr> <C-j>              vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-smap <expr> <C-j>              vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-imap <expr> <C-l>              vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-smap <expr> <C-l>              vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-imap <expr> <Tab>              vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-smap <expr> <Tab>              vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-imap <expr> <S-Tab>            vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-smap <expr> <S-Tab>            vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-imap <expr> <Tab>              pumvisible() ? "\<C-n>" : "\<Tab>"
-imap <expr> <S-Tab>            pumvisible() ? "\<C-p>" : "\<S-Tab>"
-imap <expr> <CR>               pumvisible() ? "\<C-y>" : "\<CR>"
+imap <silent>jj         <Esc>
+nmap <C-j>              <C-w>j
+nmap <C-k>              <C-w>k
+nmap <C-h>              <C-w>h
+nmap <C-l>              <C-w>l
+nmap <silent>[b         :bprevious<CR>
+nmap <silent>]b         :bnext<CR>
+nmap <silent>[B         :bfirst<CR>
+nmap <silent>]B         :blast<CR>
+nmap <silent><C-t>      :bo terminal ++close ++rows=12<CR>
+tmap <C-t>              <C-c><C-d>
+tmap <Esc>              <C-\><C-n>
+tmap <C-[>              <C-\><C-n>
+nmap <silent>ff         <Plug>(easymotion-w)
+nmap <silent><C-p>      :Files<CR>
+nmap <silent><leader>ff :Files<CR>
+nmap <silent><leader>fg :Rg<CR>
+nmap <silent><leader>fb :Buffers<CR>
+nmap <silent><C-n>      :NERDTreeToggle<CR>
+nmap <silent><leader>r  :NERDTreeRefreshRoot<CR>
+nmap <silent><leader>n  :NERDTreeFind<CR>
+imap <expr> <C-j>       vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+smap <expr> <C-j>       vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+imap <expr> <C-l>       vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+smap <expr> <C-l>       vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+imap <expr> <Tab>       vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+smap <expr> <Tab>       vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+imap <expr> <S-Tab>     vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+smap <expr> <S-Tab>     vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+imap <expr> <Tab>       pumvisible() ? "\<C-n>" : "\<Tab>"
+imap <expr> <S-Tab>     pumvisible() ? "\<C-p>" : "\<S-Tab>"
+imap <expr> <CR>        pumvisible() ? "\<C-y>" : "\<CR>"
 
 " Themes
 colorscheme ghdark

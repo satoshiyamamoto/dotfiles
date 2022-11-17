@@ -473,10 +473,10 @@ require('nvim-tree').setup {
 -- Terminal: {{{
 
 require("toggleterm").setup {
-  open_mapping = [[<Leader><Leader>`]],
+  open_mapping = [[<C-`>]],
   insert_mappings = true,
 }
-vim.keymap.set('n', '<Leader><Leader>lg', function()
+vim.keymap.set('n', '<Leader>lg', function()
   require('toggleterm.terminal').Terminal:new({
     cmd = "lazygit",
     direction = 'float',
