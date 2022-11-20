@@ -154,8 +154,8 @@ nmap <silent>[b         :bprevious<CR>
 nmap <silent>]b         :bnext<CR>
 nmap <silent>[B         :bfirst<CR>
 nmap <silent>]B         :blast<CR>
-nmap <silent><C-t>      :bo terminal ++close ++rows=12<CR>
-tmap <C-t>              <C-c><C-d>
+nmap <silent><C-\>      :bo terminal ++close ++rows=12<CR>
+tmap <C-\>              <C-c><C-d>
 tmap <Esc>              <C-\><C-n>
 tmap <C-[>              <C-\><C-n>
 nmap <silent>ff         <Plug>(easymotion-w)
