@@ -1,0 +1,68 @@
+#
+# Executes commands at the start of an interactive session.
+#
+# Authors:
+#   Sorin Ionescu <sorin.ionescu@gmail.com>
+#
+
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+# Customize to your needs...
+export HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit|*assume-role-with-saml*)"
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+#
+local homebrew="$(brew --prefix)"
+[ -d "$homebrew/Caskroom/google-cloud-sdk" ] && source "$homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+[ -d "$homebrew/Caskroom/google-cloud-sdk" ] && source "$homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+[ -f "$homebrew/etc/profile.d/z.sh" ] && source "$homebrew/etc/profile.d/z.sh"
+[ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
+[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+
+# functions
+kubectl() {
+    if ! type __start_kubectl >/dev/null 2>&1; then
+        source <(command kubectl completion zsh)
+    fi
+
+    command kubectl "$@"
+}
+
+sdk() {
+    # "metaprogramming" lol - source init if sdk currently looks like this sdk function
+    if [[ "$(which sdk | wc -l)" -le 10 ]]; then
+        unset -f sdk
+        source "$HOME/.sdkman/bin/sdkman-init.sh"
+    fi
+
+    sdk "$@"
+}
+
+gi() {
+  curl -sLw "\n" https://www.gitignore.io/api/$@ ;
+}
+
+# aliases
+alias dk='docker'
+alias k='kubectl'
+alias g='git'
+alias gore='gore -autoimport'
+alias grp='repo=$(ghq list | fzf) && cd $(ghq root)/$repo; unset repo'
+alias ls='exa'
+alias l='exa -1a'
+alias la='exa -lgha --color-scale --git --icons'
+alias lu='exa -lgh --color-scale --git --icons --sort=changed'
+alias lu='exa -lgh --color-scale --git --icons --sort=size'
+alias ll='exa -lgh --color-scale --git --icons'
+alias lt='exa -lgh --color-scale --git --icons --sort=newest'
+alias lu='exa -lgh --color-scale --git --icons --sort=accessed'
+alias lg='lazygit'
+alias lzd='lazydocker'
+alias icat='kitty +kitten icat'
+alias tree='exa -T'
+alias ssh='TERM=xterm-256color ssh'
+alias vpn='/opt/cisco/anyconnect/bin/vpn'
