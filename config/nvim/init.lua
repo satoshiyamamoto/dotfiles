@@ -3,6 +3,8 @@
 -- Basic: {{{
 
 vim.g.mapleader = ' '
+vim.g.loaded_netrw = true
+vim.g.loaded_netrwPlugin = true
 
 vim.opt.mouse = 'a'
 vim.opt.number = true
@@ -91,8 +93,8 @@ require('packer').startup(function(use)
   use { 'nvim-telescope/telescope-frecency.nvim' }
   use { 'nvim-telescope/telescope-ui-select.nvim' }
   use { 'ryanoasis/vim-devicons' }
-  use { 'kyazdani42/nvim-web-devicons' }
-  use { 'kyazdani42/nvim-tree.lua' }
+  use { 'nvim-tree/nvim-web-devicons' }
+  use { 'nvim-tree/nvim-tree.lua' }
   use { 'tami5/sqlite.lua' }
 
   -- theme
