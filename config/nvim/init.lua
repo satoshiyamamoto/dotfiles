@@ -11,6 +11,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
+vim.opt.laststatus = 3
 vim.opt.termguicolors = true
 vim.opt.confirm = true
 vim.opt.completeopt = 'menu,menuone,noselect'
@@ -136,11 +137,8 @@ require('bufferline').setup {
   }
 }
 
-vim.cmd([[
-highlight clear ColorColumn
-highlight WinSeparator guifg=#2f363e
-setglobal laststatus=3
-]])
+vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#2f363d" })
+vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", { fg = "#2f363d" })
 
 --- }}}
 
