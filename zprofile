@@ -64,6 +64,7 @@ fpath=(
 # Set the list of directories that Zsh searches for programs.
 path=(
   $XDG_CONFIG_HOME/krew/bin(N)
+  $XDG_DATA_HOME/nvim/mason/bin(N)
   {$GOROOT,$GOPATH}/bin(N)
   $HOME/{,s}bin(N)
   /opt/{homebrew,local}/{,s}bin(N)
