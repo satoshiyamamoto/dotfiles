@@ -285,7 +285,9 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 -- Language servers
 require("mason").setup()
-require("mason-lspconfig").setup()
+require("mason-lspconfig").setup({
+  ensure_installed = { "sumneko_lua", "gopls", "pyright", "jdtls", "tsserver", "terraformls", "sqls", "rust_analyzer", },
+})
 
 lspconfig["gopls"].setup {
   on_attach = on_attach,
@@ -313,14 +315,6 @@ lspconfig["sqls"].setup {
   end,
   capabilities = capabilities,
 }
-lspconfig["intelephense"].setup {
-  on_attach = on_attach,
-  capabilities = capabilities,
-  init_options = {
-    globalStoragePath = vim.fn.stdpath("cache") .. "/intelephense",
-    licenceKey = vim.fn.stdpath("config") .. "/../intelephense/licence.key"
-  }
-}
 lspconfig["sumneko_lua"].setup {
   on_attach = on_attach,
   capabilities = capabilities,
@@ -342,18 +336,6 @@ require("dap-go").setup()
 require("dap-python").setup(
   mason_path .. "/packages/debugpy/venv/bin/python"
 )
-dap.adapters.php = {
-  type = "executable",
-  command = mason_path .. "/bin/php-debug-adapter",
-}
-dap.configurations.php = {
-  {
-    type = "php",
-    request = "launch",
-    name = "Listen for Xdebug",
-    port = 9003
-  }
-}
 dapui.setup()
 dap.listeners.after.event_initialized["dapui_config"] = function()
   dapui.open()
