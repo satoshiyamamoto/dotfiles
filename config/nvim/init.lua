@@ -112,7 +112,7 @@ require("packer").startup(function(use)
   use { "rcarriga/nvim-notify" }
   use { "smjonas/inc-rename.nvim" }
   use { "airblade/vim-gitgutter" }
-  use { "akinsho/bufferline.nvim", tag = "v2.*" }
+  use { "akinsho/bufferline.nvim", tag = "v3.*" }
   use { "akinsho/toggleterm.nvim", tag = "v2.*" }
   use { "ThePrimeagen/vim-be-good" }
 
@@ -139,9 +139,7 @@ require("lualine").setup {
 require("bufferline").setup {
   options = {
     offsets = {
-      {
-        filetype = "NvimTree",
-      }
+      { filetype = "NvimTree" }
     }
   }
 }
@@ -272,7 +270,6 @@ local on_attach = function(_, bufnr)
   vim.keymap.set("n", "<Space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
   vim.keymap.set("n", "<Space>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, bufopts)
   vim.keymap.set("n", "<Space>D", vim.lsp.buf.type_definition, bufopts)
-  -- vim.keymap.set("n", "<Space>rn", vim.lsp.buf.rename, bufopts)
   vim.keymap.set("n", "<Space>rn", function()
     return ":IncRename " .. vim.fn.expand("<cword>")
   end, { expr = true })
