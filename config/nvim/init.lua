@@ -415,7 +415,7 @@ require("nvim-autopairs").setup {}
 -- Syntax: {{{
 
 require("nvim-treesitter.configs").setup {
-  ensure_installed = { "bash", "go", "java", "javascript", "typescript", "python", "php", "pug", "hcl", "markdown",
+  ensure_installed = { "bash", "go", "gomod", "java", "javascript", "typescript", "python", "php", "pug", "hcl", "markdown",
     "markdown_inline", "lua", "regex", "rust", "yaml" },
   highlight = {
     enable = true,
