@@ -116,6 +116,9 @@ require("packer").startup(function(use)
 
   use {
     "lukas-reineke/virt-column.nvim",
+    setup = function()
+      vim.api.nvim_set_hl(0, "VirtColumn", { fg = "#2f363d" })
+    end,
     config = function()
       require("virt-column").setup()
     end
