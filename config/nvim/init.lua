@@ -71,6 +71,7 @@ local packer_bootstrap = ensure_packer()
 
 require("packer").startup(function(use)
   use { "wbthomason/packer.nvim" }
+  use { "dstein64/vim-startuptime" }
 
   -- }}}
 
