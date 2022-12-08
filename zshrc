@@ -13,11 +13,13 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+ZSH_HIGHLIGHT_STYLES[path]=none
+ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 export HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit|*assume-role-with-saml*)"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-#
+# sources
 local homebrew="$(brew --prefix)"
 [ -d "$homebrew/Caskroom/google-cloud-sdk" ] && source "$homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
 [ -d "$homebrew/Caskroom/google-cloud-sdk" ] && source "$homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
