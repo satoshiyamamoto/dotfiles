@@ -108,20 +108,21 @@ require("packer").startup(function(use)
     "lukas-reineke/indent-blankline.nvim",
     config = function()
       require("indent_blankline").setup {
-        space_char_blankline = ' ',
         show_current_context = true,
         show_current_context_start = true,
         context_highlight_list = {
-          'rainbowcol1',
-          'rainbowcol2',
-          'rainbowcol3',
-          'rainbowcol4',
-          'rainbowcol5',
-          'rainbowcol6',
-          'rainbowcol7',
+          "rainbowcol1",
+          "rainbowcol2",
+          "rainbowcol3",
+          "rainbowcol4",
+          "rainbowcol5",
+          "rainbowcol6",
+          "rainbowcol7",
         },
       }
-    end
+      vim.api.nvim_set_hl(0, "IndentBlanklineContextStart", { sp = "#b16286", underline = true })
+    end,
+    after = "nvim-ts-rainbow",
   }
 
   use {
@@ -542,12 +543,12 @@ require("packer").startup(function(use)
 
   use {
     "nvim-lualine/lualine.nvim",
-    after = "github-nvim-theme",
     config = function()
       require("lualine").setup {
         options = { theme = "auto" }
       }
     end,
+    after = "github-nvim-theme",
   }
 
   use {
