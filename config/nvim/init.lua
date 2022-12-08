@@ -54,7 +54,7 @@ vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", opts)
 
 -- }}}
 
--- Plugins start: {{{
+-- Plugins: {{{
 
 local ensure_packer = function()
   local fn = vim.fn
@@ -492,6 +492,30 @@ require("packer").startup(function(use)
 
   -- }}}
 
+  -- Terminal: {{{
+
+  use { "akinsho/toggleterm.nvim", tag = "v2.*",
+    config = function()
+      require("toggleterm").setup {
+        open_mapping = [[<C-`>]],
+        insert_mappings = true,
+      }
+      vim.keymap.set("n", "<Leader>g", function()
+        require("toggleterm.terminal").Terminal:new({
+          cmd = "lazygit",
+          direction = "float",
+          hidden = true,
+          count = 0
+        }):toggle()
+      end)
+
+      vim.cmd([[autocmd TermOpen * startinsert]])
+      vim.cmd([[autocmd TermOpen * setlocal nonumber norelativenumber]])
+    end
+  }
+
+  -- }}}
+
   -- Theme: {{{
 
   use {
@@ -563,30 +587,6 @@ require("packer").startup(function(use)
   use { "airblade/vim-gitgutter" }
 
   --- }}}
-
-  -- Terminal: {{{
-
-  use { "akinsho/toggleterm.nvim", tag = "v2.*",
-    config = function()
-      require("toggleterm").setup {
-        open_mapping = [[<C-`>]],
-        insert_mappings = true,
-      }
-      vim.keymap.set("n", "<Leader>g", function()
-        require("toggleterm.terminal").Terminal:new({
-          cmd = "lazygit",
-          direction = "float",
-          hidden = true,
-          count = 0
-        }):toggle()
-      end)
-
-      vim.cmd([[autocmd TermOpen * startinsert]])
-      vim.cmd([[autocmd TermOpen * setlocal nonumber norelativenumber]])
-    end
-  }
-
-  -- }}}
 
   -- Plugins end: {{{
   if packer_bootstrap then
