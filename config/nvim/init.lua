@@ -114,13 +114,13 @@ require("packer").startup(function(use)
         char ="▏",
         context_char = "▏",
         context_highlight_list = {
-          "rainbowcol1",
-          "rainbowcol2",
           "rainbowcol3",
-          "rainbowcol4",
           "rainbowcol5",
-          "rainbowcol6",
           "rainbowcol7",
+          "rainbowcol2",
+          "rainbowcol4",
+          "rainbowcol6",
+          "rainbowcol1",
         },
       }
       vim.api.nvim_set_hl(0, "IndentBlanklineContextStart", { sp = "#b16286", underline = true })
