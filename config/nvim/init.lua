@@ -575,6 +575,7 @@ require("packer").startup(function(use)
           lsp_doc_border = false, -- add a border to hover docs and signature help
         },
       })
+      require('inc_rename').setup()
     end,
     requires = {
       { "MunifTanjim/nui.nvim" },
