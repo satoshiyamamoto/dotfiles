@@ -1,6 +1,7 @@
 local jdtls = require('jdtls')
 local jdtls_path = vim.fn.stdpath('data') .. '/mason/packages/jdtls'
-local java_debug_path = vim.fn.glob(vim.fn.stdpath('data') .. '/site/pack/packer/start/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar')
+local java_debug_path = vim.fn.glob(vim.fn.stdpath('data') ..
+  '/site/pack/packer/start/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar')
 
 
 -- If you started neovim within `~/dev/xy/project-1` this would resolve to `project-1`
@@ -26,10 +27,12 @@ local on_attach = function(_, bufnr)
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, bufopts)
   vim.keymap.set('n', '<Space>D', vim.lsp.buf.type_definition, bufopts)
-  vim.keymap.set('n', '<Space>rn', vim.lsp.buf.rename, bufopts)
+  vim.keymap.set("n", "<Space>rn", function()
+    return ":IncRename " .. vim.fn.expand("<cword>")
+  end, { expr = true })
   vim.keymap.set('n', '<Space>ca', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-  vim.keymap.set('n', '<Space>f', vim.lsp.buf.formatting, bufopts)
+  vim.keymap.set("n", "<Space>f", function() vim.lsp.buf.format({ async = true }) end, bufopts)
 
   -- Mappings for nvim-jdtls.
   vim.keymap.set('n', '<A-o>', jdtls.organize_imports, bufopts)
