@@ -82,7 +82,7 @@ require("packer").startup(function(use)
     config = function()
       require("nvim-treesitter.configs").setup {
         ensure_installed = {
-          "bash", "go", "gomod", "java", "javascript", "typescript", "python", "php", "pug", "hcl", "markdown",
+          "bash", "go", "gomod", "java", "javascript", "typescript", "tsx", "python", "php", "pug", "hcl", "markdown",
           "markdown_inline", "lua", "regex", "rust", "yaml"
         },
         highlight = {
@@ -92,7 +92,7 @@ require("packer").startup(function(use)
         },
         rainbow = {
           enable = true,
-          extended_mode = true,
+          extended_mode = false,
           max_file_lines = nil,
         },
       }
@@ -111,7 +111,7 @@ require("packer").startup(function(use)
         use_treesitter = true,
         show_current_context = true,
         show_current_context_start = true,
-        char ="▏",
+        char = "▏",
         context_char = "▏",
         context_highlight_list = {
           "rainbowcol3",
