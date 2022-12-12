@@ -133,15 +133,6 @@ require("packer").startup(function(use)
     after = "nvim-ts-rainbow",
   }
 
-  use {
-    "lukas-reineke/virt-column.nvim",
-    config = function()
-      require("virt-column").setup()
-
-      vim.api.nvim_set_hl(0, "VirtColumn", { fg = "#2f363d", bg = nil })
-    end
-  }
-
   -- }}}
 
   -- Formatting: {{{
@@ -606,6 +597,17 @@ require("packer").startup(function(use)
     "norcalli/nvim-colorizer.lua",
     config = function()
       require("colorizer").setup()
+    end
+  }
+
+  use {
+    "lukas-reineke/virt-column.nvim",
+    config = function()
+      require("virt-column").setup {
+        char = "▕",
+      }
+
+      vim.api.nvim_set_hl(0, "VirtColumn", { fg = "#2f363d", bg = nil })
     end
   }
 
