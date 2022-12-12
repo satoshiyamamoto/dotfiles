@@ -82,16 +82,20 @@ require("packer").startup(function(use)
     config = function()
       require("nvim-treesitter.configs").setup {
         ensure_installed = {
-          "bash", "go", "gomod", "java", "javascript", "typescript", "tsx", "python", "php", "pug", "hcl", "markdown",
-          "markdown_inline", "lua", "regex", "rust", "yaml"
+          "bash", "go", "gomod", "java", "javascript", "typescript", "tsx", "python", "php", "pug", "hcl", "html",
+          "markdown", "markdown_inline", "lua", "query", "regex", "rust", "yaml"
         },
         highlight = {
           enable = true,
-          disable = {},
+          disable = { "html" },
           additional_vim_regex_highlighting = { "php", "yaml" },
+        },
+        playground = {
+          enable = true,
         },
         rainbow = {
           enable = true,
+          disable = { "html" },
           extended_mode = false,
           max_file_lines = nil,
         },
@@ -100,6 +104,7 @@ require("packer").startup(function(use)
     requires = {
       { "nvim-treesitter/nvim-treesitter-textobjects" },
       { "nvim-treesitter/nvim-treesitter-refactor" },
+      { "nvim-treesitter/playground" },
       { "p00f/nvim-ts-rainbow" },
     }
   }
