@@ -98,6 +98,7 @@ require("packer").startup(function(use)
           "query",
           "regex",
           "rust",
+          "sql",
           "tsx",
           "typescript",
           "yaml",
