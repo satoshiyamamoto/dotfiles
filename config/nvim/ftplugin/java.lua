@@ -1,8 +1,5 @@
 local jdtls = require('jdtls')
 local jdtls_path = vim.fn.stdpath('data') .. '/mason/packages/jdtls'
-local java_debug_path = vim.fn.glob(vim.fn.stdpath('data') ..
-  '/site/pack/packer/start/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar')
-
 
 -- If you started neovim within `~/dev/xy/project-1` this would resolve to `project-1`
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ':p:h:t')
@@ -53,6 +50,18 @@ local on_attach = function(_, bufnr)
   jdtls.setup_dap({ hotcodereplace = 'auto' })
   jdtls.setup.add_commands()
 end
+
+
+-- This bundles definition is the same as in the previous section (java-debug installation)
+local bundles = {
+  vim.fn.glob(vim.fn.stdpath('data') ..
+    '/site/pack/packer/start/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar'
+    , 1),
+};
+
+-- This is the new part
+vim.list_extend(bundles,
+  vim.split(vim.fn.glob(vim.fn.stdpath('data') .. '/site/pack/packer/start/vscode-java-test/server/*.jar', 1), '\n'))
 
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
 local config = {
@@ -130,9 +139,7 @@ local config = {
   --
   -- If you don't plan on using the debugger or other eclipse.jdt.ls plugins you can remove this
   init_options = {
-    bundles = {
-      java_debug_path
-    };
+    bundles = bundles;
   },
 
   on_attach = on_attach

@@ -431,6 +431,7 @@ require("packer").startup(function(use)
       { "mfussenegger/nvim-dap-python" },
       { "mfussenegger/nvim-jdtls" },
       { "microsoft/java-debug" },
+      { "microsoft/vscode-java-test" },
       { "theHamsta/nvim-dap-virtual-text" },
       { "leoluz/nvim-dap-go" },
     }
