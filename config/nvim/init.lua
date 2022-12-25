@@ -600,6 +600,38 @@ require("packer").startup(function(use)
   }
 
   use {
+    "folke/trouble.nvim",
+    config = function()
+      require("trouble").setup()
+
+      local signs = {
+        Error = " ",
+        Warn = " ",
+        Hint = " ",
+        Info = " "
+      }
+      for type, icon in pairs(signs) do
+        local hl = "DiagnosticSign" .. type
+        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+      end
+    end,
+    requires = {
+      { "kyazdani42/nvim-web-devicons" },
+      { "folke/lsp-colors.nvim" }
+    }
+  }
+
+  use {
+    "folke/todo-comments.nvim",
+    config = function()
+      require("todo-comments").setup()
+    end,
+    requires = {
+      { "nvim-lua/plenary.nvim" },
+    }
+  }
+
+  use {
     "akinsho/bufferline.nvim", tag = "v3.*",
     config = function()
       require("bufferline").setup {
