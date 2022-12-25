@@ -47,8 +47,8 @@ vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
 vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist, opts)
 
 -- Terminal
-vim.keymap.set("n", "<C-\\>", "<Cmd>:ToggleTerm<CR>", opts)
-vim.keymap.set("t", "<C-\\>", "<Cmd>:ToggleTerm<CR>", opts)
+vim.keymap.set("n", "<C-`>", "<Cmd>:ToggleTerm<CR>", opts)
+vim.keymap.set("t", "<C-`>", "<Cmd>:ToggleTerm<CR>", opts)
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", opts)
 vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", opts)
 
@@ -524,7 +524,7 @@ require("packer").startup(function(use)
   use { "akinsho/toggleterm.nvim", tag = "v2.*",
     config = function()
       require("toggleterm").setup {
-        open_mapping = [[<C-`>]],
+        open_mapping = [[<C-\>]],
         insert_mappings = true,
       }
       vim.keymap.set("n", "<Leader>g", function()
