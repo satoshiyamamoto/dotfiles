@@ -562,7 +562,16 @@ require("packer").startup(function(use)
     "nvim-lualine/lualine.nvim",
     config = function()
       require("lualine").setup {
-        options = { theme = "auto" }
+        options = { theme = "auto" },
+        sections = {
+          lualine_x = {
+            {
+              require("noice").api.statusline.mode.get,
+              cond = require("noice").api.statusline.mode.has,
+              color = { fg = "#ff9e64" },
+            }
+          },
+        },
       }
     end,
     after = "github-nvim-theme",
@@ -570,9 +579,6 @@ require("packer").startup(function(use)
 
   use {
     "folke/noice.nvim",
-    setup = function()
-      vim.api.nvim_set_hl(0, "NotifyBackground", { bg = "#000000" })
-    end,
     config = function()
       require("noice").setup({
         lsp = {
@@ -590,7 +596,10 @@ require("packer").startup(function(use)
           lsp_doc_border = false, -- add a border to hover docs and signature help
         },
       })
-      require('inc_rename').setup()
+      require("inc_rename").setup()
+      require("notify").setup({
+        background_colour = "#000000",
+      })
     end,
     requires = {
       { "MunifTanjim/nui.nvim" },
