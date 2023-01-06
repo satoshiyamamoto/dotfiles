@@ -102,6 +102,7 @@ require("packer").startup(function(use)
           "sql",
           "tsx",
           "typescript",
+          "vim",
           "yaml",
         },
         highlight = {
