@@ -116,6 +116,9 @@ require("packer").startup(function(use)
           extended_mode = false,
           max_file_lines = nil,
         },
+        autotag = {
+          enable = true,
+        },
       })
       require("treesitter-context").setup({
         enable = true,
@@ -126,6 +129,7 @@ require("packer").startup(function(use)
     requires = {
       { "nvim-treesitter/nvim-treesitter-context" },
       { "p00f/nvim-ts-rainbow" },
+      { "windwp/nvim-ts-autotag" },
     },
   })
 
@@ -711,7 +715,12 @@ require("packer").startup(function(use)
     after = "editorconfig-vim",
   })
 
-  use({ "airblade/vim-gitgutter" })
+  use({
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      require("gitsigns").setup()
+    end,
+  })
 
   --- }}}
 
