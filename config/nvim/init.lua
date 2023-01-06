@@ -366,7 +366,6 @@ require("packer").startup(function(use)
           "black",
           "debugpy",
           "dlv",
-          "eslint_d",
           "flake8",
           "goimports",
           "isort",
@@ -402,7 +401,7 @@ require("packer").startup(function(use)
           null_ls.builtins.diagnostics.staticcheck,
           null_ls.builtins.diagnostics.flake8,
           null_ls.builtins.diagnostics.mypy,
-          null_ls.builtins.diagnostics.eslint_d,
+          null_ls.builtins.diagnostics.eslint,
         },
         on_attach = function(client, bufnr)
           if client.supports_method("textDocument/formatting") then
