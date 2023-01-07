@@ -369,6 +369,7 @@ require("packer").startup(function(use)
           "flake8",
           "goimports",
           "isort",
+          "js-debug-adapter",
           "mypy",
           "prettier",
           "staticcheck",
@@ -430,16 +431,41 @@ require("packer").startup(function(use)
       require("dapui").setup()
       require("dap-go").setup()
       require("dap-python").setup(vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python")
+      require("dap-vscode-js").setup({
+        debugger_cmd = { "js-debug-adapter" },
+        adapters = { "pwa-node", "pwa-chrome" },
+      })
+
+      for _, language in ipairs({ "typescript", "javascript" }) do
+        require("dap").configurations[language] = {
+          {
+            type = "pwa-node",
+            request = "launch",
+            name = "Launch file",
+            program = "${file}",
+            cwd = "${workspaceFolder}",
+            resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
+          },
+          {
+            type = "pwa-node",
+            request = "attach",
+            name = "Attach",
+            processId = require("dap.utils").pick_process,
+            cwd = "${workspaceFolder}",
+            resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
+          },
+        }
+      end
 
       local dap, dapui = require("dap"), require("dapui")
       dap.listeners.after.event_initialized["dapui_config"] = function()
         dapui.open()
       end
       dap.listeners.before.event_terminated["dapui_config"] = function()
-        -- dapui.close()
+        dapui.close()
       end
       dap.listeners.before.event_exited["dapui_config"] = function()
-        -- dapui.close()
+        dapui.close()
       end
 
       vim.keymap.set("n", "<F5>", dap.continue, {})
@@ -459,6 +485,7 @@ require("packer").startup(function(use)
       { "mfussenegger/nvim-dap" },
       { "mfussenegger/nvim-dap-python" },
       { "mfussenegger/nvim-jdtls" },
+      { "mxsdev/nvim-dap-vscode-js" },
       { "microsoft/java-debug" },
       { "microsoft/vscode-java-test" },
       { "theHamsta/nvim-dap-virtual-text" },
