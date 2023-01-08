@@ -430,7 +430,10 @@ require("packer").startup(function(use)
     config = function()
       require("dapui").setup()
       require("dap-go").setup()
-      require("dap-python").setup(vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python")
+      require("dap-python").setup(
+        vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python",
+        { console = "internalConsole" }
+      )
       require("dap-vscode-js").setup({
         debugger_cmd = { "js-debug-adapter" },
         adapters = { "pwa-node", "pwa-chrome" },
