@@ -1,5 +1,5 @@
 local jdtls = require("jdtls")
-local jdtls_path = vim.fn.stdpath("data") .. "/mason/packages/jdtls"
+local mason_packages = vim.fn.stdpath("data") .. "/mason/packages"
 
 -- If you started neovim within `~/dev/xy/project-1` this would resolve to `project-1`
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
@@ -61,19 +61,11 @@ end
 
 -- This bundles definition is the same as in the previous section (java-debug installation)
 local bundles = {
-  vim.fn.glob(
-    vim.fn.stdpath("data")
-    .. "/site/pack/packer/start/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar"
-    ,
-    1
-  ),
+  vim.fn.glob(mason_packages .. "/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar", 1),
 }
 
 -- This is the new part
-vim.list_extend(
-  bundles,
-  vim.split(vim.fn.glob(vim.fn.stdpath("data") .. "/site/pack/packer/start/vscode-java-test/server/*.jar", 1), "\n")
-)
+vim.list_extend(bundles, vim.split(vim.fn.glob(mason_packages .. "/java-test/extension/server/*.jar", 1), "\n"))
 
 -- See `:help vim.lsp.start_client` for an overview of the supported `config` options.
 local config = {
@@ -87,16 +79,16 @@ local config = {
     "-Dlog.protocol=true",
     "-Dlog.level=ALL",
     "-Xms1g",
-    "-javaagent:" .. jdtls_path .. "/lombok.jar",
+    "-javaagent:" .. mason_packages .. "/jdtls/lombok.jar",
     "--add-modules=ALL-SYSTEM",
     "--add-opens",
     "java.base/java.util=ALL-UNNAMED",
     "--add-opens",
     "java.base/java.lang=ALL-UNNAMED",
     "-jar",
-    jdtls_path .. "/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar",
+    mason_packages .. "/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar",
     "-configuration",
-    jdtls_path .. "/config_mac",
+    mason_packages .. "/jdtls/config_mac",
     "-data",
     workspace,
   },
