@@ -157,6 +157,20 @@ require("packer").startup(function(use)
     after = "nvim-ts-rainbow",
   })
 
+  use({
+    "nathom/filetype.nvim",
+    config = function()
+      require("filetype").setup({
+        overrides = {
+          extensions = {
+            tf = "hcl",
+            tfvars = "hcl",
+          },
+        },
+      })
+    end,
+  })
+
   use({ "editorconfig/editorconfig-vim" })
 
   -- }}}
