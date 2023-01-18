@@ -367,7 +367,7 @@ require("packer").startup(function(use)
         ensure_installed = {
           "black",
           "debugpy",
-          "dlv",
+          "delve",
           "flake8",
           "goimports",
           "isort",
