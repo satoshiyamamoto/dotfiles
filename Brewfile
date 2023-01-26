@@ -189,7 +189,6 @@ cask "notion"
 cask "postman"
 cask "slack"
 cask "tableau"
-cask "tailscale"
 cask "tradingview"
 cask "visual-studio-code"
 cask "webex"
@@ -202,6 +201,7 @@ mas "LINE", id: 539883307
 mas "MindNode", id: 1289197285
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
+mas "Tailscale", id: 1475387142
 mas "Twitter", id: 1482454543
 mas "Vimari", id: 1480933944
 mas "Xcode", id: 497799835
