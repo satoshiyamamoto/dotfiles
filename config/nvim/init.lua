@@ -165,6 +165,7 @@ require("packer").startup(function(use)
           extensions = {
             tf = "hcl",
             tfvars = "hcl",
+            properties = "dosini",
           },
         },
       })
