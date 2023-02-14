@@ -196,7 +196,7 @@ require("packer").startup(function(use)
         mapping = {
           ["<C-p>"] = cmp.mapping.select_prev_item(),
           ["<C-n>"] = cmp.mapping.select_next_item(),
-          ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-d>"] = cmp.mapping.scroll_docs( -4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.close(),
@@ -335,7 +335,7 @@ require("packer").startup(function(use)
         end,
         capabilities = capabilities,
       })
-      lspconfig["sumneko_lua"].setup({
+      lspconfig["lua_ls"].setup({
         on_attach = on_attach,
         capabilities = capabilities,
         settings = {
@@ -361,10 +361,10 @@ require("packer").startup(function(use)
         ensure_installed = {
           "gopls",
           "jdtls",
+          "lua_ls",
           "pyright",
           "rust_analyzer",
           "sqls",
-          "sumneko_lua",
           "tsserver",
           "terraformls",
         },
