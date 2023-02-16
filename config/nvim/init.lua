@@ -393,6 +393,7 @@ require("packer").startup(function(use)
           "prettier",
           "staticcheck",
           "stylua",
+          "sqlfulff",
         },
       })
     end,
