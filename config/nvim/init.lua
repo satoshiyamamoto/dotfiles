@@ -172,6 +172,18 @@ require("packer").startup(function(use)
     end,
   })
 
+  use({
+    "folke/neodev.nvim",
+    config = function()
+      require("neodev").setup({
+        library = {
+          plugins = { "nvim-dap-ui" },
+          types = true,
+        },
+      })
+    end,
+  })
+
   use({ "editorconfig/editorconfig-vim" })
 
   -- }}}
