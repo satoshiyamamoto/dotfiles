@@ -73,7 +73,7 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 
 " theme
-Plug 'vv9k/vim-github-dark'
+Plug 'satoshiyamamoto/vim-github-dark'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
@@ -180,10 +180,8 @@ imap <expr> <CR>        pumvisible() ? "\<C-y>" : "\<CR>"
 
 " Themes
 colorscheme ghdark
-let g:airline_theme = 'tomorrow'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:rainbow_active = 1
 let g:rainbow_conf = { 'separately': { 'nerdtree': 0 } }
