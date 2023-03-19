@@ -208,7 +208,7 @@ require("packer").startup(function(use)
         mapping = {
           ["<C-p>"] = cmp.mapping.select_prev_item(),
           ["<C-n>"] = cmp.mapping.select_next_item(),
-          ["<C-d>"] = cmp.mapping.scroll_docs( -4),
+          ["<C-d>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.close(),
@@ -341,12 +341,6 @@ require("packer").startup(function(use)
       lspconfig["tsserver"].setup({ on_attach = on_attach, capabilities = capabilities })
       lspconfig["terraformls"].setup({ on_attach = on_attach, capabilities = capabilities })
       lspconfig["rust_analyzer"].setup({ on_attach = on_attach, capabilities = capabilities })
-      lspconfig["sqls"].setup({
-        on_attach = function(client, bufnr)
-          require("sqls").on_attach(client, bufnr)
-        end,
-        capabilities = capabilities,
-      })
       lspconfig["lua_ls"].setup({
         on_attach = on_attach,
         capabilities = capabilities,
@@ -361,7 +355,6 @@ require("packer").startup(function(use)
     end,
     requires = {
       { "hrsh7th/cmp-nvim-lsp" },
-      { "nanotee/sqls.nvim" },
     },
   })
 
@@ -376,7 +369,6 @@ require("packer").startup(function(use)
           "lua_ls",
           "pyright",
           "rust_analyzer",
-          "sqls",
           "tsserver",
           "terraformls",
         },
@@ -431,10 +423,16 @@ require("packer").startup(function(use)
           null_ls.builtins.formatting.black,
           null_ls.builtins.formatting.google_java_format,
           null_ls.builtins.formatting.prettier,
+          null_ls.builtins.formatting.sqlfluff.with({
+            extra_args = { "--dialect", "bigquery" },
+          }),
           null_ls.builtins.diagnostics.staticcheck,
           null_ls.builtins.diagnostics.flake8,
           null_ls.builtins.diagnostics.mypy,
           null_ls.builtins.diagnostics.eslint,
+          null_ls.builtins.diagnostics.sqlfluff.with({
+            extra_args = { "--dialect", "bigquery" },
+          }),
         },
         on_attach = function(client, bufnr)
           if client.supports_method("textDocument/formatting") then
@@ -685,11 +683,11 @@ require("packer").startup(function(use)
           },
         },
         presets = {
-          bottom_search = true, -- use a classic bottom cmdline for search
-          command_palette = false, -- position the cmdline and popupmenu together
+          bottom_search = true,         -- use a classic bottom cmdline for search
+          command_palette = false,      -- position the cmdline and popupmenu together
           long_message_to_split = true, -- long messages will be sent to a split
-          inc_rename = true, -- enables an input dialog for inc-rename.nvim
-          lsp_doc_border = false, -- add a border to hover docs and signature help
+          inc_rename = true,            -- enables an input dialog for inc-rename.nvim
+          lsp_doc_border = false,       -- add a border to hover docs and signature help
         },
       })
       require("inc_rename").setup()
