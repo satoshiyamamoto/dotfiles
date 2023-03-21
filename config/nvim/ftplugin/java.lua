@@ -59,6 +59,11 @@ local on_attach = function(_, bufnr)
   jdtls.setup.add_commands()
 end
 
+-- Disable the echo messages setting
+local handlers = {}
+handlers["language/status"] = function()
+end
+
 -- This bundles definition is the same as in the previous section (java-debug installation)
 local bundles = {
   vim.fn.glob(mason_packages .. "/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar", 1),
@@ -92,11 +97,9 @@ local config = {
     "-data",
     workspace,
   },
-
   -- This is the default if not provided, you can remove it. Or adjust as needed.
   -- One dedicated LSP server & client will be started per unique root_dir
   root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew" }),
-
   -- Here you can configure eclipse.jdt.ls specific settings
   -- See https://github.com/eclipse/eclipse.jdt.ls/wiki/Running-the-JAVA-LS-server-from-the-command-line#initialize-request
   -- for a list of options
@@ -139,7 +142,7 @@ local config = {
       },
     },
   },
-
+  handlers = handlers,
   -- Language server `initializationOptions`
   -- You need to extend the `bundles` with paths to jar files
   -- if you want to use additional eclipse.jdt.ls plugins.
@@ -150,7 +153,6 @@ local config = {
   init_options = {
     bundles = bundles,
   },
-
   on_attach = on_attach,
 }
 -- This starts a new client & server,
