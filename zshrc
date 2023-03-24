@@ -46,6 +46,10 @@ sdk() {
     sdk "$@"
 }
 
+otp() {
+  oathtool --totp -b $(security find-generic-password -gs $@-otp -w)
+}
+
 gi() {
   curl -sLw "\n" https://www.gitignore.io/api/$@ ;
 }
