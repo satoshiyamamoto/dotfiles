@@ -18,6 +18,7 @@ ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 export HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit|*assume-role-with-saml*)"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export BW_PRETTY='true'
 
 # sources
 local homebrew="$(brew --prefix)"
@@ -52,6 +53,14 @@ otp() {
 
 gi() {
   curl -sLw "\n" https://www.gitignore.io/api/$@ ;
+}
+
+bl() {
+  _bw_email=$(security find-generic-password -gs bitwarden-user -w)
+  _bw_password=$(security find-generic-password -gs bitwarden-cli -w)
+  _bw_code=$(otp bitwarden)
+  export BW_SESSION="$(bw login $_bw_email $_bw_password --method 0 --code $_bw_code --raw)"
+  unset _bw_{email,password,code}
 }
 
 # aliases
