@@ -199,6 +199,7 @@ cask "visual-studio-code"
 cask "webex"
 cask "zoom"
 # mas "1Blocker", id: 1365531024
+mas "Bitwarden", id: 1352778147
 mas "GarageBand", id: 682658836
 mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
