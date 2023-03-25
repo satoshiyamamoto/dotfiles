@@ -21,12 +21,14 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export BW_PRETTY='true'
 
 # sources
-local homebrew="$(brew --prefix)"
-[ -d "$homebrew/Caskroom/google-cloud-sdk" ] && source "$homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-[ -d "$homebrew/Caskroom/google-cloud-sdk" ] && source "$homebrew/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
-[ -f "$homebrew/etc/profile.d/z.sh" ] && source "$homebrew/etc/profile.d/z.sh"
+local _homebrew="$(brew --prefix)"
+local _gcloud_sdk="$_homebrew/Caskroom/google-cloud-sdk"
+[ -d "$_gcloud_sdk" ] && source "$_gcloud_sdk/latest/google-cloud-sdk/path.zsh.inc"
+[ -d "$_gcloud_sdk" ] && source "$_gcloud_sdk/latest/google-cloud-sdk/completion.zsh.inc"
+[ -f "$_homebrew/etc/profile.d/z.sh" ] && source "$_homebrew/etc/profile.d/z.sh"
 [ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+unset _homebrew _gcloud_sdk
 
 # functions
 kubectl() {
@@ -47,20 +49,25 @@ sdk() {
     sdk "$@"
 }
 
-otp() {
-  oathtool --totp -b $(security find-generic-password -gs $@-otp -w)
-}
-
 gi() {
   curl -sLw "\n" https://www.gitignore.io/api/$@ ;
 }
 
-bl() {
-  _bw_email=$(security find-generic-password -gs bitwarden-user -w)
-  _bw_password=$(security find-generic-password -gs bitwarden-cli -w)
-  _bw_code=$(otp bitwarden)
+otp() {
+  oathtool --totp -b $(security find-generic-password -gs $@-otp -w)
+}
+
+bwl() {
+  local _bw_email=$(security find-generic-password -gs bitwarden-user -w)
+  local _bw_password=$(security find-generic-password -gs bitwarden-cli -w)
+  local _bw_code=$(otp bitwarden)
+
   export BW_SESSION="$(bw login $_bw_email $_bw_password --method 0 --code $_bw_code --raw)"
   unset _bw_{email,password,code}
+}
+
+bws() {
+  bw list items --search "$@" | jq  '.[] | {"name":.name,"notes":.notes,"login":.login}'
 }
 
 # aliases
