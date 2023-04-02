@@ -59,7 +59,7 @@ otp() {
 
 bwl() {
   local _bw_email=$(security find-generic-password -gs bitwarden-user -w)
-  local _bw_password=$(security find-generic-password -gs bitwarden-cli -w)
+  local _bw_password=$(security find-generic-password -gs bitwarden -w)
   local _bw_code=$(otp bitwarden)
 
   export BW_SESSION="$(bw login $_bw_email $_bw_password --method 0 --code $_bw_code --raw)"
