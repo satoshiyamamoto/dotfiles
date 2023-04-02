@@ -18,7 +18,6 @@ ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 export HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit|*assume-role-with-saml*)"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export BW_PRETTY='true'
 
 # sources
 local _homebrew="$(brew --prefix)"
@@ -57,17 +56,20 @@ otp() {
   oathtool --totp -b $(security find-generic-password -gs $@-otp -w)
 }
 
-bwl() {
-  local _bw_email=$(security find-generic-password -gs bitwarden-user -w)
-  local _bw_password=$(security find-generic-password -gs bitwarden -w)
-  local _bw_code=$(otp bitwarden)
+bw() {
+  local _bw="$(brew --prefix)/bin/bw"
+  case "${1}" in
+    "login" )
+      local _email=$(security find-generic-password -gs bitwarden-user -w)
+      local _password=$(security find-generic-password -gs bitwarden -w)
+      local _code=$(otp bitwarden)
+      export BW_SESSION="$($_bw login $_email $_password --method 0 --code $_code --raw)"
+    ;;
 
-  export BW_SESSION="$(bw login $_bw_email $_bw_password --method 0 --code $_bw_code --raw)"
-  unset _bw_{email,password,code}
-}
-
-bws() {
-  bw list items --search "$@" | jq  '.[] | {"name":.name,"notes":.notes,"login":.login}'
+    * )
+      $_bw $@ --pretty | bat -l json
+    ;;
+  esac
 }
 
 # aliases
