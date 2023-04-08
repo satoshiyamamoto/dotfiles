@@ -574,9 +574,7 @@ require("packer").startup(function(use)
   use({
     "nvim-tree/nvim-tree.lua",
     setup = function()
-      vim.keymap.set("n", "<C-n>", "<Cmd>NvimTreeToggle<CR>", {})
-      vim.keymap.set("n", "<Leader>r", "<Cmd>NvimTreeRefresh<CR>", {})
-      vim.keymap.set("n", "<Leader>n", "<Cmd>NvimTreeFindFile<CR>", {})
+      vim.keymap.set("n", "<Leader>e", "<Cmd>NvimTreeToggle<CR>", {})
       vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", { fg = "#2f363d" })
     end,
     config = function()
