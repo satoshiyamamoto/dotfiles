@@ -110,6 +110,9 @@ require("packer").startup(function(use)
           disable = { "html" },
           additional_vim_regex_highlighting = { "yaml" },
         },
+        context_commentstring = {
+          enable = true,
+        },
         rainbow = {
           enable = true,
           disable = { "html" },
@@ -128,6 +131,7 @@ require("packer").startup(function(use)
     end,
     requires = {
       { "nvim-treesitter/nvim-treesitter-context" },
+      { "JoosepAlviste/nvim-ts-context-commentstring" },
       { "p00f/nvim-ts-rainbow" },
       { "windwp/nvim-ts-autotag" },
     },
@@ -294,7 +298,6 @@ require("packer").startup(function(use)
   use({ "tpope/vim-unimpaired" })
   use({ "tpope/vim-fugitive" })
   use({ "tpope/vim-surround" })
-  use({ "tpope/vim-commentary" })
   use({ "mattn/emmet-vim" })
 
   -- }}}
@@ -617,7 +620,7 @@ require("packer").startup(function(use)
         open_mapping = [[<C-\>]],
         insert_mappings = true,
       })
-      vim.keymap.set("n", "<Leader>g", function()
+      vim.keymap.set("n", "<Leader>lg", function()
         require("toggleterm.terminal").Terminal
           :new({
             cmd = "lazygit",
