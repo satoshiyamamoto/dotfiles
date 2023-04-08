@@ -202,8 +202,8 @@ require("packer").startup(function(use)
           end,
         },
         window = {
-          -- completion = cmp.config.window.bordered(),
-          -- documentation = cmp.config.window.bordered(),
+          completion = cmp.config.window.bordered(),
+          documentation = cmp.config.window.bordered(),
         },
         mapping = {
           ["<C-p>"] = cmp.mapping.select_prev_item(),
@@ -619,15 +619,14 @@ require("packer").startup(function(use)
       })
       vim.keymap.set("n", "<Leader>g", function()
         require("toggleterm.terminal").Terminal
-            :new({
-              cmd = "lazygit",
-              direction = "float",
-              hidden = true,
-              count = 0,
-            })
-            :toggle()
+          :new({
+            cmd = "lazygit",
+            direction = "float",
+            hidden = true,
+            count = 0,
+          })
+          :toggle()
       end)
-
       vim.cmd([[
       autocmd TermOpen * startinsert
       autocmd TermOpen * setlocal nonumber norelativenumber
@@ -683,11 +682,11 @@ require("packer").startup(function(use)
           },
         },
         presets = {
-          bottom_search = true,         -- use a classic bottom cmdline for search
-          command_palette = false,      -- position the cmdline and popupmenu together
+          bottom_search = true, -- use a classic bottom cmdline for search
+          command_palette = false, -- position the cmdline and popupmenu together
           long_message_to_split = true, -- long messages will be sent to a split
-          inc_rename = true,            -- enables an input dialog for inc-rename.nvim
-          lsp_doc_border = false,       -- add a border to hover docs and signature help
+          inc_rename = true, -- enables an input dialog for inc-rename.nvim
+          lsp_doc_border = false, -- add a border to hover docs and signature help
         },
       })
       require("inc_rename").setup()
