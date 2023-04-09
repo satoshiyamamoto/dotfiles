@@ -23,34 +23,38 @@ vim.opt.updatetime = 100
 
 -- Mappings: {{{
 
-local opts = { noremap = true, silent = true }
-
 -- Insert
-vim.keymap.set("i", "jj", "<Esc>", opts)
+vim.keymap.set("i", "jj", "<Esc>", {})
 
 -- Buffers
-vim.keymap.set("n", "[b", "<Cmd>:bprevious<CR>", opts)
-vim.keymap.set("n", "]b", "<Cmd>:bnext<CR>", opts)
-vim.keymap.set("n", "[B", "<Cmd>:bfirst<CR>", opts)
-vim.keymap.set("n", "]B", "<Cmd>:blast<CR>", opts)
+vim.keymap.set("n", "[b", "<Cmd>bprevious<CR>", {})
+vim.keymap.set("n", "]b", "<Cmd>bnext<CR>", {})
+vim.keymap.set("n", "[B", "<Cmd>bfirst<CR>", {})
+vim.keymap.set("n", "]B", "<Cmd>blast<CR>", {})
 
 -- Windows
-vim.keymap.set("n", "<C-j>", "<C-w>j", opts)
-vim.keymap.set("n", "<C-k>", "<C-w>k", opts)
-vim.keymap.set("n", "<C-h>", "<C-w>h", opts)
-vim.keymap.set("n", "<C-l>", "<C-w>l", opts)
+vim.keymap.set("n", "<C-j>", "<C-w>j", {})
+vim.keymap.set("n", "<C-k>", "<C-w>k", {})
+vim.keymap.set("n", "<C-h>", "<C-w>h", {})
+vim.keymap.set("n", "<C-l>", "<C-w>l", {})
+vim.keymap.set("n", "<C-Up>", "<Cmd>resize -2<CR>", {})
+vim.keymap.set("n", "<C-Down>", "<Cmd>resize +2<CR>", {})
+vim.keymap.set("n", "<C-Left>", "<Cmd>vertical resize -2<CR>", {})
+vim.keymap.set("n", "<C-Right>", "<Cmd>vertical resize +2<CR>", {})
 
 -- Diagnostics
-vim.keymap.set("n", "<Leader>e", vim.diagnostic.open_float, opts)
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist, opts)
+vim.keymap.set("n", "]q", "<Cmd>cnext<CR>", {})
+vim.keymap.set("n", "[q", "<Cmd>cprev<CR>", {})
+vim.keymap.set("n", "gl", vim.diagnostic.open_float, {})
+vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {})
+vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {})
+vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist, {})
 
 -- Terminal
-vim.keymap.set("n", "<C-`>", "<Cmd>:ToggleTerm<CR>", opts)
-vim.keymap.set("t", "<C-`>", "<Cmd>:ToggleTerm<CR>", opts)
-vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", opts)
-vim.keymap.set("t", "<C-[>", "<C-\\><C-n>", opts)
+vim.keymap.set("n", "<C-`>", "<Cmd>ToggleTerm<CR>", {})
+vim.keymap.set("t", "<C-`>", "<Cmd>ToggleTerm<CR>", {})
+vim.keymap.set("t", "<Esc>", "<C-Bslash><C-n>", {})
+vim.keymap.set("t", "<C-[>", "<C-Bslash><C-n>", {})
 
 -- }}}
 
@@ -307,45 +311,16 @@ require("packer").startup(function(use)
   use({
     "neovim/nvim-lspconfig",
     config = function()
-      local lspconfig = require("lspconfig")
-      local on_attach = function(_, bufnr)
-        -- Enable completion triggered by <c-x><c-o>
-        vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
-
-        -- Mappings.
-        local bufopts = { noremap = true, silent = true, buffer = bufnr }
-        vim.keymap.set("n", "gD", vim.lsp.buf.declaration, bufopts)
-        vim.keymap.set("n", "gd", vim.lsp.buf.definition, bufopts)
-        vim.keymap.set("n", "K", vim.lsp.buf.hover, bufopts)
-        vim.keymap.set("n", "gi", vim.lsp.buf.implementation, bufopts)
-        vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, bufopts)
-        vim.keymap.set("n", "gS", vim.lsp.buf.workspace_symbol, bufopts)
-        vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, bufopts)
-        vim.keymap.set("n", "<Space>wa", vim.lsp.buf.add_workspace_folder, bufopts)
-        vim.keymap.set("n", "<Space>wr", vim.lsp.buf.remove_workspace_folder, bufopts)
-        vim.keymap.set("n", "<Space>wl", function()
-          print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, bufopts)
-        vim.keymap.set("n", "<Space>D", vim.lsp.buf.type_definition, bufopts)
-        vim.keymap.set("n", "<Space>rn", function()
-          return ":IncRename " .. vim.fn.expand("<cword>")
-        end, { expr = true })
-        vim.keymap.set("n", "<Space>ca", vim.lsp.buf.code_action, bufopts)
-        vim.keymap.set("n", "gr", vim.lsp.buf.references, bufopts)
-        vim.keymap.set("n", "<Space>f", function()
-          vim.lsp.buf.format({ async = true })
-        end, bufopts)
-      end
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
       -- Language servers
-      lspconfig["gopls"].setup({ on_attach = on_attach, capabilities = capabilities })
-      lspconfig["pyright"].setup({ on_attach = on_attach, capabilities = capabilities })
-      lspconfig["tsserver"].setup({ on_attach = on_attach, capabilities = capabilities })
-      lspconfig["terraformls"].setup({ on_attach = on_attach, capabilities = capabilities })
-      lspconfig["rust_analyzer"].setup({ on_attach = on_attach, capabilities = capabilities })
+      local lspconfig = require("lspconfig")
+      lspconfig["gopls"].setup({ capabilities = capabilities })
+      lspconfig["pyright"].setup({ capabilities = capabilities })
+      lspconfig["tsserver"].setup({ capabilities = capabilities })
+      lspconfig["terraformls"].setup({ capabilities = capabilities })
+      lspconfig["rust_analyzer"].setup({ capabilities = capabilities })
       lspconfig["lua_ls"].setup({
-        on_attach = on_attach,
         capabilities = capabilities,
         settings = {
           Lua = {
@@ -354,6 +329,35 @@ require("packer").startup(function(use)
             },
           },
         },
+      })
+
+      -- Use LspAttach autocommand to only map the following keys
+      -- after the language server attaches to the current buffer
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+        callback = function(ev)
+          -- Enable completion triggered by <c-x><c-o>
+          vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+
+          -- Buffer local mappings.
+          -- See `:help vim.lsp.*` for documentation on any of the below functions
+          local opts = { buffer = ev.buf }
+          vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
+          vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+          vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+          vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
+          vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
+          vim.keymap.set("n", "<Space>wa", vim.lsp.buf.add_workspace_folder, opts)
+          vim.keymap.set("n", "<Space>wr", vim.lsp.buf.remove_workspace_folder, opts)
+          vim.keymap.set("n", "<Space>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, opts)
+          vim.keymap.set("n", "<Space>D", vim.lsp.buf.type_definition, opts)
+          vim.keymap.set("n", "<Space>rn", vim.lsp.buf.rename, opts)
+          vim.keymap.set("n", "<Space>ca", vim.lsp.buf.code_action, opts)
+          vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+          vim.keymap.set("n", "<Space>lf", function()
+            vim.lsp.buf.format({ async = true })
+          end, opts)
+        end,
       })
     end,
     requires = {
@@ -407,7 +411,6 @@ require("packer").startup(function(use)
     requires = {
       { "williamboman/mason.nvim" },
       { "jose-elias-alvarez/null-ls.nvim" },
-      { "jayp0521/mason-null-ls.nvim" },
     },
   })
 
@@ -497,12 +500,12 @@ require("packer").startup(function(use)
       dap.listeners.after.event_initialized["dapui_config"] = function()
         dapui.open()
       end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-      end
+      -- dap.listeners.before.event_terminated["dapui_config"] = function()
+      --   dapui.close()
+      -- end
+      -- dap.listeners.before.event_exited["dapui_config"] = function()
+      --   dapui.close()
+      -- end
 
       vim.keymap.set("n", "<F5>", dap.continue, {})
       vim.keymap.set("n", "<F10>", dap.step_over, {})
@@ -556,12 +559,12 @@ require("packer").startup(function(use)
       telescope.load_extension("ui-select")
 
       local builtin = require("telescope.builtin")
-      vim.keymap.set("n", "<C-p>", builtin.find_files, opts)
-      vim.keymap.set("n", "<Leader>ff", builtin.find_files, opts)
-      vim.keymap.set("n", "<leader>fg", builtin.live_grep, opts)
-      vim.keymap.set("n", "<leader>fb", builtin.buffers, opts)
-      vim.keymap.set("n", "<leader>fh", builtin.help_tags, opts)
-      vim.keymap.set("n", "<leader>fr", telescope.extensions.frecency.frecency, opts)
+      vim.keymap.set("n", "<C-p>", builtin.find_files, {})
+      vim.keymap.set("n", "<Leader>ff", builtin.find_files, {})
+      vim.keymap.set("n", "<Leader>fg", builtin.live_grep, {})
+      vim.keymap.set("n", "<Leader>fb", builtin.buffers, {})
+      vim.keymap.set("n", "<Leader>fh", builtin.help_tags, {})
+      vim.keymap.set("n", "<Leader>fr", telescope.extensions.frecency.frecency, {})
     end,
     requires = {
       { "nvim-lua/plenary.nvim" },
@@ -620,13 +623,13 @@ require("packer").startup(function(use)
       })
       vim.keymap.set("n", "<Leader>lg", function()
         require("toggleterm.terminal").Terminal
-          :new({
-            cmd = "lazygit",
-            direction = "float",
-            hidden = true,
-            count = 0,
-          })
-          :toggle()
+            :new({
+              cmd = "lazygit",
+              direction = "float",
+              hidden = true,
+              count = 0,
+            })
+            :toggle()
       end)
       vim.cmd([[
       autocmd TermOpen * startinsert
@@ -683,11 +686,11 @@ require("packer").startup(function(use)
           },
         },
         presets = {
-          bottom_search = true, -- use a classic bottom cmdline for search
-          command_palette = false, -- position the cmdline and popupmenu together
+          bottom_search = true,         -- use a classic bottom cmdline for search
+          command_palette = false,      -- position the cmdline and popupmenu together
           long_message_to_split = true, -- long messages will be sent to a split
-          inc_rename = true, -- enables an input dialog for inc-rename.nvim
-          lsp_doc_border = false, -- add a border to hover docs and signature help
+          inc_rename = true,            -- enables an input dialog for inc-rename.nvim
+          lsp_doc_border = false,       -- add a border to hover docs and signature help
         },
       })
       require("inc_rename").setup()
@@ -718,11 +721,11 @@ require("packer").startup(function(use)
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
       end
 
-      vim.keymap.set("n", "<leader>xx", "<Cmd>TroubleToggle<CR>", {})
-      vim.keymap.set("n", "<leader>xw", "<Cmd>TroubleToggle workspace_diagnostics<CR>", {})
-      vim.keymap.set("n", "<leader>xd", "<Cmd>TroubleToggle document_diagnostics<CR>", {})
-      vim.keymap.set("n", "<leader>xl", "<Cmd>TroubleToggle loclist<CR>", {})
-      vim.keymap.set("n", "<leader>xq", "<Cmd>TroubleToggle quickfix<CR>", {})
+      vim.keymap.set("n", "<Leader>xx", "<Cmd>TroubleToggle<CR>", {})
+      vim.keymap.set("n", "<Leader>xw", "<Cmd>TroubleToggle workspace_diagnostics<CR>", {})
+      vim.keymap.set("n", "<Leader>xd", "<Cmd>TroubleToggle document_diagnostics<CR>", {})
+      vim.keymap.set("n", "<Leader>xl", "<Cmd>TroubleToggle loclist<CR>", {})
+      vim.keymap.set("n", "<Leader>xq", "<Cmd>TroubleToggle quickfix<CR>", {})
       vim.keymap.set("n", "gR", "<Cmd>TroubleToggle lsp_references<CR>", {})
     end,
     requires = {
