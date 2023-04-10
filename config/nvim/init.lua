@@ -165,20 +165,20 @@ require("packer").startup(function(use)
     after = "nvim-ts-rainbow",
   })
 
-  use({
-    "nathom/filetype.nvim",
-    config = function()
-      require("filetype").setup({
-        overrides = {
-          extensions = {
-            tf = "hcl",
-            tfvars = "hcl",
-            properties = "dosini",
-          },
-        },
-      })
-    end,
-  })
+  -- use({
+  --   "nathom/filetype.nvim",
+  --   config = function()
+  --     require("filetype").setup({
+  --       overrides = {
+  --         extensions = {
+  --           tf = "hcl",
+  --           tfvars = "hcl",
+  --           properties = "dosini",
+  --         },
+  --       },
+  --     })
+  --   end,
+  -- })
 
   use({
     "folke/neodev.nvim",
@@ -349,7 +349,9 @@ require("packer").startup(function(use)
           vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
           vim.keymap.set("n", "<Space>wa", vim.lsp.buf.add_workspace_folder, opts)
           vim.keymap.set("n", "<Space>wr", vim.lsp.buf.remove_workspace_folder, opts)
-          vim.keymap.set("n", "<Space>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end, opts)
+          vim.keymap.set("n", "<Space>wl", function()
+            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+          end, opts)
           vim.keymap.set("n", "<Space>D", vim.lsp.buf.type_definition, opts)
           vim.keymap.set("n", "<Space>rn", vim.lsp.buf.rename, opts)
           vim.keymap.set("n", "<Space>ca", vim.lsp.buf.code_action, opts)
