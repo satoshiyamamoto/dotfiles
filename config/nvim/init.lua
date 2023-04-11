@@ -14,6 +14,7 @@ vim.opt.splitright = true
 vim.opt.laststatus = 3
 vim.opt.termguicolors = true
 vim.opt.confirm = true
+vim.opt.colorcolumn = "+1"
 vim.opt.completeopt = "menu,menuone,noselect"
 vim.opt.clipboard:append({ "unnamedplus" })
 vim.opt.updatetime = 100
@@ -189,8 +190,6 @@ require("packer").startup(function(use)
       })
     end,
   })
-
-  use({ "editorconfig/editorconfig-vim" })
 
   -- }}}
 
@@ -786,7 +785,6 @@ require("packer").startup(function(use)
 
       vim.api.nvim_set_hl(0, "VirtColumn", { fg = "#24292e", bg = nil })
     end,
-    after = "editorconfig-vim",
   })
 
   use({
