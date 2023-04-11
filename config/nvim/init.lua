@@ -130,7 +130,7 @@ require("packer").startup(function(use)
       require("treesitter-context").setup({
         enable = true,
       })
-      vim.api.nvim_set_hl(0, "TreesitterContext", { link = "Normal" })
+      vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "none" })
       vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#2f363d", underline = true })
     end,
     requires = {
@@ -553,11 +553,18 @@ require("packer").startup(function(use)
           },
         },
         extensions = {
+          fzf = {
+            fuzzy = true,                   -- false will only do exact matching
+            override_generic_sorter = true, -- override the generic sorter
+            override_file_sorter = true,    -- override the file sorter
+            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+          },
           ["ui-select"] = {
             require("telescope.themes").get_dropdown(),
           },
         },
       })
+      telescope.load_extension("fzf")
       telescope.load_extension("frecency")
       telescope.load_extension("ui-select")
 
@@ -571,6 +578,7 @@ require("packer").startup(function(use)
     end,
     requires = {
       { "nvim-lua/plenary.nvim" },
+      { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
       { "nvim-telescope/telescope-ui-select.nvim" },
       { "nvim-telescope/telescope-frecency.nvim" },
       { "tami5/sqlite.lua" },
@@ -647,14 +655,19 @@ require("packer").startup(function(use)
 
   use({
     "projekt0n/github-nvim-theme",
+    tag = "v0.0.7",
     config = function()
       require("github-theme").setup({
         theme_style = "dark_default",
         function_style = "italic",
         sidebars = { "qf", "vista_kind", "terminal", "packer" },
         transparent = true,
+        overrides = function()
+          return {
+            WinSeparator = { fg = "#2f363d" },
+          }
+        end,
       })
-      vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#2f363d" })
     end,
   })
 
