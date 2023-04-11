@@ -130,8 +130,6 @@ require("packer").startup(function(use)
       require("treesitter-context").setup({
         enable = true,
       })
-      vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "none" })
-      vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#2f363d", underline = true })
     end,
     requires = {
       { "nvim-treesitter/nvim-treesitter-context" },
@@ -589,7 +587,7 @@ require("packer").startup(function(use)
     "nvim-tree/nvim-tree.lua",
     setup = function()
       vim.keymap.set("n", "<Leader>e", "<Cmd>NvimTreeToggle<CR>", {})
-      vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", { fg = "#2f363d" })
+      vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", { fg = "#24292e" })
     end,
     config = function()
       require("nvim-tree").setup({
@@ -658,16 +656,12 @@ require("packer").startup(function(use)
     tag = "v0.0.7",
     config = function()
       require("github-theme").setup({
-        theme_style = "dark_default",
         function_style = "italic",
         sidebars = { "qf", "vista_kind", "terminal", "packer" },
         transparent = true,
-        overrides = function()
-          return {
-            WinSeparator = { fg = "#2f363d" },
-          }
-        end,
       })
+      vim.cmd([[colorscheme github_dark_default]])
+      vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#24292e" })
     end,
   })
 
@@ -686,6 +680,8 @@ require("packer").startup(function(use)
           },
         },
       })
+      vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "None" })
+      vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#24292e", underline = true })
     end,
     after = "github-nvim-theme",
   })
@@ -788,7 +784,7 @@ require("packer").startup(function(use)
         char = "▕",
       })
 
-      vim.api.nvim_set_hl(0, "VirtColumn", { fg = "#2f363d", bg = nil })
+      vim.api.nvim_set_hl(0, "VirtColumn", { fg = "#24292e", bg = nil })
     end,
     after = "editorconfig-vim",
   })
