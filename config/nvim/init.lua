@@ -164,21 +164,6 @@ require("packer").startup(function(use)
     after = "nvim-ts-rainbow",
   })
 
-  -- use({
-  --   "nathom/filetype.nvim",
-  --   config = function()
-  --     require("filetype").setup({
-  --       overrides = {
-  --         extensions = {
-  --           tf = "hcl",
-  --           tfvars = "hcl",
-  --           properties = "dosini",
-  --         },
-  --       },
-  --     })
-  --   end,
-  -- })
-
   use({
     "folke/neodev.nvim",
     config = function()
@@ -585,14 +570,18 @@ require("packer").startup(function(use)
     "nvim-tree/nvim-tree.lua",
     setup = function()
       vim.keymap.set("n", "<Leader>e", "<Cmd>NvimTreeToggle<CR>", {})
-      vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", { fg = "#24292e" })
     end,
     config = function()
       require("nvim-tree").setup({
-        view = { hide_root_folder = true },
-        renderer = { group_empty = true },
-        filters = { dotfiles = true },
+        sort_by = "case_sensitive",
+        renderer = {
+          group_empty = true,
+        },
+        filters = {
+          dotfiles = true,
+        },
       })
+      vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", { fg = "#24292e" })
     end,
     requires = {
       { "nvim-tree/nvim-web-devicons" },
@@ -717,6 +706,14 @@ require("packer").startup(function(use)
 
   use({
     "folke/trouble.nvim",
+    setup = function()
+      vim.keymap.set("n", "<Leader>xx", "<Cmd>TroubleToggle<CR>", {})
+      vim.keymap.set("n", "<Leader>xw", "<Cmd>TroubleToggle workspace_diagnostics<CR>", {})
+      vim.keymap.set("n", "<Leader>xd", "<Cmd>TroubleToggle document_diagnostics<CR>", {})
+      vim.keymap.set("n", "<Leader>xl", "<Cmd>TroubleToggle loclist<CR>", {})
+      vim.keymap.set("n", "<Leader>xq", "<Cmd>TroubleToggle quickfix<CR>", {})
+      vim.keymap.set("n", "gR", "<Cmd>TroubleToggle lsp_references<CR>", {})
+    end,
     config = function()
       require("trouble").setup()
 
@@ -730,13 +727,6 @@ require("packer").startup(function(use)
         local hl = "DiagnosticSign" .. type
         vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
       end
-
-      vim.keymap.set("n", "<Leader>xx", "<Cmd>TroubleToggle<CR>", {})
-      vim.keymap.set("n", "<Leader>xw", "<Cmd>TroubleToggle workspace_diagnostics<CR>", {})
-      vim.keymap.set("n", "<Leader>xd", "<Cmd>TroubleToggle document_diagnostics<CR>", {})
-      vim.keymap.set("n", "<Leader>xl", "<Cmd>TroubleToggle loclist<CR>", {})
-      vim.keymap.set("n", "<Leader>xq", "<Cmd>TroubleToggle quickfix<CR>", {})
-      vim.keymap.set("n", "gR", "<Cmd>TroubleToggle lsp_references<CR>", {})
     end,
     requires = {
       { "kyazdani42/nvim-web-devicons" },
