@@ -15,10 +15,10 @@ vim.opt.laststatus = 3
 vim.opt.termguicolors = true
 vim.opt.confirm = true
 vim.opt.colorcolumn = "+1"
-vim.opt.completeopt = "menu,menuone,noselect"
+vim.opt.completeopt = { "menuone", "noselect" }
 vim.opt.clipboard:append({ "unnamedplus" })
+vim.opt.shortmess:append({ c = true, I = true })
 vim.opt.updatetime = 100
---vim.opt_global.shortmess:remove("F"):append("c")
 
 -- }}}
 
