@@ -90,10 +90,12 @@ alias lt='exa -lgh --color-scale --git --icons --sort=newest'
 alias lu='exa -lgh --color-scale --git --icons --sort=accessed'
 alias lg='lazygit'
 alias lzd='lazydocker'
-alias icat='kitty +kitten icat'
 alias tree='exa -T'
-alias ssh='TERM=xterm-256color ssh'
 alias vpn='/opt/cisco/anyconnect/bin/vpn'
+if [[ "$TERM" == "xterm-kitty" ]]; then
+  alias ssh="kitty +kitten ssh"
+  alias icat='kitty +kitten icat'
+fi
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
