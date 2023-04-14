@@ -576,6 +576,9 @@ require("packer").startup(function(use)
         sort_by = "case_sensitive",
         renderer = {
           group_empty = true,
+          root_folder_label = function(path)
+            return vim.fn.fnamemodify(path, ":t") .. "/.."
+          end,
         },
         filters = {
           dotfiles = true,
