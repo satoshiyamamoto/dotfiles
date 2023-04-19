@@ -503,7 +503,7 @@ require("packer").startup(function(use)
       vim.keymap.set("n", "<Leader>lp", function()
         dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
       end, {})
-      vim.keymap.set("n", "<Leader>d", dapui.toggle, {})
+      vim.keymap.set("n", "<Leader>dU", dapui.toggle, {})
     end,
     requires = {
       { "mfussenegger/nvim-dap" },
@@ -555,6 +555,8 @@ require("packer").startup(function(use)
       vim.keymap.set("n", "<Leader>fg", builtin.live_grep, {})
       vim.keymap.set("n", "<Leader>fb", builtin.buffers, {})
       vim.keymap.set("n", "<Leader>fh", builtin.help_tags, {})
+      vim.keymap.set("n", "<Leader>fs", builtin.lsp_document_symbols, {})
+      vim.keymap.set("n", "<Leader>fS", builtin.lsp_dynamic_workspace_symbols, {})
       vim.keymap.set("n", "<Leader>fr", telescope.extensions.frecency.frecency, {})
     end,
     requires = {
