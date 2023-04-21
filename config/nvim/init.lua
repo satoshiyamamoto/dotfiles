@@ -451,10 +451,7 @@ require("packer").startup(function(use)
     config = function()
       require("dapui").setup()
       require("dap-go").setup()
-      require("dap-python").setup(
-        vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python",
-        { console = "internalConsole" }
-      )
+      require("dap-python").setup(vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python")
       require("dap-vscode-js").setup({
         debugger_cmd = { "js-debug-adapter" },
         adapters = { "pwa-node", "pwa-chrome" },
@@ -493,6 +490,7 @@ require("packer").startup(function(use)
       -- end
 
       vim.keymap.set("n", "<F5>", dap.continue, {})
+      vim.keymap.set("n", "<F17>", dap.terminate, {})
       vim.keymap.set("n", "<F10>", dap.step_over, {})
       vim.keymap.set("n", "<F11>", dap.step_into, {})
       vim.keymap.set("n", "<F23>", dap.step_out, {})
@@ -536,10 +534,10 @@ require("packer").startup(function(use)
         },
         extensions = {
           fzf = {
-            fuzzy = true,                   -- false will only do exact matching
+            fuzzy = true, -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true,    -- override the file sorter
-            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+            override_file_sorter = true, -- override the file sorter
+            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
           },
           ["ui-select"] = {
             require("telescope.themes").get_dropdown(),
@@ -624,13 +622,13 @@ require("packer").startup(function(use)
       })
       vim.keymap.set("n", "<Leader>lg", function()
         require("toggleterm.terminal").Terminal
-            :new({
-              cmd = "lazygit",
-              direction = "float",
-              hidden = true,
-              count = 0,
-            })
-            :toggle()
+          :new({
+            cmd = "lazygit",
+            direction = "float",
+            hidden = true,
+            count = 0,
+          })
+          :toggle()
       end)
       vim.cmd([[
       autocmd TermOpen * startinsert
@@ -690,11 +688,11 @@ require("packer").startup(function(use)
           },
         },
         presets = {
-          bottom_search = true,         -- use a classic bottom cmdline for search
-          command_palette = false,      -- position the cmdline and popupmenu together
+          bottom_search = true, -- use a classic bottom cmdline for search
+          command_palette = false, -- position the cmdline and popupmenu together
           long_message_to_split = true, -- long messages will be sent to a split
-          inc_rename = true,            -- enables an input dialog for inc-rename.nvim
-          lsp_doc_border = false,       -- add a border to hover docs and signature help
+          inc_rename = true, -- enables an input dialog for inc-rename.nvim
+          lsp_doc_border = false, -- add a border to hover docs and signature help
         },
       })
       require("inc_rename").setup()

@@ -9,12 +9,7 @@ vim.list_extend(bundles, vim.split(vim.fn.glob(mason .. "/java-test/extension/se
 
 local config = {}
 config.on_attach = function(_, bufnr)
-  jdtls.setup_dap({
-    hotcodereplace = "auto",
-    config_overrides = {
-      console = "internalConsole",
-    },
-  })
+  jdtls.setup_dap({ hotcodereplace = "auto" })
   jdtls.setup.add_commands()
 
   local opts = { silent = true, buffer = bufnr }
@@ -99,8 +94,7 @@ config.settings = {
 }
 
 config.handlers = {}
-config.handlers["language/status"] = function()
-end
+config.handlers["language/status"] = function() end
 
 config.init_options = {
   bundles = bundles,
