@@ -599,11 +599,11 @@ require("packer").startup(function(use)
 
       local hop = require("hop")
       local directions = require("hop.hint").HintDirection
-      vim.keymap.set("", "<Leader><Leader>w", function()
-        hop.hint_words()
-      end, {})
-      vim.keymap.set("", "<Leader><Leader>f", function()
+      vim.keymap.set("n", "s", function()
         hop.hint_char1({ direction = directions.AFTER_CURSOR })
+      end, {})
+      vim.keymap.set("n", "S", function()
+        hop.hint_words()
       end, {})
     end,
   })
