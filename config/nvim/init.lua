@@ -575,24 +575,21 @@ require("packer").startup(function(use)
         },
       })
       telescope.load_extension("fzf")
-      telescope.load_extension("frecency")
       telescope.load_extension("ui-select")
 
       local builtin = require("telescope.builtin")
       vim.keymap.set("n", "<Leader>ff", builtin.find_files, {})
       vim.keymap.set("n", "<Leader>fg", builtin.live_grep, {})
       vim.keymap.set("n", "<Leader>fb", builtin.buffers, {})
+      vim.keymap.set("n", "<Leader>fr", builtin.oldfiles, {})
       vim.keymap.set("n", "<Leader>fh", builtin.help_tags, {})
       vim.keymap.set("n", "<Leader>fs", builtin.lsp_document_symbols, {})
       vim.keymap.set("n", "<Leader>fS", builtin.lsp_dynamic_workspace_symbols, {})
-      vim.keymap.set("n", "<Leader>fr", telescope.extensions.frecency.frecency, {})
     end,
     requires = {
       { "nvim-lua/plenary.nvim" },
       { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
       { "nvim-telescope/telescope-ui-select.nvim" },
-      { "nvim-telescope/telescope-frecency.nvim" },
-      { "tami5/sqlite.lua" },
     },
   })
 
@@ -801,14 +798,12 @@ require("packer").startup(function(use)
       }
       dashboard.section.header.opts.hl = "Constant"
       dashboard.section.buttons.val = {
-        dashboard.button("e", "  New file", ":ene <BAR> startinsert <CR>"),
-        dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
-        dashboard.button("h", "  Recently opened files", ":Telescope oldfiles<CR>"),
-        dashboard.button("r", "  Frecency (MRU)", ":Telescope frecency<CR>"),
-        dashboard.button("g", "  Find word", ":Telescope live_grep<CR>"),
-        dashboard.button("q", "  Quit", ":qa<CR>"),
+        dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
+        dashboard.button("e", "  New file", ":ene <BAR> startinsert <CR>"),
+        dashboard.button("r", "  Recent files", ":Telescope oldfiles<CR>"),
+        dashboard.button("g", "  Find Text", ":Telescope live_grep<CR>"),
+        dashboard.button("q", "  Quit", ":qa<CR>"),
       }
-      dashboard.section.footer.val = ""
       alpha.setup(dashboard.config)
     end,
     requires = { "nvim-tree/nvim-web-devicons" },
