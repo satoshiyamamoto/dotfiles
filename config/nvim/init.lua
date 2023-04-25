@@ -442,6 +442,36 @@ require("packer").startup(function(use)
     requires = { "nvim-lua/plenary.nvim" },
   })
 
+  use({
+    "folke/trouble.nvim",
+    setup = function()
+      vim.keymap.set("n", "<Leader>xx", "<Cmd>TroubleToggle<CR>", {})
+      vim.keymap.set("n", "<Leader>xw", "<Cmd>TroubleToggle workspace_diagnostics<CR>", {})
+      vim.keymap.set("n", "<Leader>xd", "<Cmd>TroubleToggle document_diagnostics<CR>", {})
+      vim.keymap.set("n", "<Leader>xl", "<Cmd>TroubleToggle loclist<CR>", {})
+      vim.keymap.set("n", "<Leader>xq", "<Cmd>TroubleToggle quickfix<CR>", {})
+      vim.keymap.set("n", "gR", "<Cmd>TroubleToggle lsp_references<CR>", {})
+    end,
+    config = function()
+      require("trouble").setup()
+
+      local signs = {
+        Error = " ",
+        Warn = " ",
+        Hint = " ",
+        Info = " ",
+      }
+      for type, icon in pairs(signs) do
+        local hl = "DiagnosticSign" .. type
+        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+      end
+    end,
+    requires = {
+      { "kyazdani42/nvim-web-devicons" },
+      { "folke/lsp-colors.nvim" },
+    },
+  })
+
   -- }}}
 
   -- DAP: {{{
@@ -534,10 +564,10 @@ require("packer").startup(function(use)
         },
         extensions = {
           fzf = {
-            fuzzy = true, -- false will only do exact matching
+            fuzzy = true,                   -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true, -- override the file sorter
-            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+            override_file_sorter = true,    -- override the file sorter
+            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
           },
           ["ui-select"] = {
             require("telescope.themes").get_dropdown(),
@@ -622,13 +652,13 @@ require("packer").startup(function(use)
       })
       vim.keymap.set("n", "<Leader>lg", function()
         require("toggleterm.terminal").Terminal
-          :new({
-            cmd = "lazygit",
-            direction = "float",
-            hidden = true,
-            count = 0,
-          })
-          :toggle()
+            :new({
+              cmd = "lazygit",
+              direction = "float",
+              hidden = true,
+              count = 0,
+            })
+            :toggle()
       end)
       vim.cmd([[
       autocmd TermOpen * startinsert
@@ -688,11 +718,11 @@ require("packer").startup(function(use)
           },
         },
         presets = {
-          bottom_search = true, -- use a classic bottom cmdline for search
-          command_palette = false, -- position the cmdline and popupmenu together
+          bottom_search = true,         -- use a classic bottom cmdline for search
+          command_palette = false,      -- position the cmdline and popupmenu together
           long_message_to_split = true, -- long messages will be sent to a split
-          inc_rename = true, -- enables an input dialog for inc-rename.nvim
-          lsp_doc_border = false, -- add a border to hover docs and signature help
+          inc_rename = true,            -- enables an input dialog for inc-rename.nvim
+          lsp_doc_border = false,       -- add a border to hover docs and signature help
         },
       })
       require("inc_rename").setup()
@@ -704,36 +734,6 @@ require("packer").startup(function(use)
       { "MunifTanjim/nui.nvim" },
       { "rcarriga/nvim-notify" },
       { "smjonas/inc-rename.nvim" },
-    },
-  })
-
-  use({
-    "folke/trouble.nvim",
-    setup = function()
-      vim.keymap.set("n", "<Leader>xx", "<Cmd>TroubleToggle<CR>", {})
-      vim.keymap.set("n", "<Leader>xw", "<Cmd>TroubleToggle workspace_diagnostics<CR>", {})
-      vim.keymap.set("n", "<Leader>xd", "<Cmd>TroubleToggle document_diagnostics<CR>", {})
-      vim.keymap.set("n", "<Leader>xl", "<Cmd>TroubleToggle loclist<CR>", {})
-      vim.keymap.set("n", "<Leader>xq", "<Cmd>TroubleToggle quickfix<CR>", {})
-      vim.keymap.set("n", "gR", "<Cmd>TroubleToggle lsp_references<CR>", {})
-    end,
-    config = function()
-      require("trouble").setup()
-
-      local signs = {
-        Error = " ",
-        Warn = " ",
-        Hint = " ",
-        Info = " ",
-      }
-      for type, icon in pairs(signs) do
-        local hl = "DiagnosticSign" .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-      end
-    end,
-    requires = {
-      { "kyazdani42/nvim-web-devicons" },
-      { "folke/lsp-colors.nvim" },
     },
   })
 
@@ -783,6 +783,44 @@ require("packer").startup(function(use)
     "lewis6991/gitsigns.nvim",
     config = function()
       require("gitsigns").setup()
+    end,
+  })
+
+  use({
+    "goolord/alpha-nvim",
+    config = function()
+      local alpha = require("alpha")
+      local dashboard = require("alpha.themes.dashboard")
+      dashboard.section.header.val = {
+        [[                               __                ]],
+        [[  ___     ___    ___   __  __ /\_\    ___ ___    ]],
+        [[ / _ `\  / __`\ / __`\/\ \/\ \\/\ \  / __` __`\  ]],
+        [[/\ \/\ \/\  __//\ \_\ \ \ \_/ |\ \ \/\ \/\ \/\ \ ]],
+        [[\ \_\ \_\ \____\ \____/\ \___/  \ \_\ \_\ \_\ \_\]],
+        [[ \/_/\/_/\/____/\/___/  \/__/    \/_/\/_/\/_/\/_/]],
+      }
+      dashboard.section.header.opts.hl = "Constant"
+      dashboard.section.buttons.val = {
+        dashboard.button("e", "  New file", ":ene <BAR> startinsert <CR>"),
+        dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
+        dashboard.button("h", "  Recently opened files", ":Telescope oldfiles<CR>"),
+        dashboard.button("r", "  Frecency (MRU)", ":Telescope frecency<CR>"),
+        dashboard.button("g", "  Find word", ":Telescope live_grep<CR>"),
+        dashboard.button("q", "  Quit", ":qa<CR>"),
+      }
+      dashboard.section.footer.val = ""
+      alpha.setup(dashboard.config)
+    end,
+    requires = { "nvim-tree/nvim-web-devicons" },
+  })
+
+  use({
+    "wfxr/minimap.vim",
+    run = "cargo install --locked code-minimap",
+    config = function()
+      vim.cmd("let g:minimap_width = 10")
+      vim.cmd("let g:minimap_auto_start = 0")
+      vim.cmd("let g:minimap_auto_start_win_enter = 0")
     end,
   })
 
