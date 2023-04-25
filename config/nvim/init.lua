@@ -798,11 +798,24 @@ require("packer").startup(function(use)
       }
       dashboard.section.header.opts.hl = "Constant"
       dashboard.section.buttons.val = {
-        dashboard.button("f", "  Find file", ":Telescope find_files<CR>"),
-        dashboard.button("e", "  New file", ":ene <BAR> startinsert <CR>"),
-        dashboard.button("r", "  Recent files", ":Telescope oldfiles<CR>"),
-        dashboard.button("g", "  Find Text", ":Telescope live_grep<CR>"),
-        dashboard.button("q", "  Quit", ":qa<CR>"),
+        dashboard.button("f", "  Find file", "<Cmd>Telescope find_files<CR>"),
+        dashboard.button("e", "  New file", "<Cmd>enew <BAR> startinsert <CR>"),
+        dashboard.button("r", "  Recent files", "<Cmd>Telescope oldfiles<CR>"),
+        dashboard.button("g", "  Find Text", "<Cmd>Telescope live_grep<CR>"),
+        dashboard.button("c", "  Configuration", "<Cmd>edit $MYVIMRC<CR>"),
+        dashboard.button("q", "  Quit", "<Cmd>qall<CR>"),
+      }
+      dashboard.config = {
+        layout = {
+          { type = "padding", val = 2 },
+          dashboard.section.header,
+          { type = "padding", val = 4 },
+          dashboard.section.buttons,
+          dashboard.section.footer,
+        },
+        opts = {
+          margin = 5,
+        },
       }
       alpha.setup(dashboard.config)
     end,
