@@ -372,7 +372,7 @@ require("packer").startup(function(use)
   })
 
   use({
-    "jayp0521/mason-null-ls.nvim",
+    "jay-babu/mason-null-ls.nvim",
     config = function()
       require("mason-null-ls").setup({
         ensure_installed = {
@@ -384,7 +384,7 @@ require("packer").startup(function(use)
           "isort",
           "java-debug-adapter",
           "java-test",
-          "js-debug-adapter",
+          -- "js-debug-adapter",
           "mypy",
           "prettier",
           "staticcheck",
@@ -483,8 +483,7 @@ require("packer").startup(function(use)
       require("dap-go").setup()
       require("dap-python").setup(vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python")
       require("dap-vscode-js").setup({
-        debugger_cmd = { "js-debug-adapter" },
-        adapters = { "pwa-node", "pwa-chrome" },
+        adapters = { "pwa-node", "node-terminal" },
       })
 
       for _, language in ipairs({ "typescript", "javascript" }) do
@@ -540,6 +539,11 @@ require("packer").startup(function(use)
       { "mxsdev/nvim-dap-vscode-js" },
       { "leoluz/nvim-dap-go" },
       { "theHamsta/nvim-dap-virtual-text" },
+      {
+        "microsoft/vscode-js-debug",
+        opt = true,
+        run = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+      },
     },
   })
 
