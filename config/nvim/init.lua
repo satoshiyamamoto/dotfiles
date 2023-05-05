@@ -467,8 +467,7 @@ require("packer").startup(function(use)
       end
     end,
     requires = {
-      { "kyazdani42/nvim-web-devicons" },
-      { "folke/lsp-colors.nvim" },
+      { "nvim-tree/nvim-web-devicons" },
     },
   })
 
@@ -823,7 +822,9 @@ require("packer").startup(function(use)
       }
       alpha.setup(dashboard.config)
     end,
-    requires = { "nvim-tree/nvim-web-devicons" },
+    requires = {
+      { "nvim-tree/nvim-web-devicons" },
+    },
   })
 
   use({
