@@ -456,9 +456,9 @@ require("packer").startup(function(use)
       require("trouble").setup()
 
       local signs = {
-        Error = " ",
-        Warn = " ",
-        Hint = " ",
+        Error = "󰅚 ",
+        Warn = "󰀪 ",
+        Hint = "󰌶 ",
         Info = " ",
       }
       for type, icon in pairs(signs) do
@@ -801,12 +801,12 @@ require("packer").startup(function(use)
       }
       dashboard.section.header.opts.hl = "Constant"
       dashboard.section.buttons.val = {
-        dashboard.button("f", "  Find file", "<Cmd>Telescope find_files<CR>"),
+        dashboard.button("f", "󰈞  Find file", "<Cmd>Telescope find_files<CR>"),
         dashboard.button("e", "  New file", "<Cmd>enew <BAR> startinsert <CR>"),
         dashboard.button("r", "  Recent files", "<Cmd>Telescope oldfiles<CR>"),
-        dashboard.button("g", "  Find Text", "<Cmd>Telescope live_grep<CR>"),
+        dashboard.button("g", "󰊄  Find Text", "<Cmd>Telescope live_grep<CR>"),
         dashboard.button("c", "  Configuration", "<Cmd>edit $MYVIMRC<CR>"),
-        dashboard.button("q", "  Quit", "<Cmd>qall<CR>"),
+        dashboard.button("q", "󰅖  Quit", "<Cmd>qall<CR>"),
       }
       dashboard.config = {
         layout = {
