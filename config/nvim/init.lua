@@ -686,6 +686,22 @@ require("packer").startup(function(use)
   })
 
   use({
+    "folke/tokyonight.nvim",
+    config = function()
+      require("tokyonight").setup({
+        style = "night",
+        styles = {
+          functions = {},
+        },
+        sidebars = { "qf", "vista_kind", "terminal", "packer" },
+        on_colors = function()
+        end,
+      })
+      -- vim.cmd([[colorscheme tokyonight]])
+    end,
+  })
+
+  use({
     "nvim-lualine/lualine.nvim",
     config = function()
       require("lualine").setup({
@@ -718,11 +734,11 @@ require("packer").startup(function(use)
           },
         },
         presets = {
-          bottom_search = true,         -- use a classic bottom cmdline for search
-          command_palette = false,      -- position the cmdline and popupmenu together
-          long_message_to_split = true, -- long messages will be sent to a split
-          inc_rename = true,            -- enables an input dialog for inc-rename.nvim
-          lsp_doc_border = false,       -- add a border to hover docs and signature help
+          bottom_search = true,
+          command_palette = false,
+          long_message_to_split = true,
+          inc_rename = true,
+          lsp_doc_border = false,
         },
       })
       require("inc_rename").setup()
