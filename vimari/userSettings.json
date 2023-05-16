@@ -9,7 +9,7 @@
   "scrollDuration": 25,
   "transparentBindings": true,
   "bindings": {
-    "hintToggle": "shift+s",
+    "hintToggle": "f",
     "newTabHintToggle": "shift+f",
     "scrollUp": "k",
     "scrollDown": "j",
@@ -23,8 +23,8 @@
     "goBack": "shift+h",
     "goForward": "shift+l",
     "reload": "r",
-    "tabForward": "w",
-    "tabBack": "q",
+    "tabForward": "] b",
+    "tabBack": "[ b",
     "closeTab": "x",
     "openTab": "t"
   }

@@ -624,17 +624,11 @@ require("packer").startup(function(use)
   use({
     "phaazon/hop.nvim",
     branch = "v2",
+    setup = function()
+      vim.keymap.set("n", "<Leader><Leader>f", "<Cmd>HopWord<CR>", {})
+    end,
     config = function()
       require("hop").setup()
-
-      local hop = require("hop")
-      local directions = require("hop.hint").HintDirection
-      vim.keymap.set("n", "s", function()
-        hop.hint_char1({ direction = directions.AFTER_CURSOR })
-      end, {})
-      vim.keymap.set("n", "S", function()
-        hop.hint_words()
-      end, {})
     end,
   })
 
