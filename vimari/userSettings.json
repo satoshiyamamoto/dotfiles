@@ -1,5 +1,5 @@
 {
-  "excludedUrls": "youtube.com, github.com",
+  "excludedUrls": "youtube.com, github.com, docs.google.com",
   "linkHintCharacters": "asdfjklqwerzxc",
   "detectByCursorStyle": false,
   "scrollSize": 60,
