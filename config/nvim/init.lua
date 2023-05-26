@@ -549,7 +549,13 @@ require("packer").startup(function(use)
     },
   })
 
-  use({ "vim-test/vim-test" })
+  use({
+    "vim-test/vim-test",
+    setup = function()
+      vim.keymap.set("n", "<leader>df", "<Cmd>TestFile<CR>", {})
+      vim.keymap.set("n", "<leader>dn", "<Cmd>TestNearest<CR>", {})
+    end,
+  })
 
   -- }}}
 
@@ -570,10 +576,10 @@ require("packer").startup(function(use)
         },
         extensions = {
           fzf = {
-            fuzzy = true, -- false will only do exact matching
+            fuzzy = true,                   -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true, -- override the file sorter
-            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+            override_file_sorter = true,    -- override the file sorter
+            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
           },
           ["ui-select"] = {
             require("telescope.themes").get_dropdown(),
@@ -649,13 +655,13 @@ require("packer").startup(function(use)
       })
       vim.keymap.set("n", "<Leader>lg", function()
         require("toggleterm.terminal").Terminal
-          :new({
-            cmd = "lazygit",
-            direction = "float",
-            hidden = true,
-            count = 0,
-          })
-          :toggle()
+            :new({
+              cmd = "lazygit",
+              direction = "float",
+              hidden = true,
+              count = 0,
+            })
+            :toggle()
       end)
       vim.cmd([[
       autocmd TermOpen * startinsert
@@ -691,7 +697,8 @@ require("packer").startup(function(use)
           functions = {},
         },
         sidebars = { "qf", "vista_kind", "terminal", "packer" },
-        on_colors = function() end,
+        on_colors = function()
+        end,
       })
       -- vim.cmd([[colorscheme tokyonight]])
     end,
