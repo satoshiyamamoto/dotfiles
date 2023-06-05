@@ -590,6 +590,7 @@ require("packer").startup(function(use)
       telescope.load_extension("ui-select")
 
       local builtin = require("telescope.builtin")
+      vim.keymap.set("n", "<C-p>", builtin.find_files, {})
       vim.keymap.set("n", "<Leader>ff", builtin.find_files, {})
       vim.keymap.set("n", "<Leader>fg", builtin.live_grep, {})
       vim.keymap.set("n", "<Leader>fb", builtin.buffers, {})
@@ -634,7 +635,7 @@ require("packer").startup(function(use)
     "phaazon/hop.nvim",
     branch = "v2",
     setup = function()
-      vim.keymap.set("n", "<Leader><Leader>f", "<Cmd>HopWord<CR>", {})
+      vim.keymap.set("n", "ff", "<Cmd>HopWord<CR>", {})
     end,
     config = function()
       require("hop").setup()
@@ -697,8 +698,7 @@ require("packer").startup(function(use)
           functions = {},
         },
         sidebars = { "qf", "vista_kind", "terminal", "packer" },
-        on_colors = function()
-        end,
+        on_colors = function() end,
       })
       -- vim.cmd([[colorscheme tokyonight]])
     end,
