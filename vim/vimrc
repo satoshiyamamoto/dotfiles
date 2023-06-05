@@ -163,7 +163,7 @@ nmap <silent><C-p>      :Files<CR>
 nmap <silent><leader>ff :Files<CR>
 nmap <silent><leader>fg :Rg<CR>
 nmap <silent><leader>fb :Buffers<CR>
-nmap <silent><C-n>      :NERDTreeToggle<CR>
+nmap <silent><leader>e  :NERDTreeToggle<CR>
 nmap <silent><leader>r  :NERDTreeRefreshRoot<CR>
 nmap <silent><leader>n  :NERDTreeFind<CR>
 imap <expr> <C-j>       vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
