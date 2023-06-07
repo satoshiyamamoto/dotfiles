@@ -167,7 +167,6 @@ cask "google-chrome"
 cask "google-cloud-sdk"
 cask "google-drive"
 cask "handbrake"
-cask "hiddenbar"
 cask "intellij-idea"
 cask "kindle"
 cask "kitty"
@@ -183,6 +182,7 @@ cask "zoom"
 # mas "1Blocker", id: 1365531024
 mas "Bitwarden", id: 1352778147
 mas "GarageBand", id: 682658836
+mas "Hidden Bar", id: 1452453066
 mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
 mas "LINE", id: 539883307
