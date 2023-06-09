@@ -66,6 +66,7 @@ path=(
   $XDG_DATA_HOME/nvim/mason/bin(N)
   {$GOROOT,$GOPATH}/bin(N)
   $HOME/.krew/bin(N)
+  $HOME/.tiup/bin(N)
   $HOME/{,s}bin(N)
   /opt/{homebrew,local}/{,s}bin(N)
   /usr/local/{,s}bin(N)
