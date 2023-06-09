@@ -40,9 +40,11 @@ config.cmd = {
   "-javaagent:" .. mason .. "/jdtls/lombok.jar",
   "--add-modules=ALL-SYSTEM",
   "--add-opens",
+  "java.base/java.lang=ALL-UNNAMED",
+  "--add-opens",
   "java.base/java.util=ALL-UNNAMED",
   "--add-opens",
-  "java.base/java.lang=ALL-UNNAMED",
+  "java.base/java.nio=ALL-UNNAMED",
   "-jar",
   mason .. "/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar",
   "-configuration",
@@ -55,31 +57,8 @@ config.root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew" }
 
 config.settings = {
   java = {
-    signatureHelp = { enabled = true },
-    contentProvider = { preferred = "fernflower" },
-    completion = {
-      favoriteStaticMembers = {
-        "org.hamcrest.MatcherAssert.assertThat",
-        "org.hamcrest.Matchers.*",
-        "org.hamcrest.CoreMatchers.*",
-        "org.junit.jupiter.api.Assertions.*",
-        "java.util.Objects.requireNonNull",
-        "java.util.Objects.requireNonNullElse",
-        "org.mockito.Mockito.*",
-      },
-      filteredTypes = {
-        "com.sun.*",
-        "io.micrometer.shaded.*",
-        "java.awt.*",
-        "jdk.*",
-        "sun.*",
-      },
-    },
-    sources = {
-      organizeImports = {
-        starThreshold = 9999,
-        staticStarThreshold = 9999,
-      },
+    signatureHelp = {
+      enabled = true,
     },
     codeGeneration = {
       toString = {
@@ -89,6 +68,48 @@ config.settings = {
         useJava7Objects = true,
       },
       useBlocks = true,
+    },
+    completion = {
+      favoriteStaticMembers = {
+        "org.assertj.core.api.Assertions.*",
+        "org.junit.Assert.*",
+        "org.junit.Assume.*",
+        "org.junit.jupiter.api.Assertions.*",
+        "org.junit.jupiter.api.Assumptions.*",
+        "org.junit.jupiter.api.DynamicContainer.*",
+        "org.junit.jupiter.api.DynamicTest.*",
+        "org.mockito.Mockito.*",
+        "org.mockito.ArgumentMatchers.*",
+        "org.mockito.Answers.*",
+      },
+      importOrder = {
+        "#",
+        "java",
+        "javax",
+        "org",
+        "com",
+      },
+    },
+    contentProvider = {
+      preferred = "fernflower",
+    },
+    sources = {
+      organizeImports = {
+        starThreshold = 9999,
+        staticStarThreshold = 9999,
+      },
+    },
+    test = {
+      config = {
+        {
+          name = "testConfig",
+          vmArgs = {
+            "-Xmx513M",
+            "--add-opens=java.base/java.lang=ALL-UNNAMED",
+            "--add-opens=java.base/java.nio=ALL-UNNAMED",
+          },
+        },
+      },
     },
   },
 }
