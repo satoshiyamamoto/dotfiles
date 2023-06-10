@@ -8,43 +8,20 @@ local bundles = {
 vim.list_extend(bundles, vim.split(vim.fn.glob(mason .. "/java-test/extension/server/*.jar", 1), "\n"))
 
 local config = {}
-config.on_attach = function(_, bufnr)
-  jdtls.setup_dap({ hotcodereplace = "auto" })
-  jdtls.setup.add_commands()
-
-  local opts = { silent = true, buffer = bufnr }
-  vim.keymap.set("n", "<A-o>", jdtls.organize_imports, opts)
-  vim.keymap.set("n", "crv", jdtls.extract_variable, opts)
-  vim.keymap.set("v", "crv", function()
-    jdtls.extract_variable(true)
-  end, opts)
-  vim.keymap.set("n", "crc", jdtls.extract_constant, opts)
-  vim.keymap.set("v", "crc", function()
-    jdtls.extract_constant(true)
-  end, opts)
-  vim.keymap.set("v", "crm", function()
-    jdtls.extract_method(true)
-  end, opts)
-  vim.keymap.set("n", "<leader>df", jdtls.test_class, opts)
-  vim.keymap.set("n", "<leader>dn", jdtls.test_nearest_method, opts)
-end
 
 config.cmd = {
   "java", -- or '/path/to/java11_or_newer/bin/java'
   "-Declipse.application=org.eclipse.jdt.ls.core.id1",
   "-Dosgi.bundles.defaultStartLevel=4",
   "-Declipse.product=org.eclipse.jdt.ls.core.product",
-  "-Dlog.protocol=true",
-  "-Dlog.level=ALL",
-  "-Xms1g",
+  "-Xmx64G",
+  "-Xms100m",
+  "-Xlog:disable",
   "-javaagent:" .. mason .. "/jdtls/lombok.jar",
   "--add-modules=ALL-SYSTEM",
-  "--add-opens",
-  "java.base/java.lang=ALL-UNNAMED",
-  "--add-opens",
-  "java.base/java.util=ALL-UNNAMED",
-  "--add-opens",
-  "java.base/java.nio=ALL-UNNAMED",
+  "--add-opens=java.base/java.lang=ALL-UNNAMED",
+  "--add-opens=java.base/java.util=ALL-UNNAMED",
+  "--add-opens=java.base/java.nio=ALL-UNNAMED",
   "-jar",
   mason .. "/jdtls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar",
   "-configuration",
@@ -62,12 +39,8 @@ config.settings = {
     },
     codeGeneration = {
       toString = {
-        template = "${object.className}{${member.name()}=${member.value}, ${otherMembers}}",
+        template = "${object.className} [${member.name()}=${member.value}, ${otherMembers}]",
       },
-      hashCodeEquals = {
-        useJava7Objects = true,
-      },
-      useBlocks = true,
     },
     completion = {
       favoriteStaticMembers = {
@@ -82,13 +55,7 @@ config.settings = {
         "org.mockito.ArgumentMatchers.*",
         "org.mockito.Answers.*",
       },
-      importOrder = {
-        "#",
-        "java",
-        "javax",
-        "org",
-        "com",
-      },
+      importOrder = {},
     },
     contentProvider = {
       preferred = "fernflower",
@@ -101,18 +68,39 @@ config.settings = {
     },
     test = {
       config = {
-        {
-          name = "testConfig",
-          vmArgs = {
-            "-Xmx513M",
-            "--add-opens=java.base/java.lang=ALL-UNNAMED",
-            "--add-opens=java.base/java.nio=ALL-UNNAMED",
-          },
-        },
+        vmArgs = table.concat({
+          "--add-opens=java.base/java.lang=ALL-UNNAMED",
+          "--add-opens=java.base/java.nio=ALL-UNNAMED",
+        }, " "),
       },
     },
   },
 }
+
+config.on_attach = function(_, bufnr)
+  jdtls.setup_dap({ hotcodereplace = "auto" })
+  jdtls.setup.add_commands()
+
+  local opts = { silent = true, buffer = bufnr }
+  vim.keymap.set("n", "<A-o>", jdtls.organize_imports, opts)
+  vim.keymap.set("n", "crv", jdtls.extract_variable, opts)
+  vim.keymap.set("v", "crv", function()
+    jdtls.extract_variable(true)
+  end, opts)
+  vim.keymap.set("n", "crc", jdtls.extract_constant, opts)
+  vim.keymap.set("v", "crc", function()
+    jdtls.extract_constant(true)
+  end, opts)
+  vim.keymap.set("v", "crm", function()
+    jdtls.extract_method(true)
+  end, opts)
+  vim.keymap.set("n", "<leader>df", function()
+    jdtls.test_class(config.settings.java.test)
+  end, opts)
+  vim.keymap.set("n", "<leader>dn", function()
+    jdtls.test_nearest_method(config.settings.java.test)
+  end, opts)
+end
 
 config.handlers = {}
 config.handlers["language/status"] = function() end
