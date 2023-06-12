@@ -9,7 +9,7 @@
   "scrollDuration": 25,
   "transparentBindings": true,
   "bindings": {
-    "hintToggle": "f",
+    "hintToggle": "f f",
     "newTabHintToggle": "shift+f",
     "scrollUp": "k",
     "scrollDown": "j",
