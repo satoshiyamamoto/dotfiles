@@ -92,6 +92,7 @@ alias lu='exa -lgh --color-scale --git --icons --sort=accessed'
 alias lg='lazygit'
 alias lzd='lazydocker'
 alias tree='exa -T'
+alias curl='curl --silent'
 alias vpn='/opt/cisco/anyconnect/bin/vpn'
 if [[ "$TERM" == "xterm-kitty" ]]; then
   alias ssh="kitty +kitten ssh"
