@@ -217,7 +217,7 @@ require("packer").startup(function(use)
         }, {
           { name = "buffer" },
           { name = "path" },
-          { name = "copilot" },
+          -- { name = "copilot" },
         }),
         formatting = {
           format = require("lspkind").cmp_format({
