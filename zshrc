@@ -76,6 +76,7 @@ bw() {
 # aliases
 alias dk='docker'
 alias k='kubectl'
+alias kcat='kcat -X broker.address.family=v4'
 alias g='git'
 alias gore='gore -autoimport'
 alias grp='repo=$(ghq list | fzf) && cd $(ghq root)/$repo; unset repo'
