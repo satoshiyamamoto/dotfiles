@@ -76,7 +76,7 @@ local packer_bootstrap = ensure_packer()
 
 require("packer").startup(function(use)
   use({ "wbthomason/packer.nvim" })
-  use({ "dstein64/vim-startuptime" })
+  use({ "dstein64/vim-startuptime", cmd = { "StartupTime" } })
 
   -- }}}
 
@@ -85,6 +85,7 @@ require("packer").startup(function(use)
   use({
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
+    event = { "BufRead" },
     config = function()
       require("nvim-treesitter.configs").setup({
         ensure_installed = {
@@ -115,33 +116,43 @@ require("packer").startup(function(use)
           disable = { "html" },
           additional_vim_regex_highlighting = { "yaml" },
         },
-        context_commentstring = {
-          enable = true,
-        },
-        rainbow = {
-          enable = true,
-          disable = { "html" },
-          extended_mode = false,
-          max_file_lines = nil,
-        },
         autotag = {
+          enable = true,
+        },
+        context_commentstring = {
           enable = true,
         },
       })
     end,
     requires = {
-      {
-        "nvim-treesitter/nvim-treesitter-context",
-        config = function()
-          require("treesitter-context").setup({
-            enable = true,
-          })
-        end,
-      },
-      { "JoosepAlviste/nvim-ts-context-commentstring" },
-      { "p00f/nvim-ts-rainbow" },
-      { "windwp/nvim-ts-autotag" },
+      { "windwp/nvim-ts-autotag",                      opt = true },
+      { "JoosepAlviste/nvim-ts-context-commentstring", opt = true },
     },
+  })
+
+  use({
+    "nvim-treesitter/nvim-treesitter-context",
+    config = function()
+      require("treesitter-context").setup({
+        enable = true,
+      })
+    end,
+    after = "nvim-treesitter",
+  })
+
+  use({
+    "HiPhish/nvim-ts-rainbow2",
+    config = function()
+      require("nvim-treesitter.configs").setup({
+        rainbow = {
+          enable = true,
+          disable = { "jsx", "cpp" },
+          query = "rainbow-parens",
+          strategy = require("ts-rainbow").strategy.global,
+        },
+      })
+    end,
+    after = "nvim-treesitter",
   })
 
   use({
@@ -187,7 +198,7 @@ require("packer").startup(function(use)
     end,
   })
 
-  use({ "iloginow/vim-stylus" })
+  use({ "iloginow/vim-stylus", event = { "BufRead" } })
 
   -- }}}
 
@@ -372,6 +383,7 @@ require("packer").startup(function(use)
 
   use({
     "williamboman/mason-lspconfig.nvim",
+    cmd = { "Mason" },
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup({
@@ -464,6 +476,7 @@ require("packer").startup(function(use)
 
   use({
     "folke/trouble.nvim",
+    cmd = { "TroubleToggle" },
     setup = function()
       vim.keymap.set("n", "<Leader>xx", "<Cmd>TroubleToggle<CR>", {})
       vim.keymap.set("n", "<Leader>xw", "<Cmd>TroubleToggle workspace_diagnostics<CR>", {})
@@ -580,6 +593,17 @@ require("packer").startup(function(use)
 
   use({
     "nvim-telescope/telescope.nvim",
+    cmd = { "Telescope" },
+    setup = function()
+      vim.keymap.set("n", "<C-p>", "<Cmd>Telescope find_files<CR>", {})
+      vim.keymap.set("n", "<Leader>ff", "<Cmd>Telescope find_files<CR>", {})
+      vim.keymap.set("n", "<Leader>fg", "<Cmd>Telescope live_grep<CR>", {})
+      vim.keymap.set("n", "<Leader>fb", "<Cmd>Telescope buffers<CR>", {})
+      vim.keymap.set("n", "<Leader>fr", "<Cmd>Telescope oldfiles<CR>", {})
+      vim.keymap.set("n", "<Leader>fh", "<Cmd>Telescope help_tags<CR>", {})
+      vim.keymap.set("n", "<Leader>fs", "<Cmd>Telescope lsp_document_symbols<CR>", {})
+      vim.keymap.set("n", "<Leader>fS", "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>", {})
+    end,
     config = function()
       local telescope = require("telescope")
       telescope.setup({
@@ -605,16 +629,6 @@ require("packer").startup(function(use)
       })
       telescope.load_extension("fzf")
       telescope.load_extension("ui-select")
-
-      local builtin = require("telescope.builtin")
-      vim.keymap.set("n", "<C-p>", builtin.find_files, {})
-      vim.keymap.set("n", "<Leader>ff", builtin.find_files, {})
-      vim.keymap.set("n", "<Leader>fg", builtin.live_grep, {})
-      vim.keymap.set("n", "<Leader>fb", builtin.buffers, {})
-      vim.keymap.set("n", "<Leader>fr", builtin.oldfiles, {})
-      vim.keymap.set("n", "<Leader>fh", builtin.help_tags, {})
-      vim.keymap.set("n", "<Leader>fs", builtin.lsp_document_symbols, {})
-      vim.keymap.set("n", "<Leader>fS", builtin.lsp_dynamic_workspace_symbols, {})
     end,
     requires = {
       { "nvim-lua/plenary.nvim" },
@@ -630,6 +644,7 @@ require("packer").startup(function(use)
 
   use({
     "nvim-tree/nvim-tree.lua",
+    cmd = { "NvimTreeToggle" },
     setup = function()
       vim.keymap.set("n", "<Leader>e", "<Cmd>NvimTreeToggle<CR>", {})
     end,
@@ -649,7 +664,7 @@ require("packer").startup(function(use)
       vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", { fg = "#24292e" })
     end,
     requires = {
-      { "nvim-tree/nvim-web-devicons" },
+      { "nvim-tree/nvim-web-devicons", opt = true },
     },
   })
 
@@ -699,6 +714,7 @@ require("packer").startup(function(use)
 
   use({
     "projekt0n/github-nvim-theme",
+    event = { "VimEnter" },
     tag = "v0.0.7",
     config = function()
       require("github-theme").setup({
@@ -713,6 +729,7 @@ require("packer").startup(function(use)
 
   use({
     "folke/tokyonight.nvim",
+    event = { "VimEnter" },
     config = function()
       require("tokyonight").setup({
         style = "night",
@@ -829,6 +846,7 @@ require("packer").startup(function(use)
 
   use({
     "goolord/alpha-nvim",
+    event = { "VimEnter" },
     config = function()
       local alpha = require("alpha")
       local dashboard = require("alpha.themes.dashboard")
