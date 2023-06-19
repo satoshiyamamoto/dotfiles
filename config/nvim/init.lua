@@ -140,6 +140,8 @@ require("packer").startup(function(use)
     },
   })
 
+  use({ "iloginow/vim-stylus" })
+
   use({
     "lukas-reineke/indent-blankline.nvim",
     config = function()
@@ -162,11 +164,6 @@ require("packer").startup(function(use)
       vim.api.nvim_set_hl(0, "IndentBlanklineContextStart", { sp = "#b16286", underline = true })
     end,
     after = "nvim-ts-rainbow",
-  })
-
-  use({
-    "iloginow/vim-stylus",
-    opt = ture,
   })
 
   use({
