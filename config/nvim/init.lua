@@ -140,8 +140,6 @@ require("packer").startup(function(use)
     },
   })
 
-  use({ "iloginow/vim-stylus" })
-
   use({
     "lukas-reineke/indent-blankline.nvim",
     config = function()
@@ -177,6 +175,8 @@ require("packer").startup(function(use)
       })
     end,
   })
+
+  use({ "iloginow/vim-stylus" })
 
   -- }}}
 
@@ -610,6 +610,11 @@ require("packer").startup(function(use)
       { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
       { "nvim-telescope/telescope-ui-select.nvim" },
     },
+  })
+
+  use({
+    "kevinhwang91/nvim-bqf",
+    ft = "qf",
   })
 
   use({
