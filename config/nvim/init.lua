@@ -128,12 +128,16 @@ require("packer").startup(function(use)
           enable = true,
         },
       })
-      require("treesitter-context").setup({
-        enable = true,
-      })
     end,
     requires = {
-      { "nvim-treesitter/nvim-treesitter-context" },
+      {
+        "nvim-treesitter/nvim-treesitter-context",
+        config = function()
+          require("treesitter-context").setup({
+            enable = true,
+          })
+        end,
+      },
       { "JoosepAlviste/nvim-ts-context-commentstring" },
       { "p00f/nvim-ts-rainbow" },
       { "windwp/nvim-ts-autotag" },
@@ -150,18 +154,25 @@ require("packer").startup(function(use)
         char = "▏",
         context_char = "▏",
         context_highlight_list = {
-          "rainbowcol3",
-          "rainbowcol5",
-          "rainbowcol7",
-          "rainbowcol2",
-          "rainbowcol4",
-          "rainbowcol6",
-          "rainbowcol1",
+          "IndentBlanklineIndent1",
+          "IndentBlanklineIndent2",
+          "IndentBlanklineIndent3",
+          "IndentBlanklineIndent4",
+          "IndentBlanklineIndent5",
+          "IndentBlanklineIndent6",
+          "IndentBlanklineIndent7",
         },
       })
       vim.api.nvim_set_hl(0, "IndentBlanklineContextStart", { sp = "#b16286", underline = true })
+      vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", { fg = "#b16286", nocombine = true })
+      vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", { fg = "#689d6a", nocombine = true })
+      vim.api.nvim_set_hl(0, "IndentBlanklineIndent3", { fg = "#458588", nocombine = true })
+      vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", { fg = "#a89984", nocombine = true })
+      vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", { fg = "#d79921", nocombine = true })
+      vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", { fg = "#d65d0e", nocombine = true })
+      vim.api.nvim_set_hl(0, "IndentBlanklineIndent7", { fg = "#cc241d", nocombine = true })
     end,
-    after = "nvim-ts-rainbow",
+    after = "nvim-treesitter",
   })
 
   use({
