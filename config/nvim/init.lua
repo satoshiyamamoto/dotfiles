@@ -836,9 +836,9 @@ require("packer").startup(function(use)
       require("virt-column").setup({
         char = "▕",
       })
-
       vim.api.nvim_set_hl(0, "VirtColumn", { fg = "#24292e", bg = nil })
     end,
+    after = "github-nvim-theme",
   })
 
   use({
