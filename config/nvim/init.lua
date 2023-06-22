@@ -821,8 +821,12 @@ require("packer").startup(function(use)
 
   use({
     "norcalli/nvim-colorizer.lua",
+    event = { "BufRead" },
     config = function()
-      require("colorizer").setup()
+      require("colorizer").setup({
+        "*",
+        "!toggleterm",
+      })
     end,
   })
 
