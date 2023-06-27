@@ -85,7 +85,7 @@ require("packer").startup(function(use)
   use({
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
-    event = { "BufRead" },
+    event = { "BufRead", "BufNew" },
     config = function()
       require("nvim-treesitter.configs").setup({
         ensure_installed = {
@@ -198,7 +198,10 @@ require("packer").startup(function(use)
     end,
   })
 
-  use({ "iloginow/vim-stylus", event = { "BufRead" } })
+  use({
+    "iloginow/vim-stylus",
+    event = { "BufRead", "BufNew" },
+  })
 
   -- }}}
 
@@ -821,7 +824,7 @@ require("packer").startup(function(use)
 
   use({
     "norcalli/nvim-colorizer.lua",
-    event = { "BufRead" },
+    event = { "BufRead", "BufNew" },
     config = function()
       require("colorizer").setup({
         "*",
