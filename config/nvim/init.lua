@@ -19,6 +19,8 @@ vim.opt.completeopt = { "menuone", "noselect" }
 vim.opt.clipboard:append({ "unnamedplus" })
 vim.opt.shortmess:append({ c = true, I = true })
 vim.opt.updatetime = 100
+vim.opt.grepprg = "rg --vimgrep --no-heading --smart-case"
+vim.opt.grepformat = "%f:%l:%c:%m"
 
 -- }}}
 
@@ -125,7 +127,7 @@ require("packer").startup(function(use)
       })
     end,
     requires = {
-      { "windwp/nvim-ts-autotag",                      opt = true },
+      { "windwp/nvim-ts-autotag", opt = true },
       { "JoosepAlviste/nvim-ts-context-commentstring", opt = true },
     },
   })
@@ -620,10 +622,10 @@ require("packer").startup(function(use)
         },
         extensions = {
           fzf = {
-            fuzzy = true,                   -- false will only do exact matching
+            fuzzy = true, -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true,    -- override the file sorter
-            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+            override_file_sorter = true, -- override the file sorter
+            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
           },
           ["ui-select"] = {
             require("telescope.themes").get_dropdown(),
@@ -696,13 +698,13 @@ require("packer").startup(function(use)
       })
       vim.keymap.set("n", "<Leader>lg", function()
         require("toggleterm.terminal").Terminal
-            :new({
-              cmd = "lazygit",
-              direction = "float",
-              hidden = true,
-              count = 0,
-            })
-            :toggle()
+          :new({
+            cmd = "lazygit",
+            direction = "float",
+            hidden = true,
+            count = 0,
+          })
+          :toggle()
       end)
       vim.cmd([[
       autocmd TermOpen * startinsert
