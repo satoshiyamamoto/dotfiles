@@ -127,7 +127,7 @@ require("packer").startup(function(use)
       })
     end,
     requires = {
-      { "windwp/nvim-ts-autotag", opt = true },
+      { "windwp/nvim-ts-autotag",                      opt = true },
       { "JoosepAlviste/nvim-ts-context-commentstring", opt = true },
     },
   })
@@ -363,7 +363,6 @@ require("packer").startup(function(use)
           local opts = { buffer = ev.buf }
           vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
           vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-          vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
           vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
           vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
           vim.keymap.set("n", "<Space>wa", vim.lsp.buf.add_workspace_folder, opts)
@@ -372,12 +371,19 @@ require("packer").startup(function(use)
             print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
           end, opts)
           vim.keymap.set("n", "<Space>D", vim.lsp.buf.type_definition, opts)
-          vim.keymap.set("n", "<Space>rn", vim.lsp.buf.rename, opts)
-          vim.keymap.set("n", "<Space>ca", vim.lsp.buf.code_action, opts)
           vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
           vim.keymap.set("n", "<Space>lf", function()
             vim.lsp.buf.format({ async = true })
           end, opts)
+          vim.keymap.set("n", "gh", "<Cmd>Lspsaga lsp_finder<CR>")
+          vim.keymap.set({ "n", "v" }, "<Space>ca", "<Cmd>Lspsaga code_action<CR>")
+          vim.keymap.set("n", "<Space>rn", "<Cmd>Lspsaga rename<CR>")
+          vim.keymap.set("n", "gp", "<Cmd>Lspsaga peek_definition<CR>")
+          vim.keymap.set("n", "gt", "<Cmd>Lspsaga goto_type_definition<CR>")
+          vim.keymap.set("n", "<Space>o", "<Cmd>Lspsaga outline<CR>")
+          vim.keymap.set("n", "K", "<Cmd>Lspsaga hover_doc<CR>")
+          vim.keymap.set("n", "<Space>ci", "<Cmd>Lspsaga incoming_calls<CR>")
+          vim.keymap.set("n", "<Space>co", "<Cmd>Lspsaga outgoing_calls<CR>")
         end,
       })
     end,
@@ -481,6 +487,7 @@ require("packer").startup(function(use)
 
   use({
     "folke/trouble.nvim",
+    event = { "BufRead", "BufNew" },
     cmd = { "TroubleToggle" },
     setup = function()
       vim.keymap.set("n", "<Leader>xx", "<Cmd>TroubleToggle<CR>", {})
@@ -506,6 +513,29 @@ require("packer").startup(function(use)
     end,
     requires = {
       { "nvim-tree/nvim-web-devicons" },
+    },
+  })
+
+  use({
+    "glepnir/lspsaga.nvim",
+    opt = true,
+    branch = "main",
+    event = "LspAttach",
+    config = function()
+      require("lspsaga").setup({
+        lightbulb = {
+          enable = false,
+        },
+        ui = {
+          kind = {
+            ["Folder"] = { " ", "NvimTreeFolderIcon" },
+          },
+        },
+      })
+    end,
+    requires = {
+      { "nvim-tree/nvim-web-devicons" },
+      { "nvim-treesitter/nvim-treesitter" },
     },
   })
 
@@ -567,7 +597,7 @@ require("packer").startup(function(use)
       vim.keymap.set("n", "<Leader>lp", function()
         dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
       end, {})
-      vim.keymap.set("n", "<Leader>dU", dapui.toggle, {})
+      vim.keymap.set("n", "<Leader>du", dapui.toggle, {})
     end,
     requires = {
       { "mfussenegger/nvim-dap" },
@@ -622,10 +652,10 @@ require("packer").startup(function(use)
         },
         extensions = {
           fzf = {
-            fuzzy = true, -- false will only do exact matching
+            fuzzy = true,                   -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true, -- override the file sorter
-            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+            override_file_sorter = true,    -- override the file sorter
+            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
           },
           ["ui-select"] = {
             require("telescope.themes").get_dropdown(),
@@ -698,13 +728,13 @@ require("packer").startup(function(use)
       })
       vim.keymap.set("n", "<Leader>lg", function()
         require("toggleterm.terminal").Terminal
-          :new({
-            cmd = "lazygit",
-            direction = "float",
-            hidden = true,
-            count = 0,
-          })
-          :toggle()
+            :new({
+              cmd = "lazygit",
+              direction = "float",
+              hidden = true,
+              count = 0,
+            })
+            :toggle()
       end)
       vim.cmd([[
       autocmd TermOpen * startinsert
@@ -848,6 +878,11 @@ require("packer").startup(function(use)
 
   use({
     "lewis6991/gitsigns.nvim",
+    event = { "BufRead", "BufNew" },
+    setup = function()
+      vim.keymap.set("n", "]c", "<Cmd>Gitsigns next_hunk<CR>", {})
+      vim.keymap.set("n", "[c", "<Cmd>Gitsigns prev_hunk<CR>", {})
+    end,
     config = function()
       require("gitsigns").setup()
     end,
