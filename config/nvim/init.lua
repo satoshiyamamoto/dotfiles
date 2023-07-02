@@ -87,7 +87,7 @@ require("packer").startup(function(use)
   use({
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
-    event = { "BufRead", "BufNew" },
+    event = { "BufRead", "BufNewFile" },
     config = function()
       require("nvim-treesitter.configs").setup({
         ensure_installed = {
@@ -202,7 +202,7 @@ require("packer").startup(function(use)
 
   use({
     "iloginow/vim-stylus",
-    event = { "BufRead", "BufNew" },
+    event = { "BufRead", "BufNewFile" },
   })
 
   -- }}}
@@ -395,7 +395,7 @@ require("packer").startup(function(use)
   use({
     "williamboman/mason.nvim",
     run = ":MasonUpdate",
-    event = { "BufRead", "BufNew" },
+    event = { "BufRead", "BufNewFile" },
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup({
@@ -407,6 +407,15 @@ require("packer").startup(function(use)
           "rust_analyzer",
           "tsserver",
           "terraformls",
+        },
+      })
+      require("mason-nvim-dap").setup({
+        ensure_installed = {
+          "delve",
+          "javadbg",
+          "javatest",
+          "js",
+          "python",
         },
       })
       require("mason-null-ls").setup({
@@ -422,20 +431,11 @@ require("packer").startup(function(use)
           "sqlfluff",
         },
       })
-      require("mason-nvim-dap").setup({
-        ensure_installed = {
-          "delve",
-          "javadbg",
-          "javatest",
-          "js",
-          "python",
-        },
-      })
     end,
     requires = {
       { "williamboman/mason-lspconfig.nvim" },
-      { "jay-babu/mason-null-ls.nvim" },
       { "jay-babu/mason-nvim-dap.nvim" },
+      { "jay-babu/mason-null-ls.nvim" },
     },
   })
 
@@ -484,7 +484,7 @@ require("packer").startup(function(use)
 
   use({
     "folke/trouble.nvim",
-    event = { "BufRead", "BufNew" },
+    event = { "BufRead", "BufNewFile" },
     cmd = { "TroubleToggle" },
     setup = function()
       vim.keymap.set("n", "<Leader>xx", "<Cmd>TroubleToggle<CR>", {})
@@ -853,7 +853,7 @@ require("packer").startup(function(use)
 
   use({
     "norcalli/nvim-colorizer.lua",
-    event = { "BufRead", "BufNew" },
+    event = { "BufRead", "BufNewFile" },
     config = function()
       require("colorizer").setup({
         "*",
@@ -875,7 +875,7 @@ require("packer").startup(function(use)
 
   use({
     "lewis6991/gitsigns.nvim",
-    event = { "BufRead", "BufNew" },
+    event = { "BufRead", "BufNewFile" },
     setup = function()
       vim.keymap.set("n", "]c", "<Cmd>Gitsigns next_hunk<CR>", {})
       vim.keymap.set("n", "[c", "<Cmd>Gitsigns prev_hunk<CR>", {})
