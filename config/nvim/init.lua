@@ -393,8 +393,9 @@ require("packer").startup(function(use)
   })
 
   use({
-    "williamboman/mason-lspconfig.nvim",
-    cmd = { "Mason" },
+    "williamboman/mason.nvim",
+    run = ":MasonUpdate",
+    event = { "BufRead", "BufNew" },
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup({
@@ -408,26 +409,12 @@ require("packer").startup(function(use)
           "terraformls",
         },
       })
-    end,
-    requires = {
-      { "williamboman/mason.nvim" },
-    },
-  })
-
-  use({
-    "jay-babu/mason-null-ls.nvim",
-    config = function()
       require("mason-null-ls").setup({
         ensure_installed = {
           "black",
-          "debugpy",
-          "delve",
           "flake8",
           "goimports",
           "isort",
-          "java-debug-adapter",
-          "java-test",
-          -- "js-debug-adapter",
           "mypy",
           "prettier",
           "staticcheck",
@@ -435,10 +422,20 @@ require("packer").startup(function(use)
           "sqlfluff",
         },
       })
+      require("mason-nvim-dap").setup({
+        ensure_installed = {
+          "delve",
+          "javadbg",
+          "javatest",
+          "js",
+          "python",
+        },
+      })
     end,
     requires = {
-      { "williamboman/mason.nvim" },
-      { "jose-elias-alvarez/null-ls.nvim" },
+      { "williamboman/mason-lspconfig.nvim" },
+      { "jay-babu/mason-null-ls.nvim" },
+      { "jay-babu/mason-nvim-dap.nvim" },
     },
   })
 
