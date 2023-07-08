@@ -217,7 +217,13 @@ mas "Twitter", id: 1482454543
 mas "Vimari", id: 1480933944
 mas "Xcode", id: 497799835
 vscode "amandeepmittal.pug"
+vscode "bierner.github-markdown-preview"
+vscode "bierner.markdown-checkbox"
+vscode "bierner.markdown-emoji"
+vscode "bierner.markdown-footnotes"
 vscode "bierner.markdown-mermaid"
+vscode "bierner.markdown-preview-github-styles"
+vscode "bierner.markdown-yaml-preamble"
 vscode "dbaeumer.vscode-eslint"
 vscode "dorzey.vscode-sqlfluff"
 vscode "EditorConfig.EditorConfig"
