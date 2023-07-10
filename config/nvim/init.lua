@@ -135,7 +135,7 @@ require("packer").startup(function(use)
       })
     end,
     requires = {
-      { "windwp/nvim-ts-autotag",                      opt = true },
+      { "windwp/nvim-ts-autotag", opt = true },
       { "JoosepAlviste/nvim-ts-context-commentstring", opt = true },
     },
   })
@@ -146,6 +146,8 @@ require("packer").startup(function(use)
       require("treesitter-context").setup({
         enable = true,
       })
+      vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "None" })
+      vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#24292e", underline = true })
     end,
     after = "nvim-treesitter",
   })
@@ -328,6 +330,10 @@ require("packer").startup(function(use)
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
+      local disable_formatting = function(client)
+        client.server_capabilities.documentFormattingProvider = false
+        client.server_capabilities.documentRangeFormattingProvider = false
+      end
 
       -- Language servers
       local lspconfig = require("lspconfig")
@@ -338,6 +344,7 @@ require("packer").startup(function(use)
       lspconfig["rust_analyzer"].setup({ capabilities = capabilities })
       lspconfig["lua_ls"].setup({
         capabilities = capabilities,
+        on_attach = disable_formatting,
         settings = {
           Lua = {
             diagnostics = {
@@ -392,7 +399,6 @@ require("packer").startup(function(use)
   use({
     "williamboman/mason.nvim",
     run = ":MasonUpdate",
-    cmd = { "Mason" },
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup({
@@ -434,11 +440,12 @@ require("packer").startup(function(use)
       { "jay-babu/mason-nvim-dap.nvim" },
       { "jay-babu/mason-null-ls.nvim" },
     },
+    after = "null-ls.nvim",
   })
 
   use({
     "jose-elias-alvarez/null-ls.nvim",
-    event = { "LspAttach" },
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       local null_ls = require("null-ls")
       local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -647,10 +654,10 @@ require("packer").startup(function(use)
         },
         extensions = {
           fzf = {
-            fuzzy = true,                   -- false will only do exact matching
+            fuzzy = true, -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true,    -- override the file sorter
-            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+            override_file_sorter = true, -- override the file sorter
+            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
           },
           ["ui-select"] = {
             require("telescope.themes").get_dropdown(),
@@ -691,7 +698,6 @@ require("packer").startup(function(use)
           dotfiles = true,
         },
       })
-      vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", { fg = "#24292e" })
     end,
     requires = {
       { "nvim-tree/nvim-web-devicons", opt = true },
@@ -723,13 +729,13 @@ require("packer").startup(function(use)
       })
       vim.keymap.set("n", "<Leader>lg", function()
         require("toggleterm.terminal").Terminal
-            :new({
-              cmd = "lazygit",
-              direction = "float",
-              hidden = true,
-              count = 0,
-            })
-            :toggle()
+          :new({
+            cmd = "lazygit",
+            direction = "float",
+            hidden = true,
+            count = 0,
+          })
+          :toggle()
       end)
       vim.cmd([[
       autocmd TermOpen * startinsert
@@ -745,15 +751,17 @@ require("packer").startup(function(use)
   use({
     "projekt0n/github-nvim-theme",
     event = { "VimEnter" },
-    tag = "v0.0.7",
+    tag = "v1.0.0",
     config = function()
       require("github-theme").setup({
-        function_style = "italic",
-        sidebars = { "qf", "vista_kind", "terminal", "packer" },
-        transparent = true,
+        options = {
+          transparent = true,
+          styles = {
+            functions = "italic",
+          },
+        },
       })
-      vim.cmd([[colorscheme github_dark_default]])
-      vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#24292e" })
+      vim.cmd("colorscheme github_dark")
     end,
   })
 
@@ -769,33 +777,59 @@ require("packer").startup(function(use)
         sidebars = { "qf", "vista_kind", "terminal", "packer" },
         on_colors = function() end,
       })
-      -- vim.cmd([[colorscheme tokyonight]])
+      -- vim.cmd("colorscheme tokyonight")
     end,
   })
 
   use({
     "nvim-lualine/lualine.nvim",
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
       require("lualine").setup({
-        options = { theme = "auto" },
+        options = {
+          theme = "auto",
+        },
         sections = {
           lualine_x = {
             {
-              require("noice").api.statusline.mode.get,
-              cond = require("noice").api.statusline.mode.has,
+              require("noice").api.status.message.get_hl,
+              cond = require("noice").api.status.message.has,
+            },
+            {
+              require("noice").api.status.command.get,
+              cond = require("noice").api.status.command.has,
+              color = { fg = "#ff9e64" },
+            },
+            {
+              require("noice").api.status.mode.get,
+              cond = require("noice").api.status.mode.has,
+              color = { fg = "#ff9e64" },
+            },
+            {
+              require("noice").api.status.search.get,
+              cond = require("noice").api.status.search.has,
               color = { fg = "#ff9e64" },
             },
           },
         },
       })
-      vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "None" })
-      vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#24292e", underline = true })
     end,
-    after = "github-nvim-theme",
   })
 
   use({
     "folke/noice.nvim",
+    setup = function()
+      vim.keymap.set({ "n", "i", "s" }, "<C-f>", function()
+        if not require("noice.lsp").scroll(4) then
+          return "<C-f>"
+        end
+      end, { silent = true, expr = true })
+      vim.keymap.set({ "n", "i", "s" }, "<C-b>", function()
+        if not require("noice.lsp").scroll(-4) then
+          return "<C-b>"
+        end
+      end, { silent = true, expr = true })
+    end,
     config = function()
       require("noice").setup({
         lsp = {
@@ -807,13 +841,12 @@ require("packer").startup(function(use)
         },
         presets = {
           bottom_search = true,
-          command_palette = false,
-          long_message_to_split = true,
-          inc_rename = true,
-          lsp_doc_border = false,
+          command_palette = true,
+          long_message_to_split = false,
+          inc_rename = false,
+          lsp_doc_border = true,
         },
       })
-      require("inc_rename").setup()
       require("notify").setup({
         background_colour = "#000000",
       })
@@ -821,7 +854,6 @@ require("packer").startup(function(use)
     requires = {
       { "MunifTanjim/nui.nvim" },
       { "rcarriga/nvim-notify" },
-      { "smjonas/inc-rename.nvim" },
     },
   })
 
@@ -837,12 +869,15 @@ require("packer").startup(function(use)
 
   use({
     "akinsho/bufferline.nvim",
-    tag = "v3.*",
+    tag = "v4.*",
     config = function()
       require("bufferline").setup({
         options = {
           offsets = {
-            { filetype = "NvimTree" },
+            {
+              filetype = "NvimTree",
+              text = "Explorer",
+            },
           },
         },
       })
@@ -866,7 +901,6 @@ require("packer").startup(function(use)
       require("virt-column").setup({
         char = "▕",
       })
-      vim.api.nvim_set_hl(0, "VirtColumn", { fg = "#24292e", bg = nil })
     end,
     after = "github-nvim-theme",
   })
