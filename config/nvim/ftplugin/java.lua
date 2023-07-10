@@ -23,14 +23,14 @@ config.cmd = {
   "--add-opens=java.base/java.util=ALL-UNNAMED",
   "--add-opens=java.base/java.nio=ALL-UNNAMED",
   "-jar",
-  mason .. "/jdtls/plugins/org.eclipse.equinox.launcher_1.6.500.v20230622-2056.jar",
+  vim.fn.glob(mason .. "/jdtls/plugins/org.eclipse.equinox.launcher_*.jar"),
   "-configuration",
   mason .. "/jdtls/config_mac",
   "-data",
   workspace_dir,
 }
 
-config.root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew" })
+config.root_dir = require("jdtls.setup").find_root({ "gradlew", ".git", "mvnw" })
 
 config.settings = {
   java = {
