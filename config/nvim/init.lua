@@ -87,7 +87,7 @@ require("packer").startup(function(use)
   use({
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
-    event = { "BufRead", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
       require("nvim-treesitter.configs").setup({
         ensure_installed = {
@@ -115,7 +115,6 @@ require("packer").startup(function(use)
         },
         highlight = {
           enable = true,
-          disable = { "html" },
           additional_vim_regex_highlighting = { "yaml" },
         },
         autotag = {
@@ -124,6 +123,15 @@ require("packer").startup(function(use)
         context_commentstring = {
           enable = true,
         },
+      })
+
+      -- TODO:Use after v0.10 'vim.treesitter.language.register'
+      vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("TreeSitterRegister", {}),
+        pattern = { "xml" },
+        callback = function()
+          require("nvim-treesitter.parsers").filetype_to_parsername.xml = "html"
+        end,
       })
     end,
     requires = {
@@ -148,7 +156,7 @@ require("packer").startup(function(use)
       require("nvim-treesitter.configs").setup({
         rainbow = {
           enable = true,
-          disable = { "jsx", "cpp" },
+          disable = { "jsx", "html" },
           query = "rainbow-parens",
           strategy = require("ts-rainbow").strategy.global,
         },
@@ -189,20 +197,8 @@ require("packer").startup(function(use)
   })
 
   use({
-    "folke/neodev.nvim",
-    config = function()
-      require("neodev").setup({
-        library = {
-          plugins = { "nvim-dap-ui" },
-          types = true,
-        },
-      })
-    end,
-  })
-
-  use({
     "iloginow/vim-stylus",
-    event = { "BufRead", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile" },
   })
 
   -- }}}
@@ -329,6 +325,7 @@ require("packer").startup(function(use)
 
   use({
     "neovim/nvim-lspconfig",
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
@@ -395,7 +392,7 @@ require("packer").startup(function(use)
   use({
     "williamboman/mason.nvim",
     run = ":MasonUpdate",
-    event = { "BufRead", "BufNewFile" },
+    cmd = { "Mason" },
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup({
@@ -441,6 +438,7 @@ require("packer").startup(function(use)
 
   use({
     "jose-elias-alvarez/null-ls.nvim",
+    event = { "LspAttach" },
     config = function()
       local null_ls = require("null-ls")
       local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -484,7 +482,7 @@ require("packer").startup(function(use)
 
   use({
     "folke/trouble.nvim",
-    event = { "BufRead", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile" },
     cmd = { "TroubleToggle" },
     setup = function()
       vim.keymap.set("n", "<Leader>xx", "<Cmd>TroubleToggle<CR>", {})
@@ -517,7 +515,6 @@ require("packer").startup(function(use)
     "glepnir/lspsaga.nvim",
     opt = true,
     branch = "main",
-    event = "LspAttach",
     config = function()
       require("lspsaga").setup({
         lightbulb = {
@@ -534,6 +531,7 @@ require("packer").startup(function(use)
       { "nvim-tree/nvim-web-devicons" },
       { "nvim-treesitter/nvim-treesitter" },
     },
+    after = "nvim-treesitter",
   })
 
   -- }}}
@@ -853,7 +851,7 @@ require("packer").startup(function(use)
 
   use({
     "norcalli/nvim-colorizer.lua",
-    event = { "BufRead", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
       require("colorizer").setup({
         "*",
@@ -875,7 +873,7 @@ require("packer").startup(function(use)
 
   use({
     "lewis6991/gitsigns.nvim",
-    event = { "BufRead", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile" },
     setup = function()
       vim.keymap.set("n", "]c", "<Cmd>Gitsigns next_hunk<CR>", {})
       vim.keymap.set("n", "[c", "<Cmd>Gitsigns prev_hunk<CR>", {})
