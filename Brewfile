@@ -194,7 +194,6 @@ cask "intellij-idea"
 cask "kindle"
 cask "kitty"
 cask "licecap"
-cask "notion"
 cask "postman"
 cask "slack"
 cask "tableau"
@@ -203,7 +202,6 @@ cask "visual-studio-code"
 cask "webex"
 cask "zoom"
 # mas "1Blocker", id: 1365531024
-mas "Bitwarden", id: 1352778147
 mas "GarageBand", id: 682658836
 mas "Hidden Bar", id: 1452453066
 mas "iMovie", id: 408981434
