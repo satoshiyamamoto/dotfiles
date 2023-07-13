@@ -147,7 +147,7 @@ require("packer").startup(function(use)
         enable = true,
       })
       vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "None" })
-      vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#24292e", underline = true })
+      vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#161b22", underline = true })
     end,
     after = "nvim-treesitter",
   })
@@ -186,7 +186,7 @@ require("packer").startup(function(use)
           "IndentBlanklineIndent7",
         },
       })
-      vim.api.nvim_set_hl(0, "IndentBlanklineContextStart", { sp = "#b16286", underline = true })
+      vim.api.nvim_set_hl(0, "IndentBlanklineChar", { fg = "#383a3e", nocombine = true })
       vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", { fg = "#b16286", nocombine = true })
       vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", { fg = "#689d6a", nocombine = true })
       vim.api.nvim_set_hl(0, "IndentBlanklineIndent3", { fg = "#458588", nocombine = true })
@@ -194,6 +194,7 @@ require("packer").startup(function(use)
       vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", { fg = "#d79921", nocombine = true })
       vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", { fg = "#d65d0e", nocombine = true })
       vim.api.nvim_set_hl(0, "IndentBlanklineIndent7", { fg = "#cc241d", nocombine = true })
+      vim.api.nvim_set_hl(0, "IndentBlanklineContextStart", { sp = "#b16286", underline = true })
     end,
     after = "nvim-treesitter",
   })
