@@ -149,7 +149,7 @@ require("packer").startup(function(use)
       vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "None" })
       vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#161b22", underline = true })
     end,
-    after = "nvim-treesitter",
+    after = { "nvim-treesitter", "github-nvim-theme" },
   })
 
   use({
@@ -164,7 +164,7 @@ require("packer").startup(function(use)
         },
       })
     end,
-    after = "nvim-treesitter",
+    after = { "nvim-treesitter" },
   })
 
   use({
@@ -196,7 +196,7 @@ require("packer").startup(function(use)
       vim.api.nvim_set_hl(0, "IndentBlanklineIndent7", { fg = "#cc241d", nocombine = true })
       vim.api.nvim_set_hl(0, "IndentBlanklineContextStart", { sp = "#b16286", underline = true })
     end,
-    after = "nvim-treesitter",
+    after = { "nvim-treesitter", "github-nvim-theme" },
   })
 
   use({
@@ -441,7 +441,7 @@ require("packer").startup(function(use)
       { "jay-babu/mason-nvim-dap.nvim" },
       { "jay-babu/mason-null-ls.nvim" },
     },
-    after = "null-ls.nvim",
+    after = { "null-ls.nvim" },
   })
 
   use({
@@ -539,7 +539,7 @@ require("packer").startup(function(use)
       { "nvim-tree/nvim-web-devicons" },
       { "nvim-treesitter/nvim-treesitter" },
     },
-    after = "nvim-treesitter",
+    after = { "nvim-treesitter" },
   })
 
   -- }}}
@@ -903,7 +903,7 @@ require("packer").startup(function(use)
         char = "▕",
       })
     end,
-    after = "github-nvim-theme",
+    after = { "github-nvim-theme" },
   })
 
   use({
