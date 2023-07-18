@@ -94,6 +94,7 @@ alias lg='lazygit'
 alias lzd='lazydocker'
 alias tree='exa -T'
 alias curl='curl --silent'
+alias stern='stern --exclude-container "(fluentd|datadog)"'
 alias vpn='/opt/cisco/anyconnect/bin/vpn'
 if [[ "$TERM" == "xterm-kitty" ]]; then
   alias ssh="kitty +kitten ssh"
