@@ -528,11 +528,6 @@ require("packer").startup(function(use)
         lightbulb = {
           enable = false,
         },
-        ui = {
-          kind = {
-            ["Folder"] = { " ", "NvimTreeFolderIcon" },
-          },
-        },
       })
     end,
     requires = {
