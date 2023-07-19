@@ -14,6 +14,16 @@
 [init]
   defaultBranch = main
 
+[diff]
+  tool = nvimdiff
+  colorMoved = default
+
+[difftool]
+  prompt = false
+
+[merge]
+  conflictstyle = diff3
+
 [push]
   default = upstream
 
@@ -22,28 +32,14 @@
   diff = delta
   show = delta
 
-[difftool]
-  prompt = false
-
 [interactive]
   diffFilter = delta --color-only
 
 [delta]
-  features = side-by-side line-numbers decorations
-  plus-style = syntax "#003800"
-  minus-style = syntax "#3f0001"
-
-[delta "decorations"]
-  commit-decoration-style = bold yellow box ul
-  file-style = bold yellow ul
-  file-decoration-style = none
-  hunk-header-decoration-style = cyan box ul
-
-[delta "line-numbers"]
-  line-numbers-left-style = cyan
-  line-numbers-right-style = cyan
-  line-numbers-minus-style = 124
-  line-numbers-plus-style = 28
+  syntax-theme = Visual Studio Dark+
+  line-numbers = true
+  side-by-side = false
+  navigate = true
 
 [ghq]
   root = ~/Develop/src
