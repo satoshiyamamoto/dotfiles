@@ -758,6 +758,10 @@ require("packer").startup(function(use)
         },
       })
       vim.cmd("colorscheme github_dark")
+      -- TODO: want to disable support for a specified plugin.
+      vim.api.nvim_set_hl(0, "NotifyINFOBody", { link = "Normal" })
+      vim.api.nvim_set_hl(0, "NotifyINFOBorder", { fg = "#4F6752" })
+      vim.api.nvim_set_hl(0, "NotifyWARNBody", { link = "Normal" })
     end,
   })
 
@@ -844,6 +848,7 @@ require("packer").startup(function(use)
         },
       })
       require("notify").setup({
+        render = "default",
         background_colour = "#000000",
       })
     end,
