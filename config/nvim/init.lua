@@ -149,7 +149,7 @@ require("packer").startup(function(use)
       vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "None" })
       vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#161b22", underline = true })
     end,
-    after = { "nvim-treesitter", "github-nvim-theme" },
+    after = { "nvim-treesitter" },
   })
 
   use({
@@ -196,7 +196,7 @@ require("packer").startup(function(use)
       vim.api.nvim_set_hl(0, "IndentBlanklineIndent7", { fg = "#cc241d", nocombine = true })
       vim.api.nvim_set_hl(0, "IndentBlanklineContextStart", { sp = "#b16286", underline = true })
     end,
-    after = { "nvim-treesitter", "github-nvim-theme" },
+    after = { "nvim-treesitter" },
   })
 
   use({
@@ -747,21 +747,23 @@ require("packer").startup(function(use)
   use({
     "projekt0n/github-nvim-theme",
     event = { "VimEnter" },
-    tag = "v1.0.0",
+    tag = "v1.*",
     config = function()
       require("github-theme").setup({
         options = {
-          transparent = true,
+          modules = {
+            indent_blankline = false,
+            notify = false,
+            treesitter = false,
+            treesitter_context = false,
+          },
           styles = {
             functions = "italic",
           },
+          transparent = true,
         },
       })
       vim.cmd("colorscheme github_dark")
-      -- TODO: want to disable support for a specified plugin.
-      vim.api.nvim_set_hl(0, "NotifyINFOBody", { link = "Normal" })
-      vim.api.nvim_set_hl(0, "NotifyINFOBorder", { fg = "#4F6752" })
-      vim.api.nvim_set_hl(0, "NotifyWARNBody", { link = "Normal" })
     end,
   })
 
