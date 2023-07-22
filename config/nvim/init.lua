@@ -746,7 +746,7 @@ require("packer").startup(function(use)
 
   use({
     "projekt0n/github-nvim-theme",
-    event = { "VimEnter" },
+    event = { "VimEnter", "BufNewFile" },
     tag = "v1.*",
     config = function()
       require("github-theme").setup({
@@ -769,7 +769,7 @@ require("packer").startup(function(use)
 
   use({
     "folke/tokyonight.nvim",
-    event = { "VimEnter" },
+    event = { "VimEnter", "BufNewFile" },
     config = function()
       require("tokyonight").setup({
         style = "night",
@@ -794,24 +794,13 @@ require("packer").startup(function(use)
         sections = {
           lualine_x = {
             {
-              require("noice").api.status.message.get_hl,
-              cond = require("noice").api.status.message.has,
-            },
-            {
               require("noice").api.status.command.get,
               cond = require("noice").api.status.command.has,
               color = { fg = "#ff9e64" },
             },
-            {
-              require("noice").api.status.mode.get,
-              cond = require("noice").api.status.mode.has,
-              color = { fg = "#ff9e64" },
-            },
-            {
-              require("noice").api.status.search.get,
-              cond = require("noice").api.status.search.has,
-              color = { fg = "#ff9e64" },
-            },
+            "encoding",
+            "fileformat",
+            "filetype",
           },
         },
       })
