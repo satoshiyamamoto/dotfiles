@@ -214,6 +214,7 @@ mas "Tailscale", id: 1475387142
 mas "Twitter", id: 1482454543
 mas "Vimari", id: 1480933944
 mas "Xcode", id: 497799835
+vscode "ahmadawais.shades-of-purple"
 vscode "amandeepmittal.pug"
 vscode "bierner.github-markdown-preview"
 vscode "bierner.markdown-checkbox"
