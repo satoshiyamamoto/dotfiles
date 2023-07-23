@@ -103,6 +103,7 @@ require("packer").startup(function(use)
           "markdown",
           "markdown_inline",
           "pug",
+          "proto",
           "python",
           "query",
           "regex",
@@ -338,12 +339,13 @@ require("packer").startup(function(use)
 
       -- Language servers
       local lspconfig = require("lspconfig")
-      lspconfig["gopls"].setup({ capabilities = capabilities })
-      lspconfig["pyright"].setup({ capabilities = capabilities })
-      lspconfig["tsserver"].setup({ capabilities = capabilities })
-      lspconfig["terraformls"].setup({ capabilities = capabilities })
-      lspconfig["rust_analyzer"].setup({ capabilities = capabilities })
-      lspconfig["lua_ls"].setup({
+      lspconfig.bufls.setup({ capabilities = capabilities })
+      lspconfig.gopls.setup({ capabilities = capabilities })
+      lspconfig.pyright.setup({ capabilities = capabilities })
+      lspconfig.tsserver.setup({ capabilities = capabilities })
+      lspconfig.terraformls.setup({ capabilities = capabilities })
+      lspconfig.rust_analyzer.setup({ capabilities = capabilities })
+      lspconfig.lua_ls.setup({
         capabilities = capabilities,
         on_attach = disable_formatting,
         settings = {
@@ -404,6 +406,7 @@ require("packer").startup(function(use)
       require("mason").setup()
       require("mason-lspconfig").setup({
         ensure_installed = {
+          "bufls",
           "gopls",
           "jdtls",
           "lua_ls",
@@ -425,6 +428,7 @@ require("packer").startup(function(use)
       require("mason-null-ls").setup({
         ensure_installed = {
           "black",
+          "clang-format",
           "flake8",
           "goimports",
           "isort",
@@ -453,23 +457,26 @@ require("packer").startup(function(use)
 
       null_ls.setup({
         sources = {
-          null_ls.builtins.formatting.stylua,
-          null_ls.builtins.formatting.goimports,
-          null_ls.builtins.formatting.rustfmt,
-          null_ls.builtins.formatting.isort,
           null_ls.builtins.formatting.black,
+          null_ls.builtins.formatting.clang_format.with({
+            filetypes = { "proto" },
+          }),
+          null_ls.builtins.formatting.goimports,
           null_ls.builtins.formatting.google_java_format,
+          null_ls.builtins.formatting.isort,
           null_ls.builtins.formatting.prettier,
+          null_ls.builtins.formatting.rustfmt,
           null_ls.builtins.formatting.sqlfluff.with({
             extra_args = { "--dialect", "bigquery" },
           }),
-          null_ls.builtins.diagnostics.staticcheck,
+          null_ls.builtins.formatting.stylua,
+          null_ls.builtins.diagnostics.eslint,
           null_ls.builtins.diagnostics.flake8,
           null_ls.builtins.diagnostics.mypy,
-          null_ls.builtins.diagnostics.eslint,
           null_ls.builtins.diagnostics.sqlfluff.with({
             extra_args = { "--dialect", "bigquery" },
           }),
+          null_ls.builtins.diagnostics.staticcheck,
         },
         on_attach = function(client, bufnr)
           if client.supports_method("textDocument/formatting") then
