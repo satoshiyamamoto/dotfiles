@@ -792,7 +792,7 @@ require("packer").startup(function(use)
 
   use({
     "nvim-lualine/lualine.nvim",
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "VimEnter" },
     config = function()
       require("lualine").setup({
         options = {
@@ -812,10 +812,12 @@ require("packer").startup(function(use)
         },
       })
     end,
+    requires = { "noice.nvim" },
   })
 
   use({
     "folke/noice.nvim",
+    event = { "VimEnter" },
     setup = function()
       vim.keymap.set({ "n", "i", "s" }, "<C-f>", function()
         if not require("noice.lsp").scroll(4) then
