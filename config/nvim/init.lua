@@ -892,6 +892,7 @@ require("packer").startup(function(use)
       require("colorizer").setup({
         "*",
         "!toggleterm",
+        "!packer",
       })
     end,
   })
