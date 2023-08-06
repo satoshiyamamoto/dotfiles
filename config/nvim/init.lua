@@ -859,6 +859,16 @@ require("packer").startup(function(use)
   })
 
   use({
+    "folke/which-key.nvim",
+    cmd = { "WhichKey" },
+    config = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+      require("which-key").setup()
+    end,
+  })
+
+  use({
     "folke/todo-comments.nvim",
     config = function()
       require("todo-comments").setup()
