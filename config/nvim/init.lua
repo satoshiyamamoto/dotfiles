@@ -393,6 +393,13 @@ require("packer").startup(function(use)
           vim.keymap.set("n", "<Space>co", "<Cmd>Lspsaga outgoing_calls<CR>")
         end,
       })
+
+      vim.api.nvim_create_autocmd("BufNewFile", {
+        group = vim.api.nvim_create_augroup("LspStarting", {}),
+        callback = function()
+          vim.cmd("LspStart")
+        end,
+      })
     end,
     requires = {
       { "hrsh7th/cmp-nvim-lsp" },
