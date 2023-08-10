@@ -436,6 +436,7 @@ require("packer").startup(function(use)
         ensure_installed = {
           "black",
           "clang-format",
+          "eslint_d",
           "flake8",
           "goimports",
           "isort",
@@ -477,7 +478,7 @@ require("packer").startup(function(use)
             extra_args = { "--dialect", "bigquery" },
           }),
           null_ls.builtins.formatting.stylua,
-          null_ls.builtins.diagnostics.eslint,
+          null_ls.builtins.diagnostics.eslint_d,
           null_ls.builtins.diagnostics.flake8,
           null_ls.builtins.diagnostics.mypy,
           null_ls.builtins.diagnostics.sqlfluff.with({
