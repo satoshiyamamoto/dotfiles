@@ -800,7 +800,6 @@ require("packer").startup(function(use)
 
   use({
     "nvim-lualine/lualine.nvim",
-    event = { "VimEnter" },
     config = function()
       require("lualine").setup({
         options = {
@@ -820,7 +819,10 @@ require("packer").startup(function(use)
         },
       })
     end,
-    requires = { "noice.nvim" },
+    after = {
+      "noice.nvim",
+      "github-nvim-theme",
+    },
   })
 
   use({
