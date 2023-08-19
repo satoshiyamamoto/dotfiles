@@ -119,6 +119,9 @@ require("packer").startup(function(use)
           enable = true,
           additional_vim_regex_highlighting = { "yaml" },
         },
+        indent = {
+          enable = true,
+        },
         autotag = {
           enable = true,
         },
@@ -127,7 +130,7 @@ require("packer").startup(function(use)
         },
       })
 
-      -- TODO:Use after v0.10 'vim.treesitter.language.register'
+      -- TODO: Use after v0.10 'vim.treesitter.language.register'
       vim.api.nvim_create_autocmd("FileType", {
         group = vim.api.nvim_create_augroup("TreeSitterRegister", {}),
         pattern = { "xml" },
