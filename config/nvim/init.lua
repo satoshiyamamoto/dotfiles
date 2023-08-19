@@ -611,6 +611,11 @@ require("packer").startup(function(use)
         dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
       end, {})
       vim.keymap.set("n", "<Leader>du", dapui.toggle, {})
+      vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "ErrorMsg" })
+      vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "ErrorMsg" })
+      vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "ErrorMsg" })
+      vim.fn.sign_define("DapLogPoint", { text = "", texthl = "ErrorMsg" })
+      vim.fn.sign_define("DapStopped", { text = "", texthl = "WarningMsg" })
     end,
     requires = {
       { "mfussenegger/nvim-dap" },
