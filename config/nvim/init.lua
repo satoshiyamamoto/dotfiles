@@ -21,6 +21,7 @@ vim.opt.shortmess:append({ c = true, I = true })
 vim.opt.updatetime = 100
 vim.opt.grepprg = "rg --vimgrep --no-heading --smart-case"
 vim.opt.grepformat = "%f:%l:%c:%m"
+vim.opt.helplang = "ja,en"
 
 -- }}}
 
@@ -921,6 +922,7 @@ require("packer").startup(function(use)
         "*",
         "!toggleterm",
         "!packer",
+        "!help",
       })
     end,
   })
@@ -997,6 +999,11 @@ require("packer").startup(function(use)
       vim.cmd("let g:minimap_auto_start = 0")
       vim.cmd("let g:minimap_auto_start_win_enter = 0")
     end,
+  })
+
+  use({
+    "vim-jp/vimdoc-ja",
+    event = { "VimEnter" },
   })
 
   --- }}}
