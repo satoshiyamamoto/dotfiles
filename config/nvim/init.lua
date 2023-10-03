@@ -175,31 +175,34 @@ require("packer").startup(function(use)
   use({
     "lukas-reineke/indent-blankline.nvim",
     config = function()
-      require("indent_blankline").setup({
-        use_treesitter = true,
-        show_current_context = true,
-        show_current_context_start = true,
-        char = "▏",
-        context_char = "▏",
-        context_highlight_list = {
-          "IndentBlanklineIndent1",
-          "IndentBlanklineIndent2",
-          "IndentBlanklineIndent3",
-          "IndentBlanklineIndent4",
-          "IndentBlanklineIndent5",
-          "IndentBlanklineIndent6",
-          "IndentBlanklineIndent7",
+      local highlight = {
+        "RainbowBlue",
+        "RainbowGreen",
+        "RainbowYellow",
+        "RainbowOrange",
+        "RainbowRed",
+        "RainbowViolet",
+      }
+      local hooks = require("ibl.hooks")
+      hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+        vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#61AFEF" })
+        vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#98C379" })
+        vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#E5C07B" })
+        vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#D19A66" })
+        vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#E06C75" })
+        vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#C678DD" })
+      end)
+      vim.api.nvim_set_hl(0, "IblIndent", { fg = "#383a3e" })
+
+      require("ibl").setup({
+        indent = {
+          char = "▏",
+        },
+        scope = {
+          char = "▏",
+          highlight = highlight,
         },
       })
-      vim.api.nvim_set_hl(0, "IndentBlanklineChar", { fg = "#383a3e", nocombine = true })
-      vim.api.nvim_set_hl(0, "IndentBlanklineIndent1", { fg = "#b16286", nocombine = true })
-      vim.api.nvim_set_hl(0, "IndentBlanklineIndent2", { fg = "#689d6a", nocombine = true })
-      vim.api.nvim_set_hl(0, "IndentBlanklineIndent3", { fg = "#458588", nocombine = true })
-      vim.api.nvim_set_hl(0, "IndentBlanklineIndent4", { fg = "#a89984", nocombine = true })
-      vim.api.nvim_set_hl(0, "IndentBlanklineIndent5", { fg = "#d79921", nocombine = true })
-      vim.api.nvim_set_hl(0, "IndentBlanklineIndent6", { fg = "#d65d0e", nocombine = true })
-      vim.api.nvim_set_hl(0, "IndentBlanklineIndent7", { fg = "#cc241d", nocombine = true })
-      vim.api.nvim_set_hl(0, "IndentBlanklineContextStart", { sp = "#b16286", underline = true })
     end,
     after = { "nvim-treesitter" },
   })
