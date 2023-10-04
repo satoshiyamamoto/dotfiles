@@ -158,16 +158,28 @@ require("packer").startup(function(use)
   })
 
   use({
-    "HiPhish/nvim-ts-rainbow2",
+    "HiPhish/rainbow-delimiters.nvim",
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
-      require("nvim-treesitter.configs").setup({
-        rainbow = {
-          enable = true,
-          disable = { "jsx", "html" },
-          query = "rainbow-parens",
-          strategy = require("ts-rainbow").strategy.global,
+      local rainbow_delimiters = require("rainbow-delimiters")
+      vim.g.rainbow_delimiters = {
+        strategy = {
+          [""] = rainbow_delimiters.strategy["global"],
+          vim = rainbow_delimiters.strategy["local"],
         },
-      })
+        query = {
+          [""] = "rainbow-delimiters",
+          lua = "rainbow-blocks",
+        },
+        highlight = {
+          "RainbowDelimiterBlue",
+          "RainbowDelimiterGreen",
+          "RainbowDelimiterYellow",
+          "RainbowDelimiterOrange",
+          "RainbowDelimiterRed",
+          "RainbowDelimiterViolet",
+        },
+      }
     end,
     after = { "nvim-treesitter" },
   })
