@@ -1,6 +1,6 @@
 -- vim:foldmethod=marker
 
--- Basic: {{{
+-- # Basics: {{{
 
 vim.g.mapleader = " "
 vim.g.loaded_netrw = true
@@ -25,7 +25,7 @@ vim.opt.helplang = "ja,en"
 
 -- }}}
 
--- Mappings: {{{
+-- # Mappings: {{{
 
 -- Insert
 vim.keymap.set("i", "jj", "<Esc>", {})
@@ -62,57 +62,58 @@ vim.keymap.set("t", "<C-[>", "<C-Bslash><C-n>", {})
 
 -- }}}
 
--- Plugins: {{{
+-- # Lazy Plugins: {{{
 
 local plugins = {
 
-  -- Syntax: {{{
+  -- }}}
+
+  -- ## Syntaxeis: {{{
 
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      ensure_installed = {
+        "bash",
+        "go",
+        "gomod",
+        "hcl",
+        "html",
+        "java",
+        "javascript",
+        "json",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "pug",
+        "proto",
+        "python",
+        "query",
+        "regex",
+        "rust",
+        "sql",
+        "tsx",
+        "typescript",
+        "vim",
+        "yaml",
+      },
+      highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = { "yaml" },
+      },
+      indent = {
+        enable = true,
+      },
+      autoversion = {
+        enable = true,
+      },
+      context_commentstring = {
+        enable = true,
+      },
+    },
     config = function()
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = {
-          "bash",
-          "go",
-          "gomod",
-          "hcl",
-          "html",
-          "java",
-          "javascript",
-          "json",
-          "lua",
-          "markdown",
-          "markdown_inline",
-          "pug",
-          "proto",
-          "python",
-          "query",
-          "regex",
-          "rust",
-          "sql",
-          "tsx",
-          "typescript",
-          "vim",
-          "yaml",
-        },
-        highlight = {
-          enable = true,
-          additional_vim_regex_highlighting = { "yaml" },
-        },
-        indent = {
-          enable = true,
-        },
-        autoversion = {
-          enable = true,
-        },
-        context_commentstring = {
-          enable = true,
-        },
-      })
-
       -- TODO: Use after v0.10 'vim.treesitter.language.register'
       vim.api.nvim_create_autocmd("FileType", {
         group = vim.api.nvim_create_augroup("TreeSitterRegister", {}),
@@ -130,10 +131,11 @@ local plugins = {
 
   {
     "nvim-treesitter/nvim-treesitter-context",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      enable = true,
+    },
     config = function()
-      require("treesitter-context").setup({
-        enable = true,
-      })
       vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "None" })
       vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#161b22", underline = true })
     end,
@@ -143,78 +145,20 @@ local plugins = {
   },
 
   {
-    "HiPhish/rainbow-delimiters.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      local rainbow_delimiters = require("rainbow-delimiters")
-      vim.g.rainbow_delimiters = {
-        strategy = {
-          [""] = rainbow_delimiters.strategy["global"],
-          vim = rainbow_delimiters.strategy["local"],
-        },
-        query = {
-          [""] = "rainbow-delimiters",
-          lua = "rainbow-blocks",
-        },
-        highlight = {
-          "RainbowDelimiterBlue",
-          "RainbowDelimiterGreen",
-          "RainbowDelimiterYellow",
-          "RainbowDelimiterOrange",
-          "RainbowDelimiterRed",
-          "RainbowDelimiterViolet",
-        },
-      }
-    end,
-  },
-
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    config = function()
-      local highlight = {
-        "RainbowBlue",
-        "RainbowGreen",
-        "RainbowYellow",
-        "RainbowOrange",
-        "RainbowRed",
-        "RainbowViolet",
-      }
-      local hooks = require("ibl.hooks")
-      hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-        vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#61AFEF" })
-        vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#98C379" })
-        vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#E5C07B" })
-        vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#D19A66" })
-        vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#E06C75" })
-        vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#C678DD" })
-      end)
-      vim.api.nvim_set_hl(0, "IblIndent", { fg = "#383a3e" })
-
-      require("ibl").setup({
-        indent = {
-          char = "▏",
-        },
-        scope = {
-          char = "▏",
-          highlight = highlight,
-        },
-      })
-    end,
-  },
-
-  {
     "iloginow/vim-stylus",
     event = { "BufReadPost", "BufNewFile" },
   },
 
   -- }}}
 
-  -- Completions: {{{
+  -- ## Completions: {{{
 
   {
     "hrsh7th/nvim-cmp",
+    event = { "InsertEnter" },
     config = function()
       local cmp = require("cmp")
+      local lspkind = require("lspkind")
 
       cmp.setup({
         snippet = {
@@ -246,7 +190,7 @@ local plugins = {
           -- { name = "copilot" },
         }),
         formatting = {
-          format = require("lspkind").cmp_format({
+          format = lspkind.cmp_format({
             mode = "symbol_text",
             maxwidth = 50,
             preset = "default",
@@ -300,34 +244,33 @@ local plugins = {
       { "hrsh7th/cmp-vsnip" },
       { "hrsh7th/vim-vsnip" },
       { "hrsh7th/vim-vsnip-integ" },
+      { "onsails/lspkind.nvim" },
+      { "rafamadriz/friendly-snippets" },
     },
   },
 
-  { "github/copilot.vim" },
-  { "onsails/lspkind-nvim" },
-  { "golang/vscode-go" },
+  { "github/copilot.vim", event = { "InsertEnter" } },
+  { "golang/vscode-go", event = { "InsertEnter" } },
 
   -- }}}
 
-  -- Snippets: {{{
+  -- ## Snippets: {{{
 
   {
     "windwp/nvim-autopairs",
-    config = function()
-      require("nvim-autopairs").setup()
-    end,
+    event = "InsertEnter",
+    opts = {},
   },
 
-  { "rafamadriz/friendly-snippets" },
-  { "tpope/vim-unimpaired" },
-  { "tpope/vim-fugitive" },
-  { "tpope/vim-surround" },
-  { "tpope/vim-commentary" },
-  { "mattn/emmet-vim" },
+  { "tpope/vim-unimpaired", event = { "BufReadPost" } },
+  { "tpope/vim-fugitive", event = { "BufReadPost" } },
+  { "tpope/vim-surround", event = { "BufReadPost" } },
+  { "tpope/vim-commentary", event = { "BufReadPost" } },
+  { "mattn/emmet-vim", event = { "InsertEnter" } },
 
   -- }}}
 
-  -- LSP: {{{
+  -- ## LSPs: {{{
 
   {
     "neovim/nvim-lspconfig",
@@ -409,9 +352,16 @@ local plugins = {
   },
 
   {
-
     "williamboman/mason.nvim",
     build = ":MasonUpdate",
+    cmd = {
+      "Mason",
+      "MasonInstall",
+      "MasonUninstall",
+      "MasonUninstallAll",
+      "MasonLog",
+      "MasonUpdate",
+    },
     config = function()
       require("mason").setup()
       require("mason-lspconfig").setup({
@@ -512,14 +462,14 @@ local plugins = {
     "folke/trouble.nvim",
     event = { "BufReadPost", "BufNewFile" },
     cmd = { "TroubleToggle" },
-    init = function()
-      vim.keymap.set("n", "<Leader>xx", "<Cmd>TroubleToggle<CR>", {})
-      vim.keymap.set("n", "<Leader>xw", "<Cmd>TroubleToggle workspace_diagnostics<CR>", {})
-      vim.keymap.set("n", "<Leader>xd", "<Cmd>TroubleToggle document_diagnostics<CR>", {})
-      vim.keymap.set("n", "<Leader>xl", "<Cmd>TroubleToggle loclist<CR>", {})
-      vim.keymap.set("n", "<Leader>xq", "<Cmd>TroubleToggle quickfix<CR>", {})
-      vim.keymap.set("n", "gR", "<Cmd>TroubleToggle lsp_references<CR>", {})
-    end,
+    keys = {
+      { "<Leader>xx", "<Cmd>TroubleToggle<CR>" },
+      { "<Leader>xw", "<Cmd>TroubleToggle workspace_diagnostics<CR>" },
+      { "<Leader>xd", "<Cmd>TroubleToggle document_diagnostics<CR>" },
+      { "<Leader>xl", "<Cmd>TroubleToggle loclist<CR>" },
+      { "<Leader>xq", "<Cmd>TroubleToggle quickfix<CR>" },
+      { "gR", "<Cmd>TroubleToggle lsp_references<CR>" },
+    },
     config = function()
       require("trouble").setup()
 
@@ -540,9 +490,7 @@ local plugins = {
   },
 
   {
-    "glepnir/lspsaga.nvim",
-    opt = true,
-    branch = "main",
+    "nvimdev/lspsaga.nvim",
     config = function()
       require("lspsaga").setup({
         lightbulb = {
@@ -550,6 +498,7 @@ local plugins = {
         },
       })
     end,
+    event = { "LspAttach" },
     dependencies = {
       { "nvim-treesitter/nvim-treesitter" },
       { "nvim-tree/nvim-web-devicons" },
@@ -558,7 +507,7 @@ local plugins = {
 
   -- }}}
 
-  -- DAP: {{{
+  -- ## DAPs: {{{
 
   {
     "rcarriga/nvim-dap-ui",
@@ -638,28 +587,29 @@ local plugins = {
 
   {
     "vim-test/vim-test",
-    init = function()
-      vim.keymap.set("n", "<leader>df", "<Cmd>TestFile<CR>", {})
-      vim.keymap.set("n", "<leader>dn", "<Cmd>TestNearest<CR>", {})
-    end,
+    cmd = { "TestFile", "TestNearest" },
+    keys = {
+      { "<leader>df", "<Cmd>TestFile<CR>" },
+      { "<leader>dn", "<Cmd>TestNearest<CR>" },
+    },
   },
 
   -- }}}
 
-  -- Finder: {{{
+  -- ## Finders: {{{
   {
     "nvim-telescope/telescope.nvim",
     cmd = { "Telescope" },
-    init = function()
-      vim.keymap.set("n", "<C-p>", "<Cmd>Telescope find_files<CR>", {})
-      vim.keymap.set("n", "<Leader>ff", "<Cmd>Telescope find_files<CR>", {})
-      vim.keymap.set("n", "<Leader>fg", "<Cmd>Telescope live_grep<CR>", {})
-      vim.keymap.set("n", "<Leader>fb", "<Cmd>Telescope buffers<CR>", {})
-      vim.keymap.set("n", "<Leader>fr", "<Cmd>Telescope oldfiles<CR>", {})
-      vim.keymap.set("n", "<Leader>fh", "<Cmd>Telescope help_tags<CR>", {})
-      vim.keymap.set("n", "<Leader>fs", "<Cmd>Telescope lsp_document_symbols<CR>", {})
-      vim.keymap.set("n", "<Leader>fS", "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>", {})
-    end,
+    keys = {
+      { "<C-p>", "<Cmd>Telescope find_files<CR>" },
+      { "<Leader>ff", "<Cmd>Telescope find_files<CR>" },
+      { "<Leader>fg", "<Cmd>Telescope live_grep<CR>" },
+      { "<Leader>fb", "<Cmd>Telescope buffers<CR>" },
+      { "<Leader>fr", "<Cmd>Telescope oldfiles<CR>" },
+      { "<Leader>fh", "<Cmd>Telescope help_tags<CR>" },
+      { "<Leader>fs", "<Cmd>Telescope lsp_document_symbols<CR>" },
+      { "<Leader>fS", "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>" },
+    },
     config = function()
       local telescope = require("telescope")
       telescope.setup({
@@ -688,10 +638,20 @@ local plugins = {
     end,
     dependencies = {
       { "nvim-lua/plenary.nvim" },
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make",
+        config = function()
+          require("telescope").load_extension("fzf")
+        end,
+      },
+      {
+        "nvim-telescope/telescope-ui-select.nvim",
+        config = function()
+          require("telescope").load_extension("ui-select")
+        end,
+      },
     },
-
-    { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-    { "nvim-telescope/telescope-ui-select.nvim" },
   },
 
   {
@@ -702,26 +662,24 @@ local plugins = {
   {
     "nvim-tree/nvim-tree.lua",
     cmd = { "NvimTreeToggle" },
-    init = function()
-      vim.keymap.set("n", "<Leader>e", "<Cmd>NvimTreeToggle<CR>", {})
-    end,
-    config = function()
-      require("nvim-tree").setup({
-        sort_by = "case_sensitive",
-        view = {
-          width = 40,
-        },
-        renderer = {
-          group_empty = true,
-          root_folder_label = function(path)
-            return vim.fn.fnamemodify(path, ":t") .. "/.."
-          end,
-        },
-        filters = {
-          dotfiles = true,
-        },
-      })
-    end,
+    keys = {
+      { "<Leader>e", "<Cmd>NvimTreeToggle<CR>" },
+    },
+    opts = {
+      sort_by = "case_sensitive",
+      view = {
+        width = 40,
+      },
+      renderer = {
+        group_empty = true,
+        root_folder_label = function(path)
+          return vim.fn.fnamemodify(path, ":t") .. "/.."
+        end,
+      },
+      filters = {
+        dotfiles = true,
+      },
+    },
     dependencies = {
       { "nvim-tree/nvim-web-devicons", opt = true },
     },
@@ -730,9 +688,10 @@ local plugins = {
   {
     "phaazon/hop.nvim",
     branch = "v2",
-    init = function()
-      vim.keymap.set("n", "ff", "<Cmd>HopWord<CR>", {})
-    end,
+    cmd = { "HopWord" },
+    keys = {
+      { "ff", "<Cmd>HopWord<CR>" },
+    },
     config = function()
       require("hop").setup()
     end,
@@ -740,41 +699,43 @@ local plugins = {
 
   -- }}}
 
-  -- Terminal: {{{
+  -- ## Terminals: {{{
 
   {
     "akinsho/toggleterm.nvim",
     version = "v2.*",
-    config = function()
-      require("toggleterm").setup({
-        open_mapping = [[<C-\>]],
-        insert_mappings = true,
-      })
-      vim.keymap.set("n", "<Leader>lg", function()
-        require("toggleterm.terminal").Terminal
-          :new({
-            cmd = "lazygit",
-            direction = "float",
-            hidden = true,
-            count = 0,
-          })
-          :toggle()
-      end)
-      vim.cmd([[
-      autocmd TermOpen * startinsert
-      autocmd TermOpen * setlocal nonumber norelativenumber
-      ]])
-    end,
+    cmd = { "ToggleTerm", "TermOpen", "TermExec" },
+    keys = {
+      { "<C-\\>" },
+      {
+        "<Leader>lg",
+        function()
+          require("toggleterm.terminal").Terminal
+            :new({
+              cmd = "lazygit",
+              direction = "float",
+              hidden = true,
+              count = 0,
+            })
+            :toggle()
+        end,
+      },
+    },
+    opts = {
+      open_mapping = [[<C-\>]],
+      insert_mappings = true,
+    },
   },
 
   -- }}}
 
-  -- Theme: {{{
+  -- ## Themes: {{{
 
   {
     "projekt0n/github-nvim-theme",
-    event = { "VimEnter", "BufNewFile" },
     version = "v1.*",
+    lazy = false,
+    priority = 1000,
     config = function()
       require("github-theme").setup({
         options = {
@@ -796,7 +757,8 @@ local plugins = {
 
   {
     "folke/tokyonight.nvim",
-    event = { "VimEnter", "BufNewFile" },
+    lazy = false,
+    priority = 1000,
     config = function()
       require("tokyonight").setup({
         style = "night",
@@ -812,6 +774,7 @@ local plugins = {
 
   {
     "nvim-lualine/lualine.nvim",
+    event = { "VeryLazy" },
     config = function()
       require("lualine").setup({
         options = {
@@ -839,7 +802,7 @@ local plugins = {
 
   {
     "folke/noice.nvim",
-    event = { "VimEnter" },
+    event = { "VeryLazy" },
     init = function()
       vim.keymap.set({ "n", "i", "s" }, "<C-f>", function()
         if not require("noice.lsp").scroll(4) then
@@ -882,19 +845,18 @@ local plugins = {
 
   {
     "folke/which-key.nvim",
-    cmd = { "WhichKey" },
-    config = function()
+    event = { "VeryLazy" },
+    init = function()
       vim.o.timeout = true
       vim.o.timeoutlen = 300
-      require("which-key").setup()
     end,
+    opts = {},
   },
 
   {
     "folke/todo-comments.nvim",
-    config = function()
-      require("todo-comments").setup()
-    end,
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {},
     dependencies = {
       { "nvim-lua/plenary.nvim" },
     },
@@ -903,15 +865,77 @@ local plugins = {
   {
     "akinsho/bufferline.nvim",
     version = "v4.*",
-    config = function()
-      require("bufferline").setup({
-        options = {
-          offsets = {
-            {
-              filetype = "NvimTree",
-              text = "Explorer",
-            },
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      options = {
+        offsets = {
+          {
+            filetype = "NvimTree",
+            text = "Explorer",
           },
+        },
+      },
+    },
+    config = true,
+  },
+
+  {
+    "HiPhish/rainbow-delimiters.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      local rainbow_delimiters = require("rainbow-delimiters")
+      vim.g.rainbow_delimiters = {
+        strategy = {
+          [""] = rainbow_delimiters.strategy["global"],
+          vim = rainbow_delimiters.strategy["local"],
+        },
+        query = {
+          [""] = "rainbow-delimiters",
+          lua = "rainbow-blocks",
+        },
+        highlight = {
+          "RainbowDelimiterBlue",
+          "RainbowDelimiterGreen",
+          "RainbowDelimiterYellow",
+          "RainbowDelimiterOrange",
+          "RainbowDelimiterRed",
+          "RainbowDelimiterViolet",
+        },
+      }
+    end,
+  },
+
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    event = { "VeryLazy" },
+    config = function()
+      local highlight = {
+        "RainbowBlue",
+        "RainbowGreen",
+        "RainbowYellow",
+        "RainbowOrange",
+        "RainbowRed",
+        "RainbowViolet",
+      }
+      local hooks = require("ibl.hooks")
+      hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+        vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#61AFEF" })
+        vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#98C379" })
+        vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#E5C07B" })
+        vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#D19A66" })
+        vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#E06C75" })
+        vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#C678DD" })
+      end)
+      vim.api.nvim_set_hl(0, "IblIndent", { fg = "#383a3e" })
+
+      require("ibl").setup({
+        indent = {
+          char = "▏",
+        },
+        scope = {
+          char = "▏",
+          highlight = highlight,
         },
       })
     end,
@@ -920,23 +944,20 @@ local plugins = {
   {
     "norcalli/nvim-colorizer.lua",
     event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      require("colorizer").setup({
-        "*",
-        "!toggleterm",
-        "!packer",
-        "!help",
-      })
-    end,
+    opts = {
+      "*",
+      "!toggleterm",
+      "!packer",
+      "!help",
+    },
   },
 
   {
     "lukas-reineke/virt-column.nvim",
-    config = function()
-      require("virt-column").setup({
-        char = "▕",
-      })
-    end,
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      char = "▕",
+    },
     dependencies = {
       { "github-nvim-theme" },
     },
@@ -1008,11 +1029,13 @@ local plugins = {
 
   --- }}}
 
-  -- Miscellaneous: {{{
+  -- ## Miscellaneous: {{{
 
   {
     "vim-jp/vimdoc-ja",
-    event = { "VimEnter" },
+    keys = {
+      { "h", mode = "c" },
+    },
   },
 
   {
@@ -1021,17 +1044,28 @@ local plugins = {
   },
 
   -- }}}
+
+  -- ## Ends: {{{
 }
 
 -- }}}
 
--- Options: {{{
+-- # Lazy Options: {{{
 
-local opts = {}
+local opts = {
+  defaults = {
+    lazy = true,
+  },
+  performance = {
+    cache = {
+      enabled = true,
+    },
+  },
+}
 
 -- }}}
 
--- Lazy setup: {{{
+-- # Lazy Setup: {{{
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
