@@ -18,7 +18,6 @@ ln -si $WORKDIR/config/fd/ignore $XDG_CONFIG_HOME/fd/ignore
 ln -si $WORKDIR/config/kitty/kitty.conf $XDG_CONFIG_HOME/kitty/kitty.conf
 ln -si $WORKDIR/config/lazygit/config.yml $XDG_CONFIG_HOME/lazygit/config.yml
 ln -si $WORKDIR/config/nvim/init.lua $XDG_CONFIG_HOME/nvim/init.lua
-ln -si $WORKDIR/config/nvim/lazy-lock.json $XDG_CONFIG_HOME/nvim/lazy-lock.json
 ln -si $WORKDIR/config/nvim/ftplugin/java.lua $XDG_CONFIG_HOME/nvim/ftplugin/java.lua
 ln -si $WORKDIR/config/sqls/config.yml $XDG_CONFIG_HOME/sqls/config.yml
 ln -si $WORKDIR/config/tmux/tmux.conf $XDG_CONFIG_HOME/tmux/tmux.conf
