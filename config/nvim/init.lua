@@ -381,7 +381,6 @@ local plugins = {
           "delve",
           "javadbg",
           "javatest",
-          "js",
           "python",
         },
       })
@@ -510,16 +509,18 @@ local plugins = {
   -- ## DAPs: {{{
 
   {
-    "rcarriga/nvim-dap-ui",
+    "mfussenegger/nvim-dap",
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
       require("dapui").setup()
       require("dap-go").setup()
       require("dap-python").setup(vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python")
       require("dap-vscode-js").setup({
+        debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
         adapters = { "pwa-node", "node-terminal" },
       })
 
-      for _, language in ipairs({ "typescript", "javascript" }) do
+      for _, language in ipairs({ "typescript", "javascript", "typescriptreact" }) do
         require("dap").configurations[language] = {
           {
             type = "pwa-node",
@@ -544,12 +545,12 @@ local plugins = {
       dap.listeners.after.event_initialized["dapui_config"] = function()
         dapui.open()
       end
-      -- dap.listeners.before.event_terminated["dapui_config"] = function()
-      --   dapui.close()
-      -- end
-      -- dap.listeners.before.event_exited["dapui_config"] = function()
-      --   dapui.close()
-      -- end
+      dap.listeners.before.event_terminated["dapui_config"] = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited["dapui_config"] = function()
+        dapui.close()
+      end
 
       vim.keymap.set("n", "<F5>", dap.continue, {})
       vim.keymap.set("n", "<F17>", dap.terminate, {})
@@ -571,17 +572,20 @@ local plugins = {
       vim.fn.sign_define("DapStopped", { text = "", texthl = "WarningMsg" })
     end,
     dependencies = {
-      { "mfussenegger/nvim-dap" },
+      { "rcarriga/nvim-dap-ui" },
       { "mfussenegger/nvim-dap-python" },
       { "mfussenegger/nvim-jdtls" },
       { "mxsdev/nvim-dap-vscode-js" },
-      { "leoluz/nvim-dap-go" },
-      { "theHamsta/nvim-dap-virtual-text" },
       {
         "microsoft/vscode-js-debug",
-        opt = true,
-        build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+        build = "npm install --legacy-peer-deps && npm run compile",
       },
+      {
+        "microsoft/vscode-java-test",
+        -- build = "npm install && npm run build-plugin",
+      },
+      { "leoluz/nvim-dap-go" },
+      { "theHamsta/nvim-dap-virtual-text" },
     },
   },
 
