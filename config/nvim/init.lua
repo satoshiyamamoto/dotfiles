@@ -196,6 +196,9 @@ local plugins = {
             preset = "default",
           }),
         },
+        experimental = {
+          ghost_text = false, -- this feature conflict with copilot.vim's preview.
+        },
       })
 
       -- Use buffer source for `/`
@@ -249,7 +252,20 @@ local plugins = {
     },
   },
 
-  { "github/copilot.vim", event = { "InsertEnter" } },
+  {
+    "github/copilot.vim",
+    event = { "InsertEnter" },
+    config = function()
+      vim.g.copilot_no_tab_map = true
+      vim.keymap.set(
+        "i",
+        "<C-j>",
+        'copilot#Accept("<CR>")',
+        { silent = true, expr = true, script = true, replace_keycodes = false }
+      )
+    end,
+  },
+
   { "golang/vscode-go", event = { "InsertEnter" } },
 
   -- }}}
