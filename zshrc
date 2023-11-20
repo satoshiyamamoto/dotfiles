@@ -43,7 +43,8 @@ sdk() {
     # "metaprogramming" lol - source init if sdk currently looks like this sdk function
     if [[ "$(which sdk | wc -l)" -le 10 ]]; then
         unset -f sdk
-        source "$HOME/.sdkman/bin/sdkman-init.sh"
+        export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
+        [[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
     fi
 
     sdk "$@"
