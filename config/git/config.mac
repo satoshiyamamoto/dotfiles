@@ -1,6 +1,6 @@
 [user]
-  name = satoshi_yamamoto
-  email = satoshi_yamamoto@cyberagent.co.jp
+  name = satoshiyamamoto
+  email = satoshiyamamoto@me.com
 
 [core]
   autocrlf = false
