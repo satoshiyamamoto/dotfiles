@@ -18,6 +18,7 @@ ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 export HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit|*assume-role-with-saml*)"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
 export HOMEBREW_GITHUB_API_TOKEN="$(security find-generic-password -gs github-token -w)"
 
 # sources
@@ -28,6 +29,7 @@ local _gcloud_sdk="$_homebrew/Caskroom/google-cloud-sdk"
 [ -f "$_homebrew/etc/profile.d/z.sh" ] && source "$_homebrew/etc/profile.d/z.sh"
 [ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+[ -f "$SDKMAN_DIR/bin/sdkman-init.sh" ] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 unset _homebrew _gcloud_sdk
 
 # functions
@@ -37,17 +39,6 @@ kubectl() {
     fi
 
     command kubectl "$@"
-}
-
-sdk() {
-    # "metaprogramming" lol - source init if sdk currently looks like this sdk function
-    if [[ "$(which sdk | wc -l)" -le 10 ]]; then
-        unset -f sdk
-        export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
-        [[ -s "${SDKMAN_DIR}/bin/sdkman-init.sh" ]] && source "${SDKMAN_DIR}/bin/sdkman-init.sh"
-    fi
-
-    sdk "$@"
 }
 
 gi() {
