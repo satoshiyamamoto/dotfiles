@@ -214,8 +214,10 @@ cask "tableau"
 cask "tradingview"
 cask "unity-hub"
 cask "visual-studio-code"
+cask "warp"
 cask "webex"
 cask "zoom"
+# mas "1Blocker", id: 1365531024
 mas "GarageBand", id: 682658836
 mas "Hidden Bar", id: 1452453066
 mas "iMovie", id: 408981434
