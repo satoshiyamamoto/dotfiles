@@ -137,10 +137,11 @@ local plugins = {
     },
     config = function()
       vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "None" })
-      vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#161b22", underline = true })
+      vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#161b22" })
     end,
     dependencies = {
       { "nvim-treesitter" },
+      { "github-nvim-theme" },
     },
   },
 
@@ -687,9 +688,6 @@ local plugins = {
     },
     opts = {
       sort_by = "case_sensitive",
-      view = {
-        width = 40,
-      },
       renderer = {
         group_empty = true,
         root_folder_label = function(path)
@@ -771,7 +769,8 @@ local plugins = {
           transparent = true,
         },
       })
-      vim.cmd("colorscheme github_dark")
+      vim.cmd("colorscheme github_dark_high_contrast")
+      vim.api.nvim_set_hl(0, "VertSplit", { fg = "#161b22", bg = "None" })
     end,
   },
 
