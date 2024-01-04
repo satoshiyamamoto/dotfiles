@@ -27,8 +27,10 @@ local _gcloud_sdk="$_homebrew/Caskroom/google-cloud-sdk"
 [ -d "$_gcloud_sdk" ] && source "$_gcloud_sdk/latest/google-cloud-sdk/path.zsh.inc"
 [ -d "$_gcloud_sdk" ] && source "$_gcloud_sdk/latest/google-cloud-sdk/completion.zsh.inc"
 [ -f "$_homebrew/etc/profile.d/z.sh" ] && source "$_homebrew/etc/profile.d/z.sh"
+[ -f "$_homebrew/bin/atuin" ] && eval "$(atuin init zsh)"
 [ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+[ -f "$HOME/.fig/shell/zshrc.post.zsh" ] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
 [ -f "$SDKMAN_DIR/bin/sdkman-init.sh" ] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 unset _homebrew _gcloud_sdk
 
@@ -94,5 +96,3 @@ if [[ "$TERM" == "xterm-kitty" ]]; then
   alias icat='kitty +kitten icat'
 fi
 
-# Fig post block. Keep at the bottom of this file.
-[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
