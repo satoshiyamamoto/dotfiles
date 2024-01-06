@@ -150,6 +150,39 @@ local plugins = {
     event = { "BufReadPost", "BufNewFile" },
   },
 
+  {
+    "stevearc/conform.nvim",
+    event = { "BufWritePre", "BufNewFile" },
+    cmd = { "ConformInfo" },
+    keys = {
+      {
+        "<Leader>f",
+        function()
+          require("conform").format({ async = true, lsp_fallback = true })
+        end,
+        mode = "",
+        desc = "Format buffer",
+      },
+    },
+    opts = {
+      formatters_by_ft = {
+        lua = { "stylua" },
+        go = { "goimports", "gofmt" },
+        java = { "google-java-format" },
+        javascript = { { "prettierd", "prettier" } },
+        proto = { "clang-format" },
+        python = { "isort", "black" },
+        rust = { "rustfmt" },
+        sql = { "sqlfluff" },
+      },
+      format_on_save = {
+        lsp_fallback = true,
+        async = false,
+        timeout_ms = 500,
+      },
+    },
+  },
+
   -- }}}
 
   -- ## Completions: {{{
@@ -401,76 +434,10 @@ local plugins = {
           "python",
         },
       })
-      require("mason-null-ls").setup({
-        ensure_installed = {
-          "black",
-          "clang-format",
-          "eslint_d",
-          "flake8",
-          "goimports",
-          "isort",
-          "mypy",
-          "prettier",
-          "staticcheck",
-          "stylua",
-          "sqlfluff",
-        },
-      })
     end,
     dependencies = {
-      { "null-ls.nvim" },
       { "williamboman/mason-lspconfig.nvim" },
       { "jay-babu/mason-nvim-dap.nvim" },
-      { "jay-babu/mason-null-ls.nvim" },
-    },
-  },
-
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      local null_ls = require("null-ls")
-      local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-
-      null_ls.setup({
-        sources = {
-          null_ls.builtins.formatting.black,
-          null_ls.builtins.formatting.clang_format.with({
-            filetypes = { "proto" },
-          }),
-          null_ls.builtins.formatting.goimports,
-          null_ls.builtins.formatting.google_java_format,
-          null_ls.builtins.formatting.isort,
-          null_ls.builtins.formatting.prettier,
-          null_ls.builtins.formatting.rustfmt,
-          null_ls.builtins.formatting.sqlfluff.with({
-            extra_args = { "--dialect", "bigquery" },
-          }),
-          null_ls.builtins.formatting.stylua,
-          null_ls.builtins.diagnostics.eslint_d,
-          null_ls.builtins.diagnostics.flake8,
-          null_ls.builtins.diagnostics.mypy,
-          null_ls.builtins.diagnostics.sqlfluff.with({
-            extra_args = { "--dialect", "bigquery" },
-          }),
-          null_ls.builtins.diagnostics.staticcheck,
-        },
-        on_attach = function(client, bufnr)
-          if client.supports_method("textDocument/formatting") then
-            vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-            vim.api.nvim_create_autocmd("BufWritePre", {
-              group = augroup,
-              buffer = bufnr,
-              callback = function()
-                vim.lsp.buf.format({ bufnr = bufnr })
-              end,
-            })
-          end
-        end,
-      })
-    end,
-    dependencies = {
-      { "nvim-lua/plenary.nvim" },
     },
   },
 
@@ -610,8 +577,8 @@ local plugins = {
     "vim-test/vim-test",
     cmd = { "TestFile", "TestNearest" },
     keys = {
-      { "<leader>df", "<Cmd>TestFile<CR>" },
-      { "<leader>dn", "<Cmd>TestNearest<CR>" },
+      { "<Leader>df", "<Cmd>TestFile<CR>" },
+      { "<Leader>dn", "<Cmd>TestNearest<CR>" },
     },
   },
 
