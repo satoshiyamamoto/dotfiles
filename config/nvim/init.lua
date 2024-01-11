@@ -583,10 +583,6 @@ local plugins = {
         "microsoft/vscode-js-debug",
         build = "npm install --legacy-peer-deps && npm run compile",
       },
-      {
-        "microsoft/vscode-java-test",
-        -- build = "npm install && npm run build-plugin",
-      },
       { "leoluz/nvim-dap-go" },
       { "theHamsta/nvim-dap-virtual-text" },
     },

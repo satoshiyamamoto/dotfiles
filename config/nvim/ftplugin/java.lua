@@ -5,10 +5,7 @@ local workspace_dir = vim.fn.stdpath("cache") .. "/jdtls/" .. project_name
 local bundles = {
   vim.fn.glob(mason .. "/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar", 1),
 }
--- vim.list_extend(bundles, vim.split(vim.fn.glob(mason .. "/java-test/extension/server/*.jar", 1), "\n"))
--- TODO: Will delete after updated to v0.40.1
-local java_test = vim.env.GOPATH .. "/src/github.com/microsoft/vscode-java-test"
-vim.list_extend(bundles, vim.split(vim.fn.glob(java_test .. "/server/*.jar", 1), "\n"))
+vim.list_extend(bundles, vim.split(vim.fn.glob(mason .. "/java-test/extension/server/*.jar", 1), "\n"))
 
 local config = {}
 
