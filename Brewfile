@@ -172,6 +172,7 @@ brew "s3cmd"
 brew "sl"
 brew "socat"
 brew "socket_vmnet"
+brew "sops"
 brew "source-highlight"
 brew "stern"
 brew "tcl-tk"
@@ -219,7 +220,7 @@ cask "visual-studio-code"
 cask "warp"
 cask "webex"
 cask "zoom"
-mas "1Blocker", id: 1365531024
+# mas "1Blocker", id: 1365531024
 mas "GarageBand", id: 682658836
 mas "Hidden Bar", id: 1452453066
 mas "iMovie", id: 408981434
