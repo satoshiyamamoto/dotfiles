@@ -18,6 +18,7 @@ ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 export HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit|*<<<*|*assume-role-with-saml*)"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export KUBE_PS1_ENABLED='off'
 export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
 export HOMEBREW_GITHUB_API_TOKEN="$(security find-generic-password -gs github-token -w)"
 
