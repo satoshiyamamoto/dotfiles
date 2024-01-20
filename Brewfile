@@ -213,6 +213,9 @@ cask "intellij-idea"
 cask "kindle"
 # cask "kitty"
 cask "licecap"
+cask "qlmarkdown"
+cask "quicklook-csv"
+cask "quicklook-json"
 cask "slack"
 cask "tradingview"
 cask "unity-hub"
@@ -229,6 +232,7 @@ mas "LINE", id: 539883307
 mas "MindNode", id: 1289197285
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
+mas "PreviewYaml", id: 1564574724
 mas "Tailscale", id: 1475387142
 mas "Xcode", id: 497799835
 vscode "ahmadawais.shades-of-purple"
