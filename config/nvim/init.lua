@@ -14,7 +14,6 @@ vim.opt.splitright = true
 vim.opt.laststatus = 3
 vim.opt.termguicolors = true
 vim.opt.confirm = true
-vim.opt.colorcolumn = "+1"
 vim.opt.completeopt = { "menuone", "noselect" }
 vim.opt.clipboard:append({ "unnamedplus" })
 vim.opt.shortmess:append({ c = true, I = true })
@@ -102,25 +101,20 @@ local plugins = {
       },
       highlight = {
         enable = true,
-        additional_vim_regex_highlighting = true,
       },
       indent = {
+        enable = true,
+      },
+      autotag = {
         enable = true,
       },
     },
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)
-      require("ts_context_commentstring").setup({
-        enable_autocmd = false,
-        languages = {
-          typescript = "// %s",
-        },
-      })
       vim.treesitter.language.register("hcl", { "terraform" })
     end,
     dependencies = {
       { "windwp/nvim-ts-autotag" },
-      { "JoosepAlviste/nvim-ts-context-commentstring" },
     },
   },
 
@@ -137,6 +131,21 @@ local plugins = {
     dependencies = {
       { "nvim-treesitter" },
       { "github-nvim-theme" },
+    },
+  },
+
+  {
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    config = function()
+      require("ts_context_commentstring").setup({
+        enable_autocmd = false,
+        languages = {
+          typescript = "// %s",
+        },
+      })
+    end,
+    dependencies = {
+      { "nvim-treesitter" },
     },
   },
 
@@ -737,8 +746,6 @@ local plugins = {
           modules = {
             indent_blankline = false,
             notify = false,
-            treesitter = false,
-            treesitter_context = false,
           },
           styles = {
             functions = "italic",
@@ -748,6 +755,7 @@ local plugins = {
       })
       vim.cmd("colorscheme github_dark_high_contrast")
       vim.api.nvim_set_hl(0, "VertSplit", { fg = "#161b22", bg = "None" })
+      vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#161b22", bg = "None" })
     end,
   },
 
@@ -953,10 +961,12 @@ local plugins = {
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       char = "▕",
+      virtcolumn = "+1",
+      highlight = "VirtColumn",
     },
-    dependencies = {
-      { "github-nvim-theme" },
-    },
+    config = function(_, opts)
+      require("virt-column").setup(opts)
+    end,
   },
 
   {
