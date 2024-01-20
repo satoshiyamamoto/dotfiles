@@ -97,31 +97,26 @@ local plugins = {
         "tsx",
         "typescript",
         "vim",
+        "vimdoc",
         "yaml",
       },
       highlight = {
         enable = true,
-        additional_vim_regex_highlighting = { "yaml" },
+        additional_vim_regex_highlighting = true,
       },
       indent = {
         enable = true,
       },
-      autoversion = {
-        enable = true,
-      },
-      context_commentstring = {
-        enable = true,
-      },
     },
-    config = function()
-      -- TODO: Use after v0.10 'vim.treesitter.language.register'
-      vim.api.nvim_create_autocmd("FileType", {
-        group = vim.api.nvim_create_augroup("TreeSitterRegister", {}),
-        pattern = { "xml" },
-        callback = function()
-          require("nvim-treesitter.parsers").filetype_to_parsername.xml = "html"
-        end,
+    config = function(_, opts)
+      require("nvim-treesitter.configs").setup(opts)
+      require("ts_context_commentstring").setup({
+        enable_autocmd = false,
+        languages = {
+          typescript = "// %s",
+        },
       })
+      vim.treesitter.language.register("hcl", { "terraform" })
     end,
     dependencies = {
       { "windwp/nvim-ts-autotag" },
@@ -137,7 +132,7 @@ local plugins = {
     },
     config = function()
       vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "None" })
-      vim.api.nvim_set_hl(0, "TreesitterContextBottom", { sp = "#161b22" })
+      vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = true, sp = "#161b22" })
     end,
     dependencies = {
       { "nvim-treesitter" },
