@@ -179,12 +179,12 @@ local plugins = {
         python = { "isort", "black" },
         rust = { "rustfmt" },
         sql = { "sqlfluff" },
+        yaml = { "yamlfmt" },
       },
-      format_on_save = {
-        lsp_fallback = true,
-        async = false,
-        timeout_ms = 500,
-      },
+      -- format_on_save = {
+      --   timeout_ms = 500,
+      --   lsp_fallback = true,
+      -- },
     },
   },
 
@@ -440,22 +440,42 @@ local plugins = {
       require("mason").setup()
       require("mason-lspconfig").setup({
         ensure_installed = {
+          -- LSP
           "bufls",
           "gopls",
           "jdtls",
           "lua_ls",
           "pyright",
           "rust_analyzer",
-          "tsserver",
           "terraformls",
+          "tsserver",
         },
       })
       require("mason-nvim-dap").setup({
         ensure_installed = {
+          -- DAP
+          "debugpy",
           "delve",
           "javadbg",
           "javatest",
-          "python",
+          "js",
+          -- Linter
+          "eslint_d",
+          "flake8",
+          "mypy",
+          "sqlfluff",
+          "staticcheck",
+          -- Formatters
+          "black",
+          "clang-format",
+          "goimports",
+          "isort",
+          "jq",
+          "prettier",
+          "prettierd",
+          "rustfmt",
+          "stylua",
+          "yamlfmt",
         },
       })
     end,
