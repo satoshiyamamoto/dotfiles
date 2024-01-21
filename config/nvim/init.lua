@@ -104,6 +104,7 @@ local plugins = {
       },
       indent = {
         enable = true,
+        disable = { "yaml" },
       },
       autotag = {
         enable = true,
@@ -744,7 +745,6 @@ local plugins = {
       require("github-theme").setup({
         options = {
           modules = {
-            indent_blankline = false,
             notify = false,
           },
           styles = {
@@ -912,7 +912,7 @@ local plugins = {
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
-    event = { "VeryLazy" },
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
       local highlight = {
         "RainbowBlue",
@@ -932,7 +932,7 @@ local plugins = {
         vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#C678DD" })
       end)
       vim.api.nvim_set_hl(0, "IblIndent", { fg = "#383a3e" })
-
+      vim.g.rainbow_delimiters = { highlight = highlight }
       require("ibl").setup({
         indent = {
           char = "▏",
@@ -942,7 +942,11 @@ local plugins = {
           highlight = highlight,
         },
       })
+      hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
     end,
+    dependencies = {
+      { "HiPhish/rainbow-delimiters.nvim" },
+    },
   },
 
   {
