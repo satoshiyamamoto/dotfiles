@@ -756,6 +756,8 @@ local plugins = {
       vim.cmd("colorscheme github_dark_high_contrast")
       vim.api.nvim_set_hl(0, "VertSplit", { fg = "#161b22", bg = "None" })
       vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#161b22", bg = "None" })
+      vim.api.nvim_set_hl(0, "@property.json", { fg = "#6bc46d", bg = "None" })
+      vim.api.nvim_set_hl(0, "@property.yaml", { fg = "#6bc46d", bg = "None" })
     end,
   },
 
