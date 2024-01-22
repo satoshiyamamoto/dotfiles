@@ -1065,6 +1065,7 @@ local plugins = {
     keys = {
       { "h", mode = "c" },
     },
+    build = "git restore doc/tags-ja",
   },
 
   {
