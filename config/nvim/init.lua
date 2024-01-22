@@ -552,7 +552,7 @@ local plugins = {
       for _, language in ipairs({ "typescript", "javascript", "typescriptreact" }) do
         require("dap").configurations[language] = {
           {
-            type = "pwa-node",
+            type = language .. " pwa-node",
             request = "launch",
             name = "Launch file",
             program = "${file}",
@@ -560,7 +560,7 @@ local plugins = {
             resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
           },
           {
-            type = "pwa-node",
+            type = language .. " pwa-node",
             request = "attach",
             name = "Attach",
             processId = require("dap.utils").pick_process,
@@ -634,6 +634,7 @@ local plugins = {
       { "<Leader>fh", "<Cmd>Telescope help_tags<CR>" },
       { "<Leader>fs", "<Cmd>Telescope lsp_document_symbols<CR>" },
       { "<Leader>fS", "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>" },
+      { "<Leader>fd", "<Cmd>Telescope dap configurations<CR>" },
     },
     config = function()
       local telescope = require("telescope")
@@ -660,22 +661,13 @@ local plugins = {
       })
       telescope.load_extension("fzf")
       telescope.load_extension("ui-select")
+      telescope.load_extension("dap")
     end,
     dependencies = {
       { "nvim-lua/plenary.nvim" },
-      {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = "make",
-        config = function()
-          require("telescope").load_extension("fzf")
-        end,
-      },
-      {
-        "nvim-telescope/telescope-ui-select.nvim",
-        config = function()
-          require("telescope").load_extension("ui-select")
-        end,
-      },
+      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+      { "nvim-telescope/telescope-ui-select.nvim" },
+      { "nvim-telescope/telescope-dap.nvim" },
     },
   },
 
