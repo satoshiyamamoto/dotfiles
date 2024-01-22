@@ -452,13 +452,14 @@ local plugins = {
         },
       })
       require("mason-nvim-dap").setup({
+        automatic_installation = true,
         ensure_installed = {
           -- DAP
           "debugpy",
           "delve",
           "javadbg",
           "javatest",
-          "js",
+          "js@v1.76.1",
           -- Linter
           "eslint_d",
           "flake8",
@@ -544,7 +545,7 @@ local plugins = {
       require("dap-go").setup()
       require("dap-python").setup(vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python")
       require("dap-vscode-js").setup({
-        debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
+        debugger_path = vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter",
         adapters = { "pwa-node", "node-terminal" },
       })
 
@@ -604,10 +605,6 @@ local plugins = {
       { "mfussenegger/nvim-dap-python" },
       { "mfussenegger/nvim-jdtls" },
       { "mxsdev/nvim-dap-vscode-js" },
-      {
-        "microsoft/vscode-js-debug",
-        build = "npm install --legacy-peer-deps && npm run compile",
-      },
       { "leoluz/nvim-dap-go" },
       { "theHamsta/nvim-dap-virtual-text" },
     },
