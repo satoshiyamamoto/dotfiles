@@ -20,6 +20,9 @@ export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export KUBE_PS1_ENABLED='off'
 export COLIMA_SSH_AUTH_SOCK="$(colima ssh env | grep SSH_AUTH_SOCK | cut -d = -f 2)" 2> /dev/null
+export DOCKER_HOST="unix://${HOME}/.colima/default/docker.sock"
+export TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE=/var/run/docker.sock
+export TESTCONTAINERS_HOST_OVERRIDE="$(colima ls -j | jq -r '.address')" 2> /dev/null
 export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
 export HOMEBREW_GITHUB_API_TOKEN="$(security find-generic-password -gs github-token -w)"
 
