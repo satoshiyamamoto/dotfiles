@@ -459,7 +459,7 @@ local plugins = {
           "delve",
           "javadbg",
           "javatest",
-          "js@v1.76.1",
+          "js",
           -- Linter
           "eslint_d",
           "flake8",
@@ -541,18 +541,25 @@ local plugins = {
     "mfussenegger/nvim-dap",
     event = { "BufReadPost", "BufNewFile" },
     config = function()
+      local dap = require("dap")
+      local dapui = require("dapui")
+      local mason = require("mason-registry")
       require("dapui").setup()
       require("dap-go").setup()
-      require("dap-python").setup(vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python")
-      require("dap-vscode-js").setup({
-        debugger_path = vim.fn.stdpath("data") .. "/mason/packages/js-debug-adapter",
-        adapters = { "pwa-node", "node-terminal" },
-      })
-
-      for _, language in ipairs({ "typescript", "javascript", "typescriptreact" }) do
+      require("dap-python").setup(mason.get_package("debugpy"):get_install_path() .. "/venv/bin/python")
+      dap.adapters["pwa-node"] = {
+        type = "server",
+        host = "localhost",
+        port = "${port}",
+        executable = {
+          command = "js-debug-adapter",
+          args = { "${port}" },
+        },
+      }
+      for _, language in ipairs({ "typescript", "javascript", "javascriptreact", "typescriptreact" }) do
         require("dap").configurations[language] = {
           {
-            type = language .. " pwa-node",
+            type = "pwa-node",
             request = "launch",
             name = "Launch file",
             program = "${file}",
@@ -560,7 +567,7 @@ local plugins = {
             resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
           },
           {
-            type = language .. " pwa-node",
+            type = "pwa-node",
             request = "attach",
             name = "Attach",
             processId = require("dap.utils").pick_process,
@@ -570,7 +577,6 @@ local plugins = {
         }
       end
 
-      local dap, dapui = require("dap"), require("dapui")
       dap.listeners.after.event_initialized["dapui_config"] = function()
         dapui.open()
       end
@@ -604,7 +610,6 @@ local plugins = {
       { "rcarriga/nvim-dap-ui" },
       { "mfussenegger/nvim-dap-python" },
       { "mfussenegger/nvim-jdtls" },
-      { "mxsdev/nvim-dap-vscode-js" },
       { "leoluz/nvim-dap-go" },
       { "theHamsta/nvim-dap-virtual-text" },
     },
