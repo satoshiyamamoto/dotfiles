@@ -1,3 +1,4 @@
+zmodload zsh/zprof
 # Fig pre block. Keep at the top of this file.
 [[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 #
@@ -21,7 +22,6 @@ export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 export KUBE_PS1_ENABLED='off'
 export COLIMA_SSH_AUTH_SOCK="$(colima ssh env | grep SSH_AUTH_SOCK | cut -d = -f 2)" 2> /dev/null
 export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
-export HOMEBREW_GITHUB_API_TOKEN="$(security find-generic-password -gs github-token -w)"
 
 # sources
 local _homebrew="$(brew --prefix)"
@@ -105,3 +105,4 @@ fi
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"
+

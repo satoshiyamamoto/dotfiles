@@ -28,5 +28,7 @@ mkdir -p $HOME/.vim
 ln -si $WORKDIR/vim/vimrc $HOME/.vim/vimrc
 
 ## Set the Terminal fonts
-tic -x $WORKDIR/terminfo/xterm-256color-italic.terminfo
 tic -x $WORKDIR/terminfo/tmux-256color.terminfo
+tic -x $WORKDIR/terminfo/xterm-256color.terminfo
+#tic -x $WORKDIR/terminfo/xterm-kitty.terminfo
+

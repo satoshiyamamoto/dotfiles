@@ -42,7 +42,7 @@
   navigate = true
 
 [ghq]
-  root = ~/Develop/src
+  root = ~/Projects/src
 
 [filter "lfs"]
   clean = git-lfs clean -- %f

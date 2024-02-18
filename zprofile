@@ -45,7 +45,7 @@ export LANG='en_US.UTF-8'
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:=$HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:=$HOME/.cache}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:=$HOME/.local/share}"
-export GOPATH="$HOME/Develop"
+export GOPATH="$HOME/Projects"
 
 # Ensure path arrays do not contain duplicates.
 typeset -gU cdpath fpath mailpath path
@@ -92,3 +92,6 @@ fi
 
 # Fig post block. Keep at the bottom of this file.
 [[ -f "$HOME/.fig/shell/zprofile.post.zsh" ]] && builtin source "$HOME/.fig/shell/zprofile.post.zsh"
+
+export HOMEBREW_GITHUB_API_TOKEN="$(security find-generic-password -gs github-token -w)"
+
