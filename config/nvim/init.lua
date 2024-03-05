@@ -460,23 +460,6 @@ local plugins = {
           "javadbg",
           "javatest",
           "js",
-          -- Linter
-          "eslint_d",
-          "flake8",
-          "mypy",
-          "sqlfluff",
-          "staticcheck",
-          -- Formatters
-          "black",
-          "clang-format",
-          "goimports",
-          "isort",
-          "jq",
-          "prettier",
-          "prettierd",
-          "rustfmt",
-          "stylua",
-          "yamlfmt",
         },
       })
     end,
