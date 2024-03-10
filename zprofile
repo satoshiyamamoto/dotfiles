@@ -66,6 +66,7 @@ path=(
   {$GOROOT,$GOPATH}/bin(N)
   $HOME/.krew/bin(N)
   $HOME/.tiup/bin(N)
+  $HOME/.cargo/bin(N)
   $HOME/{,s}bin(N)
   /opt/{homebrew,local}/{,s}bin(N)
   /opt/{homebrew,local}/opt/mysql-client/bin(N)
