@@ -221,6 +221,7 @@ local plugins = {
           ["<S-Tab>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
         },
         sources = cmp.config.sources({
+          { name = "copilot" },
           { name = "nvim_lsp" },
           { name = "nvim_lsp_signature_help" },
           { name = "vsnip" }, -- For vsnip users.
@@ -232,12 +233,11 @@ local plugins = {
           format = lspkind.cmp_format({
             mode = "symbol_text",
             maxwidth = 50,
+            symbol_map = { Copilot = "" },
             preset = "default",
           }),
         },
-        experimental = {
-          ghost_text = false, -- this feature conflict with copilot.vim's preview.
-        },
+        experimental = { ghost_text = true },
       })
 
       -- Use buffer source for `/`
@@ -282,26 +282,32 @@ local plugins = {
       { "hrsh7th/cmp-buffer" },
       { "hrsh7th/cmp-path" },
       { "hrsh7th/cmp-cmdline" },
-      { "hrsh7th/cmp-copilot" },
       { "hrsh7th/cmp-vsnip" },
       { "hrsh7th/vim-vsnip" },
       { "hrsh7th/vim-vsnip-integ" },
+      { "zbirenbaum/copilot.lua" },
+      { "zbirenbaum/copilot-cmp" },
       { "onsails/lspkind.nvim" },
       { "rafamadriz/friendly-snippets" },
     },
   },
 
+  -- Copilot
   {
-    "github/copilot.vim",
+    "zbirenbaum/copilot.lua",
+    cmd = { "Copilot" },
     event = { "InsertEnter" },
     config = function()
-      vim.g.copilot_no_tab_map = true
-      vim.keymap.set(
-        "i",
-        "<C-j>",
-        'copilot#Accept("<CR>")',
-        { silent = true, expr = true, script = true, replace_keycodes = false }
-      )
+      require("copilot").setup({
+        suggestion = { enabled = false },
+        panel = { enabled = false },
+      })
+    end,
+  },
+  {
+    "zbirenbaum/copilot-cmp",
+    config = function()
+      require("copilot_cmp").setup()
     end,
   },
 
