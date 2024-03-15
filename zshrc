@@ -27,6 +27,7 @@ local _homebrew="$(brew --prefix)"
 local _gcloud_sdk="$_homebrew/Caskroom/google-cloud-sdk"
 [ -d "$_gcloud_sdk" ] && source "$_gcloud_sdk/latest/google-cloud-sdk/path.zsh.inc"
 [ -d "$_gcloud_sdk" ] && source "$_gcloud_sdk/latest/google-cloud-sdk/completion.zsh.inc"
+[ -f "$_homebrew/opt/kube-ps1/share/kube-ps1.sh" ] && source "$_homebrew/opt/kube-ps1/share/kube-ps1.sh" && PS1='$(kube_ps1)'$PS1
 [ -f "$_homebrew/etc/profile.d/z.sh" ] && source "$_homebrew/etc/profile.d/z.sh"
 [ -f "$_homebrew/bin/atuin" ] && eval "$(atuin init zsh --disable-up-arrow)"
 [ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
