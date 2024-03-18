@@ -596,10 +596,11 @@ local plugins = {
       vim.fn.sign_define("DapStopped", { text = "", texthl = "WarningMsg" })
     end,
     dependencies = {
-      { "rcarriga/nvim-dap-ui" },
       { "mfussenegger/nvim-dap-python" },
       { "mfussenegger/nvim-jdtls" },
       { "leoluz/nvim-dap-go" },
+      { "nvim-neotest/nvim-nio" },
+      { "rcarriga/nvim-dap-ui" },
       { "theHamsta/nvim-dap-virtual-text" },
     },
   },
