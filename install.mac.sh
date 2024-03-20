@@ -7,6 +7,8 @@ cd "$WORKDIR"
 ln -si $WORKDIR/zprofile $HOME/.zprofile
 ln -si $WORKDIR/zshrc $HOME/.zshrc
 ln -si $WORKDIR/zpreztorc $HOME/.zpreztorc
+ln -si $WORKDIR/zpreztorc $HOME/.zpreztorc
+ln -si $WORKDIR/p10k.zsh $HOME/.p10k.zsh
 ln -si $WORKDIR/editorconfig $HOME/.editorconfig
 ln -si $WORKDIR/flake8 $HOME/.flake8
 ln -si $WORKDIR/sqliterc $HOME/.sqliterc
