@@ -25,7 +25,6 @@ ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 export HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit|*<<<*|*assume-role-with-saml*)"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export KUBE_PS1_ENABLED='off'
 export COLIMA_SSH_AUTH_SOCK="$(colima ssh env | grep SSH_AUTH_SOCK | cut -d = -f 2)" 2> /dev/null
 export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
 
@@ -34,7 +33,7 @@ local _homebrew="$(brew --prefix)"
 local _gcloud_sdk="$_homebrew/Caskroom/google-cloud-sdk"
 [ -d "$_gcloud_sdk" ] && source "$_gcloud_sdk/latest/google-cloud-sdk/path.zsh.inc"
 [ -d "$_gcloud_sdk" ] && source "$_gcloud_sdk/latest/google-cloud-sdk/completion.zsh.inc"
-[ -f "$_homebrew/opt/kube-ps1/share/kube-ps1.sh" ] && source "$_homebrew/opt/kube-ps1/share/kube-ps1.sh" && PS1='$(kube_ps1)'$PS1
+# [ -f "$_homebrew/opt/kube-ps1/share/kube-ps1.sh" ] && source "$_homebrew/opt/kube-ps1/share/kube-ps1.sh" && PS1='$(kube_ps1)'$PS1
 [ -f "$_homebrew/etc/profile.d/z.sh" ] && source "$_homebrew/etc/profile.d/z.sh"
 [ -f "$_homebrew/bin/atuin" ] && eval "$(atuin init zsh --disable-up-arrow)"
 [ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
@@ -117,3 +116,6 @@ fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# To customize prompt, run `p10k configure` or edit ~/Projects/src/github.com/satoshiyamamoto/dotfiles/p10k.zsh.
+[[ ! -f ~/Projects/src/github.com/satoshiyamamoto/dotfiles/p10k.zsh ]] || source ~/Projects/src/github.com/satoshiyamamoto/dotfiles/p10k.zsh
