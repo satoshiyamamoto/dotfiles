@@ -92,6 +92,7 @@ if [[ -z "$LESSOPEN" ]] && (( $#commands[(i)lesspipe(|.sh)] )); then
 fi
 
 export HOMEBREW_GITHUB_API_TOKEN="$(security find-generic-password -gs github-token -w)"
+export HOMEBREW_NO_ENV_HINTS='true'
 
 # CodeWhisperer post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/codewhisperer/shell/zprofile.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/codewhisperer/shell/zprofile.post.zsh"
