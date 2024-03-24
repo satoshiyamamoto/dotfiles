@@ -30,10 +30,6 @@ ln -si $WORKDIR/config/tmux/tmux.conf $XDG_CONFIG_HOME/tmux/tmux.conf
 mkdir -p $HOME/.vim
 ln -si $WORKDIR/vim/vimrc $HOME/.vim/vimrc
 
-## Set the Colima
-mkdir -p $HOME/.colima/default
-ln -si $WORKDIR/colima/default/colima.yaml $HOME/.colima/default/colima.yaml
-
 ## Set the Terminal fonts
 tic -x $WORKDIR/terminfo/tmux-256color.terminfo
 tic -x $WORKDIR/terminfo/xterm-256color.terminfo
