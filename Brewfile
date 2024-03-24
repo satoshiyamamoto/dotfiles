@@ -213,6 +213,7 @@ cask "font-fira-code"
 cask "font-fira-code-nerd-font"
 cask "font-hack-nerd-font"
 cask "font-jetbrains-mono"
+cask "font-sf-pro"
 cask "google-chrome"
 cask "google-cloud-sdk"
 cask "google-drive"
@@ -235,7 +236,6 @@ mas "Hidden Bar", id: 1452453066
 mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
 mas "LINE", id: 539883307
-mas "MindNode", id: 1289197285
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "PreviewYaml", id: 1564574724
