@@ -33,11 +33,11 @@ local _homebrew="$(brew --prefix)"
 local _gcloud_sdk="$_homebrew/Caskroom/google-cloud-sdk"
 [ -d "$_gcloud_sdk" ] && source "$_gcloud_sdk/latest/google-cloud-sdk/path.zsh.inc"
 [ -d "$_gcloud_sdk" ] && source "$_gcloud_sdk/latest/google-cloud-sdk/completion.zsh.inc"
-# [ -f "$_homebrew/opt/kube-ps1/share/kube-ps1.sh" ] && source "$_homebrew/opt/kube-ps1/share/kube-ps1.sh" && PS1='$(kube_ps1)'$PS1
 [ -f "$_homebrew/etc/profile.d/z.sh" ] && source "$_homebrew/etc/profile.d/z.sh"
 [ -f "$_homebrew/bin/atuin" ] && eval "$(atuin init zsh --disable-up-arrow)"
 [ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
+[ -d "$XDG_CONFIG_HOME/gh-copilot" ] && eval "$(gh copilot alias -- zsh)"
 [ -f "$SDKMAN_DIR/bin/sdkman-init.sh" ] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
 unset _homebrew _gcloud_sdk
 
@@ -111,6 +111,3 @@ fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# To customize prompt, run `p10k configure` or edit ~/Projects/src/github.com/satoshiyamamoto/dotfiles/p10k.zsh.
-[[ ! -f ~/Projects/src/github.com/satoshiyamamoto/dotfiles/p10k.zsh ]] || source ~/Projects/src/github.com/satoshiyamamoto/dotfiles/p10k.zsh
