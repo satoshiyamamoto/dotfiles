@@ -874,7 +874,7 @@ local plugins = {
 
   {
     "akinsho/bufferline.nvim",
-    version = "*",
+    -- version = "*",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       options = {
