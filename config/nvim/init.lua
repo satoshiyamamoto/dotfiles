@@ -874,7 +874,7 @@ local plugins = {
 
   {
     "akinsho/bufferline.nvim",
-    version = "v4.*",
+    version = "*",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       options = {
@@ -887,6 +887,7 @@ local plugins = {
       },
     },
     config = true,
+    dependencies = { "nvim-tree/nvim-web-devicons" },
   },
 
   {
