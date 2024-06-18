@@ -244,6 +244,7 @@ mas "Tailscale", id: 1475387142
 mas "Vimari", id: 1480933944
 mas "Web Translator", id: 6443492610
 mas "Xcode", id: 497799835
+vscode "42crunch.vscode-openapi"
 vscode "ahmadawais.shades-of-purple"
 vscode "amandeepmittal.pug"
 vscode "amazonwebservices.codewhisperer-for-command-line-companion"
