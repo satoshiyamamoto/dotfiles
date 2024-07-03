@@ -14,7 +14,7 @@ ln -si $WORKDIR/flake8 $HOME/.flake8
 ln -si $WORKDIR/sqliterc $HOME/.sqliterc
 
 ## Set the XDG config
-mkdir -p $XDG_CONFIG_HOME/{git,bat,fd,kitty/themes,intelephense,nvim/ftplugin,yamlfmt,tmux}
+mkdir -p $XDG_CONFIG_HOME/{git,bat,fd,lazygit,kitty/themes,nvim/ftplugin,yamlfmt,tmux}
 ln -si $WORKDIR/config/git/config.mac $XDG_CONFIG_HOME/git/config
 ln -si $WORKDIR/config/bat/config $XDG_CONFIG_HOME/bat/config
 ln -si $WORKDIR/config/fd/ignore $XDG_CONFIG_HOME/fd/ignore
