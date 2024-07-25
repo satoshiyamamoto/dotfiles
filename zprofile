@@ -69,6 +69,7 @@ path=(
   $HOME/.cargo/bin(N)
   $HOME/{,s}bin(N)
   /opt/{homebrew,local}/{,s}bin(N)
+  /opt/{homebrew,local}/opt/rustup/bin(N)
   /opt/{homebrew,local}/opt/mysql-client/bin(N)
   /usr/local/{,s}bin(N)
   $path
