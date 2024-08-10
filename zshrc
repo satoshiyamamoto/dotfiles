@@ -25,7 +25,7 @@ ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 export HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit|*<<<*|*assume-role-with-saml*)"
 export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export COLIMA_SSH_AUTH_SOCK="$(colima ssh env | grep SSH_AUTH_SOCK | cut -d = -f 2)" 2> /dev/null
+export COLIMA_HOME="${XDG_CONFIG_HOME}/colima"
 export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
 
 # sources
