@@ -757,7 +757,7 @@ local plugins = {
           transparent = true,
         },
       })
-      vim.cmd("colorscheme github_dark_high_contrast")
+      -- vim.cmd("colorscheme github_dark_high_contrast")
       vim.api.nvim_set_hl(0, "VertSplit", { fg = "#161b22", bg = "None" })
       vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#161b22", bg = "None" })
       vim.api.nvim_set_hl(0, "@property.json", { fg = "#6bc46d", bg = "None" })
@@ -778,7 +778,7 @@ local plugins = {
         sidebars = { "qf", "vista_kind", "terminal", "packer" },
         on_colors = function() end,
       })
-      -- vim.cmd("colorscheme tokyonight")
+      vim.cmd("colorscheme tokyonight")
     end,
   },
 
