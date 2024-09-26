@@ -50,6 +50,12 @@ kubectl() {
     command kubectl "$@"
 }
 
+sdk() {
+  unset -f sdk
+  [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+  sdk "$@"
+}
+
 gi() {
   curl -sLw "\n" https://www.gitignore.io/api/$@ ;
 }
