@@ -131,8 +131,9 @@ local plugins = {
       vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = true, sp = "#161b22" })
     end,
     dependencies = {
-      { "nvim-treesitter" },
-      { "github-nvim-theme" },
+      { "nvim-treesitter/nvim-treesitter" },
+      { "folke/tokyonight.nvim" },
+      { "projekt0n/github-nvim-theme" },
     },
   },
 
@@ -147,7 +148,7 @@ local plugins = {
       })
     end,
     dependencies = {
-      { "nvim-treesitter" },
+      { "nvim-treesitter/nvim-treesitter" },
     },
   },
 
@@ -773,8 +774,17 @@ local plugins = {
     config = function()
       require("tokyonight").setup({
         style = "night",
+        transparent = true,
         styles = {
+          -- Style to be applied to different syntax groups
+          -- Value is any valid attr-list value for `:help nvim_set_hl`
+          comments = { italic = true },
+          keywords = { italic = true },
           functions = {},
+          variables = {},
+          -- Background styles. Can be "dark", "transparent" or "normal"
+          sidebars = "transparent", -- style for sidebars, see below
+          floats = "transparent", -- style for floating windows
         },
         sidebars = { "qf", "vista_kind", "terminal", "packer" },
         on_colors = function() end,
@@ -807,7 +817,8 @@ local plugins = {
     end,
     dependencies = {
       { "noice.nvim" },
-      { "github-nvim-theme" },
+      { "folke/tokyonight.nvim" },
+      { "projekt0n/github-nvim-theme" },
     },
   },
 
