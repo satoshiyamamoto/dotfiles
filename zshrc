@@ -23,8 +23,8 @@ fi
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 export HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit|*<<<*|*assume-role-with-saml*)"
-export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_CTRL_T_OPTS='--preview="[[ -d {} ]] && eza --tree --color=always --icons=always {} || bat --style=changes,header --color=always --line-range :50 {} || xdd"'
+export FZF_ALT_C_OPTS='--preview="eza --tree --color=always --icons=always {}"'
 export COLIMA_HOME="${XDG_CONFIG_HOME}/colima"
 export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
 
@@ -33,9 +33,9 @@ local _homebrew="$(brew --prefix)"
 local _gcloud_sdk="$_homebrew/Caskroom/google-cloud-sdk"
 [ -d "$_gcloud_sdk" ] && source "$_gcloud_sdk/latest/google-cloud-sdk/path.zsh.inc"
 [ -d "$_gcloud_sdk" ] && source "$_gcloud_sdk/latest/google-cloud-sdk/completion.zsh.inc"
-[ -f "$_homebrew/etc/profile.d/z.sh" ] && source "$_homebrew/etc/profile.d/z.sh"
-[ -f "$_homebrew/bin/atuin" ] && eval "$(atuin init zsh --disable-up-arrow)"
-[ -f "$HOME/.fzf.zsh" ] && source "$HOME/.fzf.zsh"
+[ -d "$_homebrew/opt/fzf" ] && source <(fzf --zsh)
+[ -d "$_homebrew/opt/atuin" ] && eval "$(atuin init zsh --disable-up-arrow)"
+[ -d "$_homebrew/opt/z" ] && source "$_homebrew/etc/profile.d/z.sh"
 [ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
 [ -d "$XDG_CONFIG_HOME/gh-copilot" ] && eval "$(gh copilot alias -- zsh)"
 [ -f "$SDKMAN_DIR/bin/sdkman-init.sh" ] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
@@ -84,6 +84,7 @@ bw() {
 alias dk='docker'
 alias k='kubectl'
 alias kcat='kcat -X broker.address.family=v4'
+alias f='fzf --preview "bat --color=always --style=changes,header --line-range :50 {}"'
 alias g='git'
 alias gore='gore -autoimport'
 alias grp='repo=$(ghq list | fzf) && cd $(ghq root)/$repo; unset repo'
@@ -100,7 +101,7 @@ alias lu='eza -lgh --color-scale --git --icons --sort=accessed'
 alias lg='lazygit'
 alias lzd='lazydocker'
 alias nvimdiff='nvim -d'
-alias tree='eza -T'
+alias tree='eza --tree --icons=always'
 alias curl='curl --silent'
 alias stern='stern --exclude-container "(fluentd|datadog)"'
 alias vpn='/opt/cisco/secureclient/bin/vpn'
