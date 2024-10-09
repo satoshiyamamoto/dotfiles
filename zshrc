@@ -52,12 +52,6 @@ kubectl() {
     command kubectl "$@"
 }
 
-sdk() {
-  unset -f sdk
-  [[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
-  sdk "$@"
-}
-
 gi() {
   curl -sLw "\n" https://www.gitignore.io/api/$@ ;
 }
@@ -82,14 +76,23 @@ bw() {
   esac
 }
 
+fzf-git-widget() {
+  local repositry=$(ghq list | fzf --reverse --height 40% --preview "bat --color always $(ghq root)/{}/README.md")
+  if [ -n "${repositry}" ]; then
+    BUFFER="builtin cd -- $(ghq root)/${repositry}"
+    zle accept-line
+  fi
+  zle reset-prompt
+}
+zle     -N    fzf-git-widget
+bindkey '\eg' fzf-git-widget
+
 # aliases
 alias dk='docker'
 alias k='kubectl'
 alias kcat='kcat -X broker.address.family=v4'
-alias f='fzf --preview "bat --color=always --style=changes,header --line-range :50 {}"'
 alias g='git'
 alias gore='gore -autoimport'
-alias grp='repo=$(ghq list | fzf) && cd $(ghq root)/$repo; unset repo'
 alias gpr='cd $GOPATH'
 alias gps='cd $GOPATH/src'
 alias ls='eza'
