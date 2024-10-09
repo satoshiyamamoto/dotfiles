@@ -23,8 +23,10 @@ fi
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[path_prefix]=none
 export HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit|*<<<*|*assume-role-with-saml*)"
-export FZF_CTRL_T_OPTS='--preview="[[ -d {} ]] && eza --tree --color=always --icons=always {} || bat --style=changes,header --color=always --line-range :50 {} || xdd"'
-export FZF_ALT_C_OPTS='--preview="eza --tree --color=always --icons=always {}"'
+export FZF_PREVIEW_FILE_COMMAND='bat --style=changes,header --color=always --line-range :50 {}'
+export FZF_PREVIEW_DIR_COMMAND='eza --tree --color=always --icons=always {}'
+export FZF_CTRL_T_OPTS="--preview=\"[[ -d {} ]] && ${FZF_PREVIEW_DIR_COMMAND} || ${FZF_PREVIEW_FILE_COMMAND}\""
+export FZF_ALT_C_OPTS="--preview=\"${FZF_PREVIEW_DIR_COMMAND}\""
 export COLIMA_HOME="${XDG_CONFIG_HOME}/colima"
 export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
 
