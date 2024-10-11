@@ -173,10 +173,10 @@ local plugins = {
     },
     opts = {
       formatters_by_ft = {
-        lua = { "stylua" },
         go = { "goimports", "gofmt" },
         java = { "google-java-format" },
         javascript = { { "prettierd", "prettier" } },
+        lua = { "stylua" },
         proto = { "clang-format" },
         python = { "isort", "black" },
         rust = { "rustfmt" },
