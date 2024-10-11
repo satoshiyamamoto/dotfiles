@@ -375,30 +375,32 @@ local plugins = {
 
           -- Buffer local mappings.
           -- See `:help vim.lsp.*` for documentation on any of the below functions
-          local opts = { buffer = ev.buf }
-          vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-          vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-          vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-          vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts)
-          vim.keymap.set("n", "<Space>wa", vim.lsp.buf.add_workspace_folder, opts)
-          vim.keymap.set("n", "<Space>wr", vim.lsp.buf.remove_workspace_folder, opts)
+          local opts = function(desc)
+            return { buffer = ev.buf, desc = desc }
+          end
+          vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts("Go to Declaration"))
+          vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts("Go to Definition"))
+          vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts("Go to Implementations"))
+          vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts("Show signature help"))
+          vim.keymap.set("n", "<Space>wa", vim.lsp.buf.add_workspace_folder, opts("Add Workspace folder"))
+          vim.keymap.set("n", "<Space>wr", vim.lsp.buf.remove_workspace_folder, opts("Remove Workspace folder"))
           vim.keymap.set("n", "<Space>wl", function()
             print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-          end, opts)
-          vim.keymap.set("n", "<Space>D", vim.lsp.buf.type_definition, opts)
-          vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
+          end, opts("List Workspace folders"))
+          vim.keymap.set("n", "<Space>D", vim.lsp.buf.type_definition, opts("Go to Type Definition"))
+          vim.keymap.set("n", "gr", vim.lsp.buf.references, opts("Find All References"))
           vim.keymap.set("n", "<Space>lf", function()
             vim.lsp.buf.format({ async = true })
-          end, opts)
-          vim.keymap.set("n", "gh", "<Cmd>Lspsaga lsp_finder<CR>")
-          vim.keymap.set({ "n", "v" }, "<Space>ca", "<Cmd>Lspsaga code_action<CR>")
-          vim.keymap.set("n", "<Space>rn", "<Cmd>Lspsaga rename<CR>")
-          vim.keymap.set("n", "gp", "<Cmd>Lspsaga peek_definition<CR>")
-          vim.keymap.set("n", "gt", "<Cmd>Lspsaga goto_type_definition<CR>")
-          vim.keymap.set("n", "<Space>o", "<Cmd>Lspsaga outline<CR>")
-          vim.keymap.set("n", "K", "<Cmd>Lspsaga hover_doc<CR>")
-          vim.keymap.set("n", "<Space>ci", "<Cmd>Lspsaga incoming_calls<CR>")
-          vim.keymap.set("n", "<Space>co", "<Cmd>Lspsaga outgoing_calls<CR>")
+          end, opts("Format Document"))
+          vim.keymap.set("n", "gh", "<Cmd>Lspsaga lsp_finder<CR>", opts("Find LSP Symbols (Lspsaga)"))
+          vim.keymap.set({ "n", "v" }, "<Space>ca", "<Cmd>Lspsaga code_action<CR>", opts("Execute Code Action"))
+          vim.keymap.set("n", "<Space>rn", "<Cmd>Lspsaga rename<CR>", opts("Rename Symbol (Lspsaga)"))
+          vim.keymap.set("n", "gp", "<Cmd>Lspsaga peek_definition<CR>", opts("Peek Definition (Lspsaga)"))
+          vim.keymap.set("n", "gt", "<Cmd>Lspsaga goto_type_definition<CR>", opts("Go to Type Definition (Lspsaga)"))
+          vim.keymap.set("n", "<Space>o", "<Cmd>Lspsaga outline<CR>", opts("Show Outline (Lspsaga)"))
+          vim.keymap.set("n", "K", "<Cmd>Lspsaga hover_doc<CR>", opts("Show Hover Documentation (Lspsaga)"))
+          vim.keymap.set("n", "<Space>ci", "<Cmd>Lspsaga incoming_calls<CR>", opts("Show Incoming Calls (Lspsaga)"))
+          vim.keymap.set("n", "<Space>co", "<Cmd>Lspsaga outgoing_calls<CR>", opts("Show Outgoing Calls (Lspsaga)"))
         end,
       })
 
@@ -583,14 +585,14 @@ local plugins = {
       vim.keymap.set("n", "<F10>", dap.step_over, {})
       vim.keymap.set("n", "<F11>", dap.step_into, {})
       vim.keymap.set("n", "<F23>", dap.step_out, {})
-      vim.keymap.set("n", "<Leader>b", dap.toggle_breakpoint, {})
+      vim.keymap.set("n", "<Leader>b", dap.toggle_breakpoint, { desc = "Toggle Brakepoint (Debug)" })
       vim.keymap.set("n", "<Leader>B", function()
         dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-      end, {})
+      end, { desc = "Brakepoint Condition (Debug)" })
       vim.keymap.set("n", "<Leader>lp", function()
         dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
-      end, {})
-      vim.keymap.set("n", "<Leader>du", dapui.toggle, {})
+      end, { desc = "Brakepoint Log point message (Debug)" })
+      vim.keymap.set("n", "<Leader>du", dapui.toggle, { desc = "Toggle UI (Debug)" })
       vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "ErrorMsg" })
@@ -623,15 +625,15 @@ local plugins = {
     "nvim-telescope/telescope.nvim",
     cmd = { "Telescope" },
     keys = {
-      { "<C-p>", "<Cmd>Telescope find_files<CR>" },
-      { "<Leader>ff", "<Cmd>Telescope find_files<CR>" },
-      { "<Leader>fg", "<Cmd>Telescope live_grep<CR>" },
-      { "<Leader>fb", "<Cmd>Telescope buffers<CR>" },
-      { "<Leader>fr", "<Cmd>Telescope oldfiles<CR>" },
-      { "<Leader>fh", "<Cmd>Telescope help_tags<CR>" },
-      { "<Leader>fs", "<Cmd>Telescope lsp_document_symbols<CR>" },
-      { "<Leader>fS", "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>" },
-      { "<Leader>fd", "<Cmd>Telescope dap configurations<CR>" },
+      { "<C-p>", "<Cmd>Telescope find_files<CR>", desc = "Find Files" },
+      { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Find Files" },
+      { "<Leader>fg", "<Cmd>Telescope live_grep<CR>", desc = "Search with Live Grep" },
+      { "<Leader>fb", "<Cmd>Telescope buffers<CR>", desc = "List Buffers" },
+      { "<Leader>fr", "<Cmd>Telescope oldfiles<CR>", desc = "Open Recent Files" },
+      { "<Leader>fh", "<Cmd>Telescope help_tags<CR>", desc = "Search Help Tags" },
+      { "<Leader>fs", "<Cmd>Telescope lsp_document_symbols<CR>", desc = "Search Document Symbols" },
+      { "<Leader>fS", "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>", desc = "Search Workspace Symbols" },
+      { "<Leader>fd", "<Cmd>Telescope dap configurations<CR>", desc = "Debug Configurations (DAP)" },
     },
     config = function()
       local telescope = require("telescope")
@@ -677,7 +679,7 @@ local plugins = {
     "nvim-tree/nvim-tree.lua",
     cmd = { "NvimTreeToggle" },
     keys = {
-      { "<Leader>e", "<Cmd>NvimTreeToggle<CR>" },
+      { "<Leader>e", "<Cmd>NvimTreeToggle<CR>", desc = "Toggle Explorer" },
     },
     opts = {
       sort_by = "case_sensitive",
@@ -699,9 +701,20 @@ local plugins = {
   {
     "phaazon/hop.nvim",
     branch = "v2",
-    cmd = { "HopWord" },
+    cmd = {
+      "HopWord",
+      "HopChar1",
+      "HopChar2",
+      "HopPattern",
+      "HopLine",
+    },
     keys = {
-      { "ff", "<Cmd>HopWord<CR>" },
+      { "ff", "<Cmd>HopWord<CR>", desc = "Hop to Word" },
+      { "<Leader>hw", "<Cmd>HopWord<CR>", desc = "Hop to Word" },
+      { "<Leader>hf", "<Cmd>HopChar1<CR>", desc = "Hop to Character" },
+      { "<Leader>hs", "<Cmd>HopChar2<CR>", desc = "Hop to 2 Characters" },
+      { "<Leader>hp", "<Cmd>HopPattern<CR>", desc = "Hop to Pattern" },
+      { "<Leader>hl", "<Cmd>HopLine<CR>", desc = "Hop to Line" },
     },
     config = function()
       require("hop").setup()
