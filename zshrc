@@ -16,6 +16,7 @@ fi
 
 # Source Prezto.
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  setopt prompt_subst interactive_comments
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
