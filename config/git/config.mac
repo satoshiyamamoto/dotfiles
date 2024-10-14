@@ -36,7 +36,7 @@
   diffFilter = delta --color-only
 
 [delta]
-  syntax-theme = Visual Studio Dark+
+  syntax-theme = tokyonight_night
   line-numbers = true
   side-by-side = false
   navigate = true
