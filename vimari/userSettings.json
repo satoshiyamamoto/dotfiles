@@ -5,7 +5,7 @@
   "scrollSize": 60,
   "openTabUrl": "https://google.com/",
   "modifier": "",
-  "smoothScroll": false,
+  "smoothScroll": true,
   "scrollDuration": 25,
   "transparentBindings": true,
   "bindings": {
