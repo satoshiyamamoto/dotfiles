@@ -381,7 +381,7 @@ local plugins = {
           vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts("Go to Declaration"))
           vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts("Go to Definition"))
           vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts("Go to Implementations"))
-          vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts("Show signature help"))
+          vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, opts("Show Signature help"))
           vim.keymap.set("n", "<Space>wa", vim.lsp.buf.add_workspace_folder, opts("Add Workspace folder"))
           vim.keymap.set("n", "<Space>wr", vim.lsp.buf.remove_workspace_folder, opts("Remove Workspace folder"))
           vim.keymap.set("n", "<Space>wl", function()
@@ -595,7 +595,7 @@ local plugins = {
       vim.keymap.set("n", "<Leader>lp", function()
         dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
       end, { desc = "Brakepoint Log point message (Debug)" })
-      vim.keymap.set("n", "<Leader>du", dapui.toggle, { desc = "Toggle UI (Debug)" })
+      vim.keymap.set("n", "<Leader>du", dapui.toggle, { desc = "Toggle Debugger (Debug)" })
       vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "ErrorMsg" })
@@ -613,11 +613,37 @@ local plugins = {
   },
 
   {
-    "vim-test/vim-test",
-    cmd = { "TestFile", "TestNearest" },
+    "nvim-neotest/neotest",
     keys = {
-      { "<Leader>df", "<Cmd>TestFile<CR>" },
-      { "<Leader>dn", "<Cmd>TestNearest<CR>" },
+      {
+        "<Leader>df",
+        function()
+          require("neotest").run.run(vim.fn.expand("%"))
+        end,
+        desc = "Test File",
+      },
+      {
+        "<Leader>dn",
+        function()
+          require("neotest").run.run()
+        end,
+        desc = "Test Nearest",
+      },
+    },
+    config = function()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-golang"),
+        },
+      })
+    end,
+    dependencies = {
+      { "nvim-neotest/nvim-nio" },
+      { "nvim-lua/plenary.nvim" },
+      { "antoinemadec/FixCursorHold.nvim" },
+      { "nvim-treesitter/nvim-treesitter" },
+      { "fredrikaverpil/neotest-golang" },
+      { "rcasia/neotest-java" },
     },
   },
 
@@ -682,7 +708,7 @@ local plugins = {
     "nvim-tree/nvim-tree.lua",
     cmd = { "NvimTreeToggle" },
     keys = {
-      { "<Leader>e", "<Cmd>NvimTreeToggle<CR>", desc = "Toggle Explorer" },
+      { "<Leader>e", "<Cmd>NvimTreeToggle<CR>", desc = "Show Explorer (File)" },
     },
     opts = {
       sort_by = "case_sensitive",
@@ -746,6 +772,7 @@ local plugins = {
             })
             :toggle()
         end,
+        desc = "Show Lazygit (Git)",
       },
     },
     opts = {
