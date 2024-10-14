@@ -481,15 +481,18 @@ local plugins = {
 
   {
     "folke/trouble.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    cmd = { "TroubleToggle" },
+    cmd = { "Trouble" },
     keys = {
-      { "<Leader>xx", "<Cmd>TroubleToggle<CR>" },
-      { "<Leader>xw", "<Cmd>TroubleToggle workspace_diagnostics<CR>" },
-      { "<Leader>xd", "<Cmd>TroubleToggle document_diagnostics<CR>" },
-      { "<Leader>xl", "<Cmd>TroubleToggle loclist<CR>" },
-      { "<Leader>xq", "<Cmd>TroubleToggle quickfix<CR>" },
-      { "gR", "<Cmd>TroubleToggle lsp_references<CR>" },
+      { "<Leader>xx", "<Cmd>Trouble diagnostics toggle<CR>", desc = "Diagnostics (Trouble)" },
+      { "<Leader>xX", "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Buffer Diagnostics (Trouble)" },
+      { "<Leader>cs", "<Cmd>Trouble symbols toggle focus=false<CR>", desc = "Symbols (Trouble)" },
+      {
+        "<Leader>cl",
+        "<Cmd>Trouble lsp toggle focus=false win.position=right<CR>",
+        desc = "LSP Definitions / references / ... (Trouble)",
+      },
+      { "<Leader>xL", "<Cmd>Trouble loclist toggle<CR>", desc = "Location List (Trouble)" },
+      { "<Leader>xQ", "<Cmd>Trouble qflist toggle<CR>", desc = "Quickfix List (Trouble)" },
     },
     config = function()
       require("trouble").setup()
@@ -633,7 +636,7 @@ local plugins = {
       { "<Leader>fh", "<Cmd>Telescope help_tags<CR>", desc = "Search Help Tags" },
       { "<Leader>fs", "<Cmd>Telescope lsp_document_symbols<CR>", desc = "Search Document Symbols" },
       { "<Leader>fS", "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>", desc = "Search Workspace Symbols" },
-      { "<Leader>fd", "<Cmd>Telescope dap configurations<CR>", desc = "Debug Configurations (DAP)" },
+      { "<Leader>fd", "<Cmd>Telescope dap configurations<CR>", desc = "Debug Configurations (Debug)" },
     },
     config = function()
       local telescope = require("telescope")
