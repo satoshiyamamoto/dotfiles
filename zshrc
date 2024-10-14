@@ -56,24 +56,8 @@ gi() {
   curl -sLw "\n" https://www.gitignore.io/api/$@ ;
 }
 
-otp() {
+totp() {
   oathtool --totp -b $(security find-generic-password -gs $@-otp -w)
-}
-
-bw() {
-  local _bw="$(brew --prefix)/bin/bw"
-  case "${1}" in
-    "login" )
-      local _email=$(security find-generic-password -gs bitwarden-user -w)
-      local _password=$(security find-generic-password -gs bitwarden -w)
-      local _code=$(otp bitwarden)
-      export BW_SESSION="$($_bw login $_email $_password --method 0 --code $_code --raw)"
-    ;;
-
-    * )
-      $_bw $@ --pretty | bat -l json
-    ;;
-  esac
 }
 
 fzf-git-widget() {
@@ -90,7 +74,7 @@ bindkey '\eg' fzf-git-widget
 # aliases
 alias dk='docker'
 alias k='kubectl'
-alias kcat='kcat -X broker.address.family=v4'
+alias kc='security find-generic-password'
 alias g='git'
 alias gore='gore -autoimport'
 alias gpr='cd $GOPATH'
