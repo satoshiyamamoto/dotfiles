@@ -659,10 +659,12 @@ local plugins = {
       { "<Leader>fg", "<Cmd>Telescope live_grep<CR>", desc = "Search with Live Grep" },
       { "<Leader>fb", "<Cmd>Telescope buffers<CR>", desc = "List Buffers" },
       { "<Leader>fr", "<Cmd>Telescope oldfiles<CR>", desc = "Open Recent Files" },
+      { '<Leader>f"', "<Cmd>Telescope registers<CR>", desc = "Search Registers" },
       { "<Leader>fh", "<Cmd>Telescope help_tags<CR>", desc = "Search Help Tags" },
       { "<Leader>fs", "<Cmd>Telescope lsp_document_symbols<CR>", desc = "Search Document Symbols" },
       { "<Leader>fS", "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>", desc = "Search Workspace Symbols" },
       { "<Leader>fd", "<Cmd>Telescope dap configurations<CR>", desc = "Debug Configurations (Debug)" },
+      { "<Leader>fn", "<Cmd>Telescope noice<CR>", desc = "Search Noice Messages" },
     },
     config = function()
       local telescope = require("telescope")
@@ -879,18 +881,53 @@ local plugins = {
   {
     "folke/noice.nvim",
     event = { "VeryLazy" },
-    init = function()
-      vim.keymap.set({ "n", "i", "s" }, "<C-f>", function()
-        if not require("noice.lsp").scroll(4) then
-          return "<C-f>"
-        end
-      end, { silent = true, expr = true })
-      vim.keymap.set({ "n", "i", "s" }, "<C-b>", function()
-        if not require("noice.lsp").scroll(-4) then
-          return "<C-b>"
-        end
-      end, { silent = true, expr = true })
-    end,
+    keys = {
+      {
+        "<Leader>nl",
+        function()
+          require("noice").cmd("last")
+        end,
+        desc = "Noice Last Message",
+      },
+      {
+        "<Leader>nh",
+        function()
+          require("noice").cmd("history")
+        end,
+        desc = "Noice History",
+      },
+      {
+        "<Leader>nd",
+        function()
+          require("noice").cmd("dismiss")
+        end,
+        desc = "Noice Dismiss",
+      },
+      {
+        "<C-f>",
+        function()
+          if not require("noice.lsp").scroll(4) then
+            return "<c-f>"
+          end
+        end,
+        silent = true,
+        expr = true,
+        desc = "Lsp Hover Doc Scroll Forward",
+        mode = { "i", "n", "s" },
+      },
+      {
+        "<C-b>",
+        function()
+          if not require("noice.lsp").scroll(-4) then
+            return "<c-b>"
+          end
+        end,
+        silent = true,
+        expr = true,
+        desc = "Lsp Hover Doc Scroll Backward",
+        mode = { "i", "n", "s" },
+      },
+    },
     config = function()
       require("noice").setup({
         lsp = {
