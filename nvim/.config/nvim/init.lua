@@ -672,9 +672,15 @@ local plugins = {
         defaults = {
           path_display = { truncate = 0 },
           file_ignore_patterns = {
+            ".git",
             "node_modules",
             "build/",
             "%.class",
+          },
+        },
+        pickers = {
+          find_files = {
+            hidden = true,
           },
         },
         extensions = {
