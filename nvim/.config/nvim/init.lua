@@ -3,9 +3,6 @@
 -- # Basics: {{{
 
 vim.g.mapleader = " "
-vim.g.loaded_netrw = true
-vim.g.loaded_netrwPlugin = true
-
 vim.opt.mouse = "a"
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -714,25 +711,37 @@ local plugins = {
   },
 
   {
-    "nvim-tree/nvim-tree.lua",
-    cmd = { "NvimTreeToggle" },
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v3.x",
+    cmd = { "Neotree" },
     keys = {
-      { "<Leader>e", "<Cmd>NvimTreeToggle<CR>", desc = "Show Explorer (File)" },
+      { "<Leader>e", "<Cmd>Neotree toggle<CR>", desc = "File Explorer (Neo-tree)" },
+      { "<Leader>eb", "<Cmd>Neotree buffers<CR>", desc = "Buffers Explorer (Neo-tree)" },
+      { "<Leader>eg", "<Cmd>Neotree git_status<CR>", desc = "Git Explorer (Neo-tree)" },
     },
     opts = {
-      sort_by = "case_sensitive",
-      renderer = {
-        group_empty = true,
-        root_folder_label = function(path)
-          return vim.fn.fnamemodify(path, ":t") .. "/.."
-        end,
+      close_if_last_window = true,
+      popup_border_style = "rounded",
+      filesystem = {
+        filtered_items = {
+          hide_dotfiles = false,
+          hide_by_name = {
+            ".DS_Store",
+            "thumbs.db",
+            "node_modules",
+          },
+        },
       },
-      filters = {
-        dotfiles = true,
+      buffers = {
+        follow_current_file = {
+          enabled = true,
+        },
       },
     },
     dependencies = {
-      { "nvim-tree/nvim-web-devicons", opt = true },
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
     },
   },
 
@@ -996,8 +1005,9 @@ local plugins = {
       options = {
         offsets = {
           {
-            filetype = "NvimTree",
-            text = "Explorer",
+            filetype = "neo-tree",
+            text = "Neo-tree Sidebar",
+            separator = true,
           },
         },
       },
