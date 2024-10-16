@@ -192,4 +192,5 @@ let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:rainbow_active = 1
 let g:rainbow_conf = { 'separately': { 'nerdtree': 0 } }
 let g:NERDTreeCascadeOpenSingleChildDir = 1
-highlight ColorColumn ctermbg=235 guibg=#161b22
+highlight Normal ctermbg=NONE guibg=NONE
+highlight ColorColumn ctermbg=0 guibg=#1e2030
