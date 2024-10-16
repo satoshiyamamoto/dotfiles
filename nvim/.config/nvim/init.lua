@@ -15,6 +15,8 @@ vim.opt.completeopt = { "menuone", "noselect" }
 vim.opt.clipboard:append({ "unnamedplus" })
 vim.opt.shortmess:append({ c = true, I = true })
 vim.opt.updatetime = 100
+vim.opt.timeout = true
+vim.opt.timeoutlen = 300
 vim.opt.grepprg = "rg --vimgrep --no-heading --smart-case"
 vim.opt.grepformat = "%f:%l:%c:%m"
 vim.opt.helplang = "ja,en"
@@ -716,8 +718,8 @@ local plugins = {
     cmd = { "Neotree" },
     keys = {
       { "<Leader>e", "<Cmd>Neotree toggle<CR>", desc = "File Explorer (Neo-tree)" },
-      { "<Leader>eb", "<Cmd>Neotree buffers<CR>", desc = "Buffers Explorer (Neo-tree)" },
-      { "<Leader>eg", "<Cmd>Neotree git_status<CR>", desc = "Git Explorer (Neo-tree)" },
+      { "<Leader>be", "<Cmd>Neotree buffers<CR>", desc = "Buffers Explorer (Neo-tree)" },
+      { "<Leader>ge", "<Cmd>Neotree git_status<CR>", desc = "Git Explorer (Neo-tree)" },
     },
     opts = {
       close_if_last_window = true,
@@ -726,11 +728,17 @@ local plugins = {
         filtered_items = {
           hide_dotfiles = false,
           hide_by_name = {
-            ".DS_Store",
-            "thumbs.db",
             "node_modules",
           },
+          never_show = {
+            ".DS_Store",
+            "thumbs.db",
+          },
         },
+        follow_current_file = {
+          enabled = true,
+        },
+        use_libuv_file_watcher = true,
       },
       buffers = {
         follow_current_file = {
@@ -981,11 +989,16 @@ local plugins = {
   {
     "folke/which-key.nvim",
     event = { "VeryLazy" },
-    init = function()
-      vim.o.timeout = true
-      vim.o.timeoutlen = 300
-    end,
     opts = {},
+    keys = {
+      {
+        "<leader>?",
+        function()
+          require("which-key").show({ global = false })
+        end,
+        desc = "Buffer Local Keymaps (which-key)",
+      },
+    },
   },
 
   {
