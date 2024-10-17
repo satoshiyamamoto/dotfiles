@@ -789,16 +789,16 @@ local plugins = {
       {
         "<Leader>lg",
         function()
-          require("toggleterm.terminal").Terminal
-            :new({
-              cmd = "lazygit",
-              direction = "float",
-              hidden = true,
-              count = 0,
-            })
-            :toggle()
+          require("toggleterm.terminal").Terminal:new({ cmd = "lazygit", direction = "float", count = 0 }):toggle()
         end,
         desc = "Show Lazygit (Git)",
+      },
+      {
+        "<Leader>lzd",
+        function()
+          require("toggleterm.terminal").Terminal:new({ cmd = "lazydocker", direction = "float", count = 0 }):toggle()
+        end,
+        desc = "Show Lazydocker (Docker)",
       },
     },
     opts = {
