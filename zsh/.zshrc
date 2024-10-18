@@ -21,30 +21,16 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit|*<<<*|*assume-role-with-saml*)"
 ZSH_HIGHLIGHT_STYLES[path]=none
 ZSH_HIGHLIGHT_STYLES[path_prefix]=none
-export HISTORY_IGNORE="(ls|cd|bg|fg|clear|pwd|exit|*<<<*|*assume-role-with-saml*)"
-export FZF_PREVIEW_FILE='bat --style=changes,header --color=always --line-range :50 {}'
-export FZF_PREVIEW_DIR='eza --tree --color=always --icons=always {}'
-export FZF_CTRL_T_OPTS="--preview=\"[[ -d {} ]] && ${FZF_PREVIEW_DIR} || ${FZF_PREVIEW_FILE}\""
-export FZF_ALT_C_OPTS="--preview=\"${FZF_PREVIEW_DIR}\""
-export COLIMA_HOME="${XDG_CONFIG_HOME}/colima"
-export SDKMAN_DIR=$(brew --prefix sdkman-cli)/libexec
 
-# sources
-local _homebrew="$(brew --prefix)"
-local _gcloud_sdk="$_homebrew/Caskroom/google-cloud-sdk"
-[ -d "$_gcloud_sdk" ] && source "$_gcloud_sdk/latest/google-cloud-sdk/path.zsh.inc"
-[ -d "$_gcloud_sdk" ] && source "$_gcloud_sdk/latest/google-cloud-sdk/completion.zsh.inc"
-[ -d "$_homebrew/opt/fzf" ] && source <(fzf --zsh)
-[ -d "$_homebrew/opt/atuin" ] && eval "$(atuin init zsh --disable-up-arrow)"
-[ -d "$_homebrew/opt/z" ] && source "$_homebrew/etc/profile.d/z.sh"
-[ -f "$HOME/.cargo/env" ] && source "$HOME/.cargo/env"
-[ -d "$XDG_CONFIG_HOME/gh-copilot" ] && eval "$(gh copilot alias -- zsh)"
-[ -f "$SDKMAN_DIR/bin/sdkman-init.sh" ] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
-unset _homebrew _gcloud_sdk
+# Source for Interactive shells
+if command -v fzf &>/dev/null; then
+  source <(fzf --zsh)
+fi
 
-# functions
+# Functions
 kubectl() {
     if ! type __start_kubectl >/dev/null 2>&1; then
         source <(command kubectl completion zsh)
@@ -72,7 +58,7 @@ fzf-git-widget() {
 zle     -N    fzf-git-widget
 bindkey '\eg' fzf-git-widget
 
-# aliases
+# Aliases
 alias dk='docker'
 alias k='kubectl'
 alias kc='security find-generic-password'
