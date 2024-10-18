@@ -196,6 +196,45 @@ local plugins = {
   {
     "hrsh7th/nvim-cmp",
     event = { "InsertEnter" },
+    keys = {
+      {
+        "<C-j>",
+        function()
+          return vim.fn["vsnip#expandable()"] and "<Plug>(vsnip-expand)" or "<C-j>"
+        end,
+        mode = { "i", "s" },
+        expr = true,
+        silent = true,
+      },
+      {
+        "<C-l>",
+        function()
+          return vim.fn["vsnip#available(1)"] and "<Plug>(vsnip-expand-or-jump)" or "<C-l>"
+        end,
+        'vsnip#available(1) ? "<Plug>(vsnip-expand-or-jump)" : "<C-l>"',
+        mode = { "i", "s" },
+        expr = true,
+        silent = true,
+      },
+      {
+        "<Tab>",
+        function()
+          return vim.fn["vsnip#jumpable(1)"] and "<Plug>(vsnip-jump-next)" or "<Tab>"
+        end,
+        mode = { "i", "s" },
+        expr = true,
+        silent = true,
+      },
+      {
+        "<S-Tab>",
+        function()
+          return vim.fn["vsnip#jumpable(-1)"] and "<Plug>(vsnip-jump-prev)" or "<S-Tab>"
+        end,
+        mode = { "i", "s" },
+        expr = true,
+        silent = true,
+      },
+    },
     config = function()
       local cmp = require("cmp")
       local lspkind = require("lspkind")
@@ -222,13 +261,12 @@ local plugins = {
           ["<S-Tab>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
         },
         sources = cmp.config.sources({
-          { name = "copilot" },
           { name = "nvim_lsp" },
           { name = "nvim_lsp_signature_help" },
           { name = "vsnip" }, -- For vsnip users.
           { name = "buffer" },
           { name = "path" },
-          -- { name = "copilot" },
+          { name = "copilot" },
         }),
         formatting = {
           format = lspkind.cmp_format({
@@ -263,18 +301,6 @@ local plugins = {
 
       -- Complete the bracket with "CR"
       cmp.event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done())
-
-      -- Mappings
-      vim.cmd([[
-       imap <expr> <C-j>   vsnip#expandable() ? "<Plug>(vsnip-expand)"         : "<C-j>"
-       smap <expr> <C-j>   vsnip#expandable() ? "<Plug>(vsnip-expand)"         : "<C-j>"
-       imap <expr> <C-l>   vsnip#available(1) ? "<Plug>(vsnip-expand-or-jump)" : "<C-l>"
-       smap <expr> <C-l>   vsnip#available(1) ? "<Plug>(vsnip-expand-or-jump)" : "<C-l>"
-       imap <expr> <Tab>   vsnip#jumpable(1)  ? "<Plug>(vsnip-jump-next)"      : "<Tab>"
-       smap <expr> <Tab>   vsnip#jumpable(1)  ? "<Plug>(vsnip-jump-next)"      : "<Tab>"
-       imap <expr> <S-Tab> vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)"      : "<S-Tab>"
-       smap <expr> <S-Tab> vsnip#jumpable(-1) ? "<Plug>(vsnip-jump-prev)"      : "<S-Tab>"
-       ]])
     end,
     dependencies = {
       { "hrsh7th/cmp-nvim-lsp" },
