@@ -9,6 +9,7 @@ packages=(
   lazygit
   nvim
   powerlevel10k
+  sheldon
   sqlfluff
   sqlite
   sqls
@@ -16,7 +17,7 @@ packages=(
   vim
   yamlfmt
   zellij
-  zprezto
+  # zprezto
   zsh
 )
 
