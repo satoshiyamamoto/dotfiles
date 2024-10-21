@@ -13,9 +13,9 @@ fi
 #
 setopt hist_expire_dups_first
 setopt hist_find_no_dups
+setopt hist_ignore_all_dups
 setopt hist_ignore_dups
 setopt hist_ignore_space
-setopt hist_ignore_all_dups
 setopt hist_reduce_blanks
 setopt share_history
 HISTSIZE=10000
@@ -23,46 +23,36 @@ SAVEHIST=5000
 HISTFILE=~/.zsh_history
 HISTORY_IGNORE="(l[sal]|cd|clear|exit|lg|pwd|z|*<<<*|*<<*EOF*|*assume-role-with-saml*)"
 
-autoload -Uz compinit && compinit -C
-zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'm:{[:upper:]}={[:lower:]}'
-zstyle ':completion:*' menu select
-zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' squeeze-slashes yes
-zstyle ':completion:*:default' list-colors ${(s.:.)"$(echo $LS_COLORS | sed 's/no=[^:]*://g')"}
-zstyle ':completion:*:matches' group 'yes'
-zstyle ':completion:*:*:*:users' ignored-patterns '_*' 'root' 'daemon' 'nobody'
-zstyle ':completion:*' completer _complete _approximate
-zstyle ':completion:*:approximate:*' max-errors 1 numeric
-bindkey -e
-
 #
 # Source files
 #
+
+# Atuin
+if [[ -f "$HOMEBREW_PREFIX/bin/atuin" ]]; then
+  eval "$(atuin init zsh)"
+fi
 
 ## fzf
 if command -v fzf &>/dev/null; then
   source <(fzf --zsh)
 fi
 
-## Atuin
-if [[ -f "$HOMEBREW_PREFIX/bin/atuin" ]]; then
-  eval "$(atuin init zsh)"
+## Google Cloud
+GOOGLE_CLOUD_SDK_DIR="$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk"
+if [[ -d "$GOOGLE_CLOUD_SDK_DIR" ]]; then
+  zsh-defer source "$GOOGLE_CLOUD_SDK_DIR/latest/google-cloud-sdk/path.zsh.inc"
+  zsh-defer source "$GOOGLE_CLOUD_SDK_DIR/latest/google-cloud-sdk/completion.zsh.inc"
 fi
-
-## Z
-if [[ -f "$HOMEBREW_PREFIX/etc/profile.d/z.sh" ]]; then
-  zsh-defer source "$HOMEBREW_PREFIX/etc/profile.d/z.sh"
-fi
+unset GOOGLE_CLOUD_SDK_DIR
 
 ## SDKMAN
 if [[ -d "$SDKMAN_DIR" && -f "$SDKMAN_DIR/bin/sdkman-init.sh" ]]; then
   zsh-defer source "$SDKMAN_DIR/bin/sdkman-init.sh"
 fi
 
-## GitHub Copilot
-if [[ -d "$XDG_CONFIG_HOME/gh-copilot" ]]; then
-  eval "$(gh copilot alias -- zsh)"
+## Z
+if [[ -f "$HOMEBREW_PREFIX/etc/profile.d/z.sh" ]]; then
+  zsh-defer source "$HOMEBREW_PREFIX/etc/profile.d/z.sh"
 fi
 
 # Functions
@@ -73,17 +63,6 @@ kubectl() {
 
  command kubectl "$@"
 }
-
-gcloud() {
-  local SDK_DIR="$(brew --prefix)/Caskroom/google-cloud-sdk"
-  if [[ -d "$SDK_DIR" ]]; then
-    source "$SDK_DIR/latest/google-cloud-sdk/path.zsh.inc"
-    source "$SDK_DIR/latest/google-cloud-sdk/completion.zsh.inc"
-  fi
-
-  command gcloud "$@"
-}
-compdef gcloud=gcloud
 
 gi() {
   curl -sLw "\n" https://www.gitignore.io/api/$@ ;
@@ -102,7 +81,6 @@ fzf-git-widget() {
   zle reset-prompt
 }
 zle     -N    fzf-git-widget
-bindkey '\eg' fzf-git-widget
 
 #
 # Aliases
@@ -111,6 +89,8 @@ alias cp='cp -i'
 alias curl='curl --silent'
 alias dk='docker'
 alias g='git'
+alias ghcs='gh copilot suggest'
+alias ghce='gh copilot explain'
 alias k='kubectl'
 alias la='eza -lgha --color-scale --git --icons'
 alias lg='lazygit'
@@ -129,9 +109,31 @@ if [[ "$TERM" == "xterm-kitty" ]]; then
   alias icat='kitty +kitten icat'
 fi
 
+#
+# Zsh Configurations
+#
+
+## Key Bindings
+bindkey -e
+bindkey '^r' atuin-search
+bindkey '\eg' fzf-git-widget
+
+## Completions
+autoload -Uz compinit && zsh-defer compinit -C
+zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'm:{[:upper:]}={[:lower:]}'
+zstyle ':completion:*' menu select
+zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' squeeze-slashes yes
+zstyle ':completion:*:default' list-colors ${(s.:.)"$(echo $LS_COLORS | sed 's/no=[^:]*://g')"}
+zstyle ':completion:*:matches' group 'yes'
+zstyle ':completion:*:*:*:users' ignored-patterns '_*' 'root' 'daemon' 'nobody'
+zstyle ':completion:*' completer _complete _approximate
+zstyle ':completion:*:approximate:*' max-errors 1 numeric
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-if (which zprof > /dev/null) ;then
+if type zprof >/dev/null 2>&1; then
   zprof | bat --language=log --color=always --pager=never
 fi

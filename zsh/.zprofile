@@ -1,4 +1,4 @@
-# zmodload zsh/zprof && zprof
+# zmodload zsh/zprof
 
 # Editors
 export EDITOR='nvim'
