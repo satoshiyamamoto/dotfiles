@@ -15,7 +15,10 @@ export LS_COLORS="${$(/opt/homebrew/bin/vivid generate tokyonight-night 2>/dev/n
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
+export HOMEBREW_PREFIX='/opt/homebrew'
+export GOOGLE_CLOUD_CLI_HOME="$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk"
 export GOPATH="$HOME/Projects"
+export ZSH_DEFER_HOME="$GOPATH/src/github.com/romkatv/zsh-defer"
 
 fpath=(
   /opt/homebrew/share/zsh/site-functions(N)
@@ -36,20 +39,14 @@ path=(
 )
 typeset -gU fpath path
 
-## Cargo
-if [[ -f "$HOME/.cargo/env" ]]; then
-  source "$HOME/.cargo/env"
-fi
-
 ## Homebrew
-export HOMEBREW_PREFIX='/opt/homebrew'
 export HOMEBREW_NO_ENV_HINTS='true'
 export HOMEBREW_GITHUB_API_TOKEN="$(security find-generic-password -gs github-token -w)"
 
 ## fzf
 FZF_PREVIEW_FILE='bat --style=changes,header --color=always --line-range :50 {}'
 FZF_PREVIEW_DIR='eza --tree --all --color=always --icons=always {}'
-export FZF_CTRL_T_OPTS='--preview="[[ -d {} ]] && '"${FZF_PREVIEW_DIR}"' || '"${FZF_PREVIEW_FILE}"'"'
+export FZF_CTRL_T_OPTS='--preview="[[ -d {} ]] && '"$FZF_PREVIEW_DIR"' || '"$FZF_PREVIEW_FILE"'"'
 export FZF_ALT_C_OPTS='--preview="${FZF_PREVIEW_DIR}"'
 
 ## Colima
