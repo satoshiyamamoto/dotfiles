@@ -5,6 +5,7 @@ packages=(
   fd
   flake8
   git
+  glow
   kitty
   lazygit
   nvim
