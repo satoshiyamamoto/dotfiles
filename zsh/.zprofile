@@ -49,6 +49,9 @@ FZF_PREVIEW_DIR='eza --tree --all --color=always --icons=always {}'
 export FZF_CTRL_T_OPTS='--preview="[[ -d {} ]] && '"$FZF_PREVIEW_DIR"' || '"$FZF_PREVIEW_FILE"'"'
 export FZF_ALT_C_OPTS='--preview="${FZF_PREVIEW_DIR}"'
 
+## Google Cloud SDK
+export CLOUDSDK_PYTHON="$HOMEBREW_PREFIX/bin/python3.12"
+
 ## Colima
 export COLIMA_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/colima"
 
