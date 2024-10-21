@@ -19,6 +19,7 @@ source "$ZSH_DEFER_HOME/zsh-defer.plugin.zsh"
 bindkey -e
 
 ## Options
+setopt complete_aliases
 setopt hist_expire_dups_first
 setopt hist_find_no_dups
 setopt hist_ignore_all_dups
