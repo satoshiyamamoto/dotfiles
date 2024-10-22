@@ -74,14 +74,6 @@ fi
 #
 # Functions
 #
-kubectl() {
- if ! type __start_kubectl >/dev/null 2>&1; then
-   source <(command kubectl completion zsh)
- fi
-
- command kubectl "$@"
-}
-
 gi() {
   curl -sLw "\n" https://www.gitignore.io/api/$@ ;
 }
@@ -107,11 +99,8 @@ bindkey '\eg' fzf-git-widget
 #
 alias cp='cp -i'
 alias curl='curl --silent'
-alias dk='docker'
-alias g='git'
 alias ghcs='gh copilot suggest'
 alias ghce='gh copilot explain'
-alias k='kubectl'
 alias la='eza --color=always --icons --long --header --group --git --color-scale --all'
 alias lg='lazygit'
 alias ls='eza --color=always'
