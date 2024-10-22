@@ -39,7 +39,9 @@ zstyle ':completion:*' group-name ''
 zstyle ':completion:*' squeeze-slashes yes
 zstyle ':completion:*:default' list-colors ${(s.:.)"$(echo $LS_COLORS | sed 's/no=[^:]*://g')"}
 zstyle ':completion:*:matches' group 'yes'
-zstyle ':completion:*:*:*:users' ignored-patterns '_*' 'root' 'daemon' 'nobody'
+zstyle ':completion:*:*:*:users' ignored-patterns '_*' root daemon nobody
+zstyle ':completion:*:(ssh|scp):*' group-order users files all-files hosts-domain hosts-host hosts-ipaddr
+zstyle ':completion:*:(ssh|scp):*:hosts' ignored-patterns loopback ip6-loopback broadcasthost
 zstyle ':completion:*' completer _complete _approximate
 zstyle ':completion:*:approximate:*' max-errors 1 numeric
 autoload -Uz compinit && zsh-defer compinit -C
