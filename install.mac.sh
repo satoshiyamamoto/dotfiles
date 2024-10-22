@@ -12,7 +12,6 @@ packages=(
   powerlevel10k
   sqlfluff
   sqlite
-  sqls
   starship
   vim
   yamlfmt
