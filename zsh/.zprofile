@@ -3,7 +3,7 @@
 # Editors
 export EDITOR='nvim'
 export PAGER='bat'
-export LESS='-g -i -M -R -S -w -X -z-4'
+export LESS='--hilite-search --hilite-unread --ignore-case --long-prompt --no-init --raw-control-chars --chop-long-lines --window=4'
 
 # Language
 export LANG='en_US.UTF-8'
