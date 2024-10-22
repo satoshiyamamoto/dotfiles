@@ -16,7 +16,6 @@ packages=(
   vim
   yamlfmt
   zellij
-  # zprezto
   zsh
 )
 
