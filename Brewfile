@@ -254,7 +254,6 @@ mas "Xcode", id: 497799835
 vscode "42crunch.vscode-openapi"
 vscode "ahmadawais.shades-of-purple"
 vscode "amandeepmittal.pug"
-vscode "amazonwebservices.codewhisperer-for-command-line-companion"
 vscode "bierner.github-markdown-preview"
 vscode "bierner.markdown-checkbox"
 vscode "bierner.markdown-emoji"
