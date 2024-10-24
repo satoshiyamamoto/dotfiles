@@ -119,8 +119,8 @@ if [[ "$TERM" == "xterm-kitty" ]]; then
   alias icat='kitty +kitten icat'
 fi
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# To customize prompt, run `p10k configure` or edit $XDG_CONFIG_HOME/p10k.zsh.
+[[ ! -f "${XDG_CONFIG_HOME}/p10k.zsh" ]] || source "$XDG_CONFIG_HOME/p10k.zsh"
 
 if type zprof >/dev/null 2>&1; then
   zprof | bat --language=log --color=always --pager=never
