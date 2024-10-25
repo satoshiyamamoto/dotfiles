@@ -3,22 +3,9 @@
   email = satoshi_yamamoto@cyberagent.co.jp
 
 [core]
-  autocrlf = false
-  editor = vi
-  eol = lf
-  excludesfile = ~/.gitignore
-  pager = LESSCHARSET=utf-8 less
-  quotepath = false
+  editor = vim
+  pager = LESSCHARSET=utf-8 less -F -X
   whitespace = cr-at-eol
-
-[init]
-  defaultBranch = main
-
-[push]
-  default = upstream
-
-[pager]
-  branch = false
 
 [difftool]
   prompt = false

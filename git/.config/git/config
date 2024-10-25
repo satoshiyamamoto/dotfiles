@@ -3,16 +3,9 @@
   email = satoshiyamamoto@me.com
 
 [core]
-  autocrlf = false
   editor = nvim
-  eol = lf
-  excludesfile = ~/.gitignore
-  pager = LESSCHARSET=utf-8 less
-  quotepath = false
+  pager = delta
   whitespace = cr-at-eol
-
-[init]
-  defaultBranch = main
 
 [diff]
   tool = nvimdiff
@@ -22,24 +15,15 @@
   prompt = false
 
 [merge]
-  conflictstyle = diff3
-
-[push]
-  default = upstream
-
-[pager]
-  branch = false
-  diff = delta
-  show = delta
+  conflictStyle = zdiff3
 
 [interactive]
   diffFilter = delta --color-only
 
 [delta]
-  syntax-theme = tokyonight_night
+  navigate = true
   line-numbers = true
   side-by-side = false
-  navigate = true
 
 [ghq]
   root = ~/Projects/src
