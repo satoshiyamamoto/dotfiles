@@ -237,7 +237,6 @@ cask "quicklook-csv"
 cask "quicklook-json"
 cask "slack"
 cask "tradingview"
-cask "unity-hub"
 cask "visual-studio-code"
 cask "zoom"
 mas "1Blocker", id: 1365531024
