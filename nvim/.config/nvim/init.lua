@@ -505,40 +505,6 @@ local plugins = {
   },
 
   {
-    "folke/trouble.nvim",
-    cmd = { "Trouble" },
-    keys = {
-      { "<Leader>xx", "<Cmd>Trouble diagnostics toggle<CR>", desc = "Diagnostics (Trouble)" },
-      { "<Leader>xX", "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<Leader>cs", "<Cmd>Trouble symbols toggle focus=false<CR>", desc = "Symbols (Trouble)" },
-      {
-        "<Leader>cl",
-        "<Cmd>Trouble lsp toggle focus=false win.position=right<CR>",
-        desc = "LSP Definitions / references / ... (Trouble)",
-      },
-      { "<Leader>xL", "<Cmd>Trouble loclist toggle<CR>", desc = "Location List (Trouble)" },
-      { "<Leader>xQ", "<Cmd>Trouble qflist toggle<CR>", desc = "Quickfix List (Trouble)" },
-    },
-    config = function()
-      require("trouble").setup()
-
-      local signs = {
-        Error = "󰅚 ",
-        Warn = "󰀪 ",
-        Hint = "󰌶 ",
-        Info = " ",
-      }
-      for type, icon in pairs(signs) do
-        local hl = "DiagnosticSign" .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-      end
-    end,
-    dependencies = {
-      { "nvim-tree/nvim-web-devicons" },
-    },
-  },
-
-  {
     "nvimdev/lspsaga.nvim",
     config = function()
       require("lspsaga").setup({
@@ -733,11 +699,6 @@ local plugins = {
   },
 
   {
-    "kevinhwang91/nvim-bqf",
-    ft = "qf",
-  },
-
-  {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
     cmd = { "Neotree" },
@@ -799,6 +760,149 @@ local plugins = {
     config = function()
       require("hop").setup()
     end,
+  },
+
+  -- }}}
+
+  -- ## Informations: {{{
+
+  {
+    "folke/noice.nvim",
+    event = { "VeryLazy" },
+    keys = {
+      {
+        "<Leader>nl",
+        function()
+          require("noice").cmd("last")
+        end,
+        desc = "Noice Last Message",
+      },
+      {
+        "<Leader>nh",
+        function()
+          require("noice").cmd("history")
+        end,
+        desc = "Noice History",
+      },
+      {
+        "<Leader>nd",
+        function()
+          require("noice").cmd("dismiss")
+        end,
+        desc = "Noice Dismiss",
+      },
+      {
+        "<C-f>",
+        function()
+          if not require("noice.lsp").scroll(4) then
+            return "<c-f>"
+          end
+        end,
+        silent = true,
+        expr = true,
+        desc = "Lsp Hover Doc Scroll Forward",
+        mode = { "i", "n", "s" },
+      },
+      {
+        "<C-b>",
+        function()
+          if not require("noice.lsp").scroll(-4) then
+            return "<c-b>"
+          end
+        end,
+        silent = true,
+        expr = true,
+        desc = "Lsp Hover Doc Scroll Backward",
+        mode = { "i", "n", "s" },
+      },
+    },
+    config = function()
+      require("noice").setup({
+        lsp = {
+          override = {
+            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+            ["vim.lsp.util.stylize_markdown"] = true,
+            ["cmp.entry.get_documentation"] = true,
+          },
+        },
+        presets = {
+          bottom_search = true,
+          command_palette = true,
+          long_message_to_split = false,
+          inc_rename = false,
+          lsp_doc_border = true,
+        },
+        routes = {
+          -- Enable macros such as recording @
+          {
+            view = nil,
+            filter = { event = "msg_showmode" },
+          },
+        },
+      })
+      require("notify").setup({
+        render = "default",
+        background_colour = "#000000",
+      })
+    end,
+    dependencies = {
+      { "MunifTanjim/nui.nvim" },
+      { "rcarriga/nvim-notify" },
+    },
+  },
+
+  {
+    "folke/trouble.nvim",
+    cmd = { "Trouble" },
+    keys = {
+      { "<Leader>xx", "<Cmd>Trouble diagnostics toggle<CR>", desc = "Diagnostics (Trouble)" },
+      { "<Leader>xX", "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Buffer Diagnostics (Trouble)" },
+      { "<Leader>cs", "<Cmd>Trouble symbols toggle focus=false<CR>", desc = "Symbols (Trouble)" },
+      {
+        "<Leader>cl",
+        "<Cmd>Trouble lsp toggle focus=false win.position=right<CR>",
+        desc = "LSP Definitions / references / ... (Trouble)",
+      },
+      { "<Leader>xL", "<Cmd>Trouble loclist toggle<CR>", desc = "Location List (Trouble)" },
+      { "<Leader>xQ", "<Cmd>Trouble qflist toggle<CR>", desc = "Quickfix List (Trouble)" },
+    },
+    config = function()
+      require("trouble").setup()
+
+      local signs = {
+        Error = "󰅚 ",
+        Warn = "󰀪 ",
+        Hint = "󰌶 ",
+        Info = " ",
+      }
+      for type, icon in pairs(signs) do
+        local hl = "DiagnosticSign" .. type
+        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+      end
+    end,
+    dependencies = {
+      { "nvim-tree/nvim-web-devicons" },
+    },
+  },
+
+  {
+    "kevinhwang91/nvim-bqf",
+    ft = "qf",
+  },
+
+  {
+    "folke/which-key.nvim",
+    event = { "VeryLazy" },
+    opts = {},
+    keys = {
+      {
+        "<leader>?",
+        function()
+          require("which-key").show({ global = false })
+        end,
+        desc = "Buffer Local Keymaps (which-key)",
+      },
+    },
   },
 
   -- }}}
@@ -923,106 +1027,6 @@ local plugins = {
       { "noice.nvim" },
       { "folke/tokyonight.nvim" },
       { "projekt0n/github-nvim-theme" },
-    },
-  },
-
-  {
-    "folke/noice.nvim",
-    event = { "VeryLazy" },
-    keys = {
-      {
-        "<Leader>nl",
-        function()
-          require("noice").cmd("last")
-        end,
-        desc = "Noice Last Message",
-      },
-      {
-        "<Leader>nh",
-        function()
-          require("noice").cmd("history")
-        end,
-        desc = "Noice History",
-      },
-      {
-        "<Leader>nd",
-        function()
-          require("noice").cmd("dismiss")
-        end,
-        desc = "Noice Dismiss",
-      },
-      {
-        "<C-f>",
-        function()
-          if not require("noice.lsp").scroll(4) then
-            return "<c-f>"
-          end
-        end,
-        silent = true,
-        expr = true,
-        desc = "Lsp Hover Doc Scroll Forward",
-        mode = { "i", "n", "s" },
-      },
-      {
-        "<C-b>",
-        function()
-          if not require("noice.lsp").scroll(-4) then
-            return "<c-b>"
-          end
-        end,
-        silent = true,
-        expr = true,
-        desc = "Lsp Hover Doc Scroll Backward",
-        mode = { "i", "n", "s" },
-      },
-    },
-    config = function()
-      require("noice").setup({
-        lsp = {
-          override = {
-            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-            ["vim.lsp.util.stylize_markdown"] = true,
-            ["cmp.entry.get_documentation"] = true,
-          },
-        },
-        presets = {
-          bottom_search = true,
-          command_palette = true,
-          long_message_to_split = false,
-          inc_rename = false,
-          lsp_doc_border = true,
-        },
-        routes = {
-          -- Enable macros such as recording @
-          {
-            view = nil,
-            filter = { event = "msg_showmode" },
-          },
-        },
-      })
-      require("notify").setup({
-        render = "default",
-        background_colour = "#000000",
-      })
-    end,
-    dependencies = {
-      { "MunifTanjim/nui.nvim" },
-      { "rcarriga/nvim-notify" },
-    },
-  },
-
-  {
-    "folke/which-key.nvim",
-    event = { "VeryLazy" },
-    opts = {},
-    keys = {
-      {
-        "<leader>?",
-        function()
-          require("which-key").show({ global = false })
-        end,
-        desc = "Buffer Local Keymaps (which-key)",
-      },
     },
   },
 
