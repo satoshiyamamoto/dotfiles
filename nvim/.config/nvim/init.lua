@@ -9,6 +9,7 @@ vim.opt.relativenumber = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.laststatus = 3
+vim.opt.fillchars:append({ diff = " " })
 vim.opt.termguicolors = true
 vim.opt.confirm = true
 vim.opt.completeopt = { "menuone", "noselect" }
@@ -1146,6 +1147,21 @@ local plugins = {
     config = function(_, opts)
       require("virt-column").setup(opts)
     end,
+  },
+
+  {
+    "sindrets/diffview.nvim",
+    cmd = {
+      "DiffviewFileHistory",
+      "DiffviewOpen",
+      "DiffviewClose",
+      "DiffviewToggleFiles",
+      "DiffviewFocusFiles",
+      "DiffviewRefresh",
+    },
+    dependencies = {
+      { "nvim-lua/plenary.nvim" },
+    },
   },
 
   {
