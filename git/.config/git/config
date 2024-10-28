@@ -9,13 +9,23 @@
 
 [diff]
   tool = nvimdiff
-  colorMoved = default
+  colorMoved = dimmed-zebra
 
 [difftool]
   prompt = false
 
+[difftool "nvimdiff"]
+  cmd = "nvim -R -d -c \"wincmd l\" -d \"$LOCAL\" \"$REMOTE\""
+
 [merge]
   conflictStyle = zdiff3
+
+[mergetool]
+  prompt = false
+  keepBackup = false
+
+[mergetool "nvimdiff"]
+  cmd = "nvim -d -c \"4wincmd w | wincmd J\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"  \"$MERGED\""
 
 [interactive]
   diffFilter = delta --color-only
