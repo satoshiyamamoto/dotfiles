@@ -1,3 +1,4 @@
+# Stow Packages
 packages=(
   alacritty
   bat
@@ -23,8 +24,9 @@ for package in "${packages[@]}"; do
   stow -v $package -t $HOME
 done
 
-# Not a stow package
-package=$(find vimari | sed 's#^vimari/##' | grep userSettings.json)
+# Vimari
+package=$(find vimari -name "userSettings.json" | sed 's#^vimari/##')
+
 if [[ -f "$HOME/$package" ]]; then
   cp "vimari/$package" "$HOME/$package"
 fi
