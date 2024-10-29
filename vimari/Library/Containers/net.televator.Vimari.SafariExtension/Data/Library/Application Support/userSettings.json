@@ -2,11 +2,11 @@
   "excludedUrls": "youtube.com, github.com, docs.google.com",
   "linkHintCharacters": "asdfjklqwerzxc",
   "detectByCursorStyle": false,
-  "scrollSize": 60,
+  "scrollSize": 150,
   "openTabUrl": "https://google.com/",
   "modifier": "",
   "smoothScroll": true,
-  "scrollDuration": 25,
+  "scrollDuration": 50,
   "transparentBindings": true,
   "bindings": {
     "hintToggle": "f f",
