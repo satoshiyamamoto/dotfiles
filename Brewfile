@@ -443,8 +443,6 @@ cask "font-sf-pro"
 cask "google-chrome"
 # Set of tools to manage resources and applications hosted on Google Cloud
 cask "google-cloud-sdk"
-# Client for the Google Drive storage service
-cask "google-drive"
 # Open-source video transcoder
 cask "handbrake"
 # Java IDE by JetBrains
