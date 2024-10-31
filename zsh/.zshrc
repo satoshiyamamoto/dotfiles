@@ -65,12 +65,17 @@ zsh-defer source "$SDKMAN_DIR/bin/sdkman-init.sh"
 
 ## fzf
 if type fzf >/dev/null 2>&1; then
-  source <(fzf --zsh)
-fi
+  zsh-defer eval "$(fzf --zsh)"
+ fi
 
 ## Atuin
 if [[ -f "$HOMEBREW_PREFIX/bin/atuin" ]]; then
-  eval "$(atuin init zsh)"
+  zsh-defer eval "$(atuin init zsh)"
+fi
+
+## Direnv
+if [[ -f "$HOMEBREW_PREFIX/bin/direnv" ]]; then
+  zsh-defer eval "$(direnv hook zsh)"
 fi
 
 
