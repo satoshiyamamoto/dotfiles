@@ -3,24 +3,38 @@
   email = satoshiyamamoto@me.com
 
 [core]
-  editor = vim
-  pager = LESSCHARSET=utf-8 less --quit-if-one-screen --no-init
+  editor = nvim
+  pager = delta
   whitespace = cr-at-eol
 
 [diff]
+  tool = nvimdiff
   colorMoved = dimmed-zebra
-  tool = vimdiff
 
 [difftool]
   prompt = false
 
+[difftool "nvimdiff"]
+  cmd = "nvim -R -d -c \"wincmd l\" -d \"$LOCAL\" \"$REMOTE\""
+
 [merge]
   conflictStyle = zdiff3
-  tool = vimdiff
+  tool = nvimdiff
 
 [mergetool]
   prompt = false
   keepBackup = false
+
+[mergetool "nvimdiff"]
+  cmd = "nvim -d -c \"4wincmd w | wincmd J\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"  \"$MERGED\""
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  navigate = true
+  line-numbers = true
+  side-by-side = true
 
 [ghq]
   root = ~/Projects/src

@@ -1,13 +1,13 @@
 #!/bin/bash
-XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+dotfiles="$(realpath "$(dirname "$0")")"
 
-mkdir -p \
-  "$HOME/.vim" \
-  "$XDG_CONFIG_HOME/git"
+## Create XDG configuration directories
+mkdir -p "${XDG_CONFIG_HOME:=$HOME/.config}"
 
 ## Deploy dotfiles
-cd $(realpath "$(dirname "$0")")
-ln -si bash/.bash_aliases "$HOME/.bash_aliases"
-ln -si editorconfig/.editorconfig "$HOME/.editorconfig"
-ln -si vim/.vimrc "$HOME/.vim/vimrc"
-ln -si git/.config/git/config.linux "$XDG_CONFIG_HOME/git/config"
+ln -si "$dotfiles/bash/.bash_aliases" "$HOME/.bash_aliases"
+ln -si "$dotfiles/editorconfig/.editorconfig" "$HOME/.editorconfig"
+ln -si "$dotfiles/git/.config/git" "$XDG_CONFIG_HOME/git"
+ln -si "$dotfiles/vim/.vim" "$HOME/.vim"
+
+sed --in-place --expression 's/.darwin/.linux/' "$XDG_CONFIG_HOME/git/config"
