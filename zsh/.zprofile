@@ -15,15 +15,12 @@ export LS_COLORS="${$(/opt/homebrew/bin/vivid generate tokyonight-night 2>/dev/n
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-export HOMEBREW_PREFIX='/opt/homebrew'
-export GOOGLE_CLOUD_CLI_HOME="$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk"
 export GOPATH="$HOME/Projects"
-export ZSH_DEFER_HOME="$GOPATH/src/github.com/romkatv/zsh-defer"
 
-fpath=(
-  /opt/homebrew/share/zsh/site-functions(N)
-  $fpath
-)
+typeset -gU cdpath fpath path
+# cdpath=(
+#   $cdpath
+# )
 path=(
   $XDG_DATA_HOME/nvim/mason/bin(N)
   $GOPATH/bin(N)
@@ -37,9 +34,9 @@ path=(
   /{,s}bin(N)
   $path
 )
-typeset -gU fpath path
 
 ## Homebrew
+export HOMEBREW_PREFIX='/opt/homebrew'
 export HOMEBREW_NO_ENV_HINTS='true'
 export HOMEBREW_GITHUB_API_TOKEN="$(security find-generic-password -gs github-token -w)"
 
@@ -60,3 +57,6 @@ export COLIMA_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/colima"
 
 ## SDKMAN
 export SDKMAN_DIR="$HOMEBREW_PREFIX/opt/sdkman-cli/libexec"
+
+## Zsh Deffer
+export ZSH_DEFER_HOME="$GOPATH/src/github.com/romkatv/zsh-defer"

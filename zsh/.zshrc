@@ -32,6 +32,10 @@ HISTSIZE=10000
 SAVEHIST=5000
 
 ## Completions
+fpath=(
+  $HOMEBREW_PREFIX/share/zsh/site-functions(N)
+  $fpath
+)
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'm:{[:upper:]}={[:lower:]}' 'r:|=*' 'l:|=*'
 zstyle ':completion:*' menu select
 zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
@@ -58,25 +62,13 @@ source "$HOMEBREW_PREFIX/share/powerlevel10k/powerlevel10k.zsh-theme"
 zsh-defer source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 zsh-defer source "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 zsh-defer source "$HOMEBREW_PREFIX/share/zsh-you-should-use/you-should-use.plugin.zsh"
+zsh-defer source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+zsh-defer source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 zsh-defer source "$HOMEBREW_PREFIX/etc/profile.d/z.sh"
-zsh-defer source "$GOOGLE_CLOUD_CLI_HOME/path.zsh.inc"
-zsh-defer source "$GOOGLE_CLOUD_CLI_HOME/completion.zsh.inc"
 zsh-defer source "$SDKMAN_DIR/bin/sdkman-init.sh"
-
-## fzf
-if type fzf >/dev/null 2>&1; then
-  zsh-defer eval "$(fzf --zsh)"
- fi
-
-## Atuin
-if [[ -f "$HOMEBREW_PREFIX/bin/atuin" ]]; then
-  zsh-defer eval "$(atuin init zsh)"
-fi
-
-## Direnv
-if [[ -f "$HOMEBREW_PREFIX/bin/direnv" ]]; then
-  zsh-defer eval "$(direnv hook zsh)"
-fi
+zsh-defer eval "$(fzf --zsh)"
+zsh-defer eval "$(atuin init zsh)"
+zsh-defer eval "$(direnv hook zsh)"
 
 
 #
