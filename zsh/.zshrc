@@ -159,9 +159,9 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias tree='eza --color=always --icons --tree'
 alias vpn='/opt/cisco/secureclient/bin/vpn'
-if [[ "$TERM" == "xterm-kitty" ]]; then
-  alias ssh="kitty +kitten ssh"
-  alias icat='kitty +kitten icat'
+if [[ "$TERM" == 'xterm-kitty' ]]; then
+  alias ssh='kitten ssh'
+  alias icat='kitten icat --align=left'
 fi
 
 # To customize prompt, run `p10k configure` or edit $XDG_CONFIG_HOME/p10k.zsh.
