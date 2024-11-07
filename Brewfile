@@ -134,12 +134,12 @@ brew "p11-kit"
 brew "unbound"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
+# Linux virtual machines
+brew "lima"
 # Text-based UI library
 brew "ncurses"
 # Generic machine emulator and virtualizer
 brew "qemu"
-# Linux virtual machines
-brew "lima"
 # Container runtimes on MacOS (and Linux) with minimal setup
 brew "colima"
 # Color-highlighted diff(1) output
@@ -210,6 +210,8 @@ brew "go"
 brew "google-java-format"
 # Ping, but with a graph
 brew "gping"
+# Open-source build automation tool based on the Groovy and Kotlin DSL
+brew "gradle"
 # Protocol buffers (Google's data interchange format)
 brew "protobuf"
 # Alternative to backtracking PCRE-style regular expression engines
@@ -288,6 +290,8 @@ brew "luajit"
 brew "luv"
 # Mac App Store command-line interface
 brew "mas"
+# Java-based project management
+brew "maven"
 # Run a Kubernetes cluster locally
 brew "minikube"
 # Cross platform, open source .NET development framework
