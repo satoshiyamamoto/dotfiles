@@ -1,7 +1,6 @@
 tap "cycloud-io/tap", "git@github.com:cycloud-io/homebrew-tap.git"
 tap "homebrew/bundle"
 tap "homebrew/services"
-tap "sdkman/tap"
 tap "teamookla/speedtest"
 # C++ Common Libraries
 brew "abseil"
@@ -427,8 +426,6 @@ brew "zsh-syntax-highlighting"
 brew "zsh-you-should-use"
 # Cycloud Platform Command Line Tool
 brew "cycloud-io/tap/cycloud-cli"
-# SDKMAN! the Software Development Kit Manager
-brew "sdkman/tap/sdkman-cli"
 # Ookla Speedtest
 brew "teamookla/speedtest/speedtest"
 # Collaborative team software

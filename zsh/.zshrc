@@ -65,7 +65,6 @@ zsh-defer source "$HOMEBREW_PREFIX/share/zsh-you-should-use/you-should-use.plugi
 zsh-defer source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
 zsh-defer source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
 zsh-defer source "$HOMEBREW_PREFIX/etc/profile.d/z.sh"
-zsh-defer source "$SDKMAN_DIR/bin/sdkman-init.sh"
 zsh-defer eval "$(fzf --zsh)"
 zsh-defer eval "$(atuin init zsh)"
 zsh-defer eval "$(direnv hook zsh)"

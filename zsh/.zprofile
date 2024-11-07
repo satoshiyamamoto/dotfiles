@@ -46,17 +46,14 @@ FZF_PREVIEW_DIR='eza --tree --all --color=always --icons=always {}'
 export FZF_CTRL_T_OPTS='--preview="[[ -d {} ]] && '"$FZF_PREVIEW_DIR"' || '"$FZF_PREVIEW_FILE"'"'
 export FZF_ALT_C_OPTS='--preview="${FZF_PREVIEW_DIR}"'
 
+## Colima
+export COLIMA_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/colima"
+
 ## Direnv
 export DIRENV_LOG_FORMAT=""
 
 ## Google Cloud SDK
 export CLOUDSDK_PYTHON="$HOMEBREW_PREFIX/bin/python3.12"
-
-## Colima
-export COLIMA_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/colima"
-
-## SDKMAN
-export SDKMAN_DIR="$HOMEBREW_PREFIX/opt/sdkman-cli/libexec"
 
 ## Zsh Deffer
 export ZSH_DEFER_HOME="$GOPATH/src/github.com/romkatv/zsh-defer"
