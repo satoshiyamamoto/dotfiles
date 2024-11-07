@@ -150,6 +150,8 @@ brew "cowsay"
 brew "devcontainer"
 # Load/unload environment variables based on $PWD
 brew "direnv"
+# Bash, Zsh and Fish completion for Docker
+brew "docker-completion", link: false
 # Pack, ship and run any application as a lightweight container
 brew "docker"
 # Docker CLI plugin for extended build capabilities with BuildKit
