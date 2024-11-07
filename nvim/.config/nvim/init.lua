@@ -373,7 +373,7 @@ local plugins = {
 
       -- Language servers
       local lspconfig = require("lspconfig")
-      lspconfig.bufls.setup({ capabilities = capabilities })
+      lspconfig.buf_ls.setup({ capabilities = capabilities })
       lspconfig.gopls.setup({ capabilities = capabilities })
       lspconfig.pyright.setup({ capabilities = capabilities })
       lspconfig.ts_ls.setup({ capabilities = capabilities })
@@ -477,7 +477,6 @@ local plugins = {
       require("mason-lspconfig").setup({
         ensure_installed = {
           -- LSP
-          "bufls",
           "gopls",
           "jdtls",
           "lua_ls",
