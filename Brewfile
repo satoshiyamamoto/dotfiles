@@ -254,8 +254,6 @@ brew "kcat"
 brew "krb5"
 # Kubernetes command-line interface
 brew "kubernetes-cli"
-# Package manager for kubectl plugins
-brew "krew"
 # Lazier way to manage everything docker
 brew "lazydocker"
 # Simple terminal UI for git commands

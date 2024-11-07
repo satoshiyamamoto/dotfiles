@@ -25,7 +25,6 @@ path=(
   $XDG_DATA_HOME/nvim/mason/bin(N)
   $GOPATH/bin(N)
   $HOME/.cargo/bin(N)
-  $HOME/.krew/bin(N)
   $HOME/{,s}bin(N)
   /opt/homebrew/opt/mysql-client/bin(N)
   /opt/homebrew/opt/rustup/bin(N)
