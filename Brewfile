@@ -22,8 +22,6 @@ brew "libyaml"
 brew "mpdecimal"
 # General-purpose data compression with high compression ratio
 brew "xz"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12"
 # Automate deployment, configuration, and upgrading
 brew "ansible"
 # Checks ansible playbooks for practices and behaviour
@@ -356,8 +354,6 @@ brew "ripgrep"
 brew "rustup"
 # Command-line tool for the Amazon S3 service
 brew "s3cmd"
-# Fast, configurable, shell plugin manager
-brew "sheldon"
 # Simple keystroke visualizer
 brew "showkey"
 # Python 2 and 3 compatibility utilities
