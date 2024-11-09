@@ -1,6 +1,6 @@
 [user]
-  name = Satoshi Yamamoto
-  email = satoshiyamamoto@me.com
+  name  = satoshi-yamamoto
+  email = satoshi_yamamoto@cyberagent.co.jp
 
 [core]
   editor = vim
