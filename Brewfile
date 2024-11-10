@@ -146,6 +146,8 @@ brew "eslint"
 brew "libgit2"
 # Modern, maintained replacement for ls
 brew "eza"
+# Like neofetch, but much faster because written mostly in C
+brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # Asynchronous event library
@@ -302,8 +304,6 @@ brew "mycli"
 brew "mypy"
 # Open source relational database management system
 brew "mysql-client"
-# Fast, highly customisable system info script
-brew "neofetch"
 # Parser generator tool and incremental parsing library
 brew "tree-sitter"
 # Ambitious Vim-fork focused on extensibility and agility
