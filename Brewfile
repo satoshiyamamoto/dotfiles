@@ -316,6 +316,8 @@ brew "nmap"
 brew "nyancat"
 # Tools for one-time password authentication systems
 brew "oath-toolkit"
+# Development kit for the Java programming language
+brew "openjdk@21"
 # Command-line client for OpenStack
 brew "openstackclient"
 # PAM module for reattaching to the user's GUI (Aqua) session
