@@ -398,8 +398,6 @@ brew "tree"
 brew "utf8proc"
 # Modern watch command
 brew "viddy"
-# Tool for creating isolated virtual python environments
-brew "virtualenv", link: false
 # Generator for LS_COLORS with support for multiple color themes
 brew "vivid"
 # Executes a program periodically, showing output fullscreen
