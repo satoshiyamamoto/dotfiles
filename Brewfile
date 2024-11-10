@@ -114,34 +114,14 @@ brew "catimg"
 brew "clang-format"
 # Console Matrix
 brew "cmatrix"
-# GNU multiple precision arithmetic library
-brew "gmp"
-# Asynchronous event library
-brew "libevent"
-# C string library for manipulating Unicode strings
-brew "libunistring"
-# International domain name library (IDNA2008, Punycode and TR46)
-brew "libidn2"
-# ASN.1 structure parser library
-brew "libtasn1"
-# Low-level cryptographic library
-brew "nettle"
-# Library to load and enumerate PKCS#11 modules
-brew "p11-kit"
-# Validating, recursive, caching DNS resolver
-brew "unbound"
-# GNU Transport Layer Security (TLS) Library
-brew "gnutls"
 # Linux virtual machines
 brew "lima"
-# Text-based UI library
-brew "ncurses"
-# Generic machine emulator and virtualizer
-brew "qemu"
 # Container runtimes on MacOS (and Linux) with minimal setup
 brew "colima"
 # Color-highlighted diff(1) output
 brew "colordiff"
+# GNU multiple precision arithmetic library
+brew "gmp"
 # GNU File, Shell, and Text utilities
 brew "coreutils"
 # Configurable talking characters in ASCII art
@@ -168,6 +148,22 @@ brew "libgit2"
 brew "eza"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
+# Asynchronous event library
+brew "libevent"
+# C string library for manipulating Unicode strings
+brew "libunistring"
+# International domain name library (IDNA2008, Punycode and TR46)
+brew "libidn2"
+# ASN.1 structure parser library
+brew "libtasn1"
+# Low-level cryptographic library
+brew "nettle"
+# Library to load and enumerate PKCS#11 modules
+brew "p11-kit"
+# Validating, recursive, caching DNS resolver
+brew "unbound"
+# GNU Transport Layer Security (TLS) Library
+brew "gnutls"
 # OpenType text shaping engine
 brew "harfbuzz"
 # Library for JPEG-2000 image manipulation
@@ -232,6 +228,8 @@ brew "helm"
 brew "helm-ls"
 # HTTP load generator, ApacheBench (ab) replacement
 brew "hey"
+# Text-based UI library
+brew "ncurses"
 # Improved top (interactive process viewer)
 brew "htop"
 # User-friendly cURL replacement (command-line HTTP client)
@@ -350,6 +348,8 @@ brew "pygments"
 brew "python-lsp-server"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.11"
+# Generic machine emulator and virtualizer
+brew "qemu"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Rust toolchain installer
@@ -444,8 +444,6 @@ cask "google-cloud-sdk"
 cask "handbrake"
 # Java IDE by JetBrains
 cask "intellij-idea"
-# Interface for reading and syncing eBooks
-cask "kindle"
 # GPU-based terminal emulator
 cask "kitty"
 # Animated screen capture application
@@ -469,6 +467,7 @@ mas "GarageBand", id: 682658836
 mas "Hidden Bar", id: 1452453066
 mas "iMovie", id: 408981434
 mas "Keynote", id: 409183694
+mas "Kindle", id: 302584613
 mas "LINE", id: 539883307
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
