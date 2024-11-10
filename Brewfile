@@ -124,8 +124,6 @@ brew "colordiff"
 brew "gmp"
 # GNU File, Shell, and Text utilities
 brew "coreutils"
-# Configurable talking characters in ASCII art
-brew "cowsay"
 # Reference implementation for the Development Containers specification
 brew "devcontainer"
 # Load/unload environment variables based on $PWD
