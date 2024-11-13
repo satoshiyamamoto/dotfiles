@@ -120,6 +120,8 @@ brew "lima"
 brew "colima"
 # Color-highlighted diff(1) output
 brew "colordiff"
+# Zsh completion for conda
+brew "conda-zsh-completion"
 # GNU multiple precision arithmetic library
 brew "gmp"
 # GNU File, Shell, and Text utilities
@@ -216,8 +218,8 @@ brew "re2"
 brew "grpc"
 # Like cURL, but for gRPC
 brew "grpcurl"
-# Manage compile and link flags for libraries
-brew "pkg-config"
+# Package compiler and linker metadata toolkit
+brew "pkgconf"
 # GNU Ubiquitous Intelligent Language for Extensions
 brew "guile"
 # Smarter Dockerfile linter to validate best practices
@@ -444,6 +446,8 @@ cask "intellij-idea"
 cask "kitty"
 # Animated screen capture application
 cask "licecap"
+# Minimal installer for conda
+cask "miniconda"
 # Quick Look generator for Markdown files
 cask "qlmarkdown"
 # Quick Look plugin for CSV files
