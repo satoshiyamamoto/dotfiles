@@ -507,13 +507,12 @@ local plugins = {
   {
     "linux-cultist/venv-selector.nvim",
     branch = "regexp",
-    event = "VeryLazy",
-    config = function()
-      require("venv-selector").setup()
-    end,
     keys = {
       { ",v", "<Cmd>VenvSelect<CR>", desc = "Open VenvSelector to pick a venv" },
     },
+    config = function()
+      require("venv-selector").setup()
+    end,
     dependencies = {
       "neovim/nvim-lspconfig",
       "nvim-telescope/telescope.nvim",
@@ -523,6 +522,7 @@ local plugins = {
 
   {
     "nvimdev/lspsaga.nvim",
+    event = { "LspAttach" },
     config = function()
       require("lspsaga").setup({
         lightbulb = {
@@ -530,7 +530,6 @@ local plugins = {
         },
       })
     end,
-    event = { "LspAttach" },
     dependencies = {
       { "nvim-treesitter/nvim-treesitter" },
       { "nvim-tree/nvim-web-devicons" },
