@@ -756,8 +756,8 @@ local plugins = {
   },
 
   {
-    "phaazon/hop.nvim",
-    branch = "v2",
+    "smoka7/hop.nvim",
+    version = "v2.*",
     cmd = {
       "HopWord",
       "HopChar1",
