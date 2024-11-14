@@ -844,22 +844,32 @@ local plugins = {
         presets = {
           bottom_search = true,
           command_palette = true,
-          long_message_to_split = false,
+          long_message_to_split = true,
           inc_rename = false,
           lsp_doc_border = true,
         },
         routes = {
-          -- Enable macros such as recording @
           {
-            view = nil,
-            filter = { event = "msg_showmode" },
+            filter = {
+              event = "msg_show",
+              kind = "",
+              find = "written",
+            },
+            opts = { skip = true },
+          },
+        },
+        views = {
+          cmdline_popup = {
+            position = {
+              row = "50%", -- Center the cmdline pop-up
+            },
           },
         },
       })
-      require("notify").setup({
-        render = "default",
-        background_colour = "#000000",
-      })
+      -- require("notify").setup({
+      --   render = "default",
+      --   background_colour = "#000000", -- Transparent background with github-nvim-theme
+      -- })
     end,
     dependencies = {
       { "MunifTanjim/nui.nvim" },
