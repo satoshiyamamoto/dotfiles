@@ -760,17 +760,13 @@ local plugins = {
     version = "v2.*",
     cmd = {
       "HopWord",
-      "HopChar1",
       "HopChar2",
-      "HopPattern",
       "HopLine",
     },
     keys = {
       { "ff", "<Cmd>HopWord<CR>", desc = "Hop to Word" },
       { "<Leader>hw", "<Cmd>HopWord<CR>", desc = "Hop to Word" },
-      { "<Leader>hf", "<Cmd>HopChar1<CR>", desc = "Hop to Character" },
-      { "<Leader>hs", "<Cmd>HopChar2<CR>", desc = "Hop to 2 Characters" },
-      { "<Leader>hp", "<Cmd>HopPattern<CR>", desc = "Hop to Pattern" },
+      { "<Leader>hc", "<Cmd>HopChar2<CR>", desc = "Hop to 2 Characters" },
       { "<Leader>hl", "<Cmd>HopLine<CR>", desc = "Hop to Line" },
     },
     config = function()
