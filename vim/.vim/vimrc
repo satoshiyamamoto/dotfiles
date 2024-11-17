@@ -11,6 +11,8 @@ set clipboard+=unnamed
 set ttimeoutlen=50
 set updatetime=100
 set nocompatible
+set grepprg=grep\ -rnH\ --exclude-dir=.git
+set grepformat=%f:%l:%m
 
 if !1 | finish | endif
 let mapleader = ' '
@@ -158,6 +160,8 @@ nmap <silent>[b         :bprevious<CR>
 nmap <silent>]b         :bnext<CR>
 nmap <silent>[B         :bfirst<CR>
 nmap <silent>]B         :blast<CR>
+nmap <silent>[q         :cprevious<CR>
+nmap <silent>]q         :cnext<CR>
 nmap <silent><C-\>      :bo terminal ++close ++rows=12<CR>
 tmap <C-\>              <C-c><C-d>
 tmap <Esc>              <C-\><C-n>
