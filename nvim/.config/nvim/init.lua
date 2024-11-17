@@ -18,7 +18,7 @@ vim.opt.shortmess:append({ c = true, I = true })
 vim.opt.updatetime = 100
 vim.opt.timeout = true
 vim.opt.timeoutlen = 300
-vim.opt.grepprg = "rg --vimgrep --no-heading --smart-case"
+vim.opt.grepprg = "rg --vimgrep --hidden"
 vim.opt.grepformat = "%f:%l:%c:%m"
 vim.opt.helplang = "ja,en"
 
@@ -46,8 +46,8 @@ vim.keymap.set("n", "<C-Left>", "<Cmd>vertical resize -2<CR>", {})
 vim.keymap.set("n", "<C-Right>", "<Cmd>vertical resize +2<CR>", {})
 
 -- Diagnostics
+vim.keymap.set("n", "[q", "<Cmd>cprevious<CR>", {})
 vim.keymap.set("n", "]q", "<Cmd>cnext<CR>", {})
-vim.keymap.set("n", "[q", "<Cmd>cprev<CR>", {})
 vim.keymap.set("n", "gl", vim.diagnostic.open_float, {})
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {})
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {})
