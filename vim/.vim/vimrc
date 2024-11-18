@@ -166,7 +166,8 @@ nmap <silent><C-\>      :bo terminal ++close ++rows=12<CR>
 tmap <C-\>              <C-c><C-d>
 tmap <Esc>              <C-\><C-n>
 tmap <C-[>              <C-\><C-n>
-nmap <silent>ff         <Plug>(easymotion-w)
+nmap <silent>s          <Plug>(easymotion-s2)
+nmap <silent>S          <Plug>(easymotion-bd-w)
 nmap <silent><C-p>      :Files<CR>
 nmap <silent><leader>ff :Files<CR>
 nmap <silent><leader>fg :Rg<CR>
