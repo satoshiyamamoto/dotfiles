@@ -1,14 +1,13 @@
 #
 # Lazy loading
 #
-if [[ -r "$XDG_CACHE_HOME/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+if [[ -r "${XDG_CACHE_HOME:=$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "$XDG_CACHE_HOME/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-if [[ ! -d "$ZSH_DEFER_HOME" ]]; then
+if [[ ! -d "${ZSH_DEFER_HOME:=$HOME/.zsh_defer}" ]]; then
   git clone https://github.com/romkatv/zsh-defer $ZSH_DEFER_HOME
 fi
-source "$ZSH_DEFER_HOME/zsh-defer.plugin.zsh"
 
 
 #
@@ -33,7 +32,7 @@ SAVEHIST=5000
 
 ## Completions
 fpath=(
-  $HOMEBREW_PREFIX/share/zsh/site-functions(N)
+  ${HOMEBREW_PREFIX:=/opt/homebrew}/share/zsh/site-functions(N)
   $fpath
 )
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'm:{[:upper:]}={[:lower:]}' 'r:|=*' 'l:|=*'
@@ -48,6 +47,7 @@ zstyle ':completion:*:(ssh|scp):*' group-order users files all-files hosts-domai
 zstyle ':completion:*:(ssh|scp):*:hosts' ignored-patterns loopback ip6-loopback broadcasthost
 zstyle ':completion:*' completer _complete _approximate
 zstyle ':completion:*:approximate:*' max-errors 1 numeric
+autoload -Uz $ZSH_DEFER_HOME/zsh-defer
 autoload -Uz compinit && zsh-defer compinit -C
 
 
@@ -165,7 +165,7 @@ if [[ "$TERM" == 'xterm-kitty' ]]; then
 fi
 
 # To customize prompt, run `p10k configure` or edit $XDG_CONFIG_HOME/p10k.zsh.
-[[ ! -f "${XDG_CONFIG_HOME}/p10k.zsh" ]] || source "$XDG_CONFIG_HOME/p10k.zsh"
+[[ ! -f "${XDG_CONFIG_HOME:=$HOME/.config}/p10k.zsh" ]] || source "$XDG_CONFIG_HOME/p10k.zsh"
 
 if type zprof >/dev/null 2>&1; then
   zprof | bat --language=log --color=always --pager=never

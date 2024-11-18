@@ -54,6 +54,3 @@ export DIRENV_LOG_FORMAT=""
 
 ## Google Cloud SDK
 export CLOUDSDK_PYTHON="$HOMEBREW_PREFIX/bin/python3.12"
-
-## Zsh Deffer
-export ZSH_DEFER_HOME="$GOPATH/src/github.com/romkatv/zsh-defer"
