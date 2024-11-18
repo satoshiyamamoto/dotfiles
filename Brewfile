@@ -428,10 +428,8 @@ brew "cycloud-io/tap/cycloud-cli"
 brew "teamookla/speedtest/speedtest"
 # Collaborative team software
 cask "figma"
-cask "font-fira-code"
+cask "font-codicon"
 cask "font-fira-code-nerd-font"
-cask "font-hack-nerd-font"
-cask "font-jetbrains-mono"
 cask "font-meslo-for-powerlevel10k"
 cask "font-sf-pro"
 # Web browser
