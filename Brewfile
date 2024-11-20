@@ -430,6 +430,7 @@ brew "teamookla/speedtest/speedtest"
 cask "figma"
 cask "font-codicon"
 cask "font-fira-code-nerd-font"
+cask "font-ipaexfont"
 cask "font-meslo-for-powerlevel10k"
 cask "font-sf-pro"
 # Web browser
