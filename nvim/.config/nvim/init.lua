@@ -675,8 +675,25 @@ local plugins = {
     },
     config = function()
       local telescope = require("telescope")
+      local actions = require("telescope.actions")
+      local stop_insert_on_select = function(prompt_bufnr)
+        actions.select_default(prompt_bufnr)
+        vim.cmd("stopinsert")
+      end
+      local stop_insert_on_close = function(prompt_bufnr)
+        actions.close(prompt_bufnr)
+        vim.cmd("stopinsert")
+      end
+
       telescope.setup({
         defaults = {
+          mappings = {
+            i = {
+              ["<CR>"] = stop_insert_on_select,
+              ["<Esc>"] = stop_insert_on_close,
+              ["<C-c>"] = stop_insert_on_close,
+            },
+          },
           path_display = { truncate = 0 },
           file_ignore_patterns = {
             "%.git/",
