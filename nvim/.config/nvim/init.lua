@@ -604,7 +604,7 @@ local plugins = {
       end, { desc = "Brakepoint Log point message (Debug)" })
       vim.keymap.set("n", "<Leader>du", dapui.toggle, { desc = "Toggle Debugger (Debug)" })
       vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "ErrorMsg" })
-      vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "ErrorMsg" })
+      vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapLogPoint", { text = "", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapStopped", { text = "", texthl = "WarningMsg" })
@@ -890,7 +890,7 @@ local plugins = {
 
   {
     "folke/trouble.nvim",
-    cmd = { "Trouble" },
+    event = { "VeryLazy" },
     keys = {
       { "<Leader>xx", "<Cmd>Trouble diagnostics toggle<CR>", desc = "Diagnostics (Trouble)" },
       { "<Leader>xX", "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Buffer Diagnostics (Trouble)" },
@@ -907,10 +907,10 @@ local plugins = {
       require("trouble").setup()
 
       local signs = {
-        Error = "󰅚 ",
-        Warn = "󰀪 ",
-        Hint = "󰌶 ",
-        Info = " ",
+        Error = "",
+        Warn = "",
+        Hint = "",
+        Info = "",
       }
       for type, icon in pairs(signs) do
         local hl = "DiagnosticSign" .. type
@@ -1257,18 +1257,18 @@ local plugins = {
 
         dashboard.section.buttons.val = {
           dashboard.button("e", "  New File", "<Cmd>enew <BAR> startinsert <CR>"),
-          dashboard.button("f", "󰈞  Find File", "<Cmd>Telescope find_files<CR>"),
+          dashboard.button("f", "  Find File", "<Cmd>Telescope find_files<CR>"),
+          dashboard.button("g", "  Find Text", "<Cmd>Telescope live_grep<CR>"),
           dashboard.button("r", "  Recent Files", "<Cmd>Telescope oldfiles<CR>"),
-          dashboard.button("g", "󰊄  Find Text", "<Cmd>Telescope live_grep<CR>"),
-          dashboard.button("c", "  Configuration", "<Cmd>edit $MYVIMRC<CR>"),
-          dashboard.button("q", "󰅖  Quit", "<Cmd>qall<CR>"),
+          dashboard.button("c", "  Configuration", "<Cmd>edit $MYVIMRC<CR>"),
+          dashboard.button("q", "  Quit", "<Cmd>qall<CR>"),
         }
         for _, button in ipairs(dashboard.section.buttons.val) do
           button.opts.hl = "AlphaButtons"
           button.opts.hl_shortcut = "AlphaShortcut"
         end
 
-        dashboard.section.footer.val = " ⌨ Press any key to Start. "
+        dashboard.section.footer.val = "   Press any key to Start. "
         dashboard.section.footer.opts.hl = "AlphaFooter"
 
         return dashboard.opts
