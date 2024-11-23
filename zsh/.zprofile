@@ -19,9 +19,11 @@ export GOPATH="$HOME/Projects"
 export JAVA_HOME="$(/usr/libexec/java_home -v 21)"
 
 typeset -gU cdpath fpath path
-# cdpath=(
-#   $cdpath
-# )
+cdpath=(
+  $HOME(N)
+  $GOPATH/src/*(N)
+  $cdpath
+)
 path=(
   $XDG_DATA_HOME/nvim/mason/bin(N)
   $GOPATH/bin(N)
