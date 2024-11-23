@@ -1194,12 +1194,8 @@ local plugins = {
   {
     "sindrets/diffview.nvim",
     cmd = {
-      "DiffviewFileHistory",
       "DiffviewOpen",
-      "DiffviewClose",
-      "DiffviewToggleFiles",
-      "DiffviewFocusFiles",
-      "DiffviewRefresh",
+      "DiffviewFileHistory",
     },
     dependencies = {
       { "nvim-lua/plenary.nvim" },
@@ -1265,6 +1261,9 @@ local plugins = {
           dashboard.button("e", "  New File", "<Cmd>enew <BAR> startinsert <CR>"),
           dashboard.button("f", "  Find File", "<Cmd>Telescope find_files<CR>"),
           dashboard.button("g", "  Find Text", "<Cmd>Telescope live_grep<CR>"),
+          dashboard.button("d", "  Source Control", function()
+            require("toggleterm.terminal").Terminal:new({ cmd = "lazygit", direction = "tab", count = 0 }):toggle()
+          end),
           dashboard.button("r", "  Recent Files", "<Cmd>Telescope oldfiles<CR>"),
           dashboard.button("c", "  Configuration", "<Cmd>edit $MYVIMRC<CR>"),
           dashboard.button("q", "  Quit", "<Cmd>qall<CR>"),
@@ -1332,10 +1331,7 @@ local plugins = {
     build = "cargo install --locked code-minimap",
     cmd = {
       "Minimap",
-      "MinimapClose",
       "MinimapToggle",
-      "MinimapRefresh",
-      "MinimapUpdateHighlight",
     },
     config = function()
       vim.cmd("let g:minimap_width = 10")
