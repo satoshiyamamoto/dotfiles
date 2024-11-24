@@ -26,28 +26,6 @@ brew "xz"
 brew "ansible"
 # Checks ansible playbooks for practices and behaviour
 brew "ansible-lint"
-# Generic-purpose lossless compression algorithm by Google
-brew "brotli"
-# Library and utilities for processing GIFs
-brew "giflib"
-# Library of 2D and 3D vector, matrix, and math operations
-brew "imath"
-# Library for manipulating PNG images
-brew "libpng"
-# Extremely Fast Compression algorithm
-brew "lz4"
-# Zstandard is a real-time compression algorithm
-brew "zstd"
-# TIFF library and utilities
-brew "libtiff"
-# Color management engine supporting ICC profiles
-brew "little-cms2"
-# High dynamic-range image file format
-brew "openexr"
-# Image format providing lossless and lossy compression for web images
-brew "webp"
-# New file format for still image compression
-brew "jpeg-xl"
 # Get stuff done with container-native workflows for Kubernetes
 brew "argo"
 # GitOps Continuous Delivery for Kubernetes
@@ -72,6 +50,8 @@ brew "bat"
 brew "bat-extras"
 # Garbage collector for C and C++
 brew "bdw-gc"
+# Generic-purpose lossless compression algorithm by Google
+brew "brotli"
 # Asynchronous DNS library
 brew "c-ares"
 # HTTP/2 C Library
@@ -84,6 +64,10 @@ brew "node"
 brew "bitwarden-cli"
 # Python code formatter
 brew "black"
+# Extremely Fast Compression algorithm
+brew "lz4"
+# Zstandard is a real-time compression algorithm
+brew "zstd"
 # Collection of portable C++ source libraries
 brew "boost"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
@@ -92,6 +76,8 @@ brew "btop"
 brew "buf"
 # Powerful, enterprise-ready, open source web server with automatic HTTPS
 brew "caddy"
+# Library for manipulating PNG images
+brew "libpng"
 # Software library to render fonts
 brew "freetype"
 # XML-based font configuration API for X Windows
@@ -150,10 +136,46 @@ brew "eza"
 brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
-# Asynchronous event library
-brew "libevent"
+# Lint your Python code for style and logical errors
+brew "flake8"
+# Generic library support script
+brew "libtool"
+# Libraries to talk to Microsoft SQL Server and Sybase databases
+brew "freetds"
+# Command-line fuzzy finder written in Go
+brew "fzf"
+# Library and utilities for processing GIFs
+brew "giflib"
 # C string library for manipulating Unicode strings
 brew "libunistring"
+# OpenType text shaping engine
+brew "harfbuzz"
+# TIFF library and utilities
+brew "libtiff"
+# Color management engine supporting ICC profiles
+brew "little-cms2"
+# Development kit for the Java programming language
+brew "openjdk"
+# Java garbage collection visualization tool
+brew "gcviewer"
+# GNU database manager
+brew "gdbm"
+# GitHub command-line tool
+brew "gh"
+# Library for JPEG-2000 image manipulation
+brew "openjpeg"
+# Image format providing lossless and lossy compression for web images
+brew "webp"
+# Interpreter for PostScript and PDF
+brew "ghostscript"
+# Remote repository management made easy
+brew "ghq"
+# Syntax-highlighting pager for git and diff output
+brew "git-delta"
+# Render markdown on the CLI
+brew "glow"
+# Asynchronous event library
+brew "libevent"
 # International domain name library (IDNA2008, Punycode and TR46)
 brew "libidn2"
 # ASN.1 structure parser library
@@ -166,40 +188,6 @@ brew "p11-kit"
 brew "unbound"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
-# OpenType text shaping engine
-brew "harfbuzz"
-# Library for JPEG-2000 image manipulation
-brew "openjpeg"
-# Reliable Internet Stream Transport (RIST)
-brew "librist"
-# Play, record, convert, and stream audio and video
-brew "ffmpeg"
-# Lint your Python code for style and logical errors
-brew "flake8"
-# Library for manipulating fonts
-brew "fonttools"
-# Generic library support script
-brew "libtool"
-# Libraries to talk to Microsoft SQL Server and Sybase databases
-brew "freetds"
-# Command-line fuzzy finder written in Go
-brew "fzf"
-# Development kit for the Java programming language
-brew "openjdk"
-# Java garbage collection visualization tool
-brew "gcviewer"
-# GNU database manager
-brew "gdbm"
-# GitHub command-line tool
-brew "gh"
-# Interpreter for PostScript and PDF
-brew "ghostscript"
-# Remote repository management made easy
-brew "ghq"
-# Syntax-highlighting pager for git and diff output
-brew "git-delta"
-# Render markdown on the CLI
-brew "glow"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
@@ -236,12 +224,18 @@ brew "ncurses"
 brew "htop"
 # User-friendly cURL replacement (command-line HTTP client)
 brew "httpie"
+# Library of 2D and 3D vector, matrix, and math operations
+brew "imath"
 # Interactive computing in Python
 brew "ipython"
 # Sort Python imports automatically
 brew "isort"
 # JSON diff and patch
 brew "jd"
+# High dynamic-range image file format
+brew "openexr"
+# New file format for still image compression
+brew "jpeg-xl"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Interactive environments for writing and running code
@@ -268,6 +262,8 @@ brew "libfido2"
 brew "libiconv"
 # Postgres C API library
 brew "libpq"
+# Reliable Internet Stream Transport (RIST)
+brew "librist"
 # Very basic terminfo library
 brew "unibilium"
 # Library for processing keyboard entry from the terminal
@@ -308,8 +304,6 @@ brew "mysql-client"
 brew "tree-sitter"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
-# Find/fix obsolete Nerd Font icons
-brew "nerdfix"
 # Network Kanji code conversion Filter (NKF)
 brew "nkf"
 # Port scanning utility for large networks
