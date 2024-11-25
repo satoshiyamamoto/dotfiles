@@ -404,6 +404,8 @@ brew "yamlfmt"
 brew "yapf"
 # JavaScript package manager
 brew "yarn"
+# Blazing fast terminal file manager written in Rust, based on async I/O
+brew "yazi"
 # Process YAML, JSON, XML, CSV and properties documents from the CLI
 brew "yq"
 # Tracks most-used directories to make cd smarter

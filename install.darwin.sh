@@ -16,6 +16,7 @@ stow --verbose --adopt --target=$HOME \
   starship \
   vim \
   yamlfmt \
+  yazi \
   zellij \
   zsh
 
