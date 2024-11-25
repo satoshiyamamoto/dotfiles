@@ -3,6 +3,7 @@
 # Editors
 export EDITOR='nvim'
 export PAGER='bat'
+export LESSOPEN="| src-hilite-lesspipe.sh %s"
 export LESS='--hilite-search --hilite-unread --ignore-case --long-prompt --no-init --raw-control-chars --chop-long-lines --window=4'
 
 # Language
