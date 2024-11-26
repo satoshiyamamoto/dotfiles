@@ -128,7 +128,7 @@ local plugins = {
     },
     config = function()
       vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "None" })
-      vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = true, sp = "#161b22" })
+      vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = true, sp = "#000000" })
     end,
     dependencies = {
       { "nvim-treesitter/nvim-treesitter" },
@@ -986,6 +986,7 @@ local plugins = {
   {
     "projekt0n/github-nvim-theme",
     version = "v1.*",
+    enabled = false,
     lazy = false,
     priority = 1000,
     config = function()
@@ -1000,11 +1001,11 @@ local plugins = {
           transparent = true,
         },
       })
-      -- vim.cmd("colorscheme github_dark_high_contrast")
-      vim.api.nvim_set_hl(0, "VertSplit", { fg = "#161b22", bg = "None" })
-      vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#161b22", bg = "None" })
-      vim.api.nvim_set_hl(0, "@property.json", { fg = "#6bc46d", bg = "None" })
-      vim.api.nvim_set_hl(0, "@property.yaml", { fg = "#6bc46d", bg = "None" })
+      vim.cmd("colorscheme github_dark_high_contrast")
+      vim.api.nvim_set_hl(0, "VertSplit", { fg = "#161b22" })
+      vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#161b22" })
+      vim.api.nvim_set_hl(0, "@property.json", { fg = "#6bc46d" })
+      vim.api.nvim_set_hl(0, "@property.json", { fg = "#6bc46d" })
     end,
   },
 
@@ -1031,6 +1032,10 @@ local plugins = {
         on_colors = function() end,
       })
       vim.cmd("colorscheme tokyonight")
+      vim.api.nvim_set_hl(0, "VertSplit", { fg = "#000000" })
+      vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#000000" })
+      vim.api.nvim_set_hl(0, "@property.json", { fg = "#7aa2f7" })
+      vim.api.nvim_set_hl(0, "@property.yaml", { fg = "#f7768e" })
     end,
   },
 
