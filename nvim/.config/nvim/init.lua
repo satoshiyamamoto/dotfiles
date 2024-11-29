@@ -76,6 +76,7 @@ local plugins = {
     opts = {
       ensure_installed = {
         "bash",
+        "csv",
         "go",
         "gomod",
         "hcl",
