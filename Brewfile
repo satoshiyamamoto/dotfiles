@@ -144,10 +144,10 @@ brew "libtool"
 brew "freetds"
 # Command-line fuzzy finder written in Go
 brew "fzf"
-# Library and utilities for processing GIFs
-brew "giflib"
 # C string library for manipulating Unicode strings
 brew "libunistring"
+# Library and utilities for processing GIFs
+brew "giflib"
 # OpenType text shaping engine
 brew "harfbuzz"
 # TIFF library and utilities
@@ -386,6 +386,8 @@ brew "terraform-ls"
 brew "tfenv"
 # Simplified and community-driven man pages
 brew "tldr"
+# Command-line translator using Google Translate and more
+brew "translate-shell"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
 # Clean C library for processing UTF-8 Unicode data
@@ -443,6 +445,8 @@ cask "kitty"
 cask "licecap"
 # Minimal installer for conda
 cask "miniconda"
+# Collaboration platform for API development
+cask "postman"
 # Quick Look generator for Markdown files
 cask "qlmarkdown"
 # Quick Look plugin for CSV files

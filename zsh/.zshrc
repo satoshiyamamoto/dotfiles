@@ -168,6 +168,7 @@ alias lt='eza --color=always --icons --long --header --group --git --color-scale
 alias lzd='lazydocker'
 alias mv='mv -i'
 alias rm='rm -i'
+alias trans='trans --brief :ja'
 alias tree='eza --color=always --icons --tree'
 alias vpn='/opt/cisco/secureclient/bin/vpn'
 if [[ "$TERM" == 'xterm-kitty' ]]; then
