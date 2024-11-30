@@ -62,8 +62,6 @@ brew "libuv"
 brew "node"
 # Secure and free password manager for all of your devices
 brew "bitwarden-cli"
-# Python code formatter
-brew "black"
 # Extremely Fast Compression algorithm
 brew "lz4"
 # Zstandard is a real-time compression algorithm
@@ -136,8 +134,6 @@ brew "eza"
 brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
-# Lint your Python code for style and logical errors
-brew "flake8"
 # Generic library support script
 brew "libtool"
 # Libraries to talk to Microsoft SQL Server and Sybase databases
@@ -228,8 +224,6 @@ brew "httpie"
 brew "imath"
 # Interactive computing in Python
 brew "ipython"
-# Sort Python imports automatically
-brew "isort"
 # JSON diff and patch
 brew "jd"
 # High dynamic-range image file format
@@ -344,6 +338,8 @@ brew "python@3.11"
 brew "qemu"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
+# Extremely fast Python linter, written in Rust
+brew "ruff"
 # Rust toolchain installer
 brew "rustup"
 # Command-line tool for the Amazon S3 service
