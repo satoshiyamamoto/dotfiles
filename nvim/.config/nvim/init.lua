@@ -179,7 +179,7 @@ local plugins = {
         javascript = { { "prettierd", "prettier" } },
         lua = { "stylua" },
         proto = { "clang-format" },
-        python = { "isort", "black" },
+        python = { "ruff_format" },
         rust = { "rustfmt" },
         sql = { "sqlfluff" },
         yaml = { "yamlfmt" },
@@ -376,9 +376,24 @@ local plugins = {
       local lspconfig = require("lspconfig")
       lspconfig.buf_ls.setup({ capabilities = capabilities })
       lspconfig.gopls.setup({ capabilities = capabilities })
-      lspconfig.pyright.setup({ capabilities = capabilities })
+      lspconfig.pyright.setup({
+        capabilities = capabilities,
+        settings = {
+          pyright = {
+            -- Using Ruff's import organizer
+            disableOrganizeImports = true,
+          },
+          python = {
+            analysis = {
+              -- Ignore all files for analysis to exclusively use Ruff for linting
+              ignore = { "*" },
+            },
+          },
+        },
+      })
       lspconfig.ts_ls.setup({ capabilities = capabilities })
       lspconfig.terraformls.setup({ capabilities = capabilities })
+      lspconfig.ruff.setup({ capabilities = capabilities })
       lspconfig.rust_analyzer.setup({ capabilities = capabilities })
       lspconfig.lua_ls.setup({
         capabilities = capabilities,
@@ -450,7 +465,6 @@ local plugins = {
       require("lint").linters_by_ft = {
         go = { "staticcheck" },
         javascript = { "eslint_d" },
-        python = { "flake8", "mypy" },
         sql = { "sqlfluff" },
       }
 
