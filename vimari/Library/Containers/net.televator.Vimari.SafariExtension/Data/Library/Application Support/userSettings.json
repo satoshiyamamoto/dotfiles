@@ -1,5 +1,5 @@
 {
-  "excludedUrls": "youtube.com, github.com, docs.google.com",
+  "excludedUrls": "youtube.com, github.com, docs.google.com, localhost:8888/lab",
   "linkHintCharacters": "asdfjklqwerzxc",
   "detectByCursorStyle": false,
   "scrollSize": 150,
