@@ -238,8 +238,6 @@ brew "openexr"
 brew "jpeg-xl"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
-# Interactive environments for writing and running code
-brew "jupyterlab"
 # Apache Kafka C/C++ library
 brew "librdkafka"
 # Generic command-line non-JVM Apache Kafka producer and consumer
