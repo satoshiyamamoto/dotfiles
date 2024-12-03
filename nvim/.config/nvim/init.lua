@@ -176,7 +176,7 @@ local plugins = {
       formatters_by_ft = {
         go = { "goimports", "gofmt" },
         java = { "google-java-format" },
-        javascript = { { "prettierd", "prettier" } },
+        javascript = { "prettier" },
         lua = { "stylua" },
         proto = { "clang-format" },
         python = { "ruff_format" },
@@ -464,7 +464,7 @@ local plugins = {
     config = function()
       require("lint").linters_by_ft = {
         go = { "staticcheck" },
-        javascript = { "eslint_d" },
+        javascript = { "eslint" },
         sql = { "sqlfluff" },
       }
 
