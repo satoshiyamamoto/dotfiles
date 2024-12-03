@@ -439,8 +439,6 @@ cask "kitty"
 cask "licecap"
 # Minimal installer for conda
 cask "miniconda"
-# Collaboration platform for API development
-cask "postman"
 # Quick Look generator for Markdown files
 cask "qlmarkdown"
 # Quick Look plugin for CSV files
