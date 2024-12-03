@@ -94,8 +94,6 @@ brew "pixman"
 brew "cairo"
 # Insanely fast image printing in your terminal
 brew "catimg"
-# Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript
-brew "clang-format"
 # Console Matrix
 brew "cmatrix"
 # Linux virtual machines
@@ -126,6 +124,8 @@ brew "docker-compose"
 brew "docutils"
 # AST-based pattern checker for JavaScript
 brew "eslint"
+# Speed up eslint to accelerate your development workflow
+brew "eslint_d"
 # C library of Git core methods that is re-entrant and linkable
 brew "libgit2"
 # Modern, maintained replacement for ls
@@ -324,6 +324,8 @@ brew "ponysay"
 brew "powerlevel10k"
 # Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
 brew "prettier"
+# Prettier daemon
+brew "prettierd"
 # Password generator
 brew "pwgen"
 # Generic syntax highlighter
