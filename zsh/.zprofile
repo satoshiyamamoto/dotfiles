@@ -26,7 +26,6 @@ cdpath=(
   $cdpath
 )
 path=(
-  $XDG_DATA_HOME/nvim/mason/bin(N)
   $GOPATH/bin(N)
   $HOME/.cargo/bin(N)
   $HOME/{,s}bin(N)
