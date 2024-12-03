@@ -324,8 +324,6 @@ brew "ponysay"
 brew "powerlevel10k"
 # Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
 brew "prettier"
-# Prettier daemon
-brew "prettierd"
 # Password generator
 brew "pwgen"
 # Generic syntax highlighter
