@@ -675,6 +675,7 @@ local plugins = {
   {
     "nvim-telescope/telescope.nvim",
     cmd = { "Telescope" },
+    event = { "BufReadPost", "BufNewFile" },
     keys = {
       { "<C-p>", "<Cmd>Telescope find_files<CR>", desc = "Find Files" },
       { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Find Files" },
@@ -740,8 +741,8 @@ local plugins = {
         },
       })
       telescope.load_extension("fzf")
-      telescope.load_extension("ui-select")
       telescope.load_extension("dap")
+      telescope.load_extension("ui-select")
       telescope.load_extension("noice")
     end,
     dependencies = {
@@ -864,45 +865,40 @@ local plugins = {
         mode = { "i", "n", "s" },
       },
     },
-    config = function()
-      require("noice").setup({
-        lsp = {
-          override = {
-            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-            ["vim.lsp.util.stylize_markdown"] = true,
-            ["cmp.entry.get_documentation"] = true,
+    opts = {
+      lsp = {
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["vim.ui.select"] = false,
+          ["cmp.entry.get_documentation"] = true,
+        },
+      },
+      presets = {
+        bottom_search = true,
+        command_palette = true,
+        long_message_to_split = true,
+        inc_rename = false,
+        lsp_doc_border = true,
+      },
+      routes = {
+        {
+          filter = {
+            event = "msg_show",
+            kind = "",
+            find = "written",
+          },
+          opts = { skip = true },
+        },
+      },
+      views = {
+        cmdline_popup = {
+          position = {
+            row = "50%", -- Center the cmdline pop-up
           },
         },
-        presets = {
-          bottom_search = true,
-          command_palette = true,
-          long_message_to_split = true,
-          inc_rename = false,
-          lsp_doc_border = true,
-        },
-        routes = {
-          {
-            filter = {
-              event = "msg_show",
-              kind = "",
-              find = "written",
-            },
-            opts = { skip = true },
-          },
-        },
-        views = {
-          cmdline_popup = {
-            position = {
-              row = "50%", -- Center the cmdline pop-up
-            },
-          },
-        },
-      })
-      -- require("notify").setup({
-      --   render = "default",
-      --   background_colour = "#000000", -- Transparent background with github-nvim-theme
-      -- })
-    end,
+      },
+    },
     dependencies = {
       { "MunifTanjim/nui.nvim" },
       { "rcarriga/nvim-notify" },
@@ -1021,12 +1017,20 @@ local plugins = {
       vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#161b22" })
       vim.api.nvim_set_hl(0, "@property.json", { fg = "#6bc46d" })
       vim.api.nvim_set_hl(0, "@property.json", { fg = "#6bc46d" })
+      require("notify").setup({
+        render = "default",
+        background_colour = "#000000",
+      })
     end,
+    dependencies = {
+      { "rcarriga/nvim-notify" },
+    },
   },
 
   {
     "folke/tokyonight.nvim",
     lazy = false,
+    enabled = true,
     priority = 1000,
     config = function()
       require("tokyonight").setup({
