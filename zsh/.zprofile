@@ -53,6 +53,3 @@ export COLIMA_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/colima"
 
 ## Direnv
 export DIRENV_LOG_FORMAT=""
-
-## Google Cloud SDK
-export CLOUDSDK_PYTHON="$HOMEBREW_PREFIX/bin/python3.12"
