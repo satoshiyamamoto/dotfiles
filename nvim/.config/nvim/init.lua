@@ -201,39 +201,51 @@ local plugins = {
       {
         "<C-j>",
         function()
-          return vim.fn["vsnip#expandable()"] and "<Plug>(vsnip-expand)" or "<C-j>"
+          if vim.fn["vsnip#expandable"]() == 1 then
+            return "<Plug>(vsnip-expand)"
+          else
+            return "<C-j>"
+          end
         end,
         mode = { "i", "s" },
         expr = true,
-        silent = true,
       },
       {
         "<C-l>",
         function()
-          return vim.fn["vsnip#available(1)"] and "<Plug>(vsnip-expand-or-jump)" or "<C-l>"
+          if vim.fn["vsnip#available"](1) == 1 then
+            return "<Plug>(vsnip-expand-or-jump)"
+          else
+            return "<C-l>"
+          end
         end,
         'vsnip#available(1) ? "<Plug>(vsnip-expand-or-jump)" : "<C-l>"',
         mode = { "i", "s" },
         expr = true,
-        silent = true,
       },
       {
         "<Tab>",
         function()
-          return vim.fn["vsnip#jumpable(1)"] and "<Plug>(vsnip-jump-next)" or "<Tab>"
+          if vim.fn["vsnip#jumpable"](1) == 1 then
+            return "<Plug>(vsnip-jump-next)"
+          else
+            return "<Tab>"
+          end
         end,
         mode = { "i", "s" },
         expr = true,
-        silent = true,
       },
       {
         "<S-Tab>",
         function()
-          return vim.fn["vsnip#jumpable(-1)"] and "<Plug>(vsnip-jump-prev)" or "<S-Tab>"
+          if vim.fn["vsnip#jumpable"](-1) == 1 then
+            return "<Plug>(vsnip-jump-prev)"
+          else
+            return "<S-Tab>"
+          end
         end,
         mode = { "i", "s" },
         expr = true,
-        silent = true,
       },
     },
     config = function()
@@ -846,7 +858,6 @@ local plugins = {
             return "<c-f>"
           end
         end,
-        silent = true,
         expr = true,
         desc = "Lsp Hover Doc Scroll Forward",
         mode = { "i", "n", "s" },
@@ -858,7 +869,6 @@ local plugins = {
             return "<c-b>"
           end
         end,
-        silent = true,
         expr = true,
         desc = "Lsp Hover Doc Scroll Backward",
         mode = { "i", "n", "s" },
