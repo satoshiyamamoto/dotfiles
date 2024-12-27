@@ -1,0 +1,8 @@
+font-family = Operator Mono SSm Lig Book
+font-family-bold = Operator Mono SSm Lig Medium
+font-family-italic = Operator Mono SSm Lig Book Italic
+font-family-bold-italic = Operator Mono SSm Lig Medium Italic
+font-size = 13
+font-codepoint-map = U+EA60-U+EBC3=Codicon
+theme = light:tokyonight,dark:tokyonight
+

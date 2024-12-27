@@ -5,6 +5,7 @@ stow --verbose --adopt --target=$HOME \
   editorconfig \
   fd \
   flake8 \
+  ghostty \
   git \
   glow \
   kitty \

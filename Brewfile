@@ -40,6 +40,8 @@ brew "autoconf"
 brew "snappy"
 # Data serialization system
 brew "avro-c"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.12"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # Regular expressions library
@@ -80,6 +82,8 @@ brew "libpng"
 brew "freetype"
 # XML-based font configuration API for X Windows
 brew "fontconfig"
+# C string library for manipulating Unicode strings
+brew "libunistring"
 # GNU internationalization (i18n) and localization (l10n) library
 brew "gettext"
 # Perl compatible regular expressions library with a new API
@@ -113,7 +117,7 @@ brew "devcontainer"
 # Load/unload environment variables based on $PWD
 brew "direnv"
 # Bash, Zsh and Fish completion for Docker
-brew "docker-completion", link: false
+brew "docker-completion"
 # Pack, ship and run any application as a lightweight container
 brew "docker"
 # Docker CLI plugin for extended build capabilities with BuildKit
@@ -140,8 +144,6 @@ brew "libtool"
 brew "freetds"
 # Command-line fuzzy finder written in Go
 brew "fzf"
-# C string library for manipulating Unicode strings
-brew "libunistring"
 # Library and utilities for processing GIFs
 brew "giflib"
 # OpenType text shaping engine
@@ -425,6 +427,8 @@ cask "font-fira-code-nerd-font"
 cask "font-ipaexfont"
 cask "font-meslo-for-powerlevel10k"
 cask "font-sf-pro"
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty"
 # Web browser
 cask "google-chrome"
 # Set of tools to manage resources and applications hosted on Google Cloud
