@@ -40,8 +40,6 @@ brew "autoconf"
 brew "snappy"
 # Data serialization system
 brew "avro-c"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # Regular expressions library
@@ -318,6 +316,8 @@ brew "pcre"
 brew "pgcli"
 # Execute binaries from Python packages in isolated environments
 brew "pipx"
+# Fast, disk space efficient package manager
+brew "pnpm", link: false
 # Python package management tool
 brew "poetry"
 # Cowsay but with ponies
