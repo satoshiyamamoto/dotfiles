@@ -1,10 +1,16 @@
 font-family = Operator Mono SSm Lig
-font-style = Book
-font-style-bold = Medium
-font-size = 13
-font-codepoint-map = U+EA60-U+EBC3=Codicon
+font-family = FiraCode Nerd Font Mono
+font-size = 12
 theme = light:tokyonight,dark:tokyonight
+title = " "
+adjust-cell-width = 0
+adjust-cell-height = 4
+adjust-underline-position = 2
+adjust-strikethrough-position = 2
+window-padding-x = 8
+window-padding-y = 8
 background-opacity = 0.9
 keybind = ctrl+shift+j=ignore
 keybind = ctrl+shift+;=ignore
+macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
