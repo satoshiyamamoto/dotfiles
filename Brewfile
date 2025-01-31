@@ -42,6 +42,8 @@ brew "snappy"
 brew "avro-c"
 # Official Amazon AWS command-line interface
 brew "awscli"
+# C library of Git core methods that is re-entrant and linkable
+brew "libgit2"
 # Regular expressions library
 brew "oniguruma"
 # Clone of cat(1) with syntax highlighting and Git integration
@@ -50,28 +52,20 @@ brew "bat"
 brew "bat-extras"
 # Garbage collector for C and C++
 brew "bdw-gc"
-# Generic-purpose lossless compression algorithm by Google
-brew "brotli"
-# Asynchronous DNS library
-brew "c-ares"
-# HTTP/2 C Library
-brew "libnghttp2"
-# Multi-platform support library with a focus on asynchronous I/O
-brew "libuv"
-# Platform built on V8 to build network applications
-brew "node"
-# Secure and free password manager for all of your devices
-brew "bitwarden-cli"
 # Extremely Fast Compression algorithm
 brew "lz4"
 # Zstandard is a real-time compression algorithm
 brew "zstd"
 # Collection of portable C++ source libraries
 brew "boost"
+# Generic-purpose lossless compression algorithm by Google
+brew "brotli"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
 # New way of working with Protocol Buffers
 brew "buf"
+# Asynchronous DNS library
+brew "c-ares"
 # Powerful, enterprise-ready, open source web server with automatic HTTPS
 brew "caddy"
 # Library for manipulating PNG images
@@ -110,6 +104,12 @@ brew "conda-zsh-completion"
 brew "gmp"
 # GNU File, Shell, and Text utilities
 brew "coreutils"
+# HTTP/2 C Library
+brew "libnghttp2"
+# Multi-platform support library with a focus on asynchronous I/O
+brew "libuv"
+# Platform built on V8 to build network applications
+brew "node"
 # Reference implementation for the Development Containers specification
 brew "devcontainer"
 # Load/unload environment variables based on $PWD
@@ -128,8 +128,6 @@ brew "docutils"
 brew "eslint"
 # Speed up eslint to accelerate your development workflow
 brew "eslint_d"
-# C library of Git core methods that is re-entrant and linkable
-brew "libgit2"
 # Modern, maintained replacement for ls
 brew "eza"
 # Like neofetch, but much faster because written mostly in C
@@ -150,8 +148,6 @@ brew "harfbuzz"
 brew "libtiff"
 # Color management engine supporting ICC profiles
 brew "little-cms2"
-# Development kit for the Java programming language
-brew "openjdk"
 # Java garbage collection visualization tool
 brew "gcviewer"
 # GNU database manager
@@ -302,8 +298,6 @@ brew "nkf"
 brew "nmap"
 # Renders an animated, color, ANSI-text loop of the Poptart Cat
 brew "nyancat"
-# Tools for one-time password authentication systems
-brew "oath-toolkit"
 # Development kit for the Java programming language
 brew "openjdk@21"
 # Command-line client for OpenStack

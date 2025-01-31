@@ -78,10 +78,6 @@ gi() {
   curl -sLw "\n" https://www.gitignore.io/api/$@ ;
 }
 
-totp() {
-  oathtool --totp -b $(security find-generic-password -gs $@-otp -w)
-}
-
 y() {
   local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
   yazi "$@" --cwd-file="$tmp"
