@@ -4,32 +4,6 @@ tap "homebrew/services"
 tap "teamookla/speedtest"
 # C++ Common Libraries
 brew "abseil"
-# Mozilla CA certificate store
-brew "ca-certificates"
-# Mozilla CA bundle for Python
-brew "certifi"
-# C parser in Python
-brew "pycparser"
-# Cryptography and SSL/TLS Toolkit
-brew "openssl@3"
-# Cryptographic recipes and primitives for Python
-brew "cryptography"
-# C library SSHv1/SSHv2 client and server protocols
-brew "libssh"
-# YAML Parser
-brew "libyaml"
-# Library for decimal floating point arithmetic
-brew "mpdecimal"
-# General-purpose data compression with high compression ratio
-brew "xz"
-# Automate deployment, configuration, and upgrading
-brew "ansible"
-# Checks ansible playbooks for practices and behaviour
-brew "ansible-lint"
-# Get stuff done with container-native workflows for Kubernetes
-brew "argo"
-# GitOps Continuous Delivery for Kubernetes
-brew "argocd"
 # Improved shell history for zsh, bash, fish and nushell
 brew "atuin"
 # Macro processing language
@@ -38,8 +12,20 @@ brew "m4"
 brew "autoconf"
 # Compression/decompression library aiming for high speed
 brew "snappy"
+# General-purpose data compression with high compression ratio
+brew "xz"
 # Data serialization system
 brew "avro-c"
+# Mozilla CA certificate store
+brew "ca-certificates"
+# C parser in Python
+brew "pycparser"
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@3"
+# Cryptographic recipes and primitives for Python
+brew "cryptography"
+# Library for decimal floating point arithmetic
+brew "mpdecimal"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # C library of Git core methods that is re-entrant and linkable
@@ -52,6 +38,8 @@ brew "bat"
 brew "bat-extras"
 # Garbage collector for C and C++
 brew "bdw-gc"
+# Python code formatter
+brew "black"
 # Extremely Fast Compression algorithm
 brew "lz4"
 # Zstandard is a real-time compression algorithm
@@ -88,8 +76,8 @@ brew "lzo"
 brew "pixman"
 # Vector graphics library with cross-device output support
 brew "cairo"
-# Insanely fast image printing in your terminal
-brew "catimg"
+# Mozilla CA bundle for Python
+brew "certifi"
 # Console Matrix
 brew "cmatrix"
 # Linux virtual machines
@@ -154,12 +142,6 @@ brew "gcviewer"
 brew "gdbm"
 # GitHub command-line tool
 brew "gh"
-# Library for JPEG-2000 image manipulation
-brew "openjpeg"
-# Image format providing lossless and lossy compression for web images
-brew "webp"
-# Interpreter for PostScript and PDF
-brew "ghostscript"
 # Remote repository management made easy
 brew "ghq"
 # Syntax-highlighting pager for git and diff output
@@ -224,6 +206,8 @@ brew "ipython"
 brew "jd"
 # High dynamic-range image file format
 brew "openexr"
+# Image format providing lossless and lossy compression for web images
+brew "webp"
 # New file format for still image compression
 brew "jpeg-xl"
 # Lightweight and flexible command-line JSON processor
@@ -252,6 +236,8 @@ brew "libiconv"
 brew "libpq"
 # Reliable Internet Stream Transport (RIST)
 brew "librist"
+# C library SSHv1/SSHv2 client and server protocols
+brew "libssh"
 # Very basic terminfo library
 brew "unibilium"
 # Library for processing keyboard entry from the terminal
@@ -260,6 +246,8 @@ brew "libtermkey"
 brew "libxml2"
 # XML security library
 brew "libxmlsec1"
+# YAML Parser
+brew "libyaml"
 # C library for reading, creating, and modifying zip archives
 brew "libzip"
 # CLI for SQLite Databases with auto-completion and syntax highlighting
@@ -300,6 +288,8 @@ brew "nmap"
 brew "nyancat"
 # Development kit for the Java programming language
 brew "openjdk@21"
+# Library for JPEG-2000 image manipulation
+brew "openjpeg"
 # Command-line client for OpenStack
 brew "openstackclient"
 # PAM module for reattaching to the user's GUI (Aqua) session
@@ -311,7 +301,7 @@ brew "pgcli"
 # Execute binaries from Python packages in isolated environments
 brew "pipx"
 # Fast, disk space efficient package manager
-brew "pnpm", link: false
+brew "pnpm"
 # Python package management tool
 brew "poetry"
 # Cowsay but with ponies
@@ -338,8 +328,6 @@ brew "ripgrep"
 brew "ruff"
 # Rust toolchain installer
 brew "rustup"
-# Command-line tool for the Amazon S3 service
-brew "s3cmd"
 # Simple keystroke visualizer
 brew "showkey"
 # Python 2 and 3 compatibility utilities
@@ -366,8 +354,6 @@ brew "stern"
 brew "stow"
 # Opinionated Lua code formatter
 brew "stylua"
-# Tool Command Language
-brew "tcl-tk"
 # User interface to the TELNET protocol
 brew "telnet"
 # Terraform Language Server
@@ -392,8 +378,6 @@ brew "watch"
 brew "wget"
 # Extensible command-line tool to format YAML files
 brew "yamlfmt"
-# Formatter for python code
-brew "yapf"
 # JavaScript package manager
 brew "yarn"
 # Blazing fast terminal file manager written in Rust, based on async I/O
