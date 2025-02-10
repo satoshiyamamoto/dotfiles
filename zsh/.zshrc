@@ -139,6 +139,7 @@ alias gr='git reset'
 alias grb='git rebase'
 alias gst='git status'
 alias gsw='git switch'
+alias icat='kitty +kitten icat --align=left'
 alias k='kubectl'
 alias kaf='kubectl apply --filename'
 alias kctx='kubectl config use-context'
@@ -170,7 +171,6 @@ alias tree='eza --color=always --icons --tree'
 alias vpn='/opt/cisco/secureclient/bin/vpn'
 if [[ "$TERM" == 'xterm-kitty' ]]; then
   alias  ssh='kitty +kitten ssh'
-  alias icat='kitty +kitten icat --align=left'
 fi
 
 # To customize prompt, run `p10k configure` or edit $XDG_CONFIG_HOME/p10k.zsh.
