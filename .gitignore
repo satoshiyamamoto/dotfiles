@@ -66,6 +66,10 @@ Sessionx.vim
 tags
 # Persistent undo
 [._]*.un~
+# Auto-load
+vim/.vim/autoload
+# Pluggins
+vim/.vim/plugged
 
 # Lazy.nvim
 lazy-lock.json
