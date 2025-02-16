@@ -443,6 +443,6 @@ mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "PreviewYaml", id: 1564574724
 mas "Tailscale", id: 1475387142
-mas "Vimari", id: 1480933944
+mas "Vimlike", id: 1584519802
 mas "Web Translator", id: 6443492610
 mas "Xcode", id: 497799835

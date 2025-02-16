@@ -21,9 +21,3 @@ stow --verbose --adopt --target=$HOME \
   zellij \
   zsh
 
-
-# Vimari
-if [[ -d '/Applications/Vimari.app' ]]; then
-  vimariSettings=$(find vimari -name 'userSettings.json')
-  cp "$vimariSettings" "${vimariSettings/vimari/$HOME}"
-fi
