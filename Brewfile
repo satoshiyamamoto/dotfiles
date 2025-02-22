@@ -433,7 +433,7 @@ cask "tradingview"
 cask "visual-studio-code"
 # Video communication and virtual meeting platform
 cask "zoom"
-mas "1Blocker", id: 1365531024
+mas "AdGuard for Safari", id: 1440147259
 mas "GarageBand", id: 682658836
 mas "Hidden Bar", id: 1452453066
 mas "iMovie", id: 408981434
