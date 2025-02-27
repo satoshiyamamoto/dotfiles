@@ -26,6 +26,8 @@ brew "openssl@3"
 brew "cryptography"
 # Library for decimal floating point arithmetic
 brew "mpdecimal"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.12"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # C library of Git core methods that is re-entrant and linkable
@@ -112,6 +114,8 @@ brew "docker-buildx"
 brew "docker-compose"
 # Text processing system for reStructuredText
 brew "docutils"
+# Embeddable SQL OLAP Database Management System
+brew "duckdb"
 # AST-based pattern checker for JavaScript
 brew "eslint"
 # Speed up eslint to accelerate your development workflow
@@ -296,8 +300,6 @@ brew "openstackclient"
 brew "pam-reattach"
 # Perl compatible regular expressions library
 brew "pcre"
-# CLI for Postgres with auto-completion and syntax highlighting
-brew "pgcli"
 # Execute binaries from Python packages in isolated environments
 brew "pipx"
 # Fast, disk space efficient package manager
