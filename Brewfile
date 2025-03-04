@@ -26,8 +26,6 @@ brew "openssl@3"
 brew "cryptography"
 # Library for decimal floating point arithmetic
 brew "mpdecimal"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # C library of Git core methods that is re-entrant and linkable
@@ -291,6 +289,8 @@ brew "nmap"
 # Renders an animated, color, ANSI-text loop of the Poptart Cat
 brew "nyancat"
 # Development kit for the Java programming language
+brew "openjdk@17"
+# Development kit for the Java programming language
 brew "openjdk@21"
 # Library for JPEG-2000 image manipulation
 brew "openjpeg"
@@ -300,6 +300,8 @@ brew "openstackclient"
 brew "pam-reattach"
 # Perl compatible regular expressions library
 brew "pcre"
+# CLI for Postgres with auto-completion and syntax highlighting
+brew "pgcli"
 # Execute binaries from Python packages in isolated environments
 brew "pipx"
 # Fast, disk space efficient package manager
@@ -402,6 +404,7 @@ brew "cycloud-io/tap/cycloud-cli"
 brew "teamookla/speedtest/speedtest"
 # Collaborative team software
 cask "figma"
+cask "font-fira-code-nerd-font"
 cask "font-ipaexfont"
 cask "font-meslo-for-powerlevel10k"
 cask "font-sf-pro"
@@ -439,6 +442,7 @@ mas "AdGuard for Safari", id: 1440147259
 mas "GarageBand", id: 682658836
 mas "Hidden Bar", id: 1452453066
 mas "iMovie", id: 408981434
+mas "JSONPeep", id: 1458969831
 mas "Keynote", id: 409183694
 mas "Kindle", id: 302584613
 mas "Numbers", id: 409203825
