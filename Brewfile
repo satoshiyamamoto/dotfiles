@@ -26,6 +26,8 @@ brew "openssl@3"
 brew "cryptography"
 # Library for decimal floating point arithmetic
 brew "mpdecimal"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.12"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # C library of Git core methods that is re-entrant and linkable
@@ -266,8 +268,6 @@ brew "mas"
 brew "maven"
 # Run a Kubernetes cluster locally
 brew "minikube"
-# Cross platform, open source .NET development framework
-brew "mono"
 # Remote terminal application
 brew "mosh"
 # Library for a binary-based efficient data interchange format
@@ -288,8 +288,6 @@ brew "nkf"
 brew "nmap"
 # Renders an animated, color, ANSI-text loop of the Poptart Cat
 brew "nyancat"
-# Development kit for the Java programming language
-brew "openjdk@17"
 # Development kit for the Java programming language
 brew "openjdk@21"
 # Library for JPEG-2000 image manipulation
