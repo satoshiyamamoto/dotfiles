@@ -436,17 +436,17 @@ cask "tradingview"
 cask "visual-studio-code"
 # Video communication and virtual meeting platform
 cask "zoom"
-mas "AdGuard for Safari", id: 1440147259
-mas "GarageBand", id: 682658836
-mas "Hidden Bar", id: 1452453066
-mas "iMovie", id: 408981434
-mas "JSONPeep", id: 1458969831
-mas "Keynote", id: 409183694
-mas "Kindle", id: 302584613
-mas "Numbers", id: 409203825
-mas "Pages", id: 409201541
-mas "PreviewYaml", id: 1564574724
-mas "Tailscale", id: 1475387142
-mas "Vimlike", id: 1584519802
-mas "Web Translator", id: 6443492610
-mas "Xcode", id: 497799835
+#mas "AdGuard for Safari", id: 1440147259
+#mas "GarageBand", id: 682658836
+#mas "Hidden Bar", id: 1452453066
+#mas "iMovie", id: 408981434
+#mas "JSONPeep", id: 1458969831
+#mas "Keynote", id: 409183694
+#mas "Kindle", id: 302584613
+#mas "Numbers", id: 409203825
+#mas "Pages", id: 409201541
+#mas "PreviewYaml", id: 1564574724
+#mas "Tailscale", id: 1475387142
+#mas "Vimlike", id: 1584519802
+#mas "Web Translator", id: 6443492610
+#mas "Xcode", id: 497799835
