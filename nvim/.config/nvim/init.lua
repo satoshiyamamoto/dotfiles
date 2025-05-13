@@ -572,10 +572,10 @@ local plugins = {
     config = function()
       local dap = require("dap")
       local dapui = require("dapui")
-      local mason = require("mason-registry")
+      require("mason-registry")
       require("dapui").setup()
       require("dap-go").setup()
-      require("dap-python").setup(mason.get_package("debugpy"):get_install_path() .. "/venv/bin/python")
+      require("dap-python").setup(vim.fn.expand("$MASON/packages/debugpy/venv/bin/python"))
       dap.adapters["pwa-node"] = {
         type = "server",
         host = "localhost",
