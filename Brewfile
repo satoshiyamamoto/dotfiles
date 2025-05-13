@@ -26,8 +26,6 @@ brew "openssl@3"
 brew "cryptography"
 # Library for decimal floating point arithmetic
 brew "mpdecimal"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # C library of Git core methods that is re-entrant and linkable
@@ -102,6 +100,8 @@ brew "libuv"
 brew "node"
 # Reference implementation for the Development Containers specification
 brew "devcontainer"
+# Text-based UI library
+brew "ncurses"
 # Load/unload environment variables based on $PWD
 brew "direnv"
 # Bash, Zsh and Fish completion for Docker
@@ -196,8 +196,6 @@ brew "helm"
 brew "helm-ls"
 # HTTP load generator, ApacheBench (ab) replacement
 brew "hey"
-# Text-based UI library
-brew "ncurses"
 # Improved top (interactive process viewer)
 brew "htop"
 # User-friendly cURL replacement (command-line HTTP client)
@@ -260,6 +258,8 @@ brew "litecli"
 brew "lolcat"
 # Just-In-Time Compiler (JIT) for the Lua programming language
 brew "luajit"
+# Package manager for the Lua programming language
+brew "luarocks"
 # Bare libuv bindings for lua
 brew "luv"
 # Mac App Store command-line interface
@@ -280,6 +280,8 @@ brew "mypy"
 brew "mysql-client"
 # Parser generator tool and incremental parsing library
 brew "tree-sitter"
+# Clean C library for processing UTF-8 Unicode data
+brew "utf8proc"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Network Kanji code conversion Filter (NKF)
@@ -322,6 +324,8 @@ brew "pygments"
 brew "python-lsp-server"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.11"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.12"
 # Generic machine emulator and virtualizer
 brew "qemu"
 # Search tool like grep and The Silver Searcher
@@ -368,8 +372,6 @@ brew "tldr"
 brew "translate-shell"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
-# Clean C library for processing UTF-8 Unicode data
-brew "utf8proc"
 # Modern watch command
 brew "viddy"
 # Generator for LS_COLORS with support for multiple color themes
