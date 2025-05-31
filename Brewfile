@@ -190,6 +190,10 @@ brew "pkgconf"
 brew "guile"
 # Smarter Dockerfile linter to validate best practices
 brew "hadolint"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
+# Modern, extensible Python project management
+brew "hatch"
 # Kubernetes package manager
 brew "helm"
 # Language server for Helm
@@ -214,6 +218,8 @@ brew "webp"
 brew "jpeg-xl"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
+# Super fast CLI tool to decode and encode JWTs built in Rust
+brew "jwt-cli"
 # Apache Kafka C/C++ library
 brew "librdkafka"
 # Generic command-line non-JVM Apache Kafka producer and consumer
