@@ -140,6 +140,8 @@ brew "harfbuzz"
 brew "libtiff"
 # Color management engine supporting ICC profiles
 brew "little-cms2"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.12"
 # Java garbage collection visualization tool
 brew "gcviewer"
 # GNU database manager
@@ -330,8 +332,6 @@ brew "pygments"
 brew "python-lsp-server"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.11"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12"
 # Generic machine emulator and virtualizer
 brew "qemu"
 # Search tool like grep and The Silver Searcher
@@ -408,6 +408,8 @@ brew "zsh-you-should-use"
 brew "cycloud-io/tap/cycloud-cli"
 # Ookla Speedtest
 brew "teamookla/speedtest/speedtest"
+# Create and run Linux containers using lightweight virtual machines
+cask "container"
 # Collaborative team software
 cask "figma"
 cask "font-fira-code-nerd-font"
