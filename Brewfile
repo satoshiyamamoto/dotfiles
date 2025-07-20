@@ -420,6 +420,8 @@ cask "font-sf-pro"
 cask "gcloud-cli"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
+# Cross-platform Git credential storage for multiple hosting providers
+cask "git-credential-manager"
 # Web browser
 cask "google-chrome"
 # Open-source video transcoder
