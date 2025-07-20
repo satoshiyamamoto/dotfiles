@@ -1,6 +1,4 @@
 tap "cycloud-io/tap", "git@github.com:cycloud-io/homebrew-tap.git"
-tap "homebrew/bundle"
-tap "homebrew/services"
 tap "teamookla/speedtest"
 # C++ Common Libraries
 brew "abseil"
