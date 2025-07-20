@@ -18,14 +18,10 @@ brew "xz"
 brew "avro-c"
 # Mozilla CA certificate store
 brew "ca-certificates"
-# C parser in Python
-brew "pycparser"
-# Cryptography and SSL/TLS Toolkit
-brew "openssl@3"
-# Cryptographic recipes and primitives for Python
-brew "cryptography"
 # Library for decimal floating point arithmetic
 brew "mpdecimal"
+# Cryptography and SSL/TLS Toolkit
+brew "openssl@3"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # C library of Git core methods that is re-entrant and linkable
@@ -78,6 +74,8 @@ brew "pixman"
 brew "cairo"
 # Mozilla CA bundle for Python
 brew "certifi"
+# C parser in Python
+brew "pycparser"
 # Console Matrix
 brew "cmatrix"
 # Linux virtual machines
@@ -92,6 +90,8 @@ brew "conda-zsh-completion"
 brew "gmp"
 # GNU File, Shell, and Text utilities
 brew "coreutils"
+# Cryptographic recipes and primitives for Python
+brew "cryptography"
 # HTTP/2 C Library
 brew "libnghttp2"
 # Multi-platform support library with a focus on asynchronous I/O
@@ -408,20 +408,22 @@ brew "zsh-you-should-use"
 brew "cycloud-io/tap/cycloud-cli"
 # Ookla Speedtest
 brew "teamookla/speedtest/speedtest"
+# Create and run Linux containers using lightweight virtual machines
+cask "container"
 # Collaborative team software
 cask "figma"
 cask "font-fira-code-nerd-font"
 cask "font-ipaexfont"
 cask "font-meslo-for-powerlevel10k"
 cask "font-sf-pro"
+# Set of tools to manage resources and applications hosted on Google Cloud
+cask "gcloud-cli"
 # Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
 # Web browser
 cask "google-chrome"
-# Set of tools to manage resources and applications hosted on Google Cloud
-cask "google-cloud-sdk"
 # Open-source video transcoder
-cask "handbrake"
+cask "handbrake-app"
 # Java IDE by JetBrains
 cask "intellij-idea"
 # GPU-based terminal emulator
