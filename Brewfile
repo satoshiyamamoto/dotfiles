@@ -2,6 +2,8 @@ tap "cycloud-io/tap", "git@github.com:cycloud-io/homebrew-tap.git"
 tap "teamookla/speedtest"
 # C++ Common Libraries
 brew "abseil"
+# Get stuff done with container-native workflows for Kubernetes
+brew "argo"
 # Improved shell history for zsh, bash, fish and nushell
 brew "atuin"
 # Macro processing language
@@ -22,6 +24,12 @@ brew "mpdecimal"
 brew "openssl@3"
 # Official Amazon AWS command-line interface
 brew "awscli"
+# C string library for manipulating Unicode strings
+brew "libunistring"
+# GNU internationalization (i18n) and localization (l10n) library
+brew "gettext"
+# Text-based UI library
+brew "ncurses"
 # C library of Git core methods that is re-entrant and linkable
 brew "libgit2"
 # Regular expressions library
@@ -56,10 +64,6 @@ brew "libpng"
 brew "freetype"
 # XML-based font configuration API for X Windows
 brew "fontconfig"
-# C string library for manipulating Unicode strings
-brew "libunistring"
-# GNU internationalization (i18n) and localization (l10n) library
-brew "gettext"
 # Perl compatible regular expressions library with a new API
 brew "pcre2"
 # Core application library for C
@@ -98,8 +102,6 @@ brew "libuv"
 brew "node"
 # Reference implementation for the Development Containers specification
 brew "devcontainer"
-# Text-based UI library
-brew "ncurses"
 # Load/unload environment variables based on $PWD
 brew "direnv"
 # Bash, Zsh and Fish completion for Docker
