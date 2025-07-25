@@ -408,6 +408,10 @@ brew "zsh-you-should-use"
 brew "cycloud-io/tap/cycloud-cli"
 # Ookla Speedtest
 brew "teamookla/speedtest/speedtest"
+# Anthropic's official Claude AI desktop app
+cask "claude"
+# Terminal-based AI coding assistant
+cask "claude-code"
 # Create and run Linux containers using lightweight virtual machines
 cask "container"
 # Collaborative team software
