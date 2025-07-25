@@ -40,7 +40,6 @@ path=(
 ## Homebrew
 export HOMEBREW_PREFIX='/opt/homebrew'
 export HOMEBREW_NO_ENV_HINTS='true'
-#export HOMEBREW_GITHUB_API_TOKEN="$(security find-generic-password -gs github-token -w)"
 
 ## fzf
 FZF_PREVIEW_FILE='bat --style=changes,header --color=always --line-range :50 {}'
