@@ -220,6 +220,8 @@ brew "jpeg-xl"
 brew "jq"
 # Super fast CLI tool to decode and encode JWTs built in Rust
 brew "jwt-cli"
+# Kubernetes CLI To Manage Your Clusters In Style!
+brew "k9s"
 # Apache Kafka C/C++ library
 brew "librdkafka"
 # Generic command-line non-JVM Apache Kafka producer and consumer
@@ -284,7 +286,7 @@ brew "mycli"
 brew "mypy"
 # Open source relational database management system
 brew "mysql-client"
-# Parser generator tool and incremental parsing library
+# Incremental parsing library
 brew "tree-sitter"
 # Clean C library for processing UTF-8 Unicode data
 brew "utf8proc"
@@ -412,6 +414,8 @@ brew "teamookla/speedtest/speedtest"
 cask "claude"
 # Terminal-based AI coding assistant
 cask "claude-code"
+# Clipboard extension app
+cask "clipy"
 # Create and run Linux containers using lightweight virtual machines
 cask "container"
 # Collaborative team software

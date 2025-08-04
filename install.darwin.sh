@@ -8,6 +8,7 @@ stow --verbose --adopt --target=$HOME \
   ghostty \
   git \
   glow \
+  k9s \
   kitty \
   lazygit \
   nvim \
