@@ -380,6 +380,8 @@ brew "tldr"
 brew "translate-shell"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Parser generator tool
+brew "tree-sitter-cli"
 # Modern watch command
 brew "viddy"
 # Generator for LS_COLORS with support for multiple color themes
