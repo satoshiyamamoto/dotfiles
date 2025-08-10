@@ -463,6 +463,14 @@ local plugins = {
           vim.cmd("LspStart")
         end,
       })
+
+      -- Fix filetype detection for $MYVIMRC
+      vim.api.nvim_create_autocmd("BufRead", {
+        pattern = vim.fn.expand("$MYVIMRC"),
+        callback = function()
+          vim.bo.filetype = "lua"
+        end,
+      })
     end,
     dependencies = {
       { "hrsh7th/cmp-nvim-lsp" },
