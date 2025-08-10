@@ -48,8 +48,8 @@ vim.keymap.set("n", "<C-Right>", "<Cmd>vertical resize +2<CR>", {})
 vim.keymap.set("n", "[q", "<Cmd>cprevious<CR>", {})
 vim.keymap.set("n", "]q", "<Cmd>cnext<CR>", {})
 vim.keymap.set("n", "gl", vim.diagnostic.open_float, {})
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {})
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {})
+vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, {})
+vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, {})
 vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist, {})
 
 -- Terminal
@@ -112,7 +112,7 @@ local plugins = {
       },
     },
     config = function(_, opts)
-      require("nvim-treesitter.configs").setup(opts)
+      require("nvim-treesitter").setup(opts)
       vim.treesitter.language.register("hcl", { "terraform" })
     end,
     dependencies = {
@@ -377,46 +377,41 @@ local plugins = {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
-      local capabilities = require("cmp_nvim_lsp").default_capabilities()
-      local disable_formatting = function(client)
-        client.server_capabilities.documentFormattingProvider = false
-        client.server_capabilities.documentRangeFormattingProvider = false
-      end
-
-      -- Language servers
-      local lspconfig = require("lspconfig")
-      lspconfig.buf_ls.setup({ capabilities = capabilities })
-      lspconfig.gopls.setup({ capabilities = capabilities })
-      lspconfig.pyright.setup({
-        capabilities = capabilities,
-        settings = {
-          pyright = {
-            -- Using Ruff's import organizer
-            disableOrganizeImports = true,
-          },
-          python = {
-            analysis = {
-              -- Ignore all files for analysis to exclusively use Ruff for linting
-              ignore = { "*" },
-            },
-          },
-        },
+      -- Global configuration for all LSP servers
+      vim.lsp.config("*", {
+        capabilities = require("cmp_nvim_lsp").default_capabilities(),
       })
-      lspconfig.ts_ls.setup({ capabilities = capabilities })
-      lspconfig.terraformls.setup({ capabilities = capabilities })
-      lspconfig.ruff.setup({ capabilities = capabilities })
-      lspconfig.rust_analyzer.setup({ capabilities = capabilities })
-      lspconfig.lua_ls.setup({
-        capabilities = capabilities,
-        on_attach = disable_formatting,
+
+      -- Configure lua_ls with specific settings
+      vim.lsp.config("lua_ls", {
         settings = {
           Lua = {
+            runtime = {
+              version = "LuaJIT",
+            },
             diagnostics = {
-              globals = { "vim", "require" },
+              globals = { "vim" },
+            },
+            workspace = {
+              library = vim.api.nvim_get_runtime_file("", true),
+              checkThirdParty = false,
+            },
+            telemetry = {
+              enable = false,
             },
           },
         },
       })
+
+      -- Enable LSP servers
+      vim.lsp.enable("pyright")
+      vim.lsp.enable("bufls")
+      vim.lsp.enable("gopls")
+      vim.lsp.enable("ts_ls")
+      vim.lsp.enable("terraformls")
+      vim.lsp.enable("ruff")
+      vim.lsp.enable("rust_analyzer")
+      vim.lsp.enable("lua_ls")
 
       -- Use LspAttach autocommand to only map the following keys
       -- after the language server attaches to the current buffer
@@ -496,7 +491,7 @@ local plugins = {
   },
 
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     build = ":MasonUpdate",
     cmd = {
       "Mason",
@@ -946,10 +941,16 @@ local plugins = {
         Hint = "",
         Info = "",
       }
-      for type, icon in pairs(signs) do
-        local hl = "DiagnosticSign" .. type
-        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-      end
+      vim.diagnostic.config({
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = signs.Error,
+            [vim.diagnostic.severity.WARN] = signs.Warn,
+            [vim.diagnostic.severity.HINT] = signs.Hint,
+            [vim.diagnostic.severity.INFO] = signs.Info,
+          },
+        },
+      })
     end,
     dependencies = {
       { "nvim-tree/nvim-web-devicons" },
@@ -1425,7 +1426,7 @@ local opts = {
 
 -- # Lazy Setup: {{{
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",
