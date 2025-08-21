@@ -1,2 +1,8 @@
 [include]
     path = ~/.config/git/config.darwin
+[credential "dev.azure.com"]
+	provider = generic
+[credential "github.com"]
+	provider = github
+[credential "ghe.ca-tools.org"]
+	provider = github

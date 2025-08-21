@@ -102,7 +102,6 @@ bindkey '\eg' fzf-git-widget
 #
 # Aliases
 #
-alias ccusage='npx ccusage'
 alias cna='[ -z $CONDA_SHLVL ] && eval "$(conda shell.zsh hook)"; conda activate'
 alias cnde='conda deactivate'
 alias cp='cp -i'
