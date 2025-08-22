@@ -53,8 +53,8 @@ vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, {})
 vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist, {})
 
 -- Terminal
-vim.keymap.set("n", "<C-`>", "<Cmd>ToggleTerm<CR>", {})
-vim.keymap.set("t", "<C-`>", "<Cmd>ToggleTerm<CR>", {})
+vim.keymap.set("n", "<C-\\>", "<Cmd>ToggleTerm<CR>", {})
+vim.keymap.set("t", "<C-\\>", "<Cmd>ToggleTerm<CR>", {})
 vim.keymap.set("t", "<Esc>", "<C-Bslash><C-n>", {})
 vim.keymap.set("t", "<C-[>", "<C-Bslash><C-n>", {})
 
@@ -986,7 +986,6 @@ local plugins = {
     version = "v2.*",
     cmd = { "ToggleTerm", "TermOpen", "TermExec" },
     keys = {
-      { "<C-\\>" },
       {
         "<Leader>lg",
         function()
