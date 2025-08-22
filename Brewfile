@@ -4,6 +4,8 @@ tap "teamookla/speedtest"
 brew "abseil"
 # Get stuff done with container-native workflows for Kubernetes
 brew "argo"
+# GitOps Continuous Delivery for Kubernetes
+brew "argocd"
 # Improved shell history for zsh, bash, fish and nushell
 brew "atuin"
 # Macro processing language
@@ -74,6 +76,14 @@ brew "lzo"
 brew "pixman"
 # Vector graphics library with cross-device output support
 brew "cairo"
+# HTTP/2 C Library
+brew "libnghttp2"
+# Multi-platform support library with a focus on asynchronous I/O
+brew "libuv"
+# Platform built on V8 to build network applications
+brew "node"
+# CLI tool for analyzing Claude Code usage from local JSONL files
+brew "ccusage"
 # Mozilla CA bundle for Python
 brew "certifi"
 # C parser in Python
@@ -94,12 +104,6 @@ brew "gmp"
 brew "coreutils"
 # Cryptographic recipes and primitives for Python
 brew "cryptography"
-# HTTP/2 C Library
-brew "libnghttp2"
-# Multi-platform support library with a focus on asynchronous I/O
-brew "libuv"
-# Platform built on V8 to build network applications
-brew "node"
 # Reference implementation for the Development Containers specification
 brew "devcontainer"
 # Load/unload environment variables based on $PWD
@@ -462,7 +466,7 @@ mas "AdGuard for Safari", id: 1440147259
 mas "GarageBand", id: 682658836
 mas "Hidden Bar", id: 1452453066
 mas "iMovie", id: 408981434
-mas "JSONPeep", id: 1458969831
+mas "JSON Peep", id: 1458969831
 mas "Keynote", id: 409183694
 mas "Kindle", id: 302584613
 mas "Numbers", id: 409203825
