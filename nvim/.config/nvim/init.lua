@@ -522,13 +522,12 @@ local plugins = {
 
   {
     "linux-cultist/venv-selector.nvim",
+    event = { "VeryLazy" },
     branch = "regexp",
     keys = {
       { ",v", "<Cmd>VenvSelect<CR>", desc = "Open VenvSelector to pick a venv" },
     },
-    config = function()
-      require("venv-selector").setup()
-    end,
+    opts = {},
     dependencies = {
       "neovim/nvim-lspconfig",
       "nvim-telescope/telescope.nvim",
