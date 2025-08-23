@@ -48,8 +48,12 @@ vim.keymap.set("n", "<C-Right>", "<Cmd>vertical resize +2<CR>", {})
 vim.keymap.set("n", "[q", "<Cmd>cprevious<CR>", {})
 vim.keymap.set("n", "]q", "<Cmd>cnext<CR>", {})
 vim.keymap.set("n", "gl", vim.diagnostic.open_float, {})
-vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, {})
-vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, {})
+vim.keymap.set("n", "[d", function()
+  vim.diagnostic.jump({ count = -1 })
+end, {})
+vim.keymap.set("n", "]d", function()
+  vim.diagnostic.jump({ count = 1 })
+end, {})
 vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist, {})
 
 -- Terminal
@@ -197,65 +201,16 @@ local plugins = {
   {
     "hrsh7th/nvim-cmp",
     event = { "InsertEnter" },
-    keys = {
-      {
-        "<C-j>",
-        function()
-          if vim.fn["vsnip#expandable"]() == 1 then
-            return "<Plug>(vsnip-expand)"
-          else
-            return "<C-j>"
-          end
-        end,
-        mode = { "i", "s" },
-        expr = true,
-      },
-      {
-        "<C-l>",
-        function()
-          if vim.fn["vsnip#available"](1) == 1 then
-            return "<Plug>(vsnip-expand-or-jump)"
-          else
-            return "<C-l>"
-          end
-        end,
-        'vsnip#available(1) ? "<Plug>(vsnip-expand-or-jump)" : "<C-l>"',
-        mode = { "i", "s" },
-        expr = true,
-      },
-      {
-        "<Tab>",
-        function()
-          if vim.fn["vsnip#jumpable"](1) == 1 then
-            return "<Plug>(vsnip-jump-next)"
-          else
-            return "<Tab>"
-          end
-        end,
-        mode = { "i", "s" },
-        expr = true,
-      },
-      {
-        "<S-Tab>",
-        function()
-          if vim.fn["vsnip#jumpable"](-1) == 1 then
-            return "<Plug>(vsnip-jump-prev)"
-          else
-            return "<S-Tab>"
-          end
-        end,
-        mode = { "i", "s" },
-        expr = true,
-      },
-    },
     config = function()
       local cmp = require("cmp")
       local lspkind = require("lspkind")
+      local luasnip = require("luasnip")
+      require("luasnip.loaders.from_vscode").lazy_load()
 
       cmp.setup({
         snippet = {
           expand = function(args)
-            vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` users.
+            require("luasnip").lsp_expand(args.body)
           end,
         },
         window = {
@@ -269,14 +224,42 @@ local plugins = {
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.close(),
-          ["<CR>"] = cmp.mapping.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = true }),
-          ["<Tab>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<S-Tab>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<CR>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              if luasnip.expandable() then
+                luasnip.expand()
+              else
+                cmp.confirm({
+                  select = true,
+                })
+              end
+            else
+              fallback()
+            end
+          end),
+          ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_next_item()
+            elseif luasnip.locally_jumpable(1) then
+              luasnip.jump(1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
+          ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+              cmp.select_prev_item()
+            elseif luasnip.locally_jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { "i", "s" }),
         },
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
           { name = "nvim_lsp_signature_help" },
-          { name = "vsnip" }, -- For vsnip users.
+          { name = "luasnip" },
           { name = "buffer" },
           { name = "path" },
           { name = "copilot" },
@@ -284,9 +267,14 @@ local plugins = {
         formatting = {
           format = lspkind.cmp_format({
             mode = "symbol_text",
-            maxwidth = 50,
+            maxwidth = {
+              menu = 50,
+              abbr = 50,
+            },
+            ellipsis_char = "...",
+            show_labelDetails = true,
+            preset = "codicons",
             symbol_map = { Copilot = "" },
-            preset = "default",
           }),
         },
         experimental = { ghost_text = true },
@@ -322,13 +310,12 @@ local plugins = {
       { "hrsh7th/cmp-buffer" },
       { "hrsh7th/cmp-path" },
       { "hrsh7th/cmp-cmdline" },
-      { "hrsh7th/cmp-vsnip" },
-      { "hrsh7th/vim-vsnip" },
-      { "hrsh7th/vim-vsnip-integ" },
+      { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
+      { "rafamadriz/friendly-snippets" },
+      { "saadparwaiz1/cmp_luasnip" },
       { "zbirenbaum/copilot.lua" },
       { "zbirenbaum/copilot-cmp" },
       { "onsails/lspkind.nvim" },
-      { "rafamadriz/friendly-snippets" },
     },
   },
 
