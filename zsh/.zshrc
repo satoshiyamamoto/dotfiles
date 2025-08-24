@@ -1,10 +1,6 @@
 #
 # Lazy loading
 #
-if [[ -r "${XDG_CACHE_HOME:=$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "$XDG_CACHE_HOME/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
 if [[ ! -d "${ZSH_DEFER_HOME:=$HOME/.zsh_defer}" ]]; then
   git clone https://github.com/romkatv/zsh-defer $ZSH_DEFER_HOME
 fi
@@ -57,7 +53,7 @@ autoload -Uz compinit && zsh-defer compinit -C
 #
 
 ## Prompt
-source "$HOMEBREW_PREFIX/share/powerlevel10k/powerlevel10k.zsh-theme"
+eval "$(starship init zsh)"
 
 ## Zsh, Google Cloud etc...
 zsh-defer source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
@@ -173,9 +169,6 @@ alias vpn='/opt/cisco/secureclient/bin/vpn'
 if [[ "$TERM" == 'xterm-kitty' ]]; then
   alias  ssh='kitty +kitten ssh'
 fi
-
-# To customize prompt, run `p10k configure` or edit $XDG_CONFIG_HOME/p10k.zsh.
-[[ ! -f "${XDG_CONFIG_HOME:=$HOME/.config}/p10k.zsh" ]] || source "$XDG_CONFIG_HOME/p10k.zsh"
 
 if type zprof >/dev/null 2>&1; then
   zprof | bat --language=log --color=always --pager=never
