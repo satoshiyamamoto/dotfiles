@@ -1,3 +1,7 @@
+# Ghostty Configuration
+
+
+## Options
 font-family = Operator Mono SSm Lig
 font-family = MesloLGS NF
 font-family = Hiragino Kaku Gothic ProN
@@ -17,3 +21,7 @@ keybind = ctrl+shift+j=ignore
 keybind = ctrl+shift+;=ignore
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
+
+
+## Keybindings
+keybind = global:cmd+grave_accent=toggle_quick_terminal
