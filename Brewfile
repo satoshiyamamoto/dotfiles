@@ -200,8 +200,6 @@ brew "uv"
 brew "hatch"
 # Kubernetes package manager
 brew "helm"
-# Language server for Helm
-brew "helm-ls"
 # HTTP load generator, ApacheBench (ab) replacement
 brew "hey"
 # Improved top (interactive process viewer)
@@ -332,10 +330,6 @@ brew "prettierd"
 brew "pwgen"
 # Generic syntax highlighter
 brew "pygments"
-# Python Language Server for the Language Server Protocol
-brew "python-lsp-server"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.11"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.12"
 # Generic machine emulator and virtualizer
@@ -386,6 +380,8 @@ brew "translate-shell"
 brew "tree"
 # Parser generator tool
 brew "tree-sitter-cli"
+# ASGI web server
+brew "uvicorn"
 # Modern watch command
 brew "viddy"
 # Generator for LS_COLORS with support for multiple color themes
