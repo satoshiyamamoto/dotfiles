@@ -493,6 +493,7 @@ local plugins = {
       require("mason-lspconfig").setup({
         ensure_installed = {
           -- LSP
+          "buf_ls",
           "gopls",
           "jdtls",
           "lua_ls",
@@ -522,12 +523,14 @@ local plugins = {
 
   {
     "linux-cultist/venv-selector.nvim",
-    event = { "VeryLazy" },
-    branch = "regexp",
     keys = {
       { ",v", "<Cmd>VenvSelect<CR>", desc = "Open VenvSelector to pick a venv" },
     },
-    opts = {},
+    ft = "python",
+    opts = {
+      search = {},
+      options = {},
+    },
     dependencies = {
       "neovim/nvim-lspconfig",
       "nvim-telescope/telescope.nvim",
