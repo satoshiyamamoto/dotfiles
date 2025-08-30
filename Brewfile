@@ -116,6 +116,8 @@ brew "docker"
 brew "docker-buildx"
 # Isolated development environments using Docker
 brew "docker-compose"
+# Platform keystore credential helper for Docker
+brew "docker-credential-helper"
 # Text processing system for reStructuredText
 brew "docutils"
 # Embeddable SQL OLAP Database Management System
@@ -200,6 +202,8 @@ brew "uv"
 brew "hatch"
 # Kubernetes package manager
 brew "helm"
+# Language server for Helm
+brew "helm-ls"
 # HTTP load generator, ApacheBench (ab) replacement
 brew "hey"
 # Improved top (interactive process viewer)
@@ -330,6 +334,10 @@ brew "prettierd"
 brew "pwgen"
 # Generic syntax highlighter
 brew "pygments"
+# Python Language Server for the Language Server Protocol
+brew "python-lsp-server"
+# Interpreted, interactive, object-oriented programming language
+brew "python@3.11"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.12"
 # Generic machine emulator and virtualizer
