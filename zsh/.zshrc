@@ -66,7 +66,6 @@ zsh-defer eval "$(fzf --zsh)"
 zsh-defer eval "$(atuin init --disable-up-arrow zsh)"
 zsh-defer eval "$(direnv hook zsh)"
 
-
 #
 # Functions
 #
@@ -94,6 +93,17 @@ fzf-git-widget() {
 zle     -N    fzf-git-widget
 bindkey '\eg' fzf-git-widget
 
+starship-config() {
+  local width=$(tput cols)
+
+  if [[ $width -ge 80 ]]; then
+    export STARSHIP_CONFIG=~/.config/starship.toml
+  else
+    export STARSHIP_CONFIG=~/.config/starship-minimal.toml
+  fi
+}
+add-zsh-hook precmd starship-config
+TRAPWINCH() { starship-config }
 
 #
 # Aliases
