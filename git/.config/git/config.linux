@@ -22,6 +22,9 @@
   prompt = false
   keepBackup = false
 
+[pull]
+	rebase = true
+
 [ghq]
   root = ~/Projects/src
 

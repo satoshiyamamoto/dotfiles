@@ -28,6 +28,9 @@
 [mergetool "nvimdiff"]
   cmd = "nvim -d -c \"4wincmd w | wincmd J\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"  \"$MERGED\""
 
+[pull]
+	rebase = true
+
 [interactive]
   diffFilter = delta --color-only
 
