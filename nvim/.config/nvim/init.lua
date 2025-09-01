@@ -13,7 +13,6 @@ vim.opt.laststatus = 3
 vim.opt.fillchars:append({ diff = " " })
 vim.opt.termguicolors = true
 vim.opt.completeopt = { "menuone", "noselect" }
-vim.opt.clipboard = "unnamedplus"
 vim.opt.shortmess:append({ c = true, I = true })
 vim.opt.updatetime = 100
 vim.opt.timeoutlen = 300
