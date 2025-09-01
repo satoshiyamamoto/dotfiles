@@ -7,7 +7,6 @@ set splitright
 set incsearch
 set hlsearch
 set confirm
-set clipboard+=unnamed
 set ttimeoutlen=50
 set updatetime=100
 set nocompatible
