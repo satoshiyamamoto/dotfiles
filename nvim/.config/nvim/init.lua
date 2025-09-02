@@ -24,9 +24,6 @@ vim.opt.helplang = "ja,en"
 
 -- # Mappings: {{{
 
--- Insert
-vim.keymap.set("i", "jj", "<Esc>", {})
-
 -- Buffers
 vim.keymap.set("n", "[b", "<Cmd>bprevious<CR>", {})
 vim.keymap.set("n", "]b", "<Cmd>bnext<CR>", {})
