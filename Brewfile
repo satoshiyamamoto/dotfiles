@@ -146,6 +146,8 @@ brew "harfbuzz"
 brew "libtiff"
 # Color management engine supporting ICC profiles
 brew "little-cms2"
+# Development kit for the Java programming language
+brew "openjdk"
 # Java garbage collection visualization tool
 brew "gcviewer"
 # GNU database manager
@@ -475,6 +477,7 @@ mas "Keynote", id: 409183694
 mas "Kindle", id: 302584613
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
+mas "Postman Interceptor", id: 6460587883
 mas "PreviewYaml", id: 1564574724
 mas "Tailscale", id: 1475387142
 mas "Vimlike", id: 1584519802
