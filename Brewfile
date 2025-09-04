@@ -42,8 +42,6 @@ brew "bat"
 brew "bat-extras"
 # Garbage collector for C and C++
 brew "bdw-gc"
-# Python code formatter
-brew "black"
 # Extremely Fast Compression algorithm
 brew "lz4"
 # Zstandard is a real-time compression algorithm
@@ -122,10 +120,6 @@ brew "docker-credential-helper"
 brew "docutils"
 # Embeddable SQL OLAP Database Management System
 brew "duckdb"
-# AST-based pattern checker for JavaScript
-brew "eslint"
-# Speed up eslint to accelerate your development workflow
-brew "eslint_d"
 # Modern, maintained replacement for ls
 brew "eza"
 # Like neofetch, but much faster because written mostly in C
@@ -196,12 +190,6 @@ brew "grpcurl"
 brew "pkgconf"
 # GNU Ubiquitous Intelligent Language for Extensions
 brew "guile"
-# Smarter Dockerfile linter to validate best practices
-brew "hadolint"
-# Extremely fast Python package installer and resolver, written in Rust
-brew "uv"
-# Modern, extensible Python project management
-brew "hatch"
 # Kubernetes package manager
 brew "helm"
 # Language server for Helm
@@ -210,8 +198,6 @@ brew "helm-ls"
 brew "hey"
 # Improved top (interactive process viewer)
 brew "htop"
-# User-friendly cURL replacement (command-line HTTP client)
-brew "httpie"
 # Library of 2D and 3D vector, matrix, and math operations
 brew "imath"
 # Interactive computing in Python
@@ -284,14 +270,10 @@ brew "mas"
 brew "maven"
 # Run a Kubernetes cluster locally
 brew "minikube"
-# Remote terminal application
-brew "mosh"
 # Library for a binary-based efficient data interchange format
 brew "msgpack"
 # CLI for MySQL with auto-completion and syntax highlighting
 brew "mycli"
-# Experimental optional static type checker for Python
-brew "mypy"
 # Open source relational database management system
 brew "mysql-client"
 # Incremental parsing library
@@ -310,8 +292,6 @@ brew "nyancat"
 brew "openjdk@21"
 # Library for JPEG-2000 image manipulation
 brew "openjpeg"
-# Command-line client for OpenStack
-brew "openstackclient"
 # PAM module for reattaching to the user's GUI (Aqua) session
 brew "pam-reattach"
 # Perl compatible regular expressions library
@@ -328,10 +308,6 @@ brew "poetry"
 brew "ponysay"
 # Theme for zsh
 brew "powerlevel10k"
-# Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
-brew "prettier"
-# Prettier daemon
-brew "prettierd"
 # Password generator
 brew "pwgen"
 # Generic syntax highlighter
@@ -346,8 +322,6 @@ brew "python@3.12"
 brew "qemu"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
-# Extremely fast Python linter, written in Rust
-brew "ruff"
 # Rust toolchain installer
 brew "rustup"
 # Simple keystroke visualizer
@@ -374,12 +348,8 @@ brew "staticcheck"
 brew "stern"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
-# Opinionated Lua code formatter
-brew "stylua"
 # User interface to the TELNET protocol
 brew "telnet"
-# Terraform Language Server
-brew "terraform-ls"
 # Terraform version manager inspired by rbenv
 brew "tfenv"
 # Simplified and community-driven man pages
@@ -390,6 +360,8 @@ brew "translate-shell"
 brew "tree"
 # Parser generator tool
 brew "tree-sitter-cli"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
 # ASGI web server
 brew "uvicorn"
 # Modern watch command
@@ -400,8 +372,6 @@ brew "vivid"
 brew "watch"
 # Internet file retriever
 brew "wget"
-# Extensible command-line tool to format YAML files
-brew "yamlfmt"
 # JavaScript package manager
 brew "yarn"
 # Blazing fast terminal file manager written in Rust, based on async I/O
