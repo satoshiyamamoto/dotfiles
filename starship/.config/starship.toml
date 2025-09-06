@@ -18,6 +18,7 @@ $fill\
 $cmd_duration\
 [ ](fg:#1d2230)\
 $python\
+${custom.vpn}\
 [](fg:#212736 bg:#1d2230)\
 $docker_context\
 $kubernetes\
@@ -105,3 +106,12 @@ time_format = "%T"
 style = "fg:#090c0c bg:#a3aed2"
 format = '[ $time  ]($style)'
 
+[custom.vpn]
+disabled = false
+command = "~/Projects/src/github.com/satoshiyamamoto/starship-vpn/starship-vpn.sh prompt"
+when = """
+test "${STARSHIP_VPN_ENABLED:-false}" = "true" && ~/Projects/src/github.com/satoshiyamamoto/starship-vpn/starship-vpn.sh connected
+"""
+symbol = ""
+style = "bg:#1d2230"
+format = '[[ $symbol $output ](fg:#769ff0 bg:#1d2230)]($style)'
