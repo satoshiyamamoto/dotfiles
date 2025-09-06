@@ -52,19 +52,19 @@ autoload -Uz compinit && zsh-defer compinit -C
 # Source files
 #
 
-## Prompt
-eval "$(starship init zsh)"
-
 ## Zsh, Google Cloud etc...
-zsh-defer source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-zsh-defer source "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-zsh-defer source "$HOMEBREW_PREFIX/share/zsh-you-should-use/you-should-use.plugin.zsh"
-zsh-defer source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-zsh-defer source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
-zsh-defer source "$HOMEBREW_PREFIX/etc/profile.d/z.sh"
-zsh-defer eval "$(fzf --zsh)"
-zsh-defer eval "$(atuin init --disable-up-arrow zsh)"
-zsh-defer eval "$(direnv hook zsh)"
+__load_plugins() {
+  source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  source "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  source "$HOMEBREW_PREFIX/share/zsh-you-should-use/you-should-use.plugin.zsh"
+  source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+  source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+  source "$HOMEBREW_PREFIX/etc/profile.d/z.sh"
+  eval "$(fzf --zsh)"
+  eval "$(atuin init --disable-up-arrow zsh)"
+  eval "$(direnv hook zsh)"
+}
+zsh-defer __load_plugins
 
 #
 # Functions
@@ -93,17 +93,6 @@ fzf-git-widget() {
 zle     -N    fzf-git-widget
 bindkey '\eg' fzf-git-widget
 
-starship-config() {
-  local width=$(tput cols)
-
-  if [[ $width -ge 80 ]]; then
-    export STARSHIP_CONFIG=~/.config/starship.toml
-  else
-    export STARSHIP_CONFIG=~/.config/starship-minimal.toml
-  fi
-}
-add-zsh-hook precmd starship-config
-TRAPWINCH() { starship-config }
 
 #
 # Aliases
@@ -180,6 +169,26 @@ alias trans='trans --brief :ja'
 alias tree='eza --color=always --icons --tree'
 alias vpn='/opt/cisco/secureclient/bin/vpn'
 
+#
+# Prompt
+#
+eval "$(starship init zsh)"
+
+__load_starship_config() {
+  local width=$COLUMNS
+
+  if [[ $width -ge 80 ]]; then
+    export STARSHIP_CONFIG=~/.config/starship.toml
+  else
+    export STARSHIP_CONFIG=~/.config/starship-minimal.toml
+  fi
+}
+add-zsh-hook precmd __load_starship_config
+TRAPWINCH() { __load_starship_config }
+
+#
+# Profiler
+#
 if type zprof >/dev/null 2>&1; then
   zprof | bat --language=log --color=always --pager=never
 fi
