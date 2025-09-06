@@ -165,6 +165,8 @@ alias kgs='kubectl get services'
 alias kl='kubectl logs'
 alias klf='kubectl logs --follow'
 alias kns='kubectl config set-context --current --namespace'
+alias kubeoff='[ $(starship module kubernetes | wc -c) -gt 0 ] && starship toggle kubernetes'
+alias kubeon='[ $(starship module kubernetes | wc -c) -eq 0 ] && starship toggle kubernetes'
 alias la='eza --color=always --icons --long --header --group --git --color-scale --all'
 alias lg='lazygit'
 alias ll='eza --color=always --icons --long --header --group --git --color-scale'
@@ -177,9 +179,6 @@ alias tailscale='/Applications/Tailscale.app/Contents/MacOS/Tailscale'
 alias trans='trans --brief :ja'
 alias tree='eza --color=always --icons --tree'
 alias vpn='/opt/cisco/secureclient/bin/vpn'
-if [[ "$TERM" == 'xterm-kitty' ]]; then
-  alias  ssh='kitty +kitten ssh'
-fi
 
 if type zprof >/dev/null 2>&1; then
   zprof | bat --language=log --color=always --pager=never
