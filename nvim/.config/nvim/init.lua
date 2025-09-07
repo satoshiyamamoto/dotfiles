@@ -882,11 +882,26 @@ local plugins = {
         {
           filter = {
             event = "msg_show",
-            kind = "",
-            find = "written",
+            any = {
+              { find = "written" },
+              { find = " lines --%" },
+              { find = " bytes --%" },
+              { find = "^$" }, -- Empty messages
+            },
           },
           opts = { skip = true },
         },
+        -- FIXME: Cannot get stdout while running !commands
+        -- https://github.com/folke/noice.nvim/issues/1097
+        {
+          filter = { event = "msg_show", },
+          view = "notify",
+          opts = {
+            level = "info",
+            skip = false,
+            replace = false,
+          }
+        }
       },
       views = {
         cmdline_popup = {
@@ -1096,7 +1111,7 @@ local plugins = {
       })
     end,
     dependencies = {
-      { "noice.nvim" },
+      { "folke/noice.nvim" },
       { "folke/tokyonight.nvim" },
       { "projekt0n/github-nvim-theme" },
     },
