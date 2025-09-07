@@ -97,6 +97,7 @@ bindkey '\eg' fzf-git-widget
 #
 # Aliases
 #
+alias cisco='/opt/cisco/secureclient/bin/vpn'
 alias cna='[ -z $CONDA_SHLVL ] && eval "$(conda shell.zsh hook)"; conda activate'
 alias cnde='conda deactivate'
 alias cp='cp -i'
@@ -167,7 +168,6 @@ alias rm='rm -i'
 alias tailscale='/Applications/Tailscale.app/Contents/MacOS/Tailscale'
 alias trans='trans --brief :ja'
 alias tree='eza --color=always --icons --tree'
-alias vpn='/opt/cisco/secureclient/bin/vpn'
 
 #
 # Prompt
