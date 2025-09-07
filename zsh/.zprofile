@@ -49,3 +49,7 @@ export FZF_ALT_C_OPTS='--preview="${FZF_PREVIEW_DIR}"'
 
 ## Direnv
 export DIRENV_LOG_FORMAT=""
+
+## Starship
+export STARSHIP_CONFIG=~/.config/starship.toml
+export STARSHIP_VPN_ENABLED=true
