@@ -24,4 +24,4 @@ macos-option-as-alt = true
 keybind = global:cmd+grave_accent=toggle_quick_terminal
 keybind = ctrl+shift+j=ignore
 keybind = ctrl+shift+;=ignore
-keybind = shift+enter=text:\n
+
