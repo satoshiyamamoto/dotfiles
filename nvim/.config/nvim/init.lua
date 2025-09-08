@@ -306,7 +306,7 @@ local plugins = {
       { "hrsh7th/cmp-buffer" },
       { "hrsh7th/cmp-path" },
       { "hrsh7th/cmp-cmdline" },
-      { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
+      { "L3MON4D3/LuaSnip",                    build = "make install_jsregexp" },
       { "rafamadriz/friendly-snippets" },
       { "saadparwaiz1/cmp_luasnip" },
       { "zbirenbaum/copilot.lua" },
@@ -334,7 +334,7 @@ local plugins = {
     end,
   },
 
-  { "golang/vscode-go", event = { "InsertEnter" } },
+  { "golang/vscode-go",     event = { "InsertEnter" } },
 
   -- }}}
 
@@ -347,10 +347,10 @@ local plugins = {
   },
 
   { "tpope/vim-unimpaired", event = { "BufReadPost" } },
-  { "tpope/vim-fugitive", event = { "BufReadPost" } },
-  { "tpope/vim-surround", event = { "BufReadPost" } },
+  { "tpope/vim-fugitive",   event = { "BufReadPost" } },
+  { "tpope/vim-surround",   event = { "BufReadPost" } },
   { "tpope/vim-commentary", event = { "BufReadPost" } },
-  { "mattn/emmet-vim", event = { "InsertEnter" } },
+  { "mattn/emmet-vim",      event = { "InsertEnter" } },
 
   -- }}}
 
@@ -676,17 +676,17 @@ local plugins = {
     cmd = { "Telescope" },
     event = { "BufReadPost", "BufNewFile" },
     keys = {
-      { "<C-p>", "<Cmd>Telescope find_files<CR>", desc = "Find Files" },
-      { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Find Files" },
-      { "<Leader>fg", "<Cmd>Telescope live_grep<CR>", desc = "Search with Live Grep" },
-      { "<Leader>fb", "<Cmd>Telescope buffers<CR>", desc = "List Buffers" },
-      { "<Leader>fr", "<Cmd>Telescope oldfiles<CR>", desc = "Open Recent Files" },
-      { '<Leader>f"', "<Cmd>Telescope registers<CR>", desc = "Search Registers" },
-      { "<Leader>fh", "<Cmd>Telescope help_tags<CR>", desc = "Search Help Tags" },
-      { "<Leader>fs", "<Cmd>Telescope lsp_document_symbols<CR>", desc = "Search Document Symbols" },
+      { "<C-p>",      "<Cmd>Telescope find_files<CR>",                    desc = "Find Files" },
+      { "<Leader>ff", "<Cmd>Telescope find_files<CR>",                    desc = "Find Files" },
+      { "<Leader>fg", "<Cmd>Telescope live_grep<CR>",                     desc = "Search with Live Grep" },
+      { "<Leader>fb", "<Cmd>Telescope buffers<CR>",                       desc = "List Buffers" },
+      { "<Leader>fr", "<Cmd>Telescope oldfiles<CR>",                      desc = "Open Recent Files" },
+      { '<Leader>f"', "<Cmd>Telescope registers<CR>",                     desc = "Search Registers" },
+      { "<Leader>fh", "<Cmd>Telescope help_tags<CR>",                     desc = "Search Help Tags" },
+      { "<Leader>fs", "<Cmd>Telescope lsp_document_symbols<CR>",          desc = "Search Document Symbols" },
       { "<Leader>fS", "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>", desc = "Search Workspace Symbols" },
-      { "<Leader>fd", "<Cmd>Telescope dap configurations<CR>", desc = "Debug Configurations (Debug)" },
-      { "<Leader>fn", "<Cmd>Telescope noice<CR>", desc = "Search Noice Messages" },
+      { "<Leader>fd", "<Cmd>Telescope dap configurations<CR>",            desc = "Debug Configurations (Debug)" },
+      { "<Leader>fn", "<Cmd>Telescope noice<CR>",                         desc = "Search Noice Messages" },
     },
     config = function()
       local telescope = require("telescope")
@@ -729,10 +729,10 @@ local plugins = {
         },
         extensions = {
           fzf = {
-            fuzzy = true, -- false will only do exact matching
+            fuzzy = true,                   -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true, -- override the file sorter
-            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
+            override_file_sorter = true,    -- override the file sorter
+            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
           },
           ["ui-select"] = {
             require("telescope.themes").get_dropdown(),
@@ -757,8 +757,8 @@ local plugins = {
     branch = "v3.x",
     cmd = { "Neotree" },
     keys = {
-      { "<Leader>e", "<Cmd>Neotree toggle<CR>", desc = "File Explorer (Neo-tree)" },
-      { "<Leader>be", "<Cmd>Neotree buffers<CR>", desc = "Buffers Explorer (Neo-tree)" },
+      { "<Leader>e",  "<Cmd>Neotree toggle<CR>",     desc = "File Explorer (Neo-tree)" },
+      { "<Leader>be", "<Cmd>Neotree buffers<CR>",    desc = "Buffers Explorer (Neo-tree)" },
       { "<Leader>ge", "<Cmd>Neotree git_status<CR>", desc = "Git Explorer (Neo-tree)" },
     },
     opts = {
@@ -803,7 +803,7 @@ local plugins = {
     },
     keys = {
       { "s", "<Cmd>HopChar2<CR>", desc = "Hop to 2 Characters" },
-      { "S", "<Cmd>HopWord<CR>", desc = "Hop to Word" },
+      { "S", "<Cmd>HopWord<CR>",  desc = "Hop to Word" },
     },
     config = function()
       require("hop").setup()
@@ -873,7 +873,7 @@ local plugins = {
       },
       presets = {
         bottom_search = true,
-        command_palette = true,
+        command_palette = false,
         long_message_to_split = true,
         inc_rename = false,
         lsp_doc_border = true,
@@ -906,7 +906,30 @@ local plugins = {
       views = {
         cmdline_popup = {
           position = {
-            row = "50%", -- Center the cmdline pop-up
+            row = 5,
+            col = "50%",
+          },
+          size = {
+            width = 60,
+            height = "auto",
+          },
+        },
+        popupmenu = {
+          relative = "editor",
+          position = {
+            row = 8,
+            col = "50%",
+          },
+          size = {
+            width = 60,
+            height = 10,
+          },
+          border = {
+            style = "rounded",
+            padding = { 0, 1 },
+          },
+          win_options = {
+            winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
           },
         },
       },
@@ -921,16 +944,16 @@ local plugins = {
     "folke/trouble.nvim",
     event = { "VeryLazy" },
     keys = {
-      { "<Leader>xx", "<Cmd>Trouble diagnostics toggle<CR>", desc = "Diagnostics (Trouble)" },
+      { "<Leader>xx", "<Cmd>Trouble diagnostics toggle<CR>",              desc = "Diagnostics (Trouble)" },
       { "<Leader>xX", "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<Leader>cs", "<Cmd>Trouble symbols toggle focus=false<CR>", desc = "Symbols (Trouble)" },
+      { "<Leader>cs", "<Cmd>Trouble symbols toggle focus=false<CR>",      desc = "Symbols (Trouble)" },
       {
         "<Leader>cl",
         "<Cmd>Trouble lsp toggle focus=false win.position=right<CR>",
         desc = "LSP Definitions / references / ... (Trouble)",
       },
       { "<Leader>xL", "<Cmd>Trouble loclist toggle<CR>", desc = "Location List (Trouble)" },
-      { "<Leader>xQ", "<Cmd>Trouble qflist toggle<CR>", desc = "Quickfix List (Trouble)" },
+      { "<Leader>xQ", "<Cmd>Trouble qflist toggle<CR>",  desc = "Quickfix List (Trouble)" },
     },
     config = function()
       require("trouble").setup()
@@ -1062,7 +1085,7 @@ local plugins = {
           variables = {},
           -- Background styles. Can be "dark", "transparent" or "normal"
           sidebars = "transparent", -- style for sidebars, see below
-          floats = "transparent", -- style for floating windows
+          floats = "transparent",   -- style for floating windows
         },
         sidebars = { "qf", "vista_kind", "terminal", "packer" },
         on_colors = function() end,
