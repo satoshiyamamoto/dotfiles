@@ -88,6 +88,8 @@ brew "certifi"
 brew "pycparser"
 # Console Matrix
 brew "cmatrix"
+# High performance code minimap generator
+brew "code-minimap"
 # Linux virtual machines
 brew "lima"
 # Container runtimes on MacOS (and Linux) with minimal setup
