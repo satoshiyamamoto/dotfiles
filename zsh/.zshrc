@@ -49,10 +49,8 @@ autoload -Uz compinit && zsh-defer compinit -C
 
 
 #
-# Source files
+# Plugins
 #
-
-## Zsh, Google Cloud etc...
 __load_plugins() {
   source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
   source "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
@@ -65,6 +63,7 @@ __load_plugins() {
   eval "$(direnv hook zsh)"
 }
 zsh-defer __load_plugins
+
 
 #
 # Functions
@@ -155,8 +154,6 @@ alias kgs='kubectl get services'
 alias kl='kubectl logs'
 alias klf='kubectl logs --follow'
 alias kns='kubectl config set-context --current --namespace'
-alias kubeoff='[ $(starship module kubernetes | wc -c) -gt 0 ] && starship toggle kubernetes'
-alias kubeon='[ $(starship module kubernetes | wc -c) -eq 0 ] && starship toggle kubernetes'
 alias la='eza --color=always --icons --long --header --group --git --color-scale --all'
 alias lg='lazygit'
 alias ll='eza --color=always --icons --long --header --group --git --color-scale'
@@ -185,6 +182,7 @@ __load_starship_config() {
 }
 add-zsh-hook precmd __load_starship_config
 TRAPWINCH() { __load_starship_config }
+
 
 #
 # Profiler
