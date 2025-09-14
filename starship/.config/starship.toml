@@ -107,11 +107,9 @@ style = "fg:#090c0c bg:#a3aed2"
 format = '[ $time  ]($style)'
 
 [custom.vpn]
-disabled = false
+disabled = true
 command = "~/Projects/src/github.com/satoshiyamamoto/starship-vpn/starship-vpn.sh prompt"
-when = """
-test "${STARSHIP_VPN_ENABLED:-false}" = "true" && ~/Projects/src/github.com/satoshiyamamoto/starship-vpn/starship-vpn.sh connected
-"""
+when = "~/Projects/src/github.com/satoshiyamamoto/starship-vpn/starship-vpn.sh connected"
 symbol = ""
 style = "bg:#394260"
 format = '[[ $symbol $output ](fg:#769ff0 bg:#394260)]($style)'

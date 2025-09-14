@@ -52,4 +52,3 @@ export DIRENV_LOG_FORMAT=""
 
 ## Starship
 export STARSHIP_CONFIG=~/.config/starship.toml
-export STARSHIP_VPN_ENABLED=true
