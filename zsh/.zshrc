@@ -154,6 +154,8 @@ alias kgs='kubectl get services'
 alias kl='kubectl logs'
 alias klf='kubectl logs --follow'
 alias kns='kubectl config set-context --current --namespace'
+alias kubeon='starship config kubernetes.disabled false'
+alias kubeoff='starship config kubernetes.disabled true'
 alias la='eza --color=always --icons --long --header --group --git --color-scale --all'
 alias lg='lazygit'
 alias ll='eza --color=always --icons --long --header --group --git --color-scale'
@@ -165,6 +167,8 @@ alias rm='rm -i'
 alias tailscale='/Applications/Tailscale.app/Contents/MacOS/Tailscale'
 alias trans='trans --brief :ja'
 alias tree='eza --color=always --icons --tree'
+alias vpnon='starship config custom.vpn.disabled false'
+alias vpnoff='starship config custom.vpn.disabled true'
 
 #
 # Prompt
