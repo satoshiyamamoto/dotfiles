@@ -178,6 +178,8 @@ brew "go"
 brew "google-java-format"
 # Ping, but with a graph
 brew "gping"
+# Development kit for the Java programming language
+brew "openjdk@21"
 # Open-source build automation tool based on the Groovy and Kotlin DSL
 brew "gradle"
 # Protocol buffers (Google's data interchange format)
@@ -290,8 +292,6 @@ brew "nkf"
 brew "nmap"
 # Renders an animated, color, ANSI-text loop of the Poptart Cat
 brew "nyancat"
-# Development kit for the Java programming language
-brew "openjdk@21"
 # Library for JPEG-2000 image manipulation
 brew "openjpeg"
 # PAM module for reattaching to the user's GUI (Aqua) session
@@ -304,8 +304,6 @@ brew "pgcli"
 brew "pipx"
 # Fast, disk space efficient package manager
 brew "pnpm"
-# Python package management tool
-brew "poetry"
 # Cowsay but with ponies
 brew "ponysay"
 # Theme for zsh
