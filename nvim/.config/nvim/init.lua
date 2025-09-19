@@ -415,14 +415,11 @@ local plugins = {
           vim.keymap.set("n", "gk", vim.lsp.buf.signature_help, opts("Show Signature help"))
           vim.keymap.set("n", "<Leader>wa", vim.lsp.buf.add_workspace_folder, opts("Add Workspace folder"))
           vim.keymap.set("n", "<Leader>wr", vim.lsp.buf.remove_workspace_folder, opts("Remove Workspace folder"))
-          vim.keymap.set("n", "<Leader>wl", function()
-            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-          end, opts("List Workspace folders"))
+          vim.keymap.set("n", "<Leader>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
+            opts("List Workspace folders"))
           vim.keymap.set("n", "<Leader>D", vim.lsp.buf.type_definition, opts("Go to Type Definition"))
           vim.keymap.set("n", "gr", vim.lsp.buf.references, opts("Find All References"))
-          vim.keymap.set("n", "<Leader>lf", function()
-            vim.lsp.buf.format({ async = true })
-          end, opts("Format Document"))
+          vim.keymap.set("n", "<Leader>lf", function() vim.lsp.buf.format({ async = true }) end, opts("Format Document"))
           vim.keymap.set("n", "gh", "<Cmd>Lspsaga lsp_finder<CR>", opts("Find LSP Symbols (Lspsaga)"))
           vim.keymap.set({ "n", "v" }, "<Leader>ca", "<Cmd>Lspsaga code_action<CR>", opts("Execute Code Action"))
           vim.keymap.set("n", "<Leader>rn", "<Cmd>Lspsaga rename<CR>", opts("Rename Symbol (Lspsaga)"))
@@ -594,15 +591,9 @@ local plugins = {
         }
       end
 
-      dap.listeners.after.event_initialized["dapui_config"] = function()
-        dapui.open()
-      end
-      dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close()
-      end
-      dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-      end
+      dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
+      dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
+      dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
 
       vim.keymap.set("n", "<F5>", dap.continue, { desc = "Continue (Debug)" })
       vim.keymap.set("n", "<F17>", dap.terminate, { desc = "Treminate (Debug)" })
@@ -610,12 +601,10 @@ local plugins = {
       vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Step Into (Debug)" })
       vim.keymap.set("n", "<F23>", dap.step_out, { desc = "Step Out (Debug)" })
       vim.keymap.set("n", "<Leader>b", dap.toggle_breakpoint, { desc = "Toggle Brakepoint (Debug)" })
-      vim.keymap.set("n", "<Leader>B", function()
-        dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-      end, { desc = "Brakepoint Condition (Debug)" })
-      vim.keymap.set("n", "<Leader>lp", function()
-        dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
-      end, { desc = "Brakepoint Log point message (Debug)" })
+      vim.keymap.set("n", "<Leader>B", function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
+        { desc = "Brakepoint Condition (Debug)" })
+      vim.keymap.set("n", "<Leader>lp", function() dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end,
+        { desc = "Brakepoint Log point message (Debug)" })
       vim.keymap.set("n", "<Leader>du", dapui.toggle, { desc = "Toggle Debugger UI (Debug)" })
       vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "ErrorMsg" })
@@ -637,18 +626,10 @@ local plugins = {
     "nvim-neotest/neotest",
     keys = {
       {
-        "<Leader>df",
-        function()
-          require("neotest").run.run(vim.fn.expand("%"))
-        end,
-        desc = "Test File",
+        "<Leader>df", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Test File",
       },
       {
-        "<Leader>dn",
-        function()
-          require("neotest").run.run()
-        end,
-        desc = "Test Nearest",
+        "<Leader>dn", function() require("neotest").run.run() end, desc = "Test Nearest",
       },
     },
     config = function()
