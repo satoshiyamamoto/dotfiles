@@ -396,8 +396,6 @@ brew "teamookla/speedtest/speedtest"
 cask "claude"
 # Terminal-based AI coding assistant
 cask "claude-code"
-# Clipboard extension app
-cask "clipy"
 # Create and run Linux containers using lightweight virtual machines
 cask "container"
 # Collaborative team software
