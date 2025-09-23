@@ -388,7 +388,6 @@ local plugins = {
 
       -- Enable LSP servers
       vim.lsp.enable("pyright")
-      vim.lsp.enable("bufls")
       vim.lsp.enable("gopls")
       vim.lsp.enable("ts_ls")
       vim.lsp.enable("terraformls")
@@ -471,46 +470,34 @@ local plugins = {
   },
 
   {
-    "mason-org/mason.nvim",
-    build = ":MasonUpdate",
-    cmd = {
-      "Mason",
-      "MasonInstall",
-      "MasonUninstall",
-      "MasonUninstallAll",
-      "MasonLog",
-      "MasonUpdate",
+    "mason-org/mason-lspconfig.nvim",
+    opts = {
+      ensure_installed = {
+        "gopls",
+        "jdtls",
+        "lua_ls",
+        "pyright",
+        "rust_analyzer",
+        "terraformls",
+        "ts_ls",
+      },
     },
-    config = function()
-      require("mason").setup()
-      require("mason-lspconfig").setup({
-        ensure_installed = {
-          -- LSP
-          "buf_ls",
-          "gopls",
-          "jdtls",
-          "lua_ls",
-          "pyright",
-          "rust_analyzer",
-          "terraformls",
-          "ts_ls",
-        },
-      })
-      require("mason-nvim-dap").setup({
-        automatic_installation = true,
-        ensure_installed = {
-          -- DAP
-          "debugpy",
-          "delve",
-          "javadbg",
-          "javatest",
-          "js",
-        },
-      })
-    end,
     dependencies = {
-      { "williamboman/mason-lspconfig.nvim" },
-      { "jay-babu/mason-nvim-dap.nvim" },
+      { "neovim/nvim-lspconfig" },
+      { "mason-org/mason.nvim", opts = {} },
+      {
+        "jay-babu/mason-nvim-dap.nvim",
+        opts = {
+          automatic_installation = true,
+          ensure_installed = {
+            "debugpy",
+            "delve",
+            "javadbg",
+            "javatest",
+            "js",
+          },
+        }
+      },
     },
   },
 
