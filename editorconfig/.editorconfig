@@ -29,36 +29,37 @@ indent_size = 4
 [Dockerfile]
 indent_size = 4
 
-# Java
+# Java - Google Java Format
 [*.java]
 indent_style = space
 indent_size = 2
 continuation_indent_size = 4
 max_line_length = 100
 
-# TypeScript
-[*.ts]
+# TypeScript/JavaScript/React
+[*.{ts,tsx,js,jsx}]
 indent_style = space
-indent_size = 4
+indent_size = 2
 max_line_length = 80
 
-# Python: PEP8 defines 4 spaces for indentation
+# Python - PEP 8
 [*.py]
 indent_style = space
 indent_size = 4
-max_line_length = 100
+max_line_length = 88
 
-# PHP
+# PHP - PSR-12
 [*.php]
 indent_style = space
 indent_size = 4
 
-# Rust
+# Rust - standard style
 [*.rs]
 indent_style = space
 indent_size = 4
+max_line_length = 100
 
-# Salt state files, YAML format, 2 spaces
-[*.sls, *.yaml, *.yml]
+# YAML
+[*.{sls,yaml,yml}]
 indent_style = space
 indent_size = 2
