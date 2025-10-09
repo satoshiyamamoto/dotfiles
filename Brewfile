@@ -122,6 +122,8 @@ brew "docker-credential-helper"
 brew "docutils"
 # Embeddable SQL OLAP Database Management System
 brew "duckdb"
+# Perl lib for reading and writing EXIF metadata
+brew "exiftool"
 # Modern, maintained replacement for ls
 brew "eza"
 # Like neofetch, but much faster because written mostly in C
