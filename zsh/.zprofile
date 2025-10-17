@@ -27,6 +27,7 @@ cdpath=(
 path=(
   $GOPATH/bin(N)
   $HOME/.cargo/bin(N)
+  $HOME/.local/bin(N)
   $HOME/{,s}bin(N)
   /opt/homebrew/opt/mysql-client/bin(N)
   /opt/homebrew/opt/rustup/bin(N)
