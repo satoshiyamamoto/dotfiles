@@ -78,7 +78,7 @@ brew "cairo"
 brew "libnghttp2"
 # Multi-platform support library with a focus on asynchronous I/O
 brew "libuv"
-# Platform built on V8 to build network applications
+# Open-source, cross-platform JavaScript runtime environment
 brew "node"
 # CLI tool for analyzing Claude Code usage from local JSONL files
 brew "ccusage"
@@ -98,6 +98,8 @@ brew "colima"
 brew "colordiff"
 # Zsh completion for conda
 brew "conda-zsh-completion"
+# Create and run Linux containers using lightweight virtual machines
+brew "container"
 # GNU multiple precision arithmetic library
 brew "gmp"
 # GNU File, Shell, and Text utilities
@@ -176,12 +178,12 @@ brew "gnutls"
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
 brew "go"
+# Go formatter that additionally inserts import statements
+brew "goimports"
 # Reformats Java source code to comply with Google Java Style
 brew "google-java-format"
 # Ping, but with a graph
 brew "gping"
-# Development kit for the Java programming language
-brew "openjdk@21"
 # Open-source build automation tool based on the Groovy and Kotlin DSL
 brew "gradle"
 # Protocol buffers (Google's data interchange format)
@@ -252,8 +254,6 @@ brew "libssh"
 brew "unibilium"
 # Library for processing keyboard entry from the terminal
 brew "libtermkey"
-# GNOME XML library
-brew "libxml2"
 # XML security library
 brew "libxmlsec1"
 # YAML Parser
@@ -294,6 +294,8 @@ brew "nkf"
 brew "nmap"
 # Renders an animated, color, ANSI-text loop of the Poptart Cat
 brew "nyancat"
+# Development kit for the Java programming language
+brew "openjdk@21"
 # Library for JPEG-2000 image manipulation
 brew "openjpeg"
 # PAM module for reattaching to the user's GUI (Aqua) session
@@ -310,6 +312,8 @@ brew "pnpm"
 brew "ponysay"
 # Theme for zsh
 brew "powerlevel10k"
+# Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
+brew "prettier"
 # Password generator
 brew "pwgen"
 # Generic syntax highlighter
@@ -324,6 +328,8 @@ brew "python@3.12"
 brew "qemu"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
+# Safe, concurrent, practical language
+brew "rust"
 # Rust toolchain installer
 brew "rustup"
 # Simple keystroke visualizer
@@ -350,6 +356,8 @@ brew "staticcheck"
 brew "stern"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
+# Opinionated Lua code formatter
+brew "stylua"
 # User interface to the TELNET protocol
 brew "telnet"
 # Terraform version manager inspired by rbenv
@@ -374,6 +382,8 @@ brew "vivid"
 brew "watch"
 # Internet file retriever
 brew "wget"
+# Extensible command-line tool to format YAML files
+brew "yamlfmt"
 # JavaScript package manager
 brew "yarn"
 # Blazing fast terminal file manager written in Rust, based on async I/O
@@ -452,3 +462,6 @@ cask "zoom"
 #mas "Tailscale", id: 1475387142
 #mas "Vimlike", id: 1584519802
 #mas "Xcode", id: 497799835
+#go "golang.org/x/tools/cmd/goimports"
+#go "golang.org/x/tools/gopls"
+#go "github.com/ca-media-dsc/terraform-provider-orion"
