@@ -45,7 +45,7 @@ zstyle ':completion:*:(ssh|scp):*:hosts' ignored-patterns loopback ip6-loopback 
 zstyle ':completion:*' completer _complete _approximate
 zstyle ':completion:*:approximate:*' max-errors 1 numeric
 autoload -Uz $ZSH_DEFER_HOME/zsh-defer
-autoload -Uz compinit && zsh-defer compinit -C
+autoload -Uz compinit && zsh-defer compinit -C && zsh-defer compdef _tailscale Tailscale
 
 
 #
