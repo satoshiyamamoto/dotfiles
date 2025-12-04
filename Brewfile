@@ -408,6 +408,8 @@ brew "teamookla/speedtest/speedtest"
 cask "claude"
 # Terminal-based AI coding assistant
 cask "claude-code"
+# OpenAI's coding agent that runs in your terminal
+cask "codex"
 # Create and run Linux containers using lightweight virtual machines
 cask "container"
 # Collaborative team software
