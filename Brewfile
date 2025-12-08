@@ -436,6 +436,8 @@ cask "kitty"
 cask "licecap"
 # Minimal installer for conda
 cask "miniconda"
+# App to write, plan, collaborate, and get organised
+cask "notion"
 # Quick Look generator for Markdown files
 cask "qlmarkdown"
 # Quick Look plugin for CSV files
