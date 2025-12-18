@@ -320,10 +320,6 @@ brew "pwgen"
 brew "pygments"
 # Python Language Server for the Language Server Protocol
 brew "python-lsp-server"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.11"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.12"
 # Generic machine emulator and virtualizer
 brew "qemu"
 # Search tool like grep and The Silver Searcher
