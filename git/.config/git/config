@@ -1,8 +1,15 @@
 [include]
     path = ~/.config/git/config.darwin
-[credential "dev.azure.com"]
+
+[credential]
+	helper =
+	helper = /usr/local/share/gcm-core/git-credential-manager
+
+[credential "https://dev.azure.com"]
 	provider = generic
-[credential "github.com"]
+
+[credential "https://github.com"]
 	provider = github
-[credential "ghe.ca-tools.org"]
+
+[credential "https://ghe.ca-tools.org"]
 	provider = github
