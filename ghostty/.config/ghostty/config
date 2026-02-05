@@ -22,6 +22,7 @@ macos-option-as-alt = true
 
 ## Keybindings
 keybind = global:cmd+grave_accent=toggle_quick_terminal
+keybind = cmd+f=write_scrollback_file:open
 keybind = ctrl+shift+j=ignore
 keybind = ctrl+shift+;=ignore
 
