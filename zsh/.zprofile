@@ -50,5 +50,8 @@ export FZF_ALT_C_OPTS='--preview="${FZF_PREVIEW_DIR}"'
 ## Direnv
 export DIRENV_LOG_FORMAT=""
 
+## GitHub
+export GITHUB_PERSONAL_ACCESS_TOKEN=$(gh auth token 2>/dev/null)
+
 ## Starship
 export STARSHIP_CONFIG=~/.config/starship.toml
