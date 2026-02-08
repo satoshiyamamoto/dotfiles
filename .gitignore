@@ -75,3 +75,4 @@ vim/.vim/plugged
 lazy-lock.json
 
 # End of https://www.toptal.com/developers/gitignore/api/vim
+tmux/.config/tmux/plugins/

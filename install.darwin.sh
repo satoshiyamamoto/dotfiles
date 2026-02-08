@@ -16,6 +16,7 @@ stow --verbose --adopt --target=$HOME \
   sqlfluff \
   sqlite \
   starship \
+  tmux \
   vim \
   yamlfmt \
   yazi \
