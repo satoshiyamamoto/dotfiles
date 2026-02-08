@@ -40,6 +40,7 @@ path=(
 ## Homebrew
 export HOMEBREW_PREFIX='/opt/homebrew'
 export HOMEBREW_NO_ENV_HINTS='true'
+export HOMEBREW_BUNDLE_MAS_SKIP="6460587883"  # Postman Interceptor
 
 ## fzf
 FZF_PREVIEW_FILE='bat --style=changes,header --color=always --line-range :50 {}'
