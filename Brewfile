@@ -174,7 +174,7 @@ brew "p11-kit"
 brew "unbound"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
-# GNU Pretty Good Privacy (PGP) package
+# GNU Privacy Guard (OpenPGP)
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
 brew "go"
@@ -282,8 +282,6 @@ brew "msgpack"
 brew "mycli"
 # Open source relational database management system
 brew "mysql-client"
-# Incremental parsing library
-brew "tree-sitter"
 # Clean C library for processing UTF-8 Unicode data
 brew "utf8proc"
 # Ambitious Vim-fork focused on extensibility and agility
@@ -360,10 +358,14 @@ brew "telnet"
 brew "tfenv"
 # Simplified and community-driven man pages
 brew "tldr"
+# Terminal multiplexer
+brew "tmux"
 # Command-line translator using Google Translate and more
 brew "translate-shell"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Incremental parsing library
+brew "tree-sitter"
 # Parser generator tool
 brew "tree-sitter-cli"
 # Extremely fast Python package installer and resolver, written in Rust
@@ -448,20 +450,22 @@ cask "tradingview"
 cask "visual-studio-code"
 # Video communication and virtual meeting platform
 cask "zoom"
-#mas "AdGuard for Safari", id: 1440147259
-#mas "GarageBand", id: 682658836
-#mas "Hidden Bar", id: 1452453066
-#mas "iMovie", id: 408981434
-#mas "JSON Peep", id: 1458969831
-#mas "Keynote", id: 409183694
-#mas "Kindle", id: 302584613
-#mas "Numbers", id: 409203825
-#mas "Pages", id: 409201541
-#mas "Postman Interceptor", id: 6460587883
-#mas "PreviewYaml", id: 1564574724
-#mas "Tailscale", id: 1475387142
-#mas "Vimlike", id: 1584519802
-#mas "Xcode", id: 497799835
-#go "golang.org/x/tools/cmd/goimports"
-#go "golang.org/x/tools/gopls"
-#go "github.com/ca-media-dsc/terraform-provider-orion"
+mas "AdGuard for Safari", id: 1440147259
+mas "GarageBand", id: 682658836
+mas "Hidden Bar", id: 1452453066
+mas "iMovie", id: 408981434
+mas "JSON Peep", id: 1458969831
+mas "Keynote", id: 409183694
+mas "Kindle", id: 302584613
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
+mas "Postman Interceptor", id: 6460587883
+mas "PreviewYaml", id: 1564574724
+mas "Tailscale", id: 1475387142
+mas "Vimlike", id: 1584519802
+mas "Xcode", id: 497799835
+go "github.com/go-delve/delve/cmd/dlv"
+go "golang.org/x/tools/cmd/goimports"
+go "github.com/golangci/golangci-lint/cmd/golangci-lint"
+go "golang.org/x/tools/gopls"
+go "github.com/ca-orion/terraform-provider-orion"
