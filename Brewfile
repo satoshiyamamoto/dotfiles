@@ -412,10 +412,9 @@ cask "codex"
 cask "container"
 # Collaborative team software
 cask "figma"
-cask "font-fira-code-nerd-font"
 cask "font-ipaexfont"
-cask "font-meslo-for-powerlevel10k"
-cask "font-sf-pro"
+cask "font-noto-sans-symbols-2"
+cask "font-symbols-only-nerd-font"
 # Set of tools to manage resources and applications hosted on Google Cloud
 cask "gcloud-cli"
 # Terminal emulator that uses platform-native UI and GPU acceleration
