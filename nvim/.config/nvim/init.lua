@@ -638,6 +638,27 @@ local plugins = {
 
   -- }}}
 
+  -- ## AI Coding Agents: {{{
+
+  { "folke/snacks.nvim" },
+
+  {
+    "coder/claudecode.nvim",
+    dependencies = { "folke/snacks.nvim" },
+    config = true,
+    keys = {
+      { "<leader>a",  nil,                         desc = "AI/Claude Code" },
+      { "<leader>ac", "<cmd>ClaudeCode<cr>",       desc = "Toggle Claude" },
+      { "<leader>af", "<cmd>ClaudeCodeFocus<cr>",  desc = "Focus Claude" },
+      { "<leader>as", "<cmd>ClaudeCodeSend<cr>",   mode = "v", desc = "Send to Claude" },
+      { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Model" },
+      { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
+      { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>",   desc = "Deny diff" },
+    },
+  },
+
+  -- }}}
+
   -- ## Finders: {{{
   {
     "nvim-telescope/telescope.nvim",
