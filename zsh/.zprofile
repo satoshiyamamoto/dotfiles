@@ -54,5 +54,8 @@ export DIRENV_LOG_FORMAT=""
 ## GitHub
 export GITHUB_PERSONAL_ACCESS_TOKEN=$(gh auth token 2>/dev/null)
 
+## Claude Code
+export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+
 ## Starship
 export STARSHIP_CONFIG=~/.config/starship.toml
