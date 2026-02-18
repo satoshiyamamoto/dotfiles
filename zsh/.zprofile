@@ -59,3 +59,6 @@ export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 
 ## Starship
 export STARSHIP_CONFIG=~/.config/starship.toml
+
+## Java
+export MAVEN_ARGS='-Dstyle.color=always'
