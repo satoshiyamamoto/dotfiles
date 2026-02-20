@@ -15,7 +15,7 @@ adjust-underline-position = 2
 adjust-strikethrough-position = 2
 window-padding-x = 8
 window-padding-y = 8
-background-opacity = 0.9
+background-opacity = 0.85
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
 
