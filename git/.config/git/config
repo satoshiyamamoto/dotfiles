@@ -3,6 +3,7 @@
 
 [credential "https://dev.azure.com"]
 	provider = generic
+	useHttpPath = true
 
 [credential "https://github.com"]
 	provider = github
