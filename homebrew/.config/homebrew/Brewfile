@@ -214,8 +214,6 @@ brew "ipython"
 brew "jd"
 # High dynamic-range image file format
 brew "openexr"
-# Image format providing lossless and lossy compression for web images
-brew "webp"
 # New file format for still image compression
 brew "jpeg-xl"
 # Lightweight and flexible command-line JSON processor
@@ -378,6 +376,8 @@ brew "viddy"
 brew "vivid"
 # Executes a program periodically, showing output fullscreen
 brew "watch"
+# Image format providing lossless and lossy compression for web images
+brew "webp"
 # Internet file retriever
 brew "wget"
 # Extensible command-line tool to format YAML files
@@ -436,6 +436,8 @@ cask "licecap"
 cask "miniconda"
 # App to write, plan, collaborate, and get organised
 cask "notion"
+# Collaboration platform for API development
+cask "postman"
 # Quick Look generator for Markdown files
 cask "qlmarkdown"
 # Quick Look plugin for CSV files
