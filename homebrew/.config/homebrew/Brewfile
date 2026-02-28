@@ -32,6 +32,8 @@ brew "libunistring"
 brew "gettext"
 # Text-based UI library
 brew "ncurses"
+# Bourne-Again SHell, a UNIX command interpreter
+brew "bash"
 # C library of Git core methods that is re-entrant and linkable
 brew "libgit2"
 # Regular expressions library
@@ -138,6 +140,8 @@ brew "libtool"
 brew "freetds"
 # Command-line fuzzy finder written in Go
 brew "fzf"
+# GNU awk utility
+brew "gawk"
 # Library and utilities for processing GIFs
 brew "giflib"
 # OpenType text shaping engine
@@ -274,6 +278,8 @@ brew "mas"
 brew "maven"
 # Run a Kubernetes cluster locally
 brew "minikube"
+# Polyglot runtime manager (asdf rust clone)
+brew "mise"
 # Library for a binary-based efficient data interchange format
 brew "msgpack"
 # CLI for MySQL with auto-completion and syntax highlighting
@@ -470,3 +476,4 @@ go "github.com/go-delve/delve/cmd/dlv"
 go "golang.org/x/tools/cmd/goimports"
 go "github.com/golangci/golangci-lint/cmd/golangci-lint"
 go "golang.org/x/tools/gopls"
+cargo "code-minimap"
