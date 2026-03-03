@@ -29,6 +29,7 @@ vim.keymap.set("n", "[b", "<Cmd>bprevious<CR>", {})
 vim.keymap.set("n", "]b", "<Cmd>bnext<CR>", {})
 vim.keymap.set("n", "[B", "<Cmd>bfirst<CR>", {})
 vim.keymap.set("n", "]B", "<Cmd>blast<CR>", {})
+vim.keymap.set("n", "<Leader>bd", "<Cmd>bp | bd #<CR>", {})
 
 -- Windows
 vim.keymap.set("n", "<C-j>", "<C-w>j", {})
@@ -588,8 +589,8 @@ local plugins = {
       vim.keymap.set("n", "<F10>", dap.step_over, { desc = "Step Over (Debug)" })
       vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Step Into (Debug)" })
       vim.keymap.set("n", "<F23>", dap.step_out, { desc = "Step Out (Debug)" })
-      vim.keymap.set("n", "<Leader>b", dap.toggle_breakpoint, { desc = "Toggle Brakepoint (Debug)" })
-      vim.keymap.set("n", "<Leader>B", function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
+      vim.keymap.set("n", "<Leader>db", dap.toggle_breakpoint, { desc = "Toggle Brakepoint (Debug)" })
+      vim.keymap.set("n", "<Leader>dB", function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
         { desc = "Brakepoint Condition (Debug)" })
       vim.keymap.set("n", "<Leader>lp", function() dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end,
         { desc = "Brakepoint Log point message (Debug)" })
@@ -786,14 +787,14 @@ local plugins = {
   {
     "smoka7/hop.nvim",
     version = "v2.*",
-    cmd = {
-      "HopWord",
-      "HopChar2",
-      "HopLine",
-    },
     keys = {
-      { "s", "<Cmd>HopChar2<CR>", desc = "Hop to 2 Characters" },
-      { "S", "<Cmd>HopWord<CR>",  desc = "Hop to Word" },
+      {
+        "S",
+        function()
+          require("hop").hint_words()
+        end,
+        desc = "Hop to Word",
+      },
     },
     config = function()
       require("hop").setup()
