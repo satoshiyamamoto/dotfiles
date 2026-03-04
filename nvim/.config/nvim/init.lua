@@ -109,17 +109,17 @@ local plugins = {
         enable = true,
         disable = { "yaml" },
       },
-      autotag = {
-        enable = true,
-      },
     },
     config = function(_, opts)
       require("nvim-treesitter").setup(opts)
       vim.treesitter.language.register("hcl", { "terraform" })
     end,
-    dependencies = {
-      { "windwp/nvim-ts-autotag" },
-    },
+  },
+
+  {
+    "windwp/nvim-ts-autotag",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {},
   },
 
   {
