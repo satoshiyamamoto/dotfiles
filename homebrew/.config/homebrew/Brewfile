@@ -238,6 +238,8 @@ brew "kubernetes-cli"
 brew "lazydocker"
 # Simple terminal UI for git commands
 brew "lazygit"
+# Fast and powerful Git hooks manager for any type of projects
+brew "lefthook"
 # Access DVDs as block devices without the decryption
 brew "libdvdcss"
 # Portable Foreign Function Interface library
