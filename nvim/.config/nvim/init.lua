@@ -345,7 +345,7 @@ local plugins = {
   {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
-    opts = {},
+    config = true,
   },
 
   { "tpope/vim-unimpaired", event = { "BufReadPost" } },
@@ -855,6 +855,7 @@ local plugins = {
     },
     opts = {
       lsp = {
+        signature = { enabled = false },
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
