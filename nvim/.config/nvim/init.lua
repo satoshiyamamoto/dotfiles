@@ -205,6 +205,7 @@ local plugins = {
       local luasnip = require("luasnip")
       require("luasnip.loaders.from_vscode").lazy_load()
 
+      ---@diagnostic disable-next-line: redundant-parameter
       cmp.setup({
         snippet = {
           expand = function(args)
@@ -279,6 +280,7 @@ local plugins = {
       })
 
       -- Use buffer source for `/`
+      ---@diagnostic disable-next-line: undefined-field
       cmp.setup.cmdline("/", {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
@@ -289,6 +291,7 @@ local plugins = {
       })
 
       -- Use cmdline & path source for ":"
+      ---@diagnostic disable-next-line: undefined-field
       cmp.setup.cmdline(":", {
         mapping = cmp.mapping.preset.cmdline(),
         sources = cmp.config.sources({
@@ -323,6 +326,7 @@ local plugins = {
     cmd = { "Copilot" },
     event = { "InsertEnter" },
     config = function()
+      ---@diagnostic disable-next-line: undefined-field
       require("copilot").setup({
         suggestion = { enabled = false },
         panel = { enabled = false },
@@ -1337,6 +1341,7 @@ local plugins = {
             end
           end
 
+          ---@diagnostic disable-next-line: param-type-mismatch
           table.insert(dashboard.section.header.opts.hl, highlights)
         end
 
@@ -1344,6 +1349,7 @@ local plugins = {
           dashboard.button("e", "  New File", "<Cmd>enew <BAR> startinsert <CR>"),
           dashboard.button("f", "  Find File", "<Cmd>Telescope find_files<CR>"),
           dashboard.button("g", "  Find Text", "<Cmd>Telescope live_grep<CR>"),
+          ---@diagnostic disable-next-line: param-type-mismatch
           dashboard.button("d", "  Source Control", function()
             require("toggleterm.terminal").Terminal:new({ cmd = "lazygit", direction = "tab", count = 0 }):toggle()
           end),
@@ -1464,6 +1470,7 @@ local opts = {
 
 -- # Lazy Setup: {{{
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+---@diagnostic disable-next-line: undefined-field
 if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     "git",
