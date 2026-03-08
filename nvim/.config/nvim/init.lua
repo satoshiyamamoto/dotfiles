@@ -56,7 +56,7 @@ end, {})
 vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist, {})
 
 -- Terminal
-vim.keymap.set({"n", "t"}, "<C-\\>", "<Cmd>ToggleTerm<CR>", {})
+vim.keymap.set({ "n", "t" }, "<C-\\>", "<Cmd>ToggleTerm<CR>", {})
 vim.keymap.set("t", "<Esc>", "<C-Bslash><C-n>", {})
 vim.keymap.set("t", "<C-[>", "<C-Bslash><C-n>", {})
 
@@ -308,7 +308,7 @@ local plugins = {
       { "hrsh7th/cmp-buffer" },
       { "hrsh7th/cmp-path" },
       { "hrsh7th/cmp-cmdline" },
-      { "L3MON4D3/LuaSnip",                    build = "make install_jsregexp" },
+      { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
       { "rafamadriz/friendly-snippets" },
       { "saadparwaiz1/cmp_luasnip" },
       { "zbirenbaum/copilot.lua" },
@@ -336,7 +336,7 @@ local plugins = {
     end,
   },
 
-  { "golang/vscode-go",     event = { "InsertEnter" } },
+  { "golang/vscode-go", event = { "InsertEnter" } },
 
   -- }}}
 
@@ -349,10 +349,10 @@ local plugins = {
   },
 
   { "tpope/vim-unimpaired", event = { "BufReadPost" } },
-  { "tpope/vim-fugitive",   event = { "BufReadPost" } },
-  { "tpope/vim-surround",   event = { "BufReadPost" } },
+  { "tpope/vim-fugitive", event = { "BufReadPost" } },
+  { "tpope/vim-surround", event = { "BufReadPost" } },
   { "tpope/vim-commentary", event = { "BufReadPost" } },
-  { "mattn/emmet-vim",      event = { "InsertEnter" } },
+  { "mattn/emmet-vim", event = { "InsertEnter" } },
 
   -- }}}
 
@@ -416,11 +416,14 @@ local plugins = {
           vim.keymap.set("n", "gk", vim.lsp.buf.signature_help, opts("Show Signature help"))
           vim.keymap.set("n", "<Leader>wa", vim.lsp.buf.add_workspace_folder, opts("Add Workspace folder"))
           vim.keymap.set("n", "<Leader>wr", vim.lsp.buf.remove_workspace_folder, opts("Remove Workspace folder"))
-          vim.keymap.set("n", "<Leader>wl", function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end,
-            opts("List Workspace folders"))
+          vim.keymap.set("n", "<Leader>wl", function()
+            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+          end, opts("List Workspace folders"))
           vim.keymap.set("n", "<Leader>D", vim.lsp.buf.type_definition, opts("Go to Type Definition"))
           vim.keymap.set("n", "gr", vim.lsp.buf.references, opts("Find All References"))
-          vim.keymap.set("n", "<Leader>lf", function() vim.lsp.buf.format({ async = true }) end, opts("Format Document"))
+          vim.keymap.set("n", "<Leader>lf", function()
+            vim.lsp.buf.format({ async = true })
+          end, opts("Format Document"))
           vim.keymap.set("n", "gh", "<Cmd>Lspsaga lsp_finder<CR>", opts("Find LSP Symbols (Lspsaga)"))
           vim.keymap.set({ "n", "v" }, "<Leader>ca", "<Cmd>Lspsaga code_action<CR>", opts("Execute Code Action"))
           vim.keymap.set("n", "<Leader>rn", "<Cmd>Lspsaga rename<CR>", opts("Rename Symbol (Lspsaga)"))
@@ -498,7 +501,7 @@ local plugins = {
             "javatest",
             "js",
           },
-        }
+        },
       },
     },
   },
@@ -580,9 +583,15 @@ local plugins = {
         }
       end
 
-      dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
-      dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
-      dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
+      dap.listeners.after.event_initialized["dapui_config"] = function()
+        dapui.open()
+      end
+      dap.listeners.before.event_terminated["dapui_config"] = function()
+        dapui.close()
+      end
+      dap.listeners.before.event_exited["dapui_config"] = function()
+        dapui.close()
+      end
 
       vim.keymap.set("n", "<F5>", dap.continue, { desc = "Continue (Debug)" })
       vim.keymap.set("n", "<F17>", dap.terminate, { desc = "Treminate (Debug)" })
@@ -590,10 +599,12 @@ local plugins = {
       vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Step Into (Debug)" })
       vim.keymap.set("n", "<F23>", dap.step_out, { desc = "Step Out (Debug)" })
       vim.keymap.set("n", "<Leader>db", dap.toggle_breakpoint, { desc = "Toggle Brakepoint (Debug)" })
-      vim.keymap.set("n", "<Leader>dB", function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
-        { desc = "Brakepoint Condition (Debug)" })
-      vim.keymap.set("n", "<Leader>lp", function() dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end,
-        { desc = "Brakepoint Log point message (Debug)" })
+      vim.keymap.set("n", "<Leader>dB", function()
+        dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+      end, { desc = "Brakepoint Condition (Debug)" })
+      vim.keymap.set("n", "<Leader>lp", function()
+        dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
+      end, { desc = "Brakepoint Log point message (Debug)" })
       vim.keymap.set("n", "<Leader>du", dapui.toggle, { desc = "Toggle Debugger UI (Debug)" })
       vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "ErrorMsg" })
@@ -615,10 +626,18 @@ local plugins = {
     "nvim-neotest/neotest",
     keys = {
       {
-        "<Leader>df", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Test File",
+        "<Leader>df",
+        function()
+          require("neotest").run.run(vim.fn.expand("%"))
+        end,
+        desc = "Test File",
       },
       {
-        "<Leader>dn", function() require("neotest").run.run() end, desc = "Test Nearest",
+        "<Leader>dn",
+        function()
+          require("neotest").run.run()
+        end,
+        desc = "Test Nearest",
       },
     },
     config = function()
@@ -649,13 +668,13 @@ local plugins = {
     dependencies = { "folke/snacks.nvim" },
     config = true,
     keys = {
-      { "<leader>a",  nil,                         desc = "AI/Claude Code" },
-      { "<leader>ac", "<cmd>ClaudeCode<cr>",       desc = "Toggle Claude" },
-      { "<leader>af", "<cmd>ClaudeCodeFocus<cr>",  desc = "Focus Claude" },
-      { "<leader>as", "<cmd>ClaudeCodeSend<cr>",   mode = "v", desc = "Send to Claude" },
+      { "<leader>a", nil, desc = "AI/Claude Code" },
+      { "<leader>ac", "<cmd>ClaudeCode<cr>", desc = "Toggle Claude" },
+      { "<leader>af", "<cmd>ClaudeCodeFocus<cr>", desc = "Focus Claude" },
+      { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
       { "<leader>am", "<cmd>ClaudeCodeSelectModel<cr>", desc = "Select Model" },
       { "<leader>aa", "<cmd>ClaudeCodeDiffAccept<cr>", desc = "Accept diff" },
-      { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>",   desc = "Deny diff" },
+      { "<leader>ad", "<cmd>ClaudeCodeDiffDeny<cr>", desc = "Deny diff" },
     },
   },
 
@@ -667,17 +686,17 @@ local plugins = {
     cmd = { "Telescope" },
     event = { "BufReadPost", "BufNewFile" },
     keys = {
-      { "<C-p>",      "<Cmd>Telescope find_files<CR>",                    desc = "Find Files" },
-      { "<Leader>ff", "<Cmd>Telescope find_files<CR>",                    desc = "Find Files" },
-      { "<Leader>fg", "<Cmd>Telescope live_grep<CR>",                     desc = "Search with Live Grep" },
-      { "<Leader>fb", "<Cmd>Telescope buffers<CR>",                       desc = "List Buffers" },
-      { "<Leader>fr", "<Cmd>Telescope oldfiles<CR>",                      desc = "Open Recent Files" },
-      { '<Leader>f"', "<Cmd>Telescope registers<CR>",                     desc = "Search Registers" },
-      { "<Leader>fh", "<Cmd>Telescope help_tags<CR>",                     desc = "Search Help Tags" },
-      { "<Leader>fs", "<Cmd>Telescope lsp_document_symbols<CR>",          desc = "Search Document Symbols" },
+      { "<C-p>", "<Cmd>Telescope find_files<CR>", desc = "Find Files" },
+      { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Find Files" },
+      { "<Leader>fg", "<Cmd>Telescope live_grep<CR>", desc = "Search with Live Grep" },
+      { "<Leader>fb", "<Cmd>Telescope buffers<CR>", desc = "List Buffers" },
+      { "<Leader>fr", "<Cmd>Telescope oldfiles<CR>", desc = "Open Recent Files" },
+      { '<Leader>f"', "<Cmd>Telescope registers<CR>", desc = "Search Registers" },
+      { "<Leader>fh", "<Cmd>Telescope help_tags<CR>", desc = "Search Help Tags" },
+      { "<Leader>fs", "<Cmd>Telescope lsp_document_symbols<CR>", desc = "Search Document Symbols" },
       { "<Leader>fS", "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>", desc = "Search Workspace Symbols" },
-      { "<Leader>fd", "<Cmd>Telescope dap configurations<CR>",            desc = "Debug Configurations (Debug)" },
-      { "<Leader>fn", "<Cmd>Telescope noice<CR>",                         desc = "Search Noice Messages" },
+      { "<Leader>fd", "<Cmd>Telescope dap configurations<CR>", desc = "Debug Configurations (Debug)" },
+      { "<Leader>fn", "<Cmd>Telescope noice<CR>", desc = "Search Noice Messages" },
     },
     config = function()
       local telescope = require("telescope")
@@ -720,10 +739,10 @@ local plugins = {
         },
         extensions = {
           fzf = {
-            fuzzy = true,                   -- false will only do exact matching
+            fuzzy = true, -- false will only do exact matching
             override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true,    -- override the file sorter
-            case_mode = "smart_case",       -- or "ignore_case" or "respect_case"
+            override_file_sorter = true, -- override the file sorter
+            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
           },
           ["ui-select"] = {
             require("telescope.themes").get_dropdown(),
@@ -748,8 +767,8 @@ local plugins = {
     branch = "v3.x",
     cmd = { "Neotree" },
     keys = {
-      { "<Leader>e",  "<Cmd>Neotree toggle<CR>",     desc = "File Explorer (Neo-tree)" },
-      { "<Leader>be", "<Cmd>Neotree buffers<CR>",    desc = "Buffers Explorer (Neo-tree)" },
+      { "<Leader>e", "<Cmd>Neotree toggle<CR>", desc = "File Explorer (Neo-tree)" },
+      { "<Leader>be", "<Cmd>Neotree buffers<CR>", desc = "Buffers Explorer (Neo-tree)" },
       { "<Leader>ge", "<Cmd>Neotree git_status<CR>", desc = "Git Explorer (Neo-tree)" },
     },
     opts = {
@@ -886,14 +905,14 @@ local plugins = {
         -- FIXME: Cannot get stdout while running !commands
         -- https://github.com/folke/noice.nvim/issues/1097
         {
-          filter = { event = "msg_show", },
+          filter = { event = "msg_show" },
           view = "notify",
           opts = {
             level = "info",
             skip = false,
             replace = false,
-          }
-        }
+          },
+        },
       },
       views = {
         cmdline_popup = {
@@ -936,16 +955,16 @@ local plugins = {
     "folke/trouble.nvim",
     event = { "VeryLazy" },
     keys = {
-      { "<Leader>xx", "<Cmd>Trouble diagnostics toggle<CR>",              desc = "Diagnostics (Trouble)" },
+      { "<Leader>xx", "<Cmd>Trouble diagnostics toggle<CR>", desc = "Diagnostics (Trouble)" },
       { "<Leader>xX", "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<Leader>cs", "<Cmd>Trouble symbols toggle focus=false<CR>",      desc = "Symbols (Trouble)" },
+      { "<Leader>cs", "<Cmd>Trouble symbols toggle focus=false<CR>", desc = "Symbols (Trouble)" },
       {
         "<Leader>cl",
         "<Cmd>Trouble lsp toggle focus=false win.position=right<CR>",
         desc = "LSP Definitions / references / ... (Trouble)",
       },
       { "<Leader>xL", "<Cmd>Trouble loclist toggle<CR>", desc = "Location List (Trouble)" },
-      { "<Leader>xQ", "<Cmd>Trouble qflist toggle<CR>",  desc = "Quickfix List (Trouble)" },
+      { "<Leader>xQ", "<Cmd>Trouble qflist toggle<CR>", desc = "Quickfix List (Trouble)" },
     },
     config = function()
       require("trouble").setup()
@@ -1087,7 +1106,7 @@ local plugins = {
           variables = {},
           -- Background styles. Can be "dark", "transparent" or "normal"
           sidebars = "transparent", -- style for sidebars, see below
-          floats = "transparent",   -- style for floating windows
+          floats = "transparent", -- style for floating windows
         },
         sidebars = { "qf", "vista_kind", "terminal", "packer" },
         on_colors = function() end,
