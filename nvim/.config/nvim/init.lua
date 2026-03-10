@@ -397,6 +397,7 @@ local plugins = {
       vim.lsp.enable("gopls")
       vim.lsp.enable("ts_ls")
       vim.lsp.enable("terraformls")
+      vim.lsp.enable("tailwindcss")
       vim.lsp.enable("ruff")
       vim.lsp.enable("rust_analyzer")
       vim.lsp.enable("lua_ls")
@@ -487,6 +488,7 @@ local plugins = {
         "lua_ls",
         "pyright",
         "rust_analyzer",
+        "tailwindcss",
         "terraformls",
         "ts_ls",
       },
