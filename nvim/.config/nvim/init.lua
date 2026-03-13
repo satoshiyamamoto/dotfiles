@@ -261,7 +261,6 @@ local plugins = {
           { name = "luasnip" },
           { name = "buffer" },
           { name = "path" },
-          { name = "copilot" },
         }),
         formatting = {
           format = lspkind.cmp_format({
@@ -273,10 +272,8 @@ local plugins = {
             ellipsis_char = "...",
             show_labelDetails = true,
             preset = "codicons",
-            symbol_map = { Copilot = "" },
           }),
         },
-        experimental = { ghost_text = true },
       })
 
       -- Use buffer source for `/`
@@ -314,30 +311,8 @@ local plugins = {
       { "L3MON4D3/LuaSnip", build = "make install_jsregexp" },
       { "rafamadriz/friendly-snippets" },
       { "saadparwaiz1/cmp_luasnip" },
-      { "zbirenbaum/copilot.lua" },
-      { "zbirenbaum/copilot-cmp" },
       { "onsails/lspkind.nvim" },
     },
-  },
-
-  -- Copilot
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = { "Copilot" },
-    event = { "InsertEnter" },
-    config = function()
-      ---@diagnostic disable-next-line: undefined-field
-      require("copilot").setup({
-        suggestion = { enabled = false },
-        panel = { enabled = false },
-      })
-    end,
-  },
-  {
-    "zbirenbaum/copilot-cmp",
-    config = function()
-      require("copilot_cmp").setup()
-    end,
   },
 
   { "golang/vscode-go", event = { "InsertEnter" } },
