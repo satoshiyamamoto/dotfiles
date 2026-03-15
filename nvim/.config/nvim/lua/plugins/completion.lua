@@ -43,13 +43,13 @@ return {
           end, { "i", "s" }),
         }),
         sources = cmp.config.sources({
-          { name = "copilot" },
-          { name = "nvim_lsp" },
-          { name = "nvim_lsp_signature_help" },
-          { name = "luasnip" },
+          { name = "nvim_lsp", priority = 1000 },
+          { name = "nvim_lsp_signature_help", priority = 900 },
+          { name = "luasnip", priority = 750 },
+          { name = "copilot", priority = 500 },
         }, {
-          { name = "buffer" },
-          { name = "path" },
+          { name = "buffer", priority = 250 },
+          { name = "path", priority = 250 },
         }),
         experimental = {
           ghost_text = true,
