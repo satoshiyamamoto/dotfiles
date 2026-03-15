@@ -116,6 +116,9 @@ return {
       require("lint").linters_by_ft = {
         go = { "staticcheck" },
         javascript = { "eslint" },
+        javascriptreact = { "eslint" },
+        typescript = { "eslint" },
+        typescriptreact = { "eslint" },
         sql = { "sqlfluff" },
       }
 
