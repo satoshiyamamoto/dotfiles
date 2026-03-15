@@ -43,6 +43,7 @@ return {
           end, { "i", "s" }),
         }),
         sources = cmp.config.sources({
+          { name = "copilot" },
           { name = "nvim_lsp" },
           { name = "nvim_lsp_signature_help" },
           { name = "luasnip" },
@@ -50,6 +51,9 @@ return {
           { name = "buffer" },
           { name = "path" },
         }),
+        experimental = {
+          ghost_text = true,
+        },
         formatting = {
           format = lspkind.cmp_format({
             mode = "symbol_text",
@@ -101,6 +105,21 @@ return {
       },
       { "saadparwaiz1/cmp_luasnip" },
       { "onsails/lspkind.nvim" },
+      {
+        "zbirenbaum/copilot.lua",
+        config = function()
+          require("copilot").setup({
+            suggestion = { enabled = false },
+            panel = { enabled = false },
+          })
+        end,
+      },
+      {
+        "zbirenbaum/copilot-cmp",
+        config = function()
+          require("copilot_cmp").setup()
+        end,
+      },
     },
   },
 
