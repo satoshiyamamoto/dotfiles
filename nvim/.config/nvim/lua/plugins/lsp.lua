@@ -29,6 +29,15 @@ return {
         },
       })
 
+      -- Configure ts_ls to prefer path aliases (e.g. @/) over relative paths
+      vim.lsp.config("ts_ls", {
+        init_options = {
+          preferences = {
+            importModuleSpecifierPreference = "non-relative",
+          },
+        },
+      })
+
       -- Enable LSP servers
       vim.lsp.enable("html")
       vim.lsp.enable("cssls")
