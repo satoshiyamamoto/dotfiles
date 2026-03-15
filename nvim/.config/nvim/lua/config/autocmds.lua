@@ -1,0 +1,1 @@
+-- Autocmds are defined inside each plugin's config function (see lua/plugins/)
