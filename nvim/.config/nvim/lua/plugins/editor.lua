@@ -49,6 +49,7 @@ return {
       local dapui = require("dapui")
       require("mason-registry")
       require("dapui").setup()
+      require("nvim-dap-virtual-text").setup()
       require("dap-go").setup()
       require("dap-python").setup(vim.fn.expand("$MASON/packages/debugpy/venv/bin/python"))
       dap.adapters["pwa-node"] = {
@@ -104,11 +105,11 @@ return {
         dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
       end, { desc = "Brakepoint Log point message (Debug)" })
       vim.keymap.set("n", "<Leader>du", dapui.toggle, { desc = "Toggle Debugger UI (Debug)" })
-      vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "ErrorMsg" })
-      vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "ErrorMsg" })
-      vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "ErrorMsg" })
-      vim.fn.sign_define("DapLogPoint", { text = "", texthl = "ErrorMsg" })
-      vim.fn.sign_define("DapStopped", { text = "", texthl = "WarningMsg" })
+      vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "ErrorMsg" })
+      vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "ErrorMsg" })
+      vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "ErrorMsg" })
+      vim.fn.sign_define("DapLogPoint", { text = "", texthl = "ErrorMsg" })
+      vim.fn.sign_define("DapStopped", { text = "", texthl = "WarningMsg" })
     end,
     dependencies = {
       { "mfussenegger/nvim-dap-python" },
