@@ -46,7 +46,7 @@ return {
           { name = "nvim_lsp", priority = 1000 },
           { name = "nvim_lsp_signature_help", priority = 900 },
           { name = "luasnip", priority = 750 },
-          { name = "copilot", priority = 500 },
+          -- { name = "copilot", priority = 500 },
         }, {
           { name = "buffer", priority = 250 },
           { name = "path", priority = 250 },
@@ -107,6 +107,7 @@ return {
       { "onsails/lspkind.nvim" },
       {
         "zbirenbaum/copilot.lua",
+        enabled = false, -- disabled
         config = function()
           require("copilot").setup({
             suggestion = { enabled = false },
@@ -116,6 +117,7 @@ return {
       },
       {
         "zbirenbaum/copilot-cmp",
+        enabled = false, -- disabled
         config = function()
           require("copilot_cmp").setup()
         end,
