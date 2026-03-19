@@ -37,7 +37,8 @@
 [delta]
   navigate = true
   line-numbers = true
-  side-by-side = true
+  side-by-side = false
+  syntax-theme = tokyonight_night
 
 [ghq]
   root = ~/Projects/src
