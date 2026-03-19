@@ -98,8 +98,6 @@ brew "lima"
 brew "colima"
 # Color-highlighted diff(1) output
 brew "colordiff"
-# Zsh completion for conda
-brew "conda-zsh-completion"
 # Create and run Linux containers using lightweight virtual machines
 brew "container"
 # GNU multiple precision arithmetic library
@@ -338,8 +336,6 @@ brew "rust"
 brew "rustup"
 # Simple keystroke visualizer
 brew "showkey"
-# Python 2 and 3 compatibility utilities
-brew "six"
 # Prints a steam locomotive if you type sl instead of ls
 brew "sl"
 # SOcket CAT: netcat on steroids
@@ -442,20 +438,16 @@ cask "intellij-idea"
 cask "kitty"
 # Animated screen capture application
 cask "licecap"
-# Minimal installer for conda
-cask "miniconda"
 # App to write, plan, collaborate, and get organised
 cask "notion"
 # Collaboration platform for API development
 cask "postman"
 # Quick Look generator for Markdown files
 cask "qlmarkdown"
-# Quick Look plugin for CSV files
-cask "quicklook-csv"
-# Quick Look plugin for JSON files
-cask "quicklook-json"
 # Team communication and collaboration software
 cask "slack"
+# Quicklook extension for source files
+cask "syntax-highlight"
 # Charting and social-networking for investment traders
 cask "tradingview"
 # Open-source code editor
@@ -472,7 +464,6 @@ mas "Kindle", id: 302584613
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Postman Interceptor", id: 6460587883
-mas "PreviewYaml", id: 1564574724
 mas "Tailscale", id: 1475387142
 mas "Vimlike", id: 1584519802
 mas "Xcode", id: 497799835
