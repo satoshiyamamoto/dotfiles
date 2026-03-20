@@ -70,13 +70,17 @@ return {
 
   {
     "JoosepAlviste/nvim-ts-context-commentstring",
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
       require("ts_context_commentstring").setup({
         enable_autocmd = false,
-        languages = {
-          typescript = "// %s",
-        },
       })
+
+      local get_option = vim.filetype.get_option
+      vim.filetype.get_option = function(filetype, option) ---@diagnostic disable-line duplicate-set-field
+        return option == "commentstring" and require("ts_context_commentstring.internal").calculate_commentstring()
+          or get_option(filetype, option)
+      end
     end,
     dependencies = {
       { "nvim-treesitter/nvim-treesitter" },

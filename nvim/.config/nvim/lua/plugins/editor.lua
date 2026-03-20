@@ -3,7 +3,6 @@ return {
   { "tpope/vim-unimpaired", event = { "BufReadPost" } },
   { "tpope/vim-fugitive", event = { "BufReadPost" } },
   { "tpope/vim-surround", event = { "BufReadPost" } },
-  { "tpope/vim-commentary", event = { "BufReadPost" } },
   { "mattn/emmet-vim", event = { "InsertEnter" } },
 
   -- Formatter
