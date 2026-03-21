@@ -619,7 +619,9 @@ return {
             require("toggleterm.terminal").Terminal:new({ cmd = "lazygit", direction = "tab", count = 0 }):toggle()
           end),
           dashboard.button("r", "  Recent Files", "<Cmd>Telescope oldfiles<CR>"),
-          dashboard.button("c", "  Configuration", "<Cmd>edit $MYVIMRC<CR>"),
+          dashboard.button("c", "  Configuration", function()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(":Cfg <Tab>", true, false, true), "t", false)
+          end),
           dashboard.button("q", "  Quit", "<Cmd>qall<CR>"),
         }
         for _, button in ipairs(dashboard.section.buttons.val) do
