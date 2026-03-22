@@ -13,6 +13,7 @@ return {
       notifier = { enabled = true },
       terminal = { enabled = true },
       lazygit  = { enabled = true },
+      indent   = { enabled = true },
     },
   },
 
@@ -513,46 +514,6 @@ return {
         },
       }
     end,
-  },
-
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    main = "ibl",
-    event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      local highlight = {
-        "RainbowBlue",
-        "RainbowGreen",
-        "RainbowYellow",
-        "RainbowOrange",
-        "RainbowRed",
-        "RainbowViolet",
-      }
-      local hooks = require("ibl.hooks")
-      hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-        vim.api.nvim_set_hl(0, "RainbowBlue", { fg = "#61AFEF" })
-        vim.api.nvim_set_hl(0, "RainbowGreen", { fg = "#98C379" })
-        vim.api.nvim_set_hl(0, "RainbowYellow", { fg = "#E5C07B" })
-        vim.api.nvim_set_hl(0, "RainbowOrange", { fg = "#D19A66" })
-        vim.api.nvim_set_hl(0, "RainbowRed", { fg = "#E06C75" })
-        vim.api.nvim_set_hl(0, "RainbowViolet", { fg = "#C678DD" })
-      end)
-      vim.api.nvim_set_hl(0, "IblIndent", { fg = "#383a3e" })
-      vim.g.rainbow_delimiters = { highlight = highlight }
-      require("ibl").setup({
-        indent = {
-          char = "▏",
-        },
-        scope = {
-          char = "▏",
-          highlight = highlight,
-        },
-      })
-      hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
-    end,
-    dependencies = {
-      { "HiPhish/rainbow-delimiters.nvim" },
-    },
   },
 
   {

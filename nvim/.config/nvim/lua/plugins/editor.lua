@@ -1,6 +1,5 @@
 return {
   -- Editor utilities
-  { "tpope/vim-unimpaired", event = { "BufReadPost" } },
   { "tpope/vim-fugitive", event = { "BufReadPost" } },
   { "tpope/vim-surround", event = { "BufReadPost" } },
   { "mattn/emmet-vim", event = { "InsertEnter" } },
