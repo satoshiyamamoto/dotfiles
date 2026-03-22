@@ -42,6 +42,7 @@ return {
       vim.lsp.enable("html")
       vim.lsp.enable("cssls")
       vim.lsp.enable("emmet_language_server")
+      vim.lsp.enable("eslint")
       vim.lsp.enable("pyright")
       vim.lsp.enable("gopls")
       vim.lsp.enable("ts_ls")
@@ -119,10 +120,6 @@ return {
     config = function()
       require("lint").linters_by_ft = {
         go = { "staticcheck" },
-        javascript = { "eslint" },
-        javascriptreact = { "eslint" },
-        typescript = { "eslint" },
-        typescriptreact = { "eslint" },
         sql = { "sqlfluff" },
       }
 
@@ -141,6 +138,7 @@ return {
       ensure_installed = {
         "cssls",
         "emmet_language_server",
+        "eslint",
         "gopls",
         "html",
         "jdtls",
