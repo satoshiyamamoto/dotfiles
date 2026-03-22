@@ -373,6 +373,10 @@ return {
   {
     "stevearc/quicker.nvim",
     ft = "qf",
+    keys = {
+      { "<Leader>q", function() require("quicker").toggle() end, desc = "Toggle Quickfix" },
+      { "<Leader>Q", function() require("quicker").toggle({ loclist = true }) end, desc = "Toggle Loclist" },
+    },
     opts = {},
   },
 
