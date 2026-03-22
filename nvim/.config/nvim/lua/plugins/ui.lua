@@ -1,4 +1,14 @@
 return {
+  -- Snacks
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      notifier = { enabled = true },
+    },
+  },
+
   -- Finder
   {
     "nvim-telescope/telescope.nvim",
@@ -263,7 +273,6 @@ return {
     },
     dependencies = {
       { "MunifTanjim/nui.nvim" },
-      { "rcarriga/nvim-notify" },
     },
   },
 
@@ -370,9 +379,6 @@ return {
         background_colour = "#000000",
       })
     end,
-    dependencies = {
-      { "rcarriga/nvim-notify" },
-    },
   },
 
   {
