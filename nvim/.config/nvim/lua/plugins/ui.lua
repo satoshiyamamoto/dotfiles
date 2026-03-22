@@ -123,19 +123,62 @@ return {
   },
 
   {
-    "smoka7/hop.nvim",
-    version = "v2.*",
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
     keys = {
       {
-        "S",
+        "s",
+        mode = { "n", "x", "o" },
         function()
-          require("hop").hint_words()
+          require("flash").jump()
         end,
-        desc = "Hop to Word",
+        desc = "Flash",
+      },
+      {
+        "S",
+        mode = { "n", "x", "o" },
+        function()
+          require("flash").treesitter()
+        end,
+        desc = "Flash Treesitter",
+      },
+      {
+        "r",
+        mode = "o",
+        function()
+          require("flash").remote()
+        end,
+        desc = "Remote Flash",
+      },
+      {
+        "R",
+        mode = { "o", "x" },
+        function()
+          require("flash").treesitter_search()
+        end,
+        desc = "Treesitter Search",
+      },
+      {
+        "<c-s>",
+        mode = { "c" },
+        function()
+          require("flash").toggle()
+        end,
+        desc = "Toggle Flash Search",
       },
     },
-    config = function()
-      require("hop").setup()
+  },
+
+  {
+    "echasnovski/mini.icons",
+    lazy = true,
+    opts = {},
+    init = function()
+      package.preload["nvim-web-devicons"] = function()
+        require("mini.icons").mock_nvim_web_devicons()
+        return package.loaded["nvim-web-devicons"]
+      end
     end,
   },
 
@@ -310,9 +353,6 @@ return {
         },
       })
     end,
-    dependencies = {
-      { "nvim-tree/nvim-web-devicons" },
-    },
   },
 
   {
@@ -464,7 +504,6 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     opts = {},
     config = true,
-    dependencies = { "nvim-tree/nvim-web-devicons" },
   },
 
   {

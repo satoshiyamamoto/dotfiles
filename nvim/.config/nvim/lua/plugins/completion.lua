@@ -87,9 +87,6 @@ return {
           { name = "cmdline" },
         }),
       })
-
-      -- Complete the bracket with "CR"
-      cmp.event:on("confirm_done", require("nvim-autopairs.completion.cmp").on_confirm_done())
     end,
     dependencies = {
       { "hrsh7th/cmp-nvim-lsp" },
@@ -128,8 +125,10 @@ return {
   { "golang/vscode-go", event = { "InsertEnter" } },
 
   {
-    "windwp/nvim-autopairs",
-    event = "InsertEnter",
-    config = true,
+    "echasnovski/mini.pairs",
+    event = "VeryLazy",
+    opts = {
+      modes = { insert = true, command = true, terminal = false },
+    },
   },
 }

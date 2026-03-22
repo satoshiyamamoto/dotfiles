@@ -1,7 +1,27 @@
 return {
   -- Editor utilities
   { "tpope/vim-fugitive", event = { "BufReadPost" } },
-  { "tpope/vim-surround", event = { "BufReadPost" } },
+  {
+    "echasnovski/mini.surround",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {
+      mappings = {
+        add = "sa",
+        delete = "sd",
+        find = "sf",
+        find_left = "sF",
+        highlight = "sh",
+        replace = "sr",
+        update_n_lines = "sn",
+      },
+    },
+  },
+
+  {
+    "echasnovski/mini.ai",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = { n_lines = 500 },
+  },
   { "mattn/emmet-vim", event = { "InsertEnter" } },
 
   -- Formatter
