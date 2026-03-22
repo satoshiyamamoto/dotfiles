@@ -371,6 +371,21 @@ return {
   },
 
   {
+    "stevearc/quicker.nvim",
+    ft = "qf",
+    opts = {},
+  },
+
+  {
+    "stevearc/oil.nvim",
+    cmd = "Oil",
+    keys = {
+      { "-", "<Cmd>Oil<CR>", desc = "Open parent directory (Oil)" },
+    },
+    opts = {},
+  },
+
+  {
     "folke/which-key.nvim",
     event = { "VeryLazy" },
     opts = {},
