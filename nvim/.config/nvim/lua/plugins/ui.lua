@@ -5,12 +5,28 @@ return {
     priority = 1000,
     lazy = false,
     keys = {
+      -- Explorer
       {
         "<Leader>e",
         function()
           Snacks.explorer()
         end,
         desc = "File Explorer",
+      },
+      -- Find
+      {
+        "<Leader>ff",
+        function()
+          Snacks.picker.files()
+        end,
+        desc = "Find Files",
+      },
+      {
+        "<Leader>fr",
+        function()
+          Snacks.picker.recent()
+        end,
+        desc = "Recent Files",
       },
       {
         "<Leader>,",
@@ -19,6 +35,50 @@ return {
         end,
         desc = "Buffers",
       },
+      -- Search
+      {
+        "<Leader>sg",
+        function()
+          Snacks.picker.grep()
+        end,
+        desc = "Grep",
+      },
+      {
+        '<Leader>s"',
+        function()
+          Snacks.picker.registers()
+        end,
+        desc = "Registers",
+      },
+      {
+        "<Leader>sh",
+        function()
+          Snacks.picker.help()
+        end,
+        desc = "Help Pages",
+      },
+      {
+        "<Leader>ss",
+        function()
+          Snacks.picker.lsp_symbols()
+        end,
+        desc = "LSP Symbols",
+      },
+      {
+        "<Leader>sS",
+        function()
+          Snacks.picker.lsp_workspace_symbols()
+        end,
+        desc = "LSP Workspace Symbols",
+      },
+      {
+        "<Leader>n",
+        function()
+          Snacks.picker.notifications()
+        end,
+        desc = "Notification History",
+      },
+      -- Git
       {
         "<Leader>gs",
         function()
@@ -33,6 +93,7 @@ return {
         end,
         desc = "Lazygit",
       },
+      -- Terminal
       {
         "<c-/>",
         function()
@@ -58,88 +119,6 @@ return {
       dashboard = { enabled = true },
       explorer = { enabled = true },
       picker = { enabled = true },
-    },
-  },
-
-  -- Finder
-  {
-    "nvim-telescope/telescope.nvim",
-    cmd = { "Telescope" },
-    event = { "BufReadPost", "BufNewFile" },
-    keys = {
-      { "<C-p>", "<Cmd>Telescope find_files<CR>", desc = "Find Files" },
-      { "<Leader>ff", "<Cmd>Telescope find_files<CR>", desc = "Find Files" },
-      { "<Leader>fg", "<Cmd>Telescope live_grep<CR>", desc = "Search with Live Grep" },
-      { "<Leader>fb", "<Cmd>Telescope buffers<CR>", desc = "List Buffers" },
-      { "<Leader>fr", "<Cmd>Telescope oldfiles<CR>", desc = "Open Recent Files" },
-      { '<Leader>f"', "<Cmd>Telescope registers<CR>", desc = "Search Registers" },
-      { "<Leader>fh", "<Cmd>Telescope help_tags<CR>", desc = "Search Help Tags" },
-      { "<Leader>fs", "<Cmd>Telescope lsp_document_symbols<CR>", desc = "Search Document Symbols" },
-      { "<Leader>fS", "<Cmd>Telescope lsp_dynamic_workspace_symbols<CR>", desc = "Search Workspace Symbols" },
-      { "<Leader>fd", "<Cmd>Telescope dap configurations<CR>", desc = "Debug Configurations (Debug)" },
-      { "<Leader>fn", "<Cmd>Telescope noice<CR>", desc = "Search Noice Messages" },
-    },
-    config = function()
-      local telescope = require("telescope")
-      local actions = require("telescope.actions")
-      local stop_insert_on_select = function(prompt_bufnr)
-        actions.select_default(prompt_bufnr)
-        vim.cmd("stopinsert")
-      end
-      local stop_insert_on_close = function(prompt_bufnr)
-        actions.close(prompt_bufnr)
-        vim.cmd("stopinsert")
-      end
-
-      telescope.setup({
-        defaults = {
-          mappings = {
-            i = {
-              ["<CR>"] = stop_insert_on_select,
-              ["<Esc>"] = stop_insert_on_close,
-              ["<C-c>"] = stop_insert_on_close,
-            },
-          },
-          path_display = { truncate = 0 },
-          file_ignore_patterns = {
-            "%.git/",
-            "node%_modules/",
-            "target/",
-          },
-        },
-        pickers = {
-          find_files = {
-            hidden = true,
-          },
-          grep_string = {
-            additional_args = { "--hidden" },
-          },
-          live_grep = {
-            additional_args = { "--hidden" },
-          },
-        },
-        extensions = {
-          fzf = {
-            fuzzy = true, -- false will only do exact matching
-            override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true, -- override the file sorter
-            case_mode = "smart_case", -- or "ignore_case" or "respect_case"
-          },
-          ["ui-select"] = {
-            require("telescope.themes").get_dropdown(),
-          },
-        },
-      })
-      telescope.load_extension("fzf")
-      telescope.load_extension("dap")
-      telescope.load_extension("ui-select")
-      telescope.load_extension("noice")
-    end,
-    dependencies = {
-      { "nvim-lua/plenary.nvim" },
-      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-      { "nvim-telescope/telescope-ui-select.nvim" },
-      { "nvim-telescope/telescope-dap.nvim" },
     },
   },
 
