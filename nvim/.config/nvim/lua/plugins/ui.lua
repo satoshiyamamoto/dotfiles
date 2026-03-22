@@ -6,6 +6,27 @@ return {
     lazy = false,
     keys = {
       {
+        "<Leader>e",
+        function()
+          Snacks.explorer()
+        end,
+        desc = "File Explorer",
+      },
+      {
+        "<Leader>,",
+        function()
+          Snacks.picker.buffers()
+        end,
+        desc = "Buffers",
+      },
+      {
+        "<Leader>gs",
+        function()
+          Snacks.picker.git_status()
+        end,
+        desc = "Git Status",
+      },
+      {
         "<Leader>gg",
         function()
           Snacks.lazygit()
@@ -35,6 +56,8 @@ return {
       lazygit = { enabled = true },
       indent = { enabled = true },
       dashboard = { enabled = true },
+      explorer = { enabled = true },
+      picker = { enabled = true },
     },
   },
 
@@ -117,47 +140,6 @@ return {
       { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
       { "nvim-telescope/telescope-ui-select.nvim" },
       { "nvim-telescope/telescope-dap.nvim" },
-    },
-  },
-
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v3.x",
-    cmd = { "Neotree" },
-    keys = {
-      { "<Leader>e", "<Cmd>Neotree toggle<CR>", desc = "File Explorer (Neo-tree)" },
-      { "<Leader>be", "<Cmd>Neotree buffers<CR>", desc = "Buffers Explorer (Neo-tree)" },
-      { "<Leader>ge", "<Cmd>Neotree git_status<CR>", desc = "Git Explorer (Neo-tree)" },
-    },
-    opts = {
-      close_if_last_window = true,
-      popup_border_style = "rounded",
-      filesystem = {
-        filtered_items = {
-          hide_dotfiles = false,
-          hide_by_name = {
-            "node_modules",
-          },
-          never_show = {
-            ".DS_Store",
-            "thumbs.db",
-          },
-        },
-        follow_current_file = {
-          enabled = true,
-        },
-        use_libuv_file_watcher = true,
-      },
-      buffers = {
-        follow_current_file = {
-          enabled = true,
-        },
-      },
-    },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons",
-      "MunifTanjim/nui.nvim",
     },
   },
 
@@ -496,17 +478,7 @@ return {
     "akinsho/bufferline.nvim",
     version = "*",
     event = { "BufReadPost", "BufNewFile" },
-    opts = {
-      options = {
-        offsets = {
-          {
-            filetype = "neo-tree",
-            text = "Neo-tree Sidebar",
-            separator = true,
-          },
-        },
-      },
-    },
+    opts = {},
     config = true,
     dependencies = { "nvim-tree/nvim-web-devicons" },
   },
