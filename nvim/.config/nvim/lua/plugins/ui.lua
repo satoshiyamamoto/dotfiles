@@ -5,15 +5,36 @@ return {
     priority = 1000,
     lazy = false,
     keys = {
-      { "<Leader>gg", function() Snacks.lazygit() end,  desc = "Lazygit" },
-      { "<c-/>", function() Snacks.terminal() end, desc = "Toggle Terminal",  mode = { "n", "t" } },
-      { "<c-_>", function() Snacks.terminal() end, desc = "which_key_ignore", mode = { "n", "t" } },
+      {
+        "<Leader>gg",
+        function()
+          Snacks.lazygit()
+        end,
+        desc = "Lazygit",
+      },
+      {
+        "<c-/>",
+        function()
+          Snacks.terminal()
+        end,
+        desc = "Toggle Terminal",
+        mode = { "n", "t" },
+      },
+      {
+        "<c-_>",
+        function()
+          Snacks.terminal()
+        end,
+        desc = "which_key_ignore",
+        mode = { "n", "t" },
+      },
     },
     opts = {
       notifier = { enabled = true },
       terminal = { enabled = true },
-      lazygit  = { enabled = true },
-      indent   = { enabled = true },
+      lazygit = { enabled = true },
+      indent = { enabled = true },
+      dashboard = { enabled = true },
     },
   },
 
@@ -528,122 +549,6 @@ return {
   },
 
   {
-    "goolord/alpha-nvim",
-    event = { "VimEnter" },
-    config = function()
-      local alpha = require("alpha")
-      local dashboard = require("alpha.themes.dashboard")
-
-      -- helper function for utf8 chars
-      local function getCharLen(s, pos)
-        local byte = string.byte(s, pos)
-        if not byte then
-          return nil
-        end
-        return (byte < 0x80 and 1) or (byte < 0xE0 and 2) or (byte < 0xF0 and 3) or (byte < 0xF8 and 4) or 1
-      end
-
-      local function applyColors(logo, colors, logoColors)
-        dashboard.section.header.val = logo
-
-        for key, color in pairs(colors) do
-          local name = "Alpha" .. key
-          vim.api.nvim_set_hl(0, name, color)
-          colors[key] = name
-        end
-
-        dashboard.section.header.opts.hl = {}
-        for i, line in ipairs(logoColors) do
-          local highlights = {}
-          local pos = 0
-
-          for j = 1, #line do
-            local opos = pos
-            pos = pos + getCharLen(logo[i], opos + 1)
-
-            local color_name = colors[line:sub(j, j)]
-            if color_name then
-              table.insert(highlights, { color_name, opos, pos })
-            end
-          end
-
-          ---@diagnostic disable-next-line: param-type-mismatch
-          table.insert(dashboard.section.header.opts.hl, highlights)
-        end
-
-        dashboard.section.buttons.val = {
-          dashboard.button("e", "  New File", "<Cmd>enew <BAR> startinsert <CR>"),
-          dashboard.button("f", "  Find File", "<Cmd>Telescope find_files<CR>"),
-          dashboard.button("g", "  Find Text", "<Cmd>Telescope live_grep<CR>"),
-          ---@diagnostic disable-next-line: param-type-mismatch
-          dashboard.button("d", "  Source Control", function()
-            Snacks.lazygit()
-          end),
-          dashboard.button("r", "  Recent Files", "<Cmd>Telescope oldfiles<CR>"),
-          dashboard.button("c", "  Configuration", function()
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(":Cfg <Tab>", true, false, true), "t", false)
-          end),
-          dashboard.button("q", "  Quit", "<Cmd>qall<CR>"),
-        }
-        for _, button in ipairs(dashboard.section.buttons.val) do
-          button.opts.hl = "AlphaButtons"
-          button.opts.hl_shortcut = "AlphaShortcut"
-        end
-
-        dashboard.section.footer.val = "   Press any key to Start. "
-        dashboard.section.footer.opts.hl = "AlphaFooter"
-
-        return dashboard.opts
-      end
-
-      alpha.setup(applyColors({
-        [[  ███       ███  ]],
-        [[  ████      ████ ]],
-        [[  ████     █████ ]],
-        [[ █ ████    █████ ]],
-        [[ ██ ████   █████ ]],
-        [[ ███ ████  █████ ]],
-        [[ ████ ████ ████ ]],
-        [[ █████  ████████ ]],
-        [[ █████   ███████ ]],
-        [[ █████    ██████ ]],
-        [[ █████     █████ ]],
-        [[ ████      ████ ]],
-        [[  ███       ███  ]],
-        [[                    ]],
-        [[  N  E  O  V  I  M  ]],
-      }, {
-        ["b"] = { fg = "#3399ff", ctermfg = 33 },
-        ["a"] = { fg = "#53C670", ctermfg = 35 },
-        ["g"] = { fg = "#39ac56", ctermfg = 29 },
-        ["h"] = { fg = "#33994d", ctermfg = 23 },
-        ["i"] = { fg = "#33994d", bg = "#39ac56", ctermfg = 23, ctermbg = 29 },
-        ["j"] = { fg = "#53C670", bg = "#33994d", ctermfg = 35, ctermbg = 23 },
-        ["k"] = { fg = "#30A572", ctermfg = 36 },
-      }, {
-        [[  kkkka       gggg  ]],
-        [[  kkkkaa      ggggg ]],
-        [[ b kkkaaa     ggggg ]],
-        [[ bb kkaaaa    ggggg ]],
-        [[ bbb kaaaaa   ggggg ]],
-        [[ bbbb aaaaaa  ggggg ]],
-        [[ bbbbb aaaaaa igggg ]],
-        [[ bbbbb  aaaaaahiggg ]],
-        [[ bbbbb   aaaaajhigg ]],
-        [[ bbbbb    aaaaajhig ]],
-        [[ bbbbb     aaaaajhi ]],
-        [[ bbbbb      aaaaajh ]],
-        [[  bbbb       aaaaa  ]],
-        [[                    ]],
-        [[  a  a  a  b  b  b  ]],
-      }))
-    end,
-    dependencies = {
-      { "nvim-tree/nvim-web-devicons" },
-    },
-  },
-
-  {
     "wfxr/minimap.vim",
     build = "cargo install --locked code-minimap",
     cmd = {
@@ -656,5 +561,4 @@ return {
       vim.cmd("let g:minimap_auto_start_win_enter = 0")
     end,
   },
-
 }

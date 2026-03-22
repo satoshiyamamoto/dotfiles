@@ -2,11 +2,14 @@
 local function cfg_complete(arg)
   local config = vim.fn.stdpath("config")
   local files = vim.fn.globpath(config .. "/lua", "**/*.lua", false, true)
-  return vim.tbl_map(function(f)
-    return f:sub(#config + 6)
-  end, vim.tbl_filter(function(f)
-    return f:find(arg, 1, true)
-  end, files))
+  return vim.tbl_map(
+    function(f)
+      return f:sub(#config + 6)
+    end,
+    vim.tbl_filter(function(f)
+      return f:find(arg, 1, true)
+    end, files)
+  )
 end
 
 vim.api.nvim_create_user_command("Cfg", function(opts)
