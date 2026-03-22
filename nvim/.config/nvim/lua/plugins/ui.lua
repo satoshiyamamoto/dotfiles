@@ -528,19 +528,6 @@ return {
   },
 
   {
-    "lukas-reineke/virt-column.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    opts = {
-      char = "▕",
-      virtcolumn = "+1",
-      highlight = "VirtColumn",
-    },
-    config = function(_, opts)
-      require("virt-column").setup(opts)
-    end,
-  },
-
-  {
     "goolord/alpha-nvim",
     event = { "VimEnter" },
     config = function()
