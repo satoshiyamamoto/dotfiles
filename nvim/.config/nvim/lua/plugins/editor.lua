@@ -2,6 +2,19 @@ return {
   -- Editor utilities
   { "tpope/vim-fugitive", event = { "BufReadPost" } },
   {
+    "olrtg/nvim-emmet",
+    keys = {
+      {
+        "<leader>xe",
+        function()
+          require("nvim-emmet"):wrap_with_abbreviation()
+        end,
+        mode = { "n", "v" },
+        desc = "Wrap with Emmet Abbreviation",
+      },
+    },
+  },
+  {
     "echasnovski/mini.surround",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
@@ -22,7 +35,6 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     opts = { n_lines = 500 },
   },
-  { "mattn/emmet-vim", event = { "InsertEnter" } },
 
   -- Formatter
   {

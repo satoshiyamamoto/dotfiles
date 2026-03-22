@@ -5,7 +5,7 @@ return {
     config = function()
       -- Global configuration for all LSP servers
       vim.lsp.config("*", {
-        capabilities = require("cmp_nvim_lsp").default_capabilities(),
+        capabilities = require("blink.cmp").get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities()),
       })
 
       -- Configure lua_ls with specific settings
@@ -41,6 +41,7 @@ return {
       -- Enable LSP servers
       vim.lsp.enable("html")
       vim.lsp.enable("cssls")
+      vim.lsp.enable("emmet_language_server")
       vim.lsp.enable("pyright")
       vim.lsp.enable("gopls")
       vim.lsp.enable("ts_ls")
@@ -108,7 +109,7 @@ return {
       })
     end,
     dependencies = {
-      { "hrsh7th/cmp-nvim-lsp" },
+      { "saghen/blink.cmp" },
     },
   },
 
@@ -139,6 +140,7 @@ return {
     opts = {
       ensure_installed = {
         "cssls",
+        "emmet_language_server",
         "gopls",
         "html",
         "jdtls",
