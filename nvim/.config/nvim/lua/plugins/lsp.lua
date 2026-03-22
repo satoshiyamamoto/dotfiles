@@ -58,34 +58,37 @@ return {
           -- Enable completion triggered by <c-x><c-o>
           vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
 
-          -- Buffer local mappings.
-          -- See `:help vim.lsp.*` for documentation on any of the below functions
           local opts = function(desc)
             return { buffer = ev.buf, desc = desc }
           end
-          vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts("Go to Declaration"))
-          vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts("Go to Definition"))
-          vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts("Go to Implementations"))
-          vim.keymap.set("n", "gk", vim.lsp.buf.signature_help, opts("Show Signature help"))
-          vim.keymap.set("n", "<Leader>wa", vim.lsp.buf.add_workspace_folder, opts("Add Workspace folder"))
-          vim.keymap.set("n", "<Leader>wr", vim.lsp.buf.remove_workspace_folder, opts("Remove Workspace folder"))
-          vim.keymap.set("n", "<Leader>wl", function()
-            print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-          end, opts("List Workspace folders"))
-          vim.keymap.set("n", "<Leader>D", vim.lsp.buf.type_definition, opts("Go to Type Definition"))
-          vim.keymap.set("n", "gr", vim.lsp.buf.references, opts("Find All References"))
-          vim.keymap.set("n", "<Leader>lf", function()
-            vim.lsp.buf.format({ async = true })
-          end, opts("Format Document"))
-          vim.keymap.set("n", "gh", "<Cmd>Lspsaga lsp_finder<CR>", opts("Find LSP Symbols (Lspsaga)"))
-          vim.keymap.set({ "n", "v" }, "<Leader>ca", "<Cmd>Lspsaga code_action<CR>", opts("Execute Code Action"))
-          vim.keymap.set("n", "<Leader>rn", "<Cmd>Lspsaga rename<CR>", opts("Rename Symbol (Lspsaga)"))
-          vim.keymap.set("n", "gp", "<Cmd>Lspsaga peek_definition<CR>", opts("Peek Definition (Lspsaga)"))
-          vim.keymap.set("n", "gt", "<Cmd>Lspsaga goto_type_definition<CR>", opts("Go to Type Definition (Lspsaga)"))
-          vim.keymap.set("n", "<Leader>o", "<Cmd>Lspsaga outline<CR>", opts("Show Outline (Lspsaga)"))
-          vim.keymap.set("n", "K", "<Cmd>Lspsaga hover_doc<CR>", opts("Show Hover Documentation (Lspsaga)"))
-          vim.keymap.set("n", "<Leader>ci", "<Cmd>Lspsaga incoming_calls<CR>", opts("Show Incoming Calls (Lspsaga)"))
-          vim.keymap.set("n", "<Leader>co", "<Cmd>Lspsaga outgoing_calls<CR>", opts("Show Outgoing Calls (Lspsaga)"))
+          -- Go to
+          vim.keymap.set("n", "gd", function()
+            Snacks.picker.lsp_definitions()
+          end, opts("Go to Definition"))
+          vim.keymap.set("n", "gD", function()
+            Snacks.picker.lsp_declarations()
+          end, opts("Go to Declaration"))
+          vim.keymap.set("n", "gI", function()
+            Snacks.picker.lsp_implementations()
+          end, opts("Go to Implementation"))
+          vim.keymap.set("n", "gy", function()
+            Snacks.picker.lsp_type_definitions()
+          end, opts("Go to Type Definition"))
+          vim.keymap.set("n", "gr", function()
+            Snacks.picker.lsp_references()
+          end, opts("Find References"))
+          -- Actions
+          vim.keymap.set("n", "K", vim.lsp.buf.hover, opts("Hover Documentation"))
+          vim.keymap.set("n", "gK", vim.lsp.buf.signature_help, opts("Signature Help"))
+          vim.keymap.set({ "n", "v" }, "<Leader>ca", vim.lsp.buf.code_action, opts("Code Action"))
+          vim.keymap.set("n", "<Leader>cr", vim.lsp.buf.rename, opts("Rename Symbol"))
+          -- Calls
+          vim.keymap.set("n", "gai", function()
+            Snacks.picker.lsp_incoming_calls()
+          end, opts("Incoming Calls"))
+          vim.keymap.set("n", "gao", function()
+            Snacks.picker.lsp_outgoing_calls()
+          end, opts("Outgoing Calls"))
         end,
       })
 
@@ -179,22 +182,6 @@ return {
     dependencies = {
       "neovim/nvim-lspconfig",
       "mfussenegger/nvim-dap-python",
-    },
-  },
-
-  {
-    "nvimdev/lspsaga.nvim",
-    event = { "LspAttach" },
-    config = function()
-      require("lspsaga").setup({
-        lightbulb = {
-          enable = false,
-        },
-      })
-    end,
-    dependencies = {
-      { "nvim-treesitter/nvim-treesitter" },
-      { "nvim-tree/nvim-web-devicons" },
     },
   },
 }

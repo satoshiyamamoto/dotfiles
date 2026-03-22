@@ -276,7 +276,7 @@ return {
         "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>",
         desc = "Buffer Diagnostics (Trouble)",
       },
-      { "<Leader>cs", "<Cmd>Trouble symbols toggle focus=false<CR>", desc = "Symbols (Trouble)" },
+      { "<Leader>cs", "<Cmd>Trouble symbols toggle<CR>", desc = "Symbols (Trouble)" },
       {
         "<Leader>cl",
         "<Cmd>Trouble lsp toggle focus=false win.position=right<CR>",
@@ -285,8 +285,13 @@ return {
       { "<Leader>xL", "<Cmd>Trouble loclist toggle<CR>", desc = "Location List (Trouble)" },
       { "<Leader>xQ", "<Cmd>Trouble qflist toggle<CR>", desc = "Quickfix List (Trouble)" },
     },
-    config = function()
-      require("trouble").setup()
+    opts = {
+      modes = {
+        lsp = { win = { position = "right" } },
+      },
+    },
+    config = function(_, opts)
+      require("trouble").setup(opts)
 
       local signs = {
         Error = "",
