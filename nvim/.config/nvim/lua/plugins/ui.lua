@@ -533,13 +533,27 @@ return {
   },
 
   {
-    "norcalli/nvim-colorizer.lua",
+    "catgoose/nvim-colorizer.lua",
     event = { "BufReadPost", "BufNewFile" },
-    opts = {
-      "*",
-      "!toggleterm",
-      "!packer",
-      "!help",
-    },
+    config = function()
+      require("colorizer").setup({
+        filetypes = {
+          "*",
+          "!help",
+          "!lazy",
+          "!noice",
+          "!trouble",
+          "!snacks_dashboard",
+          "!snacks_notif",
+          "!snacks_notif_history",
+          "!snacks_picker_input",
+          "!snacks_picker_list",
+          "!snacks_picker_preview",
+          css = { tailwind = true },
+          javascriptreact = { tailwind = true },
+          typescriptreact = { tailwind = true },
+        },
+      })
+    end,
   },
 }
