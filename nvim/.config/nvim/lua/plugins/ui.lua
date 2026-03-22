@@ -4,8 +4,15 @@ return {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
+    keys = {
+      { "<Leader>gg", function() Snacks.lazygit() end,  desc = "Lazygit" },
+      { "<c-/>", function() Snacks.terminal() end, desc = "Toggle Terminal",  mode = { "n", "t" } },
+      { "<c-_>", function() Snacks.terminal() end, desc = "which_key_ignore", mode = { "n", "t" } },
+    },
     opts = {
       notifier = { enabled = true },
+      terminal = { enabled = true },
+      lazygit  = { enabled = true },
     },
   },
 
@@ -622,7 +629,7 @@ return {
           dashboard.button("g", "  Find Text", "<Cmd>Telescope live_grep<CR>"),
           ---@diagnostic disable-next-line: param-type-mismatch
           dashboard.button("d", "  Source Control", function()
-            require("toggleterm.terminal").Terminal:new({ cmd = "lazygit", direction = "tab", count = 0 }):toggle()
+            Snacks.lazygit()
           end),
           dashboard.button("r", "  Recent Files", "<Cmd>Telescope oldfiles<CR>"),
           dashboard.button("c", "  Configuration", function()
@@ -702,30 +709,4 @@ return {
     end,
   },
 
-  -- Terminal
-  {
-    "akinsho/toggleterm.nvim",
-    version = "v2.*",
-    cmd = { "ToggleTerm", "TermOpen", "TermExec" },
-    keys = {
-      {
-        "<Leader>lg",
-        function()
-          require("toggleterm.terminal").Terminal:new({ cmd = "lazygit", direction = "float", count = 0 }):toggle()
-        end,
-        desc = "Show Lazygit (Git)",
-      },
-      {
-        "<Leader>lzd",
-        function()
-          require("toggleterm.terminal").Terminal:new({ cmd = "lazydocker", direction = "float", count = 0 }):toggle()
-        end,
-        desc = "Show Lazydocker (Docker)",
-      },
-    },
-    opts = {
-      open_mapping = [[<C-\>]],
-      insert_mappings = true,
-    },
-  },
 }

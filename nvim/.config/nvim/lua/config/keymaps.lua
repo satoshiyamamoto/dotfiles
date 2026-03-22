@@ -18,7 +18,6 @@ end, {})
 vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist, {})
 
 -- Terminal
-vim.keymap.set({ "n", "t" }, "<C-\\>", "<Cmd>ToggleTerm<CR>", {})
 vim.keymap.set("t", "<Esc>", "<C-Bslash><C-n>", {})
 vim.keymap.set("t", "<C-[>", "<C-Bslash><C-n>", {})
 vim.keymap.set("t", "<C-w>", "<C-\\><C-n><C-w>", {})
