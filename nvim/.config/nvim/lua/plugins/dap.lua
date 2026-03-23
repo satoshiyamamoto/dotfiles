@@ -86,16 +86,8 @@ return {
   {
     "nvim-neotest/neotest",
     keys = {
-      {
-        "<Leader>df",
-        function() require("neotest").run.run(vim.fn.expand("%")) end,
-        desc = "Test File",
-      },
-      {
-        "<Leader>dn",
-        function() require("neotest").run.run() end,
-        desc = "Test Nearest",
-      },
+      { "<Leader>df", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Test File" },
+      { "<Leader>dn", function() require("neotest").run.run() end, desc = "Test Nearest" },
     },
     config = function()
       require("neotest").setup({

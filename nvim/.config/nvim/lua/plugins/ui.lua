@@ -6,89 +6,24 @@ return {
     lazy = false,
     keys = {
       -- Explorer
-      {
-        "<Leader>e",
-        function() Snacks.explorer() end,
-        desc = "File Explorer",
-      },
+      { "<Leader>e", function() Snacks.explorer() end, desc = "File Explorer" },
       -- Find
-      {
-        "<Leader>ff",
-        function() Snacks.picker.files() end,
-        desc = "Find Files",
-      },
-      {
-        "<Leader>fr",
-        function() Snacks.picker.recent() end,
-        desc = "Recent Files",
-      },
-      {
-        "<Leader>,",
-        function() Snacks.picker.buffers() end,
-        desc = "Buffers",
-      },
+      { "<Leader>ff", function() Snacks.picker.files() end, desc = "Find Files" },
+      { "<Leader>fr", function() Snacks.picker.recent() end, desc = "Recent Files" },
+      { "<Leader>,", function() Snacks.picker.buffers() end, desc = "Buffers" },
       -- Search
-      {
-        "<Leader>sg",
-        function() Snacks.picker.grep() end,
-        desc = "Grep",
-      },
-      {
-        '<Leader>s"',
-        function() Snacks.picker.registers() end,
-        desc = "Registers",
-      },
-      {
-        "<Leader>sh",
-        function() Snacks.picker.help() end,
-        desc = "Help Pages",
-      },
-      {
-        "<Leader>ss",
-        function() Snacks.picker.lsp_symbols() end,
-        desc = "LSP Symbols",
-      },
-      {
-        "<Leader>sS",
-        function() Snacks.picker.lsp_workspace_symbols() end,
-        desc = "LSP Workspace Symbols",
-      },
-      {
-        "<Leader>n",
-        function() Snacks.picker.notifications() end,
-        desc = "Notification History",
-      },
+      { "<Leader>sg", function() Snacks.picker.grep() end, desc = "Grep" },
+      { '<Leader>s"', function() Snacks.picker.registers() end, desc = "Registers" },
+      { "<Leader>sh", function() Snacks.picker.help() end, desc = "Help Pages" },
+      { "<Leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
+      { "<Leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
+      { "<Leader>n", function() Snacks.picker.notifications() end, desc = "Notification History" },
       -- Git
-      {
-        "<Leader>gs",
-        function() Snacks.picker.git_status() end,
-        desc = "Git Status",
-      },
-      {
-        "<Leader>gg",
-        function() Snacks.lazygit() end,
-        desc = "Lazygit",
-      },
+      { "<Leader>gs", function() Snacks.picker.git_status() end, desc = "Git Status" },
+      { "<Leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
       -- Terminal
-      {
-        "<c-/>",
-        function() Snacks.terminal() end,
-        desc = "Toggle Terminal",
-        mode = { "n", "t" },
-      },
-      {
-        "<c-_>",
-        function() Snacks.terminal() end,
-        desc = "which_key_ignore",
-        mode = { "n", "t" },
-      },
-      -- Image
-      {
-        "K",
-        function() Snacks.image.hover() end,
-        desc = "Hover Image / Diagram",
-        ft = "markdown",
-      },
+      { "<c-/>", function() Snacks.terminal() end, desc = "Toggle Terminal", mode = { "n", "t" } },
+      { "<c-_>", function() Snacks.terminal() end, desc = "which_key_ignore", mode = { "n", "t" } },
     },
     opts = {
       notifier = { enabled = true },
@@ -110,36 +45,11 @@ return {
     event = "VeryLazy",
     opts = {},
     keys = {
-      {
-        "s",
-        mode = { "n", "x", "o" },
-        function() require("flash").jump() end,
-        desc = "Flash",
-      },
-      {
-        "S",
-        mode = { "n", "x", "o" },
-        function() require("flash").treesitter() end,
-        desc = "Flash Treesitter",
-      },
-      {
-        "r",
-        mode = "o",
-        function() require("flash").remote() end,
-        desc = "Remote Flash",
-      },
-      {
-        "R",
-        mode = { "o", "x" },
-        function() require("flash").treesitter_search() end,
-        desc = "Treesitter Search",
-      },
-      {
-        "<c-s>",
-        mode = { "c" },
-        function() require("flash").toggle() end,
-        desc = "Toggle Flash Search",
-      },
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   },
 
@@ -160,21 +70,9 @@ return {
     "folke/noice.nvim",
     event = { "VeryLazy" },
     keys = {
-      {
-        "<Leader>nl",
-        function() require("noice").cmd("last") end,
-        desc = "Noice Last Message",
-      },
-      {
-        "<Leader>nh",
-        function() require("noice").cmd("history") end,
-        desc = "Noice History",
-      },
-      {
-        "<Leader>nd",
-        function() require("noice").cmd("dismiss") end,
-        desc = "Noice Dismiss",
-      },
+      { "<Leader>nl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
+      { "<Leader>nh", function() require("noice").cmd("history") end, desc = "Noice History" },
+      { "<Leader>nd", function() require("noice").cmd("dismiss") end, desc = "Noice Dismiss" },
       {
         "<C-f>",
         function()
@@ -210,10 +108,9 @@ return {
       },
       presets = {
         bottom_search = true,
-        command_palette = false,
+        command_palette = true,
         long_message_to_split = true,
         inc_rename = false,
-        lsp_doc_border = true,
       },
       routes = {
         {
@@ -240,36 +137,6 @@ return {
           },
         },
       },
-      views = {
-        cmdline_popup = {
-          position = {
-            row = 5,
-            col = "50%",
-          },
-          size = {
-            width = 60,
-            height = "auto",
-          },
-        },
-        popupmenu = {
-          relative = "editor",
-          position = {
-            row = 8,
-            col = "50%",
-          },
-          size = {
-            width = 60,
-            height = 10,
-          },
-          border = {
-            style = "rounded",
-            padding = { 0, 1 },
-          },
-          win_options = {
-            winhighlight = { Normal = "Normal", FloatBorder = "DiagnosticInfo" },
-          },
-        },
-      },
     },
     dependencies = {
       { "MunifTanjim/nui.nvim" },
@@ -281,17 +148,9 @@ return {
     event = { "VeryLazy" },
     keys = {
       { "<Leader>xx", "<Cmd>Trouble diagnostics toggle<CR>", desc = "Diagnostics (Trouble)" },
-      {
-        "<Leader>xX",
-        "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>",
-        desc = "Buffer Diagnostics (Trouble)",
-      },
+      { "<Leader>xX", "<Cmd>Trouble diagnostics toggle filter.buf=0<CR>", desc = "Buffer Diagnostics (Trouble)" },
       { "<Leader>cs", "<Cmd>Trouble symbols toggle<CR>", desc = "Symbols (Trouble)" },
-      {
-        "<Leader>cl",
-        "<Cmd>Trouble lsp toggle focus=false win.position=right<CR>",
-        desc = "LSP Definitions / references / ... (Trouble)",
-      },
+      { "<Leader>cl", "<Cmd>Trouble lsp toggle focus=false win.position=right<CR>", desc = "LSP Definitions / references / ... (Trouble)" },
       { "<Leader>xL", "<Cmd>Trouble loclist toggle<CR>", desc = "Location List (Trouble)" },
       { "<Leader>xQ", "<Cmd>Trouble qflist toggle<CR>", desc = "Quickfix List (Trouble)" },
     },
@@ -361,11 +220,7 @@ return {
     event = { "VeryLazy" },
     opts = {},
     keys = {
-      {
-        "<leader>?",
-        function() require("which-key").show({ global = false }) end,
-        desc = "Buffer Local Keymaps (which-key)",
-      },
+      { "<leader>?", function() require("which-key").show({ global = false }) end, desc = "Buffer Local Keymaps (which-key)" },
     },
   },
 

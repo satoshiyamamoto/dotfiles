@@ -8,5 +8,4 @@ return {
     end,
     config = function() require("gitsigns").setup() end,
   },
-
 }

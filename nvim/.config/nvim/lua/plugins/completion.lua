@@ -5,13 +5,11 @@ return {
     version = "*",
     opts = {
       snippets = { preset = "luasnip" },
-      signature = { window = { border = "rounded" } },
       completion = {
         accept = {
           auto_brackets = { enabled = true },
         },
         menu = {
-          border = "rounded",
           draw = {
             treesitter = { "lsp" },
           },
@@ -19,7 +17,6 @@ return {
         documentation = {
           auto_show = true,
           auto_show_delay_ms = 200,
-          window = { border = "rounded" },
         },
       },
     },
