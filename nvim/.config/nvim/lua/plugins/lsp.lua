@@ -1,11 +1,15 @@
 return {
+  { "neovim/nvim-lspconfig" },
+
+  { "mason-org/mason.nvim", opts = {} },
+
   {
-    "neovim/nvim-lspconfig",
+    "mason-org/mason-lspconfig.nvim",
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       -- Global configuration for all LSP servers
       vim.lsp.config("*", {
-        capabilities = require("blink.cmp").get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities()),
+        capabilities = require("blink.cmp").get_lsp_capabilities(),
         on_attach = function(_, bufnr)
           vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
 
@@ -57,80 +61,25 @@ return {
       vim.lsp.enable("terraformls")
       vim.lsp.enable("ts_ls")
 
+      require("mason-lspconfig").setup({
+        ensure_installed = {
+          "cssls",
+          "emmet_language_server",
+          "eslint",
+          "gopls",
+          "html",
+          "jdtls",
+          "lua_ls",
+          "pyright",
+          "rust_analyzer",
+          "tailwindcss",
+          "terraformls",
+          "ts_ls",
+        },
+      })
     end,
     dependencies = {
       { "saghen/blink.cmp" },
-    },
-  },
-
-  {
-    "mfussenegger/nvim-lint",
-    event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      require("lint").linters_by_ft = {
-        go = { "staticcheck" },
-        sql = { "sqlfluff" },
-      }
-
-      vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-        callback = function()
-          require("lint").try_lint()
-        end,
-      })
-    end,
-  },
-
-  {
-    "mason-org/mason-lspconfig.nvim",
-    event = { "VeryLazy" },
-    opts = {
-      ensure_installed = {
-        "cssls",
-        "emmet_language_server",
-        "eslint",
-        "gopls",
-        "html",
-        "jdtls",
-        "lua_ls",
-        "pyright",
-        "rust_analyzer",
-        "tailwindcss",
-        "terraformls",
-        "ts_ls",
-      },
-    },
-    dependencies = {
-      { "neovim/nvim-lspconfig" },
-      { "mason-org/mason.nvim", opts = {} },
-      {
-        "jay-babu/mason-nvim-dap.nvim",
-        opts = {
-          automatic_installation = true,
-          ensure_installed = {
-            "debugpy",
-            "delve",
-            "javadbg",
-            "javatest",
-            "js",
-          },
-        },
-      },
-    },
-  },
-
-  {
-    "linux-cultist/venv-selector.nvim",
-    keys = {
-      { ",v", "<Cmd>VenvSelect<CR>", desc = "Open VenvSelector to pick a venv" },
-    },
-    ft = "python",
-    opts = {
-      search = {},
-      options = {},
-    },
-    dependencies = {
-      "neovim/nvim-lspconfig",
-      "mfussenegger/nvim-dap-python",
     },
   },
 }

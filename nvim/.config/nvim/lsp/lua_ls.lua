@@ -19,6 +19,9 @@ return {
         checkThirdParty = false,
         library = { vim.env.VIMRUNTIME },
       },
+      diagnostics = {
+        globals = { "Snacks" },
+      },
     },
   },
 }
