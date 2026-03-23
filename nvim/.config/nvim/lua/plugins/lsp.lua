@@ -6,62 +6,11 @@ return {
       -- Global configuration for all LSP servers
       vim.lsp.config("*", {
         capabilities = require("blink.cmp").get_lsp_capabilities(vim.lsp.protocol.make_client_capabilities()),
-      })
-
-      -- Configure lua_ls with specific settings
-      vim.lsp.config("lua_ls", {
-        settings = {
-          Lua = {
-            runtime = {
-              version = "LuaJIT",
-            },
-            diagnostics = {
-              globals = { "vim" },
-            },
-            workspace = {
-              library = vim.api.nvim_get_runtime_file("", true),
-              checkThirdParty = false,
-            },
-            telemetry = {
-              enable = false,
-            },
-          },
-        },
-      })
-
-      -- Configure ts_ls to prefer path aliases (e.g. @/) over relative paths
-      vim.lsp.config("ts_ls", {
-        init_options = {
-          preferences = {
-            importModuleSpecifierPreference = "non-relative",
-          },
-        },
-      })
-
-      -- Enable LSP servers
-      vim.lsp.enable("html")
-      vim.lsp.enable("cssls")
-      vim.lsp.enable("emmet_language_server")
-      vim.lsp.enable("eslint")
-      vim.lsp.enable("pyright")
-      vim.lsp.enable("gopls")
-      vim.lsp.enable("ts_ls")
-      vim.lsp.enable("terraformls")
-      vim.lsp.enable("tailwindcss")
-      vim.lsp.enable("ruff")
-      vim.lsp.enable("rust_analyzer")
-      vim.lsp.enable("lua_ls")
-
-      -- Use LspAttach autocommand to only map the following keys
-      -- after the language server attaches to the current buffer
-      vim.api.nvim_create_autocmd("LspAttach", {
-        group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-        callback = function(ev)
-          -- Enable completion triggered by <c-x><c-o>
-          vim.bo[ev.buf].omnifunc = "v:lua.vim.lsp.omnifunc"
+        on_attach = function(_, bufnr)
+          vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
 
           local opts = function(desc)
-            return { buffer = ev.buf, desc = desc }
+            return { buffer = bufnr, desc = desc }
           end
           -- Go to
           vim.keymap.set("n", "gd", function()
@@ -94,20 +43,20 @@ return {
         end,
       })
 
-      vim.api.nvim_create_autocmd("BufNewFile", {
-        group = vim.api.nvim_create_augroup("LspStarting", {}),
-        callback = function()
-          vim.cmd("LspStart")
-        end,
-      })
+      -- Enable LSP servers
+      vim.lsp.enable("cssls")
+      vim.lsp.enable("emmet_language_server")
+      vim.lsp.enable("eslint")
+      vim.lsp.enable("gopls")
+      vim.lsp.enable("html")
+      vim.lsp.enable("lua_ls")
+      vim.lsp.enable("pyright")
+      vim.lsp.enable("ruff")
+      vim.lsp.enable("rust_analyzer")
+      vim.lsp.enable("tailwindcss")
+      vim.lsp.enable("terraformls")
+      vim.lsp.enable("ts_ls")
 
-      -- Fix filetype detection for $MYVIMRC
-      vim.api.nvim_create_autocmd("BufRead", {
-        pattern = vim.fn.expand("$MYVIMRC"),
-        callback = function()
-          vim.bo.filetype = "lua"
-        end,
-      })
     end,
     dependencies = {
       { "saghen/blink.cmp" },
