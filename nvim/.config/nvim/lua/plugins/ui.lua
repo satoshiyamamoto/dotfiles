@@ -8,114 +8,84 @@ return {
       -- Explorer
       {
         "<Leader>e",
-        function()
-          Snacks.explorer()
-        end,
+        function() Snacks.explorer() end,
         desc = "File Explorer",
       },
       -- Find
       {
         "<Leader>ff",
-        function()
-          Snacks.picker.files()
-        end,
+        function() Snacks.picker.files() end,
         desc = "Find Files",
       },
       {
         "<Leader>fr",
-        function()
-          Snacks.picker.recent()
-        end,
+        function() Snacks.picker.recent() end,
         desc = "Recent Files",
       },
       {
         "<Leader>,",
-        function()
-          Snacks.picker.buffers()
-        end,
+        function() Snacks.picker.buffers() end,
         desc = "Buffers",
       },
       -- Search
       {
         "<Leader>sg",
-        function()
-          Snacks.picker.grep()
-        end,
+        function() Snacks.picker.grep() end,
         desc = "Grep",
       },
       {
         '<Leader>s"',
-        function()
-          Snacks.picker.registers()
-        end,
+        function() Snacks.picker.registers() end,
         desc = "Registers",
       },
       {
         "<Leader>sh",
-        function()
-          Snacks.picker.help()
-        end,
+        function() Snacks.picker.help() end,
         desc = "Help Pages",
       },
       {
         "<Leader>ss",
-        function()
-          Snacks.picker.lsp_symbols()
-        end,
+        function() Snacks.picker.lsp_symbols() end,
         desc = "LSP Symbols",
       },
       {
         "<Leader>sS",
-        function()
-          Snacks.picker.lsp_workspace_symbols()
-        end,
+        function() Snacks.picker.lsp_workspace_symbols() end,
         desc = "LSP Workspace Symbols",
       },
       {
         "<Leader>n",
-        function()
-          Snacks.picker.notifications()
-        end,
+        function() Snacks.picker.notifications() end,
         desc = "Notification History",
       },
       -- Git
       {
         "<Leader>gs",
-        function()
-          Snacks.picker.git_status()
-        end,
+        function() Snacks.picker.git_status() end,
         desc = "Git Status",
       },
       {
         "<Leader>gg",
-        function()
-          Snacks.lazygit()
-        end,
+        function() Snacks.lazygit() end,
         desc = "Lazygit",
       },
       -- Terminal
       {
         "<c-/>",
-        function()
-          Snacks.terminal()
-        end,
+        function() Snacks.terminal() end,
         desc = "Toggle Terminal",
         mode = { "n", "t" },
       },
       {
         "<c-_>",
-        function()
-          Snacks.terminal()
-        end,
+        function() Snacks.terminal() end,
         desc = "which_key_ignore",
         mode = { "n", "t" },
       },
       -- Image
       {
         "K",
-        function()
-          Snacks.image.hover()
-        end,
+        function() Snacks.image.hover() end,
         desc = "Hover Image / Diagram",
         ft = "markdown",
       },
@@ -143,41 +113,31 @@ return {
       {
         "s",
         mode = { "n", "x", "o" },
-        function()
-          require("flash").jump()
-        end,
+        function() require("flash").jump() end,
         desc = "Flash",
       },
       {
         "S",
         mode = { "n", "x", "o" },
-        function()
-          require("flash").treesitter()
-        end,
+        function() require("flash").treesitter() end,
         desc = "Flash Treesitter",
       },
       {
         "r",
         mode = "o",
-        function()
-          require("flash").remote()
-        end,
+        function() require("flash").remote() end,
         desc = "Remote Flash",
       },
       {
         "R",
         mode = { "o", "x" },
-        function()
-          require("flash").treesitter_search()
-        end,
+        function() require("flash").treesitter_search() end,
         desc = "Treesitter Search",
       },
       {
         "<c-s>",
         mode = { "c" },
-        function()
-          require("flash").toggle()
-        end,
+        function() require("flash").toggle() end,
         desc = "Toggle Flash Search",
       },
     },
@@ -202,23 +162,17 @@ return {
     keys = {
       {
         "<Leader>nl",
-        function()
-          require("noice").cmd("last")
-        end,
+        function() require("noice").cmd("last") end,
         desc = "Noice Last Message",
       },
       {
         "<Leader>nh",
-        function()
-          require("noice").cmd("history")
-        end,
+        function() require("noice").cmd("history") end,
         desc = "Noice History",
       },
       {
         "<Leader>nd",
-        function()
-          require("noice").cmd("dismiss")
-        end,
+        function() require("noice").cmd("dismiss") end,
         desc = "Noice Dismiss",
       },
       {
@@ -409,9 +363,7 @@ return {
     keys = {
       {
         "<leader>?",
-        function()
-          require("which-key").show({ global = false })
-        end,
+        function() require("which-key").show({ global = false }) end,
         desc = "Buffer Local Keymaps (which-key)",
       },
     },

@@ -78,8 +78,7 @@ return {
 
       local get_option = vim.filetype.get_option
       vim.filetype.get_option = function(filetype, option) ---@diagnostic disable-line duplicate-set-field
-        return option == "commentstring" and require("ts_context_commentstring.internal").calculate_commentstring()
-          or get_option(filetype, option)
+        return option == "commentstring" and require("ts_context_commentstring.internal").calculate_commentstring() or get_option(filetype, option)
       end
     end,
     dependencies = {

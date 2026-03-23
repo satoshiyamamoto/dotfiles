@@ -6,9 +6,7 @@ return {
     keys = {
       {
         "<Leader>f",
-        function()
-          require("conform").format({ async = true, lsp_fallback = true })
-        end,
+        function() require("conform").format({ async = true, lsp_fallback = true }) end,
         mode = "",
         desc = "Format buffer",
       },
@@ -31,18 +29,16 @@ return {
       formatters = {
         prettierd = {
           condition = function(_, ctx)
-            if
-              vim.fs.find({
-                ".prettierrc",
-                ".prettierrc.js",
-                ".prettierrc.cjs",
-                ".prettierrc.json",
-                ".prettierrc.yaml",
-                ".prettierrc.yml",
-                "prettier.config.js",
-                "prettier.config.cjs",
-              }, { upward = true, path = ctx.dirname })[1] ~= nil
-            then
+            if vim.fs.find({
+              ".prettierrc",
+              ".prettierrc.js",
+              ".prettierrc.cjs",
+              ".prettierrc.json",
+              ".prettierrc.yaml",
+              ".prettierrc.yml",
+              "prettier.config.js",
+              "prettier.config.cjs",
+            }, { upward = true, path = ctx.dirname })[1] ~= nil then
               return true
             end
             local pkg = vim.fs.find("package.json", { upward = true, path = ctx.dirname })[1]
@@ -71,9 +67,7 @@ return {
       }
 
       vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-        callback = function()
-          require("lint").try_lint()
-        end,
+        callback = function() require("lint").try_lint() end,
       })
     end,
   },

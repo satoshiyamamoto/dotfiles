@@ -7,9 +7,7 @@ return {
     keys = {
       {
         "<leader>xe",
-        function()
-          require("nvim-emmet"):wrap_with_abbreviation()
-        end,
+        function() require("nvim-emmet"):wrap_with_abbreviation() end,
         mode = { "n", "v" },
         desc = "Wrap with Emmet Abbreviation",
       },
