@@ -473,6 +473,8 @@ return {
     },
   },
 
+  { "Bekaboo/dropbar.nvim", event = { "BufReadPost", "BufNewFile" }, opts = {} },
+
   {
     "folke/todo-comments.nvim",
     event = { "BufReadPost", "BufNewFile" },
