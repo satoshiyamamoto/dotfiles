@@ -1,19 +1,5 @@
 return {
   {
-    "jay-babu/mason-nvim-dap.nvim",
-    opts = {
-      automatic_installation = true,
-      ensure_installed = {
-        "debugpy",
-        "delve",
-        "javadbg",
-        "javatest",
-        "js",
-      },
-    },
-  },
-
-  {
     "mfussenegger/nvim-dap",
     event = { "BufReadPost", "BufNewFile" },
     config = function()
@@ -90,6 +76,20 @@ return {
       { "nvim-neotest/nvim-nio" },
       { "rcarriga/nvim-dap-ui" },
       { "theHamsta/nvim-dap-virtual-text" },
+    },
+  },
+
+  {
+    "jay-babu/mason-nvim-dap.nvim",
+    opts = {
+      automatic_installation = true,
+      ensure_installed = {
+        "debugpy",
+        "delve",
+        "javadbg",
+        "javatest",
+        "js",
+      },
     },
   },
 
