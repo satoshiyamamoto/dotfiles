@@ -9,14 +9,4 @@ return {
     config = function() require("gitsigns").setup() end,
   },
 
-  {
-    "sindrets/diffview.nvim",
-    cmd = {
-      "DiffviewOpen",
-      "DiffviewFileHistory",
-    },
-    dependencies = {
-      { "nvim-lua/plenary.nvim" },
-    },
-  },
 }
