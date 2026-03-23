@@ -225,6 +225,14 @@ return {
     },
   },
 
+  -- Markdown
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    opts = {},
+  },
+
   -- Miscellaneous
   {
     "vim-jp/vimdoc-ja",

@@ -110,6 +110,15 @@ return {
         desc = "which_key_ignore",
         mode = { "n", "t" },
       },
+      -- Image
+      {
+        "K",
+        function()
+          Snacks.image.hover()
+        end,
+        desc = "Hover Image / Diagram",
+        ft = "markdown",
+      },
     },
     opts = {
       notifier = { enabled = true },
@@ -119,6 +128,10 @@ return {
       dashboard = { enabled = true },
       explorer = { enabled = true },
       picker = { enabled = true },
+      image = {
+        doc = { enabled = true },
+        math = { enabled = true },
+      },
     },
   },
 

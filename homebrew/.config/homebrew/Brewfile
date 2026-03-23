@@ -2,6 +2,28 @@ tap "cycloud-io/tap", "git@github.com:cycloud-io/homebrew-tap.git"
 tap "teamookla/speedtest"
 # C++ Common Libraries
 brew "abseil"
+# Generic-purpose lossless compression algorithm by Google
+brew "brotli"
+# Library and utilities for processing GIFs
+brew "giflib"
+# Library of 2D and 3D vector, matrix, and math operations
+brew "imath"
+# Library for manipulating PNG images
+brew "libpng"
+# Extremely Fast Compression algorithm
+brew "lz4"
+# General-purpose data compression with high compression ratio
+brew "xz"
+# Zstandard is a real-time compression algorithm
+brew "zstd"
+# TIFF library and utilities
+brew "libtiff"
+# Color management engine supporting ICC profiles
+brew "little-cms2"
+# High dynamic-range image file format
+brew "openexr"
+# New file format for still image compression
+brew "jpeg-xl"
 # Get stuff done with container-native workflows for Kubernetes
 brew "argo"
 # GitOps Continuous Delivery for Kubernetes
@@ -14,8 +36,6 @@ brew "m4"
 brew "autoconf"
 # Compression/decompression library aiming for high speed
 brew "snappy"
-# General-purpose data compression with high compression ratio
-brew "xz"
 # Data serialization system
 brew "avro-c"
 # Mozilla CA certificate store
@@ -44,14 +64,8 @@ brew "bat"
 brew "bat-extras"
 # Garbage collector for C and C++
 brew "bdw-gc"
-# Extremely Fast Compression algorithm
-brew "lz4"
-# Zstandard is a real-time compression algorithm
-brew "zstd"
 # Collection of portable C++ source libraries
 brew "boost"
-# Generic-purpose lossless compression algorithm by Google
-brew "brotli"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
 # New way of working with Protocol Buffers
@@ -60,8 +74,6 @@ brew "buf"
 brew "c-ares"
 # Powerful, enterprise-ready, open source web server with automatic HTTPS
 brew "caddy"
-# Library for manipulating PNG images
-brew "libpng"
 # Software library to render fonts
 brew "freetype"
 # XML-based font configuration API for X Windows
@@ -140,14 +152,8 @@ brew "freetds"
 brew "fzf"
 # GNU awk utility
 brew "gawk"
-# Library and utilities for processing GIFs
-brew "giflib"
 # OpenType text shaping engine
 brew "harfbuzz"
-# TIFF library and utilities
-brew "libtiff"
-# Color management engine supporting ICC profiles
-brew "little-cms2"
 # Development kit for the Java programming language
 brew "openjdk"
 # Java garbage collection visualization tool
@@ -212,16 +218,14 @@ brew "helm-ls"
 brew "hey"
 # Improved top (interactive process viewer)
 brew "htop"
-# Library of 2D and 3D vector, matrix, and math operations
-brew "imath"
+# Image format providing lossless and lossy compression for web images
+brew "webp"
+# Tools and libraries to manipulate images in select formats
+brew "imagemagick"
 # Interactive computing in Python
 brew "ipython"
 # JSON diff and patch
 brew "jd"
-# High dynamic-range image file format
-brew "openexr"
-# New file format for still image compression
-brew "jpeg-xl"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Super fast CLI tool to decode and encode JWTs built in Rust
@@ -272,14 +276,14 @@ brew "litecli"
 brew "lolcat"
 # Just-In-Time Compiler (JIT) for the Lua programming language
 brew "luajit"
-# Package manager for the Lua programming language
-brew "luarocks"
 # Bare libuv bindings for lua
 brew "luv"
 # Mac App Store command-line interface
 brew "mas"
 # Java-based project management
 brew "maven"
+# CLI for Mermaid library
+brew "mermaid-cli"
 # Run a Kubernetes cluster locally
 brew "minikube"
 # Polyglot runtime manager (asdf rust clone)
@@ -384,8 +388,6 @@ brew "viddy"
 brew "vivid"
 # Executes a program periodically, showing output fullscreen
 brew "watch"
-# Image format providing lossless and lossy compression for web images
-brew "webp"
 # Internet file retriever
 brew "wget"
 # Extensible command-line tool to format YAML files
