@@ -13,6 +13,7 @@ stow --verbose --adopt --target=$HOME \
   kitty \
   lazygit \
   mise \
+  puppeteer \
   nvim \
   powerlevel10k \
   sqlfluff \
