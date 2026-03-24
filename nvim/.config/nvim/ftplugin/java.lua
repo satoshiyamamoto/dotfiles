@@ -55,8 +55,8 @@ config.on_attach = function(_, bufnr)
   -- vim.keymap.set("n", "crc", jdtls.extract_constant, opts("Extract Constant"))
   -- vim.keymap.set("v", "crc", function() jdtls.extract_constant(true) end, opts("Extract Constant"))
   -- vim.keymap.set("v", "crm", function() jdtls.extract_method(true) end, opts("Extract Method"))
-  vim.keymap.set("n", "<leader>df", function() jdtls.test_class(config.settings.java.test) end, opts("Test Class (Debug)"))
-  vim.keymap.set("n", "<leader>dn", function() jdtls.test_nearest_method(config.settings.java.test) end, opts("Test Method (Debug)"))
+  vim.keymap.set("n", "<leader>tt", function() jdtls.test_class(config.settings.java.test) end, opts("Test Class (Debug)"))
+  vim.keymap.set("n", "<leader>tr", function() jdtls.test_nearest_method(config.settings.java.test) end, opts("Test Method (Debug)"))
 end
 
 config.handlers = {}
