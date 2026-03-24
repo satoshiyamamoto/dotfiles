@@ -98,11 +98,9 @@ return {
     },
     opts = {
       lsp = {
-        signature = { enabled = false },
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
-          ["vim.ui.select"] = false,
           ["cmp.entry.get_documentation"] = true,
         },
       },
@@ -111,30 +109,31 @@ return {
         command_palette = true,
         long_message_to_split = true,
         inc_rename = false,
+        lsp_doc_border = false,
       },
       routes = {
         {
           filter = {
             event = "msg_show",
             any = {
-              { find = "written" },
-              { find = " lines --%" },
-              { find = " bytes --%" },
-              { find = "^$" }, -- Empty messages
+              { find = "%d+L, %d+B" },
+              { find = "; after #%d+" },
+              { find = "; before #%d+" },
             },
           },
-          opts = { skip = true },
+          view = "mini",
         },
         -- FIXME: Cannot get stdout while running !commands
         -- https://github.com/folke/noice.nvim/issues/1097
         {
-          filter = { event = "msg_show" },
-          view = "notify",
-          opts = {
-            level = "info",
-            skip = false,
-            replace = false,
+          filter = {
+            event = "msg_show",
+            kind = {
+              "shell_out",
+              "shell_err",
+            },
           },
+          view = "mini",
         },
       },
     },
