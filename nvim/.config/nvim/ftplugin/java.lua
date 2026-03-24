@@ -48,12 +48,13 @@ config.on_attach = function(_, bufnr)
   jdtls.setup.add_commands()
 
   local opts = function(desc) return { silent = true, buffer = bufnr, desc = desc } end
-  vim.keymap.set("n", "<A-o>", jdtls.organize_imports, opts("Optimize Import"))
-  vim.keymap.set("n", "crv", jdtls.extract_variable, opts("Extract Variable"))
-  vim.keymap.set("v", "crv", function() jdtls.extract_variable(true) end, opts("Extract Variable"))
-  vim.keymap.set("n", "crc", jdtls.extract_constant, opts("Extract Constant"))
-  vim.keymap.set("v", "crc", function() jdtls.extract_constant(true) end, opts("Extract Constant"))
-  vim.keymap.set("v", "crm", function() jdtls.extract_method(true) end, opts("Extract Method"))
+  -- These actions are accessible via <Leader>ca (code action picker); explicit keymaps are unnecessary.
+  -- vim.keymap.set("n", "<A-o>", jdtls.organize_imports, opts("Optimize Import"))
+  -- vim.keymap.set("n", "crv", jdtls.extract_variable, opts("Extract Variable"))
+  -- vim.keymap.set("v", "crv", function() jdtls.extract_variable(true) end, opts("Extract Variable"))
+  -- vim.keymap.set("n", "crc", jdtls.extract_constant, opts("Extract Constant"))
+  -- vim.keymap.set("v", "crc", function() jdtls.extract_constant(true) end, opts("Extract Constant"))
+  -- vim.keymap.set("v", "crm", function() jdtls.extract_method(true) end, opts("Extract Method"))
   vim.keymap.set("n", "<leader>df", function() jdtls.test_class(config.settings.java.test) end, opts("Test Class (Debug)"))
   vim.keymap.set("n", "<leader>dn", function() jdtls.test_nearest_method(config.settings.java.test) end, opts("Test Method (Debug)"))
 end

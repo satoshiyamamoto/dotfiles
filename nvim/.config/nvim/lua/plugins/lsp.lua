@@ -5,9 +5,12 @@ return {
     config = function()
       vim.lsp.config("*", {
         capabilities = require("blink.cmp").get_lsp_capabilities(),
-        on_attach = function(_, bufnr)
-          vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+        on_attach = function(_, bufnr) vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc" end,
+      })
 
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(ev)
+          local bufnr = ev.buf
           local opts = function(desc) return { buffer = bufnr, desc = desc } end
           -- Go to
           vim.keymap.set("n", "gd", function() Snacks.picker.lsp_definitions() end, opts("Go to Definition"))
