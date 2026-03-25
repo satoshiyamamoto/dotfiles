@@ -278,6 +278,8 @@ brew "lolcat"
 brew "luajit"
 # Bare libuv bindings for lua
 brew "luv"
+# Package manager for the Lua programming language
+brew "luarocks"
 # Mac App Store command-line interface
 brew "mas"
 # Java-based project management

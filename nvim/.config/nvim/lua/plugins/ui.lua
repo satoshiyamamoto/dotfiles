@@ -313,6 +313,7 @@ return {
               cond = require("noice").api.status.search.has,
               color = { fg = "#ff9e64" },
             },
+            { "rest", icon = "", fg = "#428890" },
             "encoding",
             "fileformat",
             "filetype",
@@ -324,6 +325,7 @@ return {
       { "folke/noice.nvim" },
       { "folke/tokyonight.nvim" },
       { "projekt0n/github-nvim-theme" },
+      { "rest-nvim/rest.nvim" },
     },
   },
 
