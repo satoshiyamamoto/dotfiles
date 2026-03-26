@@ -313,7 +313,13 @@ return {
               cond = require("noice").api.status.search.has,
               color = { fg = "#ff9e64" },
             },
-            { "rest", icon = "", fg = "#428890" },
+            {
+              function()
+                local env = vim.bo.filetype == "http" and vim.b._rest_nvim_env_file or ""
+                return vim.fn.fnamemodify(env, ":t")
+              end,
+              icon = { "", color = { fg = "#428890" } },
+            },
             "encoding",
             "fileformat",
             "filetype",
