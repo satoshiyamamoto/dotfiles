@@ -1,4 +1,3 @@
-tap "cycloud-io/tap", "git@github.com:cycloud-io/homebrew-tap.git"
 tap "teamookla/speedtest"
 # C++ Common Libraries
 brew "abseil"
@@ -410,8 +409,6 @@ brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 # ZSH plugin that reminds you to use existing aliases for commands you just typed
 brew "zsh-you-should-use"
-# Cycloud Platform Command Line Tool
-brew "cycloud-io/tap/cycloud-cli"
 # Ookla Speedtest
 brew "teamookla/speedtest/speedtest"
 # Anthropic's official Claude AI desktop app
