@@ -93,11 +93,21 @@ fzf-git-widget() {
 zle     -N    fzf-git-widget
 bindkey '\eg' fzf-git-widget
 
+.sync() {
+  pushd -q "$(z -e dotfiles)" || return
+  git pull || { popd -q; return 1; }
+  if [[ $(arch) == "i386" ]]; then
+    sed -i '' 's/^brew "container"$/# brew "container"/' homebrew/.config/homebrew/Brewfile
+  fi
+  brew bundle -g
+  git restore homebrew/.config/homebrew/Brewfile
+  popd -q
+}
+
 
 #
 # Aliases
 #
-alias .sync='vpnoff && kubeoff && z dotfiles && gpl && brew bundle -g && -'
 alias cisco='/opt/cisco/secureclient/bin/vpn'
 alias cp='cp -i'
 alias curl='curl --silent'
