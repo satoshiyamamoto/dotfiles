@@ -444,8 +444,6 @@ cask "kitty"
 cask "licecap"
 # App to write, plan, collaborate, and get organised
 cask "notion"
-# Collaboration platform for API development
-cask "postman"
 # Quick Look generator for Markdown files
 cask "qlmarkdown"
 # Team communication and collaboration software
@@ -467,7 +465,6 @@ mas "Keynote", id: 409183694
 mas "Kindle", id: 302584613
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
-mas "Postman Interceptor", id: 6460587883
 mas "Tailscale", id: 1475387142
 mas "Vimlike", id: 1584519802
 mas "Xcode", id: 497799835
