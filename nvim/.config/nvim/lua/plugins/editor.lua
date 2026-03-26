@@ -68,7 +68,7 @@ return {
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     keys = {
       { "<Leader>rr", "<cmd>Rest run<cr>", desc = "Run HTTP Request" },
-      { "<Leader>rl", "<cmd>Rest run last<cr>", desc = "Re-run Last HTTP Request" },
+      { "<Leader>rl", "<cmd>Rest last<cr>", desc = "Re-run Last HTTP Request" },
       { "<Leader>re", "<cmd>Rest env select<cr>", desc = "Select REST Environment" },
     },
   },
