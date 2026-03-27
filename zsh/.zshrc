@@ -94,27 +94,37 @@ zle     -N    fzf-git-widget
 bindkey '\eg' fzf-git-widget
 
 .sync() {
-  local dotfiles_dir brewfile status=0 is_i386=false
+  local dotfiles_dir brewfile
+  local is_i386=false ret=0
+  local container_formula='brew "container"'
 
+  # Resolve dotfiles directory path and navigate into it
   dotfiles_dir="$(z -e dotfiles)" || return 1
   pushd -q "$dotfiles_dir" || return 1
+
+  # Pull the latest changes from the remote repository
   git pull || { popd -q; return 1; }
 
+  # Detect Rosetta (i386) environment and locate the Brewfile
   [[ "$(arch)" == "i386" ]] && is_i386=true
   brewfile="$(fd --hidden --type f '^Brewfile$' | head -n 1)"
 
   if $is_i386 && [[ -n "$brewfile" ]]; then
-    sed -i '' 's/^brew "container"$/# brew "container"/' "$brewfile"
-  fi
+    # Temporarily comment out the container formula on i386 (unsupported)
+    sed -i '' "s/^${container_formula}$/# ${container_formula}/" "$brewfile"
 
-  brew bundle -g || status=$?
+    # Install or update all packages defined in the Brewfile
+    brew bundle -g || ret=$?
 
-  if $is_i386 && [[ -n "$brewfile" ]]; then
-    sed -i '' 's/^# brew "container"$/brew "container"/' "$brewfile"
+    # Restore the container formula entry after bundle completes
+    sed -i '' "s/^# ${container_formula}$/${container_formula}/" "$brewfile"
+  else
+    # Install or update all packages defined in the Brewfile
+    brew bundle -g || ret=$?
   fi
 
   popd -q
-  return $status
+  return $ret
 }
 
 
