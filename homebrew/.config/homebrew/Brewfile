@@ -275,10 +275,10 @@ brew "litecli"
 brew "lolcat"
 # Just-In-Time Compiler (JIT) for the Lua programming language
 brew "luajit"
-# Bare libuv bindings for lua
-brew "luv"
 # Package manager for the Lua programming language
 brew "luarocks"
+# Bare libuv bindings for lua
+brew "luv"
 # Mac App Store command-line interface
 brew "mas"
 # Java-based project management
@@ -469,4 +469,3 @@ go "github.com/go-delve/delve/cmd/dlv"
 go "golang.org/x/tools/cmd/goimports"
 go "github.com/golangci/golangci-lint/cmd/golangci-lint"
 go "golang.org/x/tools/gopls"
-cargo "code-minimap"
