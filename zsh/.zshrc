@@ -94,14 +94,27 @@ zle     -N    fzf-git-widget
 bindkey '\eg' fzf-git-widget
 
 .sync() {
-  pushd -q "$(z -e dotfiles)" || return
+  local dotfiles_dir brewfile status=0 is_i386=false
+
+  dotfiles_dir="$(z -e dotfiles)" || return 1
+  pushd -q "$dotfiles_dir" || return 1
   git pull || { popd -q; return 1; }
-  if [[ $(arch) == "i386" ]]; then
-    sed -i '' 's/^brew "container"$/# brew "container"/' homebrew/.config/homebrew/Brewfile
+
+  [[ "$(arch)" == "i386" ]] && is_i386=true
+  brewfile="$(fd --hidden --type f '^Brewfile$' | head -n 1)"
+
+  if $is_i386 && [[ -n "$brewfile" ]]; then
+    sed -i '' 's/^brew "container"$/# brew "container"/' "$brewfile"
   fi
-  brew bundle -g
-  git restore homebrew/.config/homebrew/Brewfile
+
+  brew bundle -g || status=$?
+
+  if $is_i386 && [[ -n "$brewfile" ]]; then
+    sed -i '' 's/^# brew "container"$/brew "container"/' "$brewfile"
+  fi
+
   popd -q
+  return $status
 }
 
 
