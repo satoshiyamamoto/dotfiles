@@ -62,6 +62,7 @@ __load_plugins() {
   eval "$(atuin init --disable-up-arrow zsh)"
   eval "$(direnv hook zsh)"
   eval "$(mise activate zsh)"
+  eval "$(zoxide  init zsh)"
 }
 zsh-defer __load_plugins
 
