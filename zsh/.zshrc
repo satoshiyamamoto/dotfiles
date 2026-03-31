@@ -135,7 +135,7 @@ sesh-agent() {
   local container_formula='brew "container"'
 
   # Resolve dotfiles directory path and navigate into it
-  dotfiles_dir="$(z -e dotfiles)" || return 1
+  dotfiles_dir="$(zoxide query dotfiles)" || return 1
   pushd -q "$dotfiles_dir" || return 1
 
   # Pull the latest changes from the remote repository
