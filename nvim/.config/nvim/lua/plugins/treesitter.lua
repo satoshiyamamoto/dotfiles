@@ -2,13 +2,14 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
-    opts = {
-      ensure_installed = {
+    lazy = false,
+    config = function()
+      require("nvim-treesitter").install({
         "bash",
         "csv",
         "go",
         "gomod",
+        "gotmpl",
         "hcl",
         "html",
         "http",
@@ -31,25 +32,20 @@ return {
         "vim",
         "vimdoc",
         "yaml",
-      },
-      highlight = {
-        enable = true,
-      },
-      indent = {
-        enable = true,
-        disable = { "yaml" },
-      },
-    },
-    config = function(_, opts)
-      require("nvim-treesitter").setup(opts)
-      vim.treesitter.language.register("hcl", { "terraform" })
-    end,
-  },
+      })
 
-  {
-    "windwp/nvim-ts-autotag",
-    event = { "BufReadPost", "BufNewFile" },
-    opts = {},
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          local ok = pcall(vim.treesitter.start)
+          if ok then
+            vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+            vim.wo.foldmethod = "expr"
+            vim.wo.foldlevel = 99
+            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
+      })
+    end,
   },
 
   {
@@ -58,7 +54,8 @@ return {
     opts = {
       enable = true,
     },
-    config = function()
+    config = function(_, opts)
+      require("treesitter-context").setup(opts)
       vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "None" })
       vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = true, sp = "#000000" })
     end,
@@ -73,18 +70,24 @@ return {
     "JoosepAlviste/nvim-ts-context-commentstring",
     event = { "BufReadPost", "BufNewFile" },
     config = function()
+      -- Native commenting in Neovim 0.10
       require("ts_context_commentstring").setup({
         enable_autocmd = false,
       })
 
       local get_option = vim.filetype.get_option
       vim.filetype.get_option = function(filetype, option) ---@diagnostic disable-line duplicate-set-field
-        return option == "commentstring" and require("ts_context_commentstring.internal").calculate_commentstring() or get_option(filetype, option)
+        return option == "commentstring" --
+            and require("ts_context_commentstring.internal").calculate_commentstring() --
+          or get_option(filetype, option)
       end
     end,
-    dependencies = {
-      { "nvim-treesitter/nvim-treesitter" },
-    },
+  },
+
+  {
+    "windwp/nvim-ts-autotag",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {},
   },
 
   {
