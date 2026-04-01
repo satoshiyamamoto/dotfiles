@@ -29,20 +29,8 @@ return {
         end,
       })
 
-      vim.lsp.enable({
-        "cssls",
-        "emmet_language_server",
-        "eslint",
-        "gopls",
-        "html",
-        "lua_ls",
-        "pyright",
-        "ruff",
-        "rust_analyzer",
-        "tailwindcss",
-        "terraformls",
-        "ts_ls",
-      })
+      -- Enable it using `automatic_enable` in `mason-lspconfig`
+      vim.lsp.enable({})
     end,
     dependencies = {
       { "saghen/blink.cmp" },
