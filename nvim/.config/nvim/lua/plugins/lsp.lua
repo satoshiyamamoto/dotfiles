@@ -49,10 +49,9 @@ return {
     },
   },
 
-  { "mason-org/mason.nvim", opts = {} },
-
   {
     "mason-org/mason-lspconfig.nvim",
+    event = "VeryLazy",
     opts = {
       ensure_installed = {
         "cssls",
@@ -63,11 +62,16 @@ return {
         "jdtls",
         "lua_ls",
         "pyright",
+        "ruff",
         "rust_analyzer",
         "tailwindcss",
         "terraformls",
         "ts_ls",
       },
+    },
+    dependencies = {
+      { "mason-org/mason.nvim", opts = {} },
+      "neovim/nvim-lspconfig",
     },
   },
 }
