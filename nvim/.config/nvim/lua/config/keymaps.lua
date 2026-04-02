@@ -11,7 +11,6 @@ vim.keymap.set("n", "]q", "<Cmd>cnext<CR>", {})
 vim.keymap.set("n", "gl", vim.diagnostic.open_float, {})
 vim.keymap.set("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, {})
 vim.keymap.set("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, {})
-vim.keymap.set("n", "<Leader>q", vim.diagnostic.setloclist, {})
 
 -- Terminal
 vim.keymap.set("t", "<Esc>", "<C-Bslash><C-n>", {})
