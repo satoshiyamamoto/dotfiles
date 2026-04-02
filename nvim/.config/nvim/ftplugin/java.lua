@@ -33,6 +33,9 @@ config.root_dir = require("jdtls.setup").find_root({ "gradlew", ".git", "mvnw" }
 
 config.settings = {
   java = {
+    signatureHelp = {
+      enabled = true,
+    },
     test = {
       config = {
         vmArgs = table.concat({
