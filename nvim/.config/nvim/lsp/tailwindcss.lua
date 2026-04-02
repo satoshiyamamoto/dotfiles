@@ -1,8 +1,12 @@
 ---@type vim.lsp.Config
 return {
-  -- Allow event loop to process graceful shutdown sequence on VimLeavePre,
-  -- then force-stop if not completed within the timeout.
-  exit_timeout = 500,
+  capabilities = {
+    workspace = {
+      didChangeWatchedFiles = {
+        dynamicRegistration = false,
+      },
+    },
+  },
   settings = {
     tailwindCSS = {
       experimental = {
