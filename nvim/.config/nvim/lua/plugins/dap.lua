@@ -71,6 +71,7 @@ return {
 
   {
     "jay-babu/mason-nvim-dap.nvim",
+    event = "VeryLazy",
     opts = {
       automatic_installation = true,
       ensure_installed = {
@@ -80,6 +81,10 @@ return {
         "javatest",
         "js",
       },
+    },
+    dependencies = {
+      { "mason-org/mason.nvim" },
+      { "mfussenegger/nvim-dap" },
     },
   },
 
