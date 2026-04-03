@@ -1,6 +1,26 @@
 ---@type vim.lsp.Config
 -- Adapted from https://github.com/neovim/nvim-lspconfig/blob/master/lsp/jdtls.lua
 
+local function jar_path(package) return vim.fn.stdpath("data") .. "/mason/packages/" .. package .. "/extension/server/" end
+
+-- java-debug-adapter
+local bundles = {
+  vim.fn.glob(jar_path("java-debug-adapter") .. "com.microsoft.java.debug.plugin-*.jar", true),
+}
+
+-- vscode-java-test
+local java_test_bundles = vim.split(vim.fn.glob(jar_path("java-test") .. "*.jar", true), "\n")
+local excluded = {
+  "com.microsoft.java.test.runner-jar-with-dependencies.jar",
+  "jacocoagent.jar",
+}
+for _, java_test_jar in ipairs(java_test_bundles) do
+  local fname = vim.fn.fnamemodify(java_test_jar, ":t")
+  if not vim.tbl_contains(excluded, fname) then
+    table.insert(bundles, java_test_jar)
+  end
+end
+
 local function get_jdtls_cache_dir() return vim.fn.stdpath("cache") .. "/jdtls" end
 
 local function get_jdtls_workspace_dir() return get_jdtls_cache_dir() .. "/workspace" end
@@ -14,15 +34,6 @@ local function get_jdtls_jvm_args()
   end
   return unpack(args)
 end
-
-local bundles = {
-  vim.fn.glob(vim.fn.stdpath("data") .. "/mason/packages/java-debug-adapter/extension/server/com.microsoft.java.debug.plugin-*.jar", 1),
-}
-vim.list_extend(bundles, vim.split(vim.fn.glob(vim.fn.stdpath("data") .. "/mason/packages/java-test/extension/server/*.jar", 1), "\n"))
-
-local test_config = {
-  config = { vmArgs = "--add-opens=java.base/java.lang=ALL-UNNAMED" },
-}
 
 return {
   ---@param dispatchers? vim.lsp.rpc.Dispatchers
@@ -51,7 +62,7 @@ return {
   settings = {
     java = {
       signatureHelp = { enabled = true },
-      test = test_config,
+      test = { config_overrides = { vmArgs = "--add-opens=java.base/java.lang=ALL-UNNAMED" } },
     },
   },
   init_options = {
@@ -61,7 +72,7 @@ return {
     local jdtls = require("jdtls")
     jdtls.setup_dap({ hotcodereplace = "auto" })
     jdtls.setup.add_commands()
-    vim.keymap.set("n", "<leader>tt", function() jdtls.test_class(test_config) end, { buffer = bufnr, desc = "Test Class (Debug)" })
-    vim.keymap.set("n", "<leader>tr", function() jdtls.test_nearest_method(test_config) end, { buffer = bufnr, desc = "Test Method (Debug)" })
+    vim.keymap.set("n", "<leader>tt", function() jdtls.test_class() end, { buffer = bufnr, desc = "Test Class (Debug)" })
+    vim.keymap.set("n", "<leader>tr", function() jdtls.test_nearest_method() end, { buffer = bufnr, desc = "Test Method (Debug)" })
   end,
 }
