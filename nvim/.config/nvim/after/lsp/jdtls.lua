@@ -1,5 +1,4 @@
 ---@type vim.lsp.Config
--- Adapted from https://github.com/neovim/nvim-lspconfig/blob/master/lsp/jdtls.lua
 
 local function jar_path(package) return vim.fn.stdpath("data") .. "/mason/packages/" .. package .. "/extension/server/" end
 
@@ -21,6 +20,7 @@ for _, java_test_jar in ipairs(java_test_bundles) do
   end
 end
 
+-- Adapted from https://github.com/neovim/nvim-lspconfig/blob/master/lsp/jdtls.lua
 local function get_jdtls_cache_dir() return vim.fn.stdpath("cache") .. "/jdtls" end
 
 local function get_jdtls_workspace_dir() return get_jdtls_cache_dir() .. "/workspace" end
@@ -72,7 +72,7 @@ return {
     local jdtls = require("jdtls")
     jdtls.setup_dap({ hotcodereplace = "auto" })
     jdtls.setup.add_commands()
-    vim.keymap.set("n", "<leader>tt", function() jdtls.test_class() end, { buffer = bufnr, desc = "Test Class (Debug)" })
-    vim.keymap.set("n", "<leader>tr", function() jdtls.test_nearest_method() end, { buffer = bufnr, desc = "Test Method (Debug)" })
+    vim.keymap.set("n", "<leader>tt", jdtls.test_class, { buffer = bufnr, desc = "Test Class (Debug)" })
+    vim.keymap.set("n", "<leader>tr", jdtls.test_nearest_method, { buffer = bufnr, desc = "Test Method (Debug)" })
   end,
 }
