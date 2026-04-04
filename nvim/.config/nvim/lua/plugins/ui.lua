@@ -4,39 +4,28 @@ return {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
-    keys = {
-      -- Explorer
-      { "<Leader>e", function() Snacks.explorer() end, desc = "File Explorer" },
-      -- Find
-      { "<Leader>ff", function() Snacks.picker.files() end, desc = "Find Files" },
-      { "<Leader>fr", function() Snacks.picker.recent() end, desc = "Recent Files" },
-      { "<Leader>,", function() Snacks.picker.buffers() end, desc = "Buffers" },
-      -- Search
-      { "<Leader>sg", function() Snacks.picker.grep() end, desc = "Grep" },
-      { '<Leader>s"', function() Snacks.picker.registers() end, desc = "Registers" },
-      { "<Leader>sh", function() Snacks.picker.help() end, desc = "Help Pages" },
-      { "<Leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
-      { "<Leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
-      { "<Leader>n", function() Snacks.picker.notifications() end, desc = "Notification History" },
-      -- Git
-      { "<Leader>gs", function() Snacks.picker.git_status() end, desc = "Git Status" },
-      { "<Leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
-      -- Terminal
-      { "<c-/>", function() Snacks.terminal() end, desc = "Toggle Terminal", mode = { "n", "t" } },
-      { "<c-_>", function() Snacks.terminal() end, desc = "which_key_ignore", mode = { "n", "t" } },
-    },
     opts = {
-      notifier = { enabled = true },
-      terminal = { enabled = true },
-      lazygit = { enabled = true },
-      indent = { enabled = true },
       dashboard = { enabled = true },
       explorer = { enabled = true },
-      picker = { enabled = true },
       image = {
         doc = { enabled = true },
         math = { enabled = true },
       },
+      indent = { enabled = true },
+      notifier = { enabled = true },
+      picker = { enabled = true },
+    },
+    keys = {
+      -- Top Pickers & Explorer
+      { "<leader><space>", function() Snacks.picker.smart() end, desc = "Smart Find Files" },
+      { "<leader>,", function() Snacks.picker.buffers() end, desc = "Buffers" },
+      { "<leader>/", function() Snacks.picker.grep() end, desc = "Grep" },
+      { "<leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
+      { "<leader>n", function() Snacks.picker.notifications() end, desc = "Notification History" },
+      { "<leader>e", function() Snacks.explorer() end, desc = "File Explorer" },
+      -- Productivity Tools
+      { "<Leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
+      { "<c-/>", function() Snacks.terminal() end, desc = "Toggle Terminal", mode = { "n", "t" } },
     },
   },
 
@@ -56,33 +45,6 @@ return {
   {
     "folke/noice.nvim",
     event = { "VeryLazy" },
-    keys = {
-      { "<Leader>nl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
-      { "<Leader>nh", function() require("noice").cmd("history") end, desc = "Noice History" },
-      { "<Leader>nd", function() require("noice").cmd("dismiss") end, desc = "Noice Dismiss" },
-      {
-        "<C-f>",
-        function()
-          if not require("noice.lsp").scroll(4) then
-            return "<c-f>"
-          end
-        end,
-        expr = true,
-        desc = "Lsp Hover Doc Scroll Forward",
-        mode = { "i", "n", "s" },
-      },
-      {
-        "<C-b>",
-        function()
-          if not require("noice.lsp").scroll(-4) then
-            return "<c-b>"
-          end
-        end,
-        expr = true,
-        desc = "Lsp Hover Doc Scroll Backward",
-        mode = { "i", "n", "s" },
-      },
-    },
     opts = {
       lsp = {
         override = {
@@ -122,6 +84,33 @@ return {
           },
           view = "mini",
         },
+      },
+    },
+    keys = {
+      { "<Leader>nl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
+      { "<Leader>nh", function() require("noice").cmd("history") end, desc = "Noice History" },
+      { "<Leader>nd", function() require("noice").cmd("dismiss") end, desc = "Noice Dismiss" },
+      {
+        "<C-f>",
+        function()
+          if not require("noice.lsp").scroll(4) then
+            return "<c-f>"
+          end
+        end,
+        expr = true,
+        desc = "Lsp Hover Doc Scroll Forward",
+        mode = { "i", "n", "s" },
+      },
+      {
+        "<C-b>",
+        function()
+          if not require("noice.lsp").scroll(-4) then
+            return "<c-b>"
+          end
+        end,
+        expr = true,
+        desc = "Lsp Hover Doc Scroll Backward",
+        mode = { "i", "n", "s" },
       },
     },
     dependencies = {
@@ -279,45 +268,43 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     event = { "VeryLazy" },
-    config = function()
-      require("lualine").setup({
-        options = {
-          theme = "auto",
-          component_separators = { left = "", right = "" },
-          section_separators = { left = "", right = "" },
-          globalstatus = true,
-        },
-        sections = {
-          lualine_x = {
-            {
-              require("noice").api.status.command.get,
-              cond = require("noice").api.status.command.has,
-              color = { fg = "#ff9e64" },
-            },
-            {
-              require("noice").api.status.mode.get,
-              cond = require("noice").api.status.mode.has,
-              color = { fg = "#ff9e64" },
-            },
-            {
-              require("noice").api.status.search.get,
-              cond = require("noice").api.status.search.has,
-              color = { fg = "#ff9e64" },
-            },
-            {
-              function()
-                local env = vim.bo.filetype == "http" and vim.b._rest_nvim_env_file or ""
-                return vim.fn.fnamemodify(env, ":t")
-              end,
-              icon = { "", color = { fg = "#428890" } },
-            },
-            "encoding",
-            "fileformat",
-            "filetype",
+    opts = {
+      options = {
+        theme = "auto",
+        component_separators = { left = "", right = "" },
+        section_separators = { left = "", right = "" },
+        globalstatus = true,
+      },
+      sections = {
+        lualine_x = {
+          {
+            require("noice").api.status.command.get,
+            cond = require("noice").api.status.command.has,
+            color = { fg = "#ff9e64" },
           },
+          {
+            require("noice").api.status.mode.get,
+            cond = require("noice").api.status.mode.has,
+            color = { fg = "#ff9e64" },
+          },
+          {
+            require("noice").api.status.search.get,
+            cond = require("noice").api.status.search.has,
+            color = { fg = "#ff9e64" },
+          },
+          {
+            function()
+              local env = vim.bo.filetype == "http" and vim.b._rest_nvim_env_file or ""
+              return vim.fn.fnamemodify(env, ":t")
+            end,
+            icon = { "", color = { fg = "#428890" } },
+          },
+          "encoding",
+          "fileformat",
+          "filetype",
         },
-      })
-    end,
+      },
+    },
     dependencies = {
       { "folke/noice.nvim" },
       { "folke/tokyonight.nvim" },
