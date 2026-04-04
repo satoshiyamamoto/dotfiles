@@ -137,7 +137,26 @@ return {
   },
 
   {
-    "iloginow/vim-stylus",
-    event = { "BufReadPost", "BufNewFile" },
+    "MeanderingProgrammer/render-markdown.nvim",
+    ft = { "markdown" },
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    opts = {
+      completions = { lsp = { enabled = true } },
+      heading = { enabled = false },
+      bullet = { enabled = false },
+      checkbox = { enabled = false },
+      code = { sign = false, disable = { "mermaid" } },
+    },
+    config = function(_, opts)
+      require("render-markdown").setup(opts)
+      vim.api.nvim_set_hl(0, "RenderMarkdownCode", { link = "CursorLine" })
+      vim.api.nvim_set_hl(0, "RenderMarkdownCodeBorder", { link = "CursorLine" })
+      vim.api.nvim_set_hl(0, "RenderMarkdownCodeInline", { link = "Visual" })
+      vim.api.nvim_set_hl(0, "RenderMarkdownDash", { link = "Normal" })
+      vim.api.nvim_set_hl(0, "RenderMarkdownTableHead", { link = "Normal" })
+      vim.api.nvim_set_hl(0, "RenderMarkdownTableRow", { link = "Normal" })
+      vim.api.nvim_set_hl(0, "markdownUrl", { link = "Comment" })
+      vim.api.nvim_set_hl(0, "markdownLink", { link = "Comment" })
+    end,
   },
 }

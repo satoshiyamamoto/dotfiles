@@ -1,47 +1,20 @@
 return {
-  -- Editor utilities
-  { "tpope/vim-fugitive", event = { "BufReadPost" } },
-
   {
-    "olrtg/nvim-emmet",
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
     keys = {
-      {
-        "<leader>xe",
-        function() require("nvim-emmet"):wrap_with_abbreviation() end,
-        mode = { "n", "v" },
-        desc = "Wrap with Emmet Abbreviation",
-      },
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
     },
   },
 
   {
     "kylechui/nvim-surround",
     event = "VeryLazy",
-  },
-
-  -- Markdown
-  {
-    "MeanderingProgrammer/render-markdown.nvim",
-    ft = { "markdown" },
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
-    opts = {
-      completions = { lsp = { enabled = true } },
-      heading = { enabled = false },
-      bullet = { enabled = false },
-      checkbox = { enabled = false },
-      code = { sign = false, disable = { "mermaid" } },
-    },
-    config = function(_, opts)
-      require("render-markdown").setup(opts)
-      vim.api.nvim_set_hl(0, "RenderMarkdownCode", { link = "CursorLine" })
-      vim.api.nvim_set_hl(0, "RenderMarkdownCodeBorder", { link = "CursorLine" })
-      vim.api.nvim_set_hl(0, "RenderMarkdownCodeInline", { link = "Visual" })
-      vim.api.nvim_set_hl(0, "RenderMarkdownDash", { link = "Normal" })
-      vim.api.nvim_set_hl(0, "RenderMarkdownTableHead", { link = "Normal" })
-      vim.api.nvim_set_hl(0, "RenderMarkdownTableRow", { link = "Normal" })
-      vim.api.nvim_set_hl(0, "markdownUrl", { link = "Comment" })
-      vim.api.nvim_set_hl(0, "markdownLink", { link = "Comment" })
-    end,
   },
 
   -- HTTP
@@ -54,6 +27,85 @@ return {
       { "<Leader>rl", "<cmd>Rest last<cr>", desc = "Re-run Last HTTP Request" },
       { "<Leader>re", "<cmd>Rest env select<cr>", desc = "Select REST Environment" },
     },
+  },
+
+  {
+    "lewis6991/gitsigns.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    init = function()
+      vim.keymap.set("n", "]c", "<Cmd>Gitsigns next_hunk<CR>", {})
+      vim.keymap.set("n", "[c", "<Cmd>Gitsigns prev_hunk<CR>", {})
+    end,
+    config = function() require("gitsigns").setup() end,
+  },
+
+  {
+    "HiPhish/rainbow-delimiters.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    main = "rainbow-delimiters.setup",
+    opts = {
+      strategy = {
+        [""] = "rainbow-delimiters.strategy.global",
+        vim = "rainbow-delimiters.strategy.local",
+      },
+      query = {
+        [""] = "rainbow-delimiters",
+        lua = "rainbow-blocks",
+      },
+      priority = {
+        [""] = 110,
+        lua = 210,
+      },
+      highlight = {
+        "RainbowDelimiterRed",
+        "RainbowDelimiterYellow",
+        "RainbowDelimiterBlue",
+        "RainbowDelimiterOrange",
+        "RainbowDelimiterGreen",
+        "RainbowDelimiterViolet",
+        "RainbowDelimiterCyan",
+      },
+    },
+  },
+
+  {
+    "catgoose/nvim-colorizer.lua",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      require("colorizer").setup({
+        filetypes = {
+          "*",
+          "!help",
+          "!lazy",
+          "!noice",
+          "!trouble",
+          "!snacks_dashboard",
+          "!snacks_notif",
+          "!snacks_notif_history",
+          "!snacks_picker_input",
+          "!snacks_picker_list",
+          "!snacks_picker_preview",
+          css = { css = true, tailwind = true },
+          html = { css = true, tailwind = true },
+          javascriptreact = { tailwind = true },
+          typescriptreact = { tailwind = true },
+        },
+      })
+    end,
+  },
+
+  {
+    "folke/todo-comments.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {},
+    dependencies = {
+      { "nvim-lua/plenary.nvim" },
+    },
+  },
+
+  {
+    "iloginow/vim-stylus",
+    event = { "BufReadPost", "BufNewFile" },
   },
 
   -- Miscellaneous
