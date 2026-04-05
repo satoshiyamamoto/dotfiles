@@ -393,6 +393,8 @@ brew "vivid"
 brew "watch"
 # Internet file retriever
 brew "wget"
+# CLI for Git worktree management, designed for parallel AI agent workflows
+brew "worktrunk"
 # Extensible command-line tool to format YAML files
 brew "yamlfmt"
 # JavaScript package manager

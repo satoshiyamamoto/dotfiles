@@ -58,10 +58,11 @@ __load_plugins() {
   source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
   source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
   source "$HOMEBREW_PREFIX/etc/profile.d/z.sh"
-  eval "$(fzf --zsh)"
   eval "$(atuin init --disable-up-arrow zsh)"
   eval "$(direnv hook zsh)"
+  eval "$(fzf --zsh)"
   eval "$(mise activate zsh)"
+  eval "$(wt config shell init zsh)"
   eval "$(zoxide  init zsh)"
 }
 zsh-defer __load_plugins
