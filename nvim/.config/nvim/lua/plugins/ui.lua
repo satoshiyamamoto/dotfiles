@@ -48,6 +48,7 @@ return {
     keys = {
       { "<Leader>nl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
       { "<Leader>nh", function() require("noice").cmd("history") end, desc = "Noice History" },
+      { "<leader>na", function() require("noice").cmd("all") end, desc = "Noice All" },
       { "<Leader>nd", function() require("noice").cmd("dismiss") end, desc = "Noice Dismiss" },
       {
         "<C-f>",
