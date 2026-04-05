@@ -45,12 +45,39 @@ return {
   {
     "folke/noice.nvim",
     event = { "VeryLazy" },
+    keys = {
+      { "<Leader>nl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
+      { "<Leader>nh", function() require("noice").cmd("history") end, desc = "Noice History" },
+      { "<Leader>nd", function() require("noice").cmd("dismiss") end, desc = "Noice Dismiss" },
+      {
+        "<C-f>",
+        function()
+          if not require("noice.lsp").scroll(4) then
+            return "<c-f>"
+          end
+        end,
+        expr = true,
+        desc = "Lsp Hover Doc Scroll Forward",
+        mode = { "i", "n", "s" },
+      },
+      {
+        "<C-b>",
+        function()
+          if not require("noice.lsp").scroll(-4) then
+            return "<c-b>"
+          end
+        end,
+        expr = true,
+        desc = "Lsp Hover Doc Scroll Backward",
+        mode = { "i", "n", "s" },
+      },
+    },
     opts = {
       lsp = {
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
           ["vim.lsp.util.stylize_markdown"] = true,
-          ["cmp.entry.get_documentation"] = true,
+          ["cmp.entry.get_documentation"] = false,
         },
       },
       presets = {
@@ -84,33 +111,6 @@ return {
           },
           view = "mini",
         },
-      },
-    },
-    keys = {
-      { "<Leader>nl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
-      { "<Leader>nh", function() require("noice").cmd("history") end, desc = "Noice History" },
-      { "<Leader>nd", function() require("noice").cmd("dismiss") end, desc = "Noice Dismiss" },
-      {
-        "<C-f>",
-        function()
-          if not require("noice.lsp").scroll(4) then
-            return "<c-f>"
-          end
-        end,
-        expr = true,
-        desc = "Lsp Hover Doc Scroll Forward",
-        mode = { "i", "n", "s" },
-      },
-      {
-        "<C-b>",
-        function()
-          if not require("noice.lsp").scroll(-4) then
-            return "<c-b>"
-          end
-        end,
-        expr = true,
-        desc = "Lsp Hover Doc Scroll Backward",
-        mode = { "i", "n", "s" },
       },
     },
     dependencies = {
