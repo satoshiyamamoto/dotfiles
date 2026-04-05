@@ -1,4 +1,14 @@
 git:
   pagers:
-    - colorArg: always
-      pager: delta --dark --paging=never
+    - pager: delta --dark --paging=never --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}" --file-style="omit"
+gui:
+  theme:
+    activeBorderColor:
+      - '#769ff0'
+      - bold
+    inactiveBorderColor:
+      - '#a3aed2'
+    selectedLineBgColor:
+      - '#1d2230'
+  nerdFontsVersion: '3'
+notARepository: 'quit'
