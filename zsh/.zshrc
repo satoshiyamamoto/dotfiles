@@ -109,26 +109,6 @@ sesh-sessions() {
 zle     -N    sesh-sessions
 bindkey '\es' sesh-sessions
 
-sesh-agent() {
-  local name=$1
-  local project=$(basename "$PWD")
-  local session="${project}${name:+-$name}"
-
-  if [[ -n "$name" ]]; then
-    local worktree=".claude/worktrees/$name"
-    [[ ! -d "$worktree" ]] \
-      && { git worktree add "$worktree" -b "worktree-$name" 2>/dev/null \
-           || git worktree add "$worktree" "worktree-$name"; }
-  fi
-
-  if ! tmux has-session -t "=${session}" 2>/dev/null; then
-    tmux new-session -ds "$session" -c "$PWD"
-    tmux send-keys -t "$session" "claude${name:+ --worktree $name}" Enter
-  fi
-
-  sesh connect "$session"
-}
-
 .sync() {
   local dotfiles_dir brewfile
   local is_i386=false ret=0
