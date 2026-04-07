@@ -1,7 +1,3 @@
-[user]
-  name  = satoshi-yamamoto
-  email = satoshi_yamamoto@cyberagent.co.jp
-
 [core]
   editor = vim
   pager = LESSCHARSET=utf-8 less --quit-if-one-screen --no-init

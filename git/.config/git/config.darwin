@@ -1,7 +1,3 @@
-[user]
-  name = Satoshi Yamamoto
-  email = satoshiyamamoto@me.com
-
 [core]
   editor = nvim
   pager = delta

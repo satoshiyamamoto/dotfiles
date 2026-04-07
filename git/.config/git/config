@@ -1,5 +1,6 @@
-[include]
-    path = ~/.config/git/config.darwin
+[user]
+  name = Satoshi Yamamoto
+  email = satoshiyamamoto@me.com
 
 [credential "https://dev.azure.com"]
 	provider = generic
@@ -10,3 +11,7 @@
 
 [credential "https://ghe.ca-tools.org"]
 	provider = github
+
+[include]
+    path = ~/.config/git/config.darwin
+
