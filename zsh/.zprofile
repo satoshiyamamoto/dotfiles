@@ -45,6 +45,7 @@ export HOMEBREW_BUNDLE_MAS_SKIP=''
 ## fzf
 FZF_PREVIEW_FILE='bat --style=changes,header --color=always --line-range :50 {}'
 FZF_PREVIEW_DIR='eza --tree --all --color=always --icons=always {}'
+FZF_CTRL_R_COMMAND='' # use atuin
 export FZF_CTRL_T_OPTS='--preview="[[ -d {} ]] && '"$FZF_PREVIEW_DIR"' || '"$FZF_PREVIEW_FILE"'"'
 export FZF_ALT_C_OPTS='--preview="${FZF_PREVIEW_DIR}"'
 
