@@ -27,5 +27,4 @@ require("lazy").setup({
   defaults = {
     lazy = true,
   },
-
 })
