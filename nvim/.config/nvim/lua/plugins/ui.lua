@@ -210,8 +210,6 @@ return {
           sidebars = "transparent", -- style for sidebars, see below
           floats = "transparent", -- style for floating windows
         },
-        sidebars = { "qf", "vista_kind", "terminal", "packer" },
-        on_colors = function() end,
       })
       vim.cmd("colorscheme tokyonight")
       vim.api.nvim_set_hl(0, "VertSplit", { fg = "#000000" })
