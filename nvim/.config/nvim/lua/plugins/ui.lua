@@ -61,18 +61,9 @@ return {
               { find = "%d+L, %d+B" },
               { find = "; after #%d+" },
               { find = "; before #%d+" },
-            },
-          },
-          view = "mini",
-        },
-        -- FIXME: Cannot get stdout while running !commands
-        -- https://github.com/folke/noice.nvim/issues/1097
-        {
-          filter = {
-            event = "msg_show",
-            kind = {
-              "shell_out",
-              "shell_err",
+              -- FIXME: https://github.com/folke/noice.nvim/issues/1097
+              { kind = "shell_out" },
+              { kind = "shell_err" },
             },
           },
           view = "mini",
