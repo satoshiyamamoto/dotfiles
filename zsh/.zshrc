@@ -95,6 +95,23 @@ fzf-git-widget() {
 zle     -N    fzf-git-widget
 bindkey '\eg' fzf-git-widget
 
+wsct() {
+  local branch="${1:?Usage: wsct <branch> [-- prompt]}"
+  shift
+  local prompt=""
+  if [[ "$1" == "--" ]]; then
+    shift
+    prompt="$*"
+  fi
+  if git show-ref --verify --quiet "refs/heads/${branch}"; then
+    echo "error: branch '${branch}' already exists" >&2
+    return 1
+  fi
+  local cmd="wt switch --create --execute=claude ${branch}"
+  [[ -n "$prompt" ]] && cmd+=" -- ${(q)prompt}"
+  tmux new -d -s "${branch}" "${cmd}"
+}
+
 sesh-sessions() {
   {
     exec </dev/tty
@@ -223,6 +240,7 @@ alias trans='trans --brief :ja'
 alias tree='eza --color=always --icons --tree'
 alias vpnon='starship config custom.vpn.disabled false'
 alias vpnoff='starship config custom.vpn.disabled true'
+alias wsc='wt switch --create --execute=claude'
 
 #
 # Prompt
