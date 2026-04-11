@@ -258,6 +258,13 @@ return {
           "fileformat",
           "filetype",
         },
+        lualine_z = {
+          "location",
+          {
+            "datetime",
+            style = "%-I:%M %p",
+          },
+        },
       },
     },
     dependencies = {
