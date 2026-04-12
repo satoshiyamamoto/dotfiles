@@ -426,6 +426,7 @@ cask "copilot-cli"
 # Collaborative team software
 cask "figma"
 cask "font-ipaexfont"
+cask "font-noto-sans-symbols-2"
 cask "font-symbols-only-nerd-font"
 # Set of tools to manage resources and applications hosted on Google Cloud
 cask "gcloud-cli"

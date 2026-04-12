@@ -7,6 +7,7 @@ font-family = Symbols Nerd Font Mono
 font-family = Hiragino Kaku Gothic ProN
 font-feature = -dlig
 font-size = 12
+font-codepoint-map = U+1FBF0-U+1FBF9=Noto Sans Symbols 2
 theme = light:TokyoNight,dark:TokyoNight
 title = " "
 adjust-cell-width = 0
