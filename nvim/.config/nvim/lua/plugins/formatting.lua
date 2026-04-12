@@ -29,16 +29,18 @@ return {
       formatters = {
         prettierd = {
           condition = function(_, ctx)
-            if vim.fs.find({
-              ".prettierrc",
-              ".prettierrc.js",
-              ".prettierrc.cjs",
-              ".prettierrc.json",
-              ".prettierrc.yaml",
-              ".prettierrc.yml",
-              "prettier.config.js",
-              "prettier.config.cjs",
-            }, { upward = true, path = ctx.dirname })[1] ~= nil then
+            if
+              vim.fs.find({
+                ".prettierrc",
+                ".prettierrc.js",
+                ".prettierrc.cjs",
+                ".prettierrc.json",
+                ".prettierrc.yaml",
+                ".prettierrc.yml",
+                "prettier.config.js",
+                "prettier.config.cjs",
+              }, { upward = true, path = ctx.dirname })[1] ~= nil
+            then
               return true
             end
             local pkg = vim.fs.find("package.json", { upward = true, path = ctx.dirname })[1]

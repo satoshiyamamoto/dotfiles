@@ -50,8 +50,18 @@ return {
       vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Step Into (Debug)" })
       vim.keymap.set("n", "<F23>", dap.step_out, { desc = "Step Out (Debug)" })
       vim.keymap.set("n", "<Leader>db", dap.toggle_breakpoint, { desc = "Toggle Breakpoint (Debug)" })
-      vim.keymap.set("n", "<Leader>dB", function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end, { desc = "Breakpoint Condition (Debug)" })
-      vim.keymap.set("n", "<Leader>lp", function() dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end, { desc = "Breakpoint Log point message (Debug)" })
+      vim.keymap.set(
+        "n",
+        "<Leader>dB",
+        function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
+        { desc = "Breakpoint Condition (Debug)" }
+      )
+      vim.keymap.set(
+        "n",
+        "<Leader>lp",
+        function() dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end,
+        { desc = "Breakpoint Log point message (Debug)" }
+      )
       vim.keymap.set("n", "<Leader>du", dapui.toggle, { desc = "Toggle Debugger UI (Debug)" })
       vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "ErrorMsg" })
