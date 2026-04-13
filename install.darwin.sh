@@ -6,6 +6,7 @@ stow --verbose --adopt --target=$HOME \
   fd \
   flake8 \
   ghostty \
+  gh-dash \
   git \
   glow \
   homebrew \
