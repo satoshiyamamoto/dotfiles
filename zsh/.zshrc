@@ -167,7 +167,6 @@ bindkey '\es' sesh-sessions
 alias cisco='/opt/cisco/secureclient/bin/vpn'
 alias cp='cp -i'
 alias curl='curl --silent'
-alias cycloud='/opt/cycloud-io/cycloud-cli/cycloud'
 alias d='docker'
 alias dc='docker compose'
 alias dcd='docker compose down'
