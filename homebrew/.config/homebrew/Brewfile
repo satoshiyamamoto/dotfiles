@@ -381,6 +381,8 @@ brew "translate-shell"
 brew "tree"
 # Parser generator tool
 brew "tree-sitter-cli"
+# Multifunction timer tool
+brew "utimer"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
 # ASGI web server
