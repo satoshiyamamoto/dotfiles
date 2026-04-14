@@ -3,11 +3,7 @@ return {
     "folke/sidekick.nvim",
     dependencies = { "folke/snacks.nvim" },
     event = { "VeryLazy" },
-    opts = {
-      cli = {
-        mux = { enabled = true, backend = "tmux" },
-      },
-    },
+    opts = {},
     keys = {
       {
         "<tab>",
