@@ -3,7 +3,19 @@ return {
     "folke/sidekick.nvim",
     dependencies = { "folke/snacks.nvim" },
     event = { "VeryLazy" },
-    opts = {},
+    opts = {
+      cli = {
+        win = {
+          keys = {
+            -- Disable window navigation keys (<C-h/j/k/l>)
+            nav_left  = false,
+            nav_down  = false,
+            nav_up    = false,
+            nav_right = false,
+          },
+        },
+      },
+    },
     keys = {
       {
         "<tab>",
