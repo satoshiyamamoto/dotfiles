@@ -18,7 +18,7 @@ mouse-hide-while-typing = true
 window-padding-balance = true
 window-padding-color = extend
 window-colorspace = display-p3
-background-opacity = 0.85
+background-opacity = 0.95
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
 
