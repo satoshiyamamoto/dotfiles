@@ -224,7 +224,7 @@ return {
       completions = { lsp = { enabled = true } },
       anti_conceal = { enabled = false },
       heading = { enabled = false },
-      bullet = { enabled = false },
+      bullet = { enabled = true, icons = { "•" } },
       checkbox = { enabled = false },
       code = { sign = false, disable = { "mermaid" } },
     },
@@ -232,6 +232,7 @@ return {
       require("render-markdown").setup(opts)
       -- glow (glamour dark.json) colors
       -- https://github.com/charmbracelet/glamour/blob/master/styles/dark.json
+      vim.api.nvim_set_hl(0, "RenderMarkdownBullet", { link = "Normal" })
       vim.api.nvim_set_hl(0, "@markup.heading.markdown", { link = "Normal" }) -- table header (fallback)
       vim.api.nvim_set_hl(0, "@punctuation.special.markdown", { link = "Normal" }) -- table border
       vim.api.nvim_set_hl(0, "@markup.list.markdown", { link = "Normal" }) -- list marker
