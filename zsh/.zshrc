@@ -29,7 +29,8 @@ SAVEHIST=5000
 
 ## Completions
 fpath=(
-  ${HOMEBREW_PREFIX:=/opt/homebrew}/share/zsh/site-functions(N)
+  $GOPATH/src/github.com/wbingli/zsh-claudecode-completion(N)
+  $HOMEBREW_PREFIX/share/zsh/site-functions(N)
   $fpath
 )
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'm:{[:upper:]}={[:lower:]}' 'r:|=*' 'l:|=*'
