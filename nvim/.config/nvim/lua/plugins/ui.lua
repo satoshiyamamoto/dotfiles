@@ -11,7 +11,15 @@ return {
         doc = { enabled = true },
         math = { enabled = true },
       },
-      indent = { enabled = true },
+      indent = {
+        enabled = true,
+        filter = function(buf, _)
+          return vim.bo[buf].filetype ~= "markdown"
+            and vim.g.snacks_indent ~= false
+            and vim.b[buf].snacks_indent ~= false
+            and vim.bo[buf].buftype == ""
+        end,
+      },
       notifier = { enabled = true },
       picker = { enabled = true },
     },
