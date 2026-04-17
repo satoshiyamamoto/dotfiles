@@ -42,21 +42,9 @@
       "Bash(* --help *)",
       "Bash(* --version)",
       "Bash(./mvnw:*)",
-      "Bash(find:*)",
-      "Bash(gh issue list:*)",
-      "Bash(gh issue view:*)",
-      "Bash(gh pr list:*)",
-      "Bash(gh pr view:*)",
-      "Bash(gh repo list:*)",
-      "Bash(gh repo view:*)",
-      "Bash(gh run list:*)",
-      "Bash(gh run view:*)",
-      "Bash(git diff:*)",
-      "Bash(git log:*)",
-      "Bash(git show:*)",
-      "Bash(git status:*)",
-      "Bash(grep:*)",
-      "Bash(ls:*)",
+      "Bash(gh * list:*)",
+      "Bash(gh * status:*)",
+      "Bash(gh * view:*)",
       "Bash(mvn:*)",
       "Bash(npm audit:*)",
       "Bash(npm run:*)",
@@ -70,16 +58,20 @@
       "Read(//tmp/**)",
       "WebFetch(*)",
       "WebSearch(*)",
-      "mcp__context7__*",
-      "mcp__plugin_github_github__*"
+      "mcp__claude_ai_Slack",
+      "mcp__claude_ai_SlackDB",
+      "mcp__context7",
+      "mcp__plugin_github_github"
     ],
     "ask": [
-      "Bash(gh issue create:*)",
-      "Bash(gh pr create:*)",
+      "Bash(gh * create:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)"
     ],
-    "deny": []
+    "deny": [
+      "Read(**/.env*)",
+      "Read(**/secrets/**)"
+    ]
   },
   "voiceEnabled": true
 }
