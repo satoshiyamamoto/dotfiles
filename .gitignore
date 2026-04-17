@@ -76,3 +76,8 @@ lazy-lock.json
 
 # End of https://www.toptal.com/developers/gitignore/api/vim
 tmux/.config/tmux/plugins/
+
+### Claude Code ###
+claude/.claude/**
+!claude/.claude/settings.json
+

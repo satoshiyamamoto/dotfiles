@@ -2,6 +2,7 @@
 stow --verbose --adopt --target=$HOME \
   alacritty \
   bat \
+  claude \
   editorconfig \
   fd \
   flake8 \
