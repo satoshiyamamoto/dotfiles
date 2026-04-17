@@ -47,7 +47,6 @@
       "Bash(gh pr list:*)",
       "Bash(gh pr view:*)",
       "Bash(gh run list:*)",
-      "Bash(gh run view:*)",
       "Bash(mvn:*)",
       "Bash(npm audit:*)",
       "Bash(npm run:*)",
@@ -66,7 +65,10 @@
       "mcp__plugin_github_github"
     ],
     "ask": [
-      "Bash(gh * create:*)",
+      "Bash(gh issue comment:*)",
+      "Bash(gh issue create:*)",
+      "Bash(gh pr comment:*)",
+      "Bash(gh pr create:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)"
     ],
@@ -75,8 +77,7 @@
       "Bash(terraform apply:*)",
       "Bash(terraform destroy:*)",
       "Read(**/.env*)",
-      "Read(**/secrets/**)",
-      "mcp__claude_ai_SlackDB"
+      "Read(**/secrets/**)"
     ]
   },
   "voiceEnabled": true
