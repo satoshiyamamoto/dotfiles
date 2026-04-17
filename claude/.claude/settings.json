@@ -59,7 +59,6 @@
       "WebFetch(*)",
       "WebSearch(*)",
       "mcp__claude_ai_Slack",
-      "mcp__claude_ai_SlackDB",
       "mcp__context7",
       "mcp__plugin_github_github"
     ],
@@ -73,7 +72,8 @@
       "Bash(terraform apply:*)",
       "Bash(terraform destroy:*)",
       "Read(**/.env*)",
-      "Read(**/secrets/**)"
+      "Read(**/secrets/**)",
+      "mcp__claude_ai_SlackDB"
     ]
   },
   "voiceEnabled": true
