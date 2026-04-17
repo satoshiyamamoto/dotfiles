@@ -69,6 +69,9 @@
       "Bash(git push:*)"
     ],
     "deny": [
+      "Bash(kubectl delete:*)",
+      "Bash(terraform apply:*)",
+      "Bash(terraform destroy:*)",
       "Read(**/.env*)",
       "Read(**/secrets/**)"
     ]
