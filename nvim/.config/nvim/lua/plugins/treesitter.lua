@@ -222,6 +222,7 @@ return {
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = {
       completions = { lsp = { enabled = true } },
+      anti_conceal = { enabled = false },
       heading = { enabled = false },
       bullet = { enabled = false },
       checkbox = { enabled = false },
@@ -229,14 +230,24 @@ return {
     },
     config = function(_, opts)
       require("render-markdown").setup(opts)
-      vim.api.nvim_set_hl(0, "RenderMarkdownCode", { link = "CursorLine" })
-      vim.api.nvim_set_hl(0, "RenderMarkdownCodeBorder", { link = "CursorLine" })
-      vim.api.nvim_set_hl(0, "RenderMarkdownCodeInline", { link = "Visual" })
-      vim.api.nvim_set_hl(0, "RenderMarkdownDash", { link = "Normal" })
+      -- glow (glamour dark.json) colors
+      -- https://github.com/charmbracelet/glamour/blob/master/styles/dark.json
+      vim.api.nvim_set_hl(0, "@markup.heading.markdown", { link = "Normal" }) -- table header (fallback)
+      vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", { fg = "#FFFF87", bg = "#5F5FFF", bold = true }) -- h1: 228, 63
+      vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", { fg = "#00AFFF", bold = true }) -- heading: 39
+      vim.api.nvim_set_hl(0, "@markup.heading.3.markdown", { fg = "#00AFFF", bold = true })
+      vim.api.nvim_set_hl(0, "@markup.heading.4.markdown", { fg = "#00AFFF", bold = true })
+      vim.api.nvim_set_hl(0, "@markup.heading.5.markdown", { fg = "#00AFFF", bold = true })
+      vim.api.nvim_set_hl(0, "@markup.heading.6.markdown", { fg = "#00AF5F" }) -- h6: 35, no bold
+      vim.api.nvim_set_hl(0, "RenderMarkdownCode", { bg = "#373737" }) -- code_block.chroma.background
+      vim.api.nvim_set_hl(0, "RenderMarkdownCodeBorder", { bg = "#373737" }) -- same as code block
+      vim.api.nvim_set_hl(0, "RenderMarkdownCodeInline", { fg = "#FF5F5F", bg = "#303030" }) -- code: 203, 236
+      vim.api.nvim_set_hl(0, "RenderMarkdownDash", { fg = "#585858" }) -- hr: 240
       vim.api.nvim_set_hl(0, "RenderMarkdownTableHead", { link = "Normal" })
-      vim.api.nvim_set_hl(0, "RenderMarkdownTableRow", { link = "Normal" })
-      vim.api.nvim_set_hl(0, "markdownUrl", { link = "Comment" })
-      vim.api.nvim_set_hl(0, "markdownLink", { link = "Comment" })
+      vim.api.nvim_set_hl(0, "RenderMarkdownTableRow", { fg = "#D0D0D0" }) -- table: {} (doc color: 252)
+      vim.api.nvim_set_hl(0, "RenderMarkdownLink", { fg = "#008787", underline = true }) -- link: 30
+      vim.api.nvim_set_hl(0, "markdownUrl", { fg = "#008787", underline = true })
+      vim.api.nvim_set_hl(0, "markdownLink", { fg = "#00AF5F", bold = true }) -- link_text: 35
     end,
   },
 }
