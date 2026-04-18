@@ -113,19 +113,15 @@ wsct() {
   tmux new -d -s "${branch}" "${cmd}"
 }
 
-sesh-sessions() {
-  {
-    exec </dev/tty
-    exec <&1
-    local session
-    session=$(sesh list -t -c | fzf --height 40% --reverse --border-label ' sesh ' --border --prompt '⚡ ')
-    zle reset-prompt > /dev/null 2>&1 || true
-    [[ -z "$session" ]] && return
-    sesh connect $session
-  }
+tmux-sessions() {
+  local session
+  session=$(tmux list-sessions 2>/dev/null | fzf --height 40% --reverse --preview 'tmux capture-pane -ep -t $(echo {} | cut -d: -f1)' | cut -d: -f1)
+  zle reset-prompt
+  [[ -z "$session" ]] && return
+  tmux attach -t "$session"
 }
-zle     -N    sesh-sessions
-bindkey '\es' sesh-sessions
+zle     -N    tmux-sessions
+bindkey '\es' tmux-sessions
 
 .sync() {
   local dotfiles_dir brewfile

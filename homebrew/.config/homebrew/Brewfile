@@ -341,8 +341,6 @@ brew "ripgrep"
 brew "rust"
 # Rust toolchain installer
 brew "rustup"
-# Smart session manager for the terminal
-brew "sesh"
 # Simple keystroke visualizer
 brew "showkey"
 # Prints a steam locomotive if you type sl instead of ls
