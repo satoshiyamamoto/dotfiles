@@ -63,11 +63,11 @@ return {
         { desc = "Breakpoint Log point message (Debug)" }
       )
       vim.keymap.set("n", "<Leader>du", dapui.toggle, { desc = "Toggle Debugger UI (Debug)" })
-      vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "ErrorMsg" })
-      vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "ErrorMsg" })
-      vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "ErrorMsg" })
-      vim.fn.sign_define("DapLogPoint", { text = "", texthl = "ErrorMsg" })
-      vim.fn.sign_define("DapStopped", { text = "", texthl = "WarningMsg" })
+      vim.fn.sign_define("DapBreakpoint", { text = " ", texthl = "ErrorMsg" })
+      vim.fn.sign_define("DapBreakpointCondition", { text = " ", texthl = "ErrorMsg" })
+      vim.fn.sign_define("DapBreakpointRejected", { text = " ", texthl = "ErrorMsg" })
+      vim.fn.sign_define("DapLogPoint", { text = " ", texthl = "ErrorMsg" })
+      vim.fn.sign_define("DapStopped", { text = " ", texthl = "WarningMsg" })
     end,
     dependencies = {
       { "mfussenegger/nvim-dap-python" },

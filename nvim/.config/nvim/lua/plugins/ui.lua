@@ -99,10 +99,10 @@ return {
       require("trouble").setup(opts)
 
       local signs = {
-        Error = "",
-        Warn = "",
-        Hint = "",
-        Info = "",
+        Error = " ",
+        Warn = " ",
+        Hint = " ",
+        Info = " ",
       }
       vim.diagnostic.config({
         signs = {
