@@ -85,16 +85,16 @@ y() {
   rm -f -- "$tmp"
 }
 
-fzf-git-widget() {
-  local repositry=$(ghq list | fzf --reverse --height 40% --preview "bat --color always $(ghq root)/{}/README.md")
-  if [ -n "${repositry}" ]; then
-    BUFFER="builtin cd -- $(ghq root)/${repositry}"
-    zle accept-line
-  fi
+git-repos() {
+  local repo
+  repo=$(ghq list | fzf --height 40% --reverse --preview "bat --color=always --language=markdown $(ghq root)/{}/README.md")
   zle reset-prompt
+  [[ -z "$repo" ]] && return
+  BUFFER="builtin cd -- $(ghq root)/${repo}"
+  zle accept-line
 }
-zle     -N    fzf-git-widget
-bindkey '\eg' fzf-git-widget
+zle     -N    git-repos
+bindkey '\eg' git-repos
 
 wsct() {
   local branch="${1:?Usage: wsct <branch> [-- prompt]}"
