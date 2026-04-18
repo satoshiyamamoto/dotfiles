@@ -36,6 +36,11 @@ return {
 
       vim.api.nvim_create_autocmd("FileType", {
         callback = function()
+          -- Ignore special buffers (e.g. nofile)
+          if vim.bo.buftype ~= "" then
+            return
+          end
+
           local ok = pcall(vim.treesitter.start)
           if ok then
             vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
