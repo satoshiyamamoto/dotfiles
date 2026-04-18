@@ -118,7 +118,12 @@ tmux-sessions() {
   session=$(tmux list-sessions 2>/dev/null | fzf --height 40% --reverse --preview 'tmux capture-pane -ep -t $(echo {} | cut -d: -f1)' | cut -d: -f1)
   zle reset-prompt
   [[ -z "$session" ]] && return
-  tmux attach -t "$session"
+  if [[ -n "$TMUX" ]]; then
+    tmux switch-client -t "$session"
+  else
+    BUFFER="tmux attach -t ${(q)session}"
+    zle accept-line
+  fi
 }
 zle     -N    tmux-sessions
 bindkey '\es' tmux-sessions
