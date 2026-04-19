@@ -78,6 +78,7 @@ lazy-lock.json
 tmux/.config/tmux/plugins/
 
 ### Claude Code ###
+.claude
 claude/.claude/**
 !claude/.claude/settings.json
 
