@@ -29,6 +29,7 @@ path=(
   $HOME/.cargo/bin(N)
   $HOME/.local/bin(N)
   $HOME/{,s}bin(N)
+  /opt/ca-data-pf/cdap-cli/(N)
   /opt/cycloud-io/cycloud-cli(N)
   /opt/homebrew/opt/mysql-client/bin(N)
   /opt/homebrew/opt/rustup/bin(N)
