@@ -30,7 +30,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "tee /tmp/claude-permission.log | osascript -e 'display notification \"Claude Code needs your attention\" with title \"Claude Code\"'"
+            "command": "tee /tmp/claude-permission.log | osascript -e 'display notification \"Claude Code needs your attention\" with title \"Claude Code\" sound name \"default\"'"
           }
         ]
       }
