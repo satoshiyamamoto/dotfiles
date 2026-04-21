@@ -26,6 +26,7 @@ return {
       -- Productivity Tools
       { "<Leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
       { "<c-/>", function() Snacks.terminal() end, desc = "Toggle Terminal", mode = { "n", "t" } },
+      { "<c-_>", function() Snacks.terminal() end, desc = "Toggle Terminal (Tmux)", mode = { "n", "t" } },
     },
   },
 
