@@ -82,3 +82,5 @@ tmux/.config/tmux/plugins/
 claude/.claude/**
 !claude/.claude/settings.json
 
+# MCPs
+.playwright-mcp

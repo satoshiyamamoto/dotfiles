@@ -254,10 +254,11 @@ return {
       vim.api.nvim_set_hl(0, "RenderMarkdownCodeBorder", { bg = "NONE" })
       vim.api.nvim_set_hl(0, "RenderMarkdownCodeInline", { fg = "#FF5F5F", bg = "#303030" }) -- code: 203, 236
       vim.api.nvim_set_hl(0, "@markup.raw.markdown_inline", { link = "RenderMarkdownCodeInline" })
+      vim.api.nvim_set_hl(0, "@markup.raw.block.markdown", { fg = "#C4C4C4", bg = "NONE" }) -- code_block chroma.text
       -- Table
       vim.api.nvim_set_hl(0, "@punctuation.special.markdown", { link = "Normal" }) -- table border
       vim.api.nvim_set_hl(0, "RenderMarkdownTableHead", { link = "Normal" })
-      vim.api.nvim_set_hl(0, "RenderMarkdownTableRow", { fg = "#D0D0D0" }) -- table: {} (doc color: 252)
+      vim.api.nvim_set_hl(0, "RenderMarkdownTableRow", { link = "Normal" })
       -- Link
       vim.api.nvim_set_hl(0, "markdownLink", { fg = "#00AF5F", bold = true }) -- link_text: 35
       vim.api.nvim_set_hl(0, "markdownUrl", { fg = "#008787", underline = true })
