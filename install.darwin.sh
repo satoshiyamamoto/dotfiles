@@ -23,6 +23,7 @@ stow --verbose --adopt --target=$HOME \
   starship \
   tmux \
   vim \
+  worktrunk \
   yamlfmt \
   yazi \
   zellij \
