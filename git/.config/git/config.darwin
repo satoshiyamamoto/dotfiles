@@ -11,7 +11,7 @@
   prompt = false
 
 [difftool "nvimdiff"]
-  cmd = "nvim -R -d -c \"wincmd l\" -d \"$LOCAL\" \"$REMOTE\""
+  cmd = nvim -R -d "$LOCAL" "$REMOTE"
 
 [merge]
   conflictStyle = zdiff3
@@ -22,7 +22,7 @@
   keepBackup = false
 
 [mergetool "nvimdiff"]
-  cmd = "nvim -d -c \"4wincmd w | wincmd J\" \"$LOCAL\" \"$BASE\" \"$REMOTE\"  \"$MERGED\""
+  cmd = nvim -d -c "4wincmd w | wincmd J" "$LOCAL" "$BASE" "$REMOTE" "$MERGED"
 
 [pull]
 	rebase = true
