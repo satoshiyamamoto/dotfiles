@@ -28,7 +28,6 @@ return {
         "jdtls",
         "lua_ls",
         "pyright",
-        "ruff",
         "rust_analyzer",
         "tailwindcss",
         "terraformls",
