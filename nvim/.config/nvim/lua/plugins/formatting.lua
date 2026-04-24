@@ -15,6 +15,8 @@ return {
       formatters_by_ft = {
         go = { "goimports", "gofmt" },
         java = { "google-java-format" },
+        json = { "prettier" },
+        jsonl = { "jq" },
         javascript = { "prettierd", "biome", stop_after_first = true },
         javascriptreact = { "prettierd", "biome", stop_after_first = true },
         lua = { "stylua" },
@@ -27,6 +29,9 @@ return {
         yaml = { "yamlfmt" },
       },
       formatters = {
+        jq = {
+          args = { "-c" },
+        },
         prettierd = {
           condition = function(_, ctx)
             if

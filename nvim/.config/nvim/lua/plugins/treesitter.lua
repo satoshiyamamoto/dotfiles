@@ -34,6 +34,7 @@ return {
         "yaml",
       })
 
+      vim.treesitter.language.register("json", "jsonl")
       vim.api.nvim_create_autocmd("FileType", {
         callback = function()
           -- Ignore special buffers (e.g. nofile)
