@@ -13,9 +13,11 @@ return {
     },
     opts = {
       formatters_by_ft = {
+        css = { "prettier", "biome", stop_after_first = true },
         go = { "goimports", "gofmt" },
+        html = { "prettier" },
         java = { "google-java-format" },
-        json = { "prettier" },
+        json = { "prettier", "biome", stop_after_first = true },
         jsonl = { "jq" },
         javascript = { "prettier", "biome", stop_after_first = true },
         javascriptreact = { "prettier", "biome", stop_after_first = true },
