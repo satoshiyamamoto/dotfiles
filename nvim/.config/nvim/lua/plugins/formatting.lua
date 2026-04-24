@@ -17,22 +17,22 @@ return {
         java = { "google-java-format" },
         json = { "prettier" },
         jsonl = { "jq" },
-        javascript = { "prettierd", "biome", stop_after_first = true },
-        javascriptreact = { "prettierd", "biome", stop_after_first = true },
+        javascript = { "prettier", "biome", stop_after_first = true },
+        javascriptreact = { "prettier", "biome", stop_after_first = true },
         lua = { "stylua" },
         proto = { "buf" },
         python = { "ruff_format" },
         rust = { "rustfmt" },
         sql = { "sqlfluff" },
-        typescript = { "prettierd", "biome", stop_after_first = true },
-        typescriptreact = { "prettierd", "biome", stop_after_first = true },
+        typescript = { "prettier", "biome", stop_after_first = true },
+        typescriptreact = { "prettier", "biome", stop_after_first = true },
         yaml = { "yamlfmt" },
       },
       formatters = {
         jq = {
           args = { "-c" },
         },
-        prettierd = {
+        prettier = {
           condition = function(_, ctx)
             if
               vim.fs.find({
