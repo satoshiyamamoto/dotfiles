@@ -7,9 +7,8 @@ return {
         capabilities = require("blink.cmp").get_lsp_capabilities(),
       })
 
-      vim.lsp.enable({
-        -- Enable it using `automatic_enable` in `mason-lspconfig`
-      })
+      -- vim.lsp.enable() is called automatically by mason-lspconfig
+      -- via `automatic_enable = true` (default) for each installed server.
     end,
     dependencies = {
       { "saghen/blink.cmp" },
