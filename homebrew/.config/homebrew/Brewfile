@@ -63,6 +63,8 @@ brew "bat"
 brew "bat-extras"
 # Garbage collector for C and C++
 brew "bdw-gc"
+# Toolchain of the web
+brew "biome"
 # Collection of portable C++ source libraries
 brew "boost"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
