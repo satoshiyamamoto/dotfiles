@@ -19,6 +19,8 @@ window-padding-balance = true
 window-padding-color = extend
 window-colorspace = display-p3
 background-opacity = 0.95
+background-opacity-cells = true
+unfocused-split-opacity = 0.85
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
 
