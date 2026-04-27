@@ -6,8 +6,9 @@ stow --verbose --adopt --target=$HOME \
   editorconfig \
   fd \
   flake8 \
-  ghostty \
+  gh \
   gh-dash \
+  ghostty \
   git \
   glow \
   homebrew \
