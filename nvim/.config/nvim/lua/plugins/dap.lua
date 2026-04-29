@@ -8,6 +8,11 @@ return {
         desc = "Continue (Debug)",
       },
       {
+        "<F9>",
+        function() require("dap").toggle_breakpoint() end,
+        desc = "Toggle Breakpoint (Debug)",
+      },
+      {
         "<F17>",
         function() require("dap").terminate() end,
         desc = "Terminate (Debug)",
@@ -54,7 +59,7 @@ return {
       require("dapui").setup()
       require("nvim-dap-virtual-text").setup()
       require("dap-go").setup()
-      require("dap-python").setup(vim.fn.expand("$MASON/packages/debugpy/venv/bin/python"))
+      require("dap-python").setup("uv")
 
       -- Adapters
       local js_adapter = {
@@ -74,62 +79,43 @@ return {
         {
           type = "pwa-node",
           request = "launch",
-          name = "Launch file (Node.js)",
+          name = "Launch",
           program = "${file}",
           cwd = "${workspaceFolder}",
-          resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
           skipFiles = { "<node_internals>/**" },
         },
         {
           type = "pwa-node",
           request = "attach",
-          name = "Attach to process (Node.js)",
+          name = "Attach Process",
           processId = require("dap.utils").pick_process,
           cwd = "${workspaceFolder}",
-          resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
           skipFiles = { "<node_internals>/**" },
         },
         {
           type = "pwa-node",
           request = "attach",
-          name = "Attach to Next.js router server (:9230)",
-          port = 9230,
-          cwd = "${workspaceFolder}",
-          resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
-          skipFiles = { "<node_internals>/**" },
-          sourceMapPathOverrides = {
-            ["webpack://_N_E/./*"] = "${workspaceFolder}/*",
-            ["webpack:///./*"] = "${workspaceFolder}/*",
-          },
-        },
-        {
-          type = "pwa-node",
-          request = "attach",
-          name = "Attach to Next.js server (:9229, --disable-memory-watcher)",
+          name = "Attach Remote",
           port = 9229,
           cwd = "${workspaceFolder}",
-          resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
           skipFiles = { "<node_internals>/**" },
-          sourceMapPathOverrides = {
-            ["webpack://_N_E/./*"] = "${workspaceFolder}/*",
-            ["webpack:///./*"] = "${workspaceFolder}/*",
-          },
+        },
+        {
+          type = "pwa-node",
+          request = "attach",
+          name = "Attach Remote (Next.js)",
+          port = 9230,
+          cwd = "${workspaceFolder}",
+          skipFiles = { "<node_internals>/**" },
         },
         {
           type = "pwa-chrome",
           request = "launch",
-          name = "Launch Chrome (React / Next.js)",
+          name = "Launch Chrome",
           url = "http://localhost:3000",
-          webRoot = "${workspaceFolder}",
-          sourceMaps = true,
-          -- webpack source map path overrides to prevent unbound breakpoints
-          sourceMapPathOverrides = {
-            ["webpack://_N_E/./*"] = "${workspaceFolder}/*",
-            ["webpack:///./*"] = "${workspaceFolder}/*",
-          },
         },
       }
-      for _, lang in ipairs({ "typescript", "javascript", "javascriptreact", "typescriptreact" }) do
+      for _, lang in ipairs({ "typescript", "javascript", "typescriptreact", "javascriptreact" }) do
         dap.configurations[lang] = js_configs
       end
       local java_configs = {
