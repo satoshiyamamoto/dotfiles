@@ -57,7 +57,7 @@ return {
       require("dap-python").setup(vim.fn.expand("$MASON/packages/debugpy/venv/bin/python"))
 
       -- Adapters
-      dap.adapters["pwa-node"] = {
+      local js_adapter = {
         type = "server",
         host = "localhost",
         port = "${port}",
@@ -66,24 +66,67 @@ return {
           args = { "${port}" },
         },
       }
+      dap.adapters["pwa-node"] = js_adapter
+      dap.adapters["pwa-chrome"] = js_adapter
 
       -- Configurations
       local js_configs = {
         {
           type = "pwa-node",
           request = "launch",
-          name = "Launch file",
+          name = "Launch file (Node.js)",
           program = "${file}",
           cwd = "${workspaceFolder}",
           resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
+          skipFiles = { "<node_internals>/**" },
         },
         {
           type = "pwa-node",
           request = "attach",
-          name = "Attach",
+          name = "Attach to process (Node.js)",
           processId = require("dap.utils").pick_process,
           cwd = "${workspaceFolder}",
           resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
+          skipFiles = { "<node_internals>/**" },
+        },
+        {
+          type = "pwa-node",
+          request = "attach",
+          name = "Attach to Next.js router server (:9230)",
+          port = 9230,
+          cwd = "${workspaceFolder}",
+          resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
+          skipFiles = { "<node_internals>/**" },
+          sourceMapPathOverrides = {
+            ["webpack://_N_E/./*"] = "${workspaceFolder}/*",
+            ["webpack:///./*"] = "${workspaceFolder}/*",
+          },
+        },
+        {
+          type = "pwa-node",
+          request = "attach",
+          name = "Attach to Next.js server (:9229, --disable-memory-watcher)",
+          port = 9229,
+          cwd = "${workspaceFolder}",
+          resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
+          skipFiles = { "<node_internals>/**" },
+          sourceMapPathOverrides = {
+            ["webpack://_N_E/./*"] = "${workspaceFolder}/*",
+            ["webpack:///./*"] = "${workspaceFolder}/*",
+          },
+        },
+        {
+          type = "pwa-chrome",
+          request = "launch",
+          name = "Launch Chrome (React / Next.js)",
+          url = "http://localhost:3000",
+          webRoot = "${workspaceFolder}",
+          sourceMaps = true,
+          -- webpack source map path overrides to prevent unbound breakpoints
+          sourceMapPathOverrides = {
+            ["webpack://_N_E/./*"] = "${workspaceFolder}/*",
+            ["webpack:///./*"] = "${workspaceFolder}/*",
+          },
         },
       }
       for _, lang in ipairs({ "typescript", "javascript", "javascriptreact", "typescriptreact" }) do
@@ -93,7 +136,7 @@ return {
         {
           type = "java",
           request = "attach",
-          name = "Attach to :5005",
+          name = "Attach",
           hostName = "127.0.0.1",
           port = 5005,
         },
@@ -150,11 +193,13 @@ return {
       { "<Leader>tO", function() require("neotest").output_panel.toggle() end, desc = "Test Output Panel" },
       { "<Leader>tS", function() require("neotest").run.stop() end, desc = "Test Stop" },
     },
-    opts = {
-      adapters = {
-        require("neotest-golang"),
-      },
-    },
+    config = function()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-golang"),
+        },
+      })
+    end,
     dependencies = {
       "nvim-neotest/nvim-nio",
       "nvim-lua/plenary.nvim",
