@@ -1,15 +1,62 @@
 return {
   {
     "mfussenegger/nvim-dap",
-    event = { "BufReadPost", "BufNewFile" },
+    keys = {
+      {
+        "<F5>",
+        function() require("dap").continue() end,
+        desc = "Continue (Debug)",
+      },
+      {
+        "<F17>",
+        function() require("dap").terminate() end,
+        desc = "Terminate (Debug)",
+      },
+      {
+        "<F10>",
+        function() require("dap").step_over() end,
+        desc = "Step Over (Debug)",
+      },
+      {
+        "<F11>",
+        function() require("dap").step_into() end,
+        desc = "Step Into (Debug)",
+      },
+      {
+        "<F23>",
+        function() require("dap").step_out() end,
+        desc = "Step Out (Debug)",
+      },
+      {
+        "<Leader>db",
+        function() require("dap").toggle_breakpoint() end,
+        desc = "Toggle Breakpoint (Debug)",
+      },
+      {
+        "<Leader>dB",
+        function() require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
+        desc = "Breakpoint Condition (Debug)",
+      },
+      {
+        "<Leader>lp",
+        function() require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end,
+        desc = "Breakpoint Log point message (Debug)",
+      },
+      {
+        "<Leader>du",
+        function() require("dapui").toggle() end,
+        desc = "Toggle Debugger UI (Debug)",
+      },
+    },
     config = function()
       local dap = require("dap")
       local dapui = require("dapui")
-      require("mason-registry")
       require("dapui").setup()
       require("nvim-dap-virtual-text").setup()
       require("dap-go").setup()
       require("dap-python").setup(vim.fn.expand("$MASON/packages/debugpy/venv/bin/python"))
+
+      -- Adapters
       dap.adapters["pwa-node"] = {
         type = "server",
         host = "localhost",
@@ -19,50 +66,44 @@ return {
           args = { "${port}" },
         },
       }
-      for _, language in ipairs({ "typescript", "javascript", "javascriptreact", "typescriptreact" }) do
-        require("dap").configurations[language] = {
-          {
-            type = "pwa-node",
-            request = "launch",
-            name = "Launch file",
-            program = "${file}",
-            cwd = "${workspaceFolder}",
-            resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
-          },
-          {
-            type = "pwa-node",
-            request = "attach",
-            name = "Attach",
-            processId = require("dap.utils").pick_process,
-            cwd = "${workspaceFolder}",
-            resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
-          },
-        }
+
+      -- Configurations
+      local js_configs = {
+        {
+          type = "pwa-node",
+          request = "launch",
+          name = "Launch file",
+          program = "${file}",
+          cwd = "${workspaceFolder}",
+          resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
+        },
+        {
+          type = "pwa-node",
+          request = "attach",
+          name = "Attach",
+          processId = require("dap.utils").pick_process,
+          cwd = "${workspaceFolder}",
+          resolveSourceMapLocations = { "${workspaceFolder}/**", "!**/node_modules/**" },
+        },
+      }
+      for _, lang in ipairs({ "typescript", "javascript", "javascriptreact", "typescriptreact" }) do
+        dap.configurations[lang] = js_configs
       end
+      local java_configs = {
+        {
+          type = "java",
+          request = "attach",
+          name = "Attach to :5005",
+          hostName = "127.0.0.1",
+          port = 5005,
+        },
+      }
+      dap.configurations.java = vim.list_extend(dap.configurations.java or {}, java_configs)
 
       dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
       dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
       dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
 
-      vim.keymap.set("n", "<F5>", dap.continue, { desc = "Continue (Debug)" })
-      vim.keymap.set("n", "<F17>", dap.terminate, { desc = "Terminate (Debug)" })
-      vim.keymap.set("n", "<F10>", dap.step_over, { desc = "Step Over (Debug)" })
-      vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Step Into (Debug)" })
-      vim.keymap.set("n", "<F23>", dap.step_out, { desc = "Step Out (Debug)" })
-      vim.keymap.set("n", "<Leader>db", dap.toggle_breakpoint, { desc = "Toggle Breakpoint (Debug)" })
-      vim.keymap.set(
-        "n",
-        "<Leader>dB",
-        function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
-        { desc = "Breakpoint Condition (Debug)" }
-      )
-      vim.keymap.set(
-        "n",
-        "<Leader>lp",
-        function() dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end,
-        { desc = "Breakpoint Log point message (Debug)" }
-      )
-      vim.keymap.set("n", "<Leader>du", dapui.toggle, { desc = "Toggle Debugger UI (Debug)" })
       vim.fn.sign_define("DapBreakpoint", { text = " ", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapBreakpointCondition", { text = " ", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapBreakpointRejected", { text = " ", texthl = "ErrorMsg" })
@@ -70,12 +111,12 @@ return {
       vim.fn.sign_define("DapStopped", { text = " ", texthl = "WarningMsg" })
     end,
     dependencies = {
-      { "mfussenegger/nvim-dap-python" },
-      { "mfussenegger/nvim-jdtls" },
-      { "leoluz/nvim-dap-go" },
-      { "nvim-neotest/nvim-nio" },
-      { "rcarriga/nvim-dap-ui" },
-      { "theHamsta/nvim-dap-virtual-text" },
+      "mfussenegger/nvim-dap-python",
+      "mfussenegger/nvim-jdtls",
+      "leoluz/nvim-dap-go",
+      "nvim-neotest/nvim-nio",
+      "rcarriga/nvim-dap-ui",
+      "theHamsta/nvim-dap-virtual-text",
     },
   },
 
@@ -93,8 +134,8 @@ return {
       },
     },
     dependencies = {
-      { "mason-org/mason.nvim" },
-      { "mfussenegger/nvim-dap" },
+      "mason-org/mason.nvim",
+      "mfussenegger/nvim-dap",
     },
   },
 
@@ -109,19 +150,17 @@ return {
       { "<Leader>tO", function() require("neotest").output_panel.toggle() end, desc = "Test Output Panel" },
       { "<Leader>tS", function() require("neotest").run.stop() end, desc = "Test Stop" },
     },
-    config = function()
-      require("neotest").setup({
-        adapters = {
-          require("neotest-golang"),
-        },
-      })
-    end,
+    opts = {
+      adapters = {
+        require("neotest-golang"),
+      },
+    },
     dependencies = {
-      { "nvim-neotest/nvim-nio" },
-      { "nvim-lua/plenary.nvim" },
-      { "nvim-treesitter/nvim-treesitter" },
-      { "fredrikaverpil/neotest-golang" },
-      { "rcasia/neotest-java" },
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "fredrikaverpil/neotest-golang",
+      "rcasia/neotest-java",
     },
   },
 
@@ -131,10 +170,7 @@ return {
       { ",v", "<Cmd>VenvSelect<CR>", desc = "Open VenvSelector to pick a venv" },
     },
     ft = "python",
-    opts = {
-      search = {},
-      options = {},
-    },
+    opts = {},
     dependencies = {
       "mfussenegger/nvim-dap-python",
     },
