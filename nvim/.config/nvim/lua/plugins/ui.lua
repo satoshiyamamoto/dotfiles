@@ -5,15 +5,13 @@ return {
     priority = 1000,
     lazy = false,
     opts = {
-      dashboard = { enabled = true },
-      explorer = { enabled = true },
-      image = {
-        doc = { enabled = true },
-        math = { enabled = true },
-      },
-      indent = { enabled = true },
-      notifier = { enabled = true },
-      picker = { enabled = true },
+      dashboard = {},
+      explorer = {},
+      image = {},
+      indent = {},
+      notifier = {},
+      picker = {},
+      statuscolumn = {},
     },
     keys = {
       -- Top Pickers & Explorer
