@@ -183,11 +183,13 @@ return {
       require("neotest").setup({
         adapters = {
           require("neotest-golang"),
+          require("neotest-python"),
         },
       })
     end,
     dependencies = {
       "nvim-neotest/nvim-nio",
+      "nvim-neotest/neotest-python",
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "fredrikaverpil/neotest-golang",
