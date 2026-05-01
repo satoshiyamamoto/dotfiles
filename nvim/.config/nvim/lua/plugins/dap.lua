@@ -55,9 +55,7 @@ return {
     },
     config = function()
       local dap = require("dap")
-      local dapui = require("dapui")
-      require("dapui").setup()
-      require("nvim-dap-virtual-text").setup()
+      require("dap.ext.vscode").json_decode = require("json5").parse
       require("dap-go").setup()
       require("dap-python").setup("uv")
 
@@ -129,6 +127,10 @@ return {
       }
       dap.configurations.java = vim.list_extend(dap.configurations.java or {}, java_configs)
 
+      -- UIs
+      require("dapui").setup()
+      require("nvim-dap-virtual-text").setup()
+      local dapui = require("dapui")
       dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
       dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
       dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
@@ -146,6 +148,7 @@ return {
       "nvim-neotest/nvim-nio",
       "rcarriga/nvim-dap-ui",
       "theHamsta/nvim-dap-virtual-text",
+      { "Joakker/lua-json5", build = "./install.sh" },
     },
   },
 
