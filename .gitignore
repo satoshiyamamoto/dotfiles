@@ -8,7 +8,7 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
 
 # Thumbnails
 ._*
@@ -78,7 +78,6 @@ lazy-lock.json
 tmux/.config/tmux/plugins/
 
 ### Claude Code ###
-.claude
 claude/.claude/**
 !claude/.claude/settings.json
 

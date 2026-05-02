@@ -43,6 +43,8 @@
       "Read(**/secrets/**)"
     ],
     "ask": [
+      "Edit(//Users/**)",
+      "Write(//Users/**)",
       "Bash(gh issue comment:*)",
       "Bash(gh issue create:*)",
       "Bash(gh issue edit:*)",
