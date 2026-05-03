@@ -33,6 +33,36 @@ return {
         desc = "Step Out (Debug)",
       },
       {
+        "<Leader>dc",
+        function() require("dap").continue() end,
+        desc = "Continue (Debug)",
+      },
+      {
+        "<Leader>dt",
+        function() require("dap").terminate() end,
+        desc = "Terminate (Debug)",
+      },
+      {
+        "<Leader>di",
+        function() require("dap").step_into() end,
+        desc = "Step Into (Debug)",
+      },
+      {
+        "<Leader>do",
+        function() require("dap").step_out() end,
+        desc = "Step Out (Debug)",
+      },
+      {
+        "<Leader>dO",
+        function() require("dap").step_over() end,
+        desc = "Step Over (Debug)",
+      },
+      {
+        "<Leader>dr",
+        function() require("dap.repl").toggle() end,
+        desc = "Toggle REPL (Debug)",
+      },
+      {
         "<Leader>db",
         function() require("dap").toggle_breakpoint() end,
         desc = "Toggle Breakpoint (Debug)",
@@ -130,11 +160,6 @@ return {
       -- UIs
       require("dapui").setup()
       require("nvim-dap-virtual-text").setup()
-      local dapui = require("dapui")
-      dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
-      dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
-      dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
-
       vim.fn.sign_define("DapBreakpoint", { text = " ", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapBreakpointCondition", { text = " ", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapBreakpointRejected", { text = " ", texthl = "ErrorMsg" })
