@@ -131,7 +131,10 @@ bindkey '\es' tmux-sessions
 .sync() {
   local dotfiles_dir brewfile
   local is_i386=false ret=0
-  local container_formula='brew "container"'
+  local -a i386_excluded=(
+    'brew "container"'
+    'cask "google-gemini"'
+  )
 
   # Resolve dotfiles directory path and navigate into it
   dotfiles_dir="$(zoxide query dotfiles)" || return 1
@@ -145,14 +148,18 @@ bindkey '\es' tmux-sessions
   brewfile="$(fd --hidden --type f '^Brewfile$' | head -n 1)"
 
   if $is_i386 && [[ -n "$brewfile" ]]; then
-    # Temporarily comment out the container formula on i386 (unsupported)
-    sed -i '' "s/^${container_formula}$/# ${container_formula}/" "$brewfile"
+    # Temporarily comment out i386-unsupported formulas/casks
+    for formula in "${i386_excluded[@]}"; do
+      sed -i '' "s/^${formula}$/# ${formula}/" "$brewfile"
+    done
 
     # Install or update all packages defined in the Brewfile
     brew bundle -g || ret=$?
 
-    # Restore the container formula entry after bundle completes
-    sed -i '' "s/^# ${container_formula}$/${container_formula}/" "$brewfile"
+    # Restore the commented-out entries after bundle completes
+    for formula in "${i386_excluded[@]}"; do
+      sed -i '' "s/^# ${formula}$/${formula}/" "$brewfile"
+    done
   else
     # Install or update all packages defined in the Brewfile
     brew bundle -g || ret=$?
