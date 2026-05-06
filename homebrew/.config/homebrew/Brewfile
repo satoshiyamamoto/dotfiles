@@ -438,6 +438,8 @@ cask "ghostty"
 cask "git-credential-manager"
 # Web browser
 cask "google-chrome"
+# Native desktop AI assistant from Google
+cask "google-gemini"
 # Open-source video transcoder
 cask "handbrake-app"
 # Java IDE by JetBrains
