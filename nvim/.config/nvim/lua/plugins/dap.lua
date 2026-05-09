@@ -132,15 +132,7 @@ return {
           type = "pwa-node",
           request = "attach",
           name = "Attach Remote",
-          port = 9229,
-          cwd = "${workspaceFolder}",
-          skipFiles = { "<node_internals>/**" },
-        },
-        {
-          type = "pwa-node",
-          request = "attach",
-          name = "Attach Remote (Next.js)",
-          port = 9230,
+          port = function() return tonumber(vim.fn.input("Port: ", "9229")) end,
           cwd = "${workspaceFolder}",
           skipFiles = { "<node_internals>/**" },
         },
@@ -148,7 +140,7 @@ return {
           type = "pwa-chrome",
           request = "launch",
           name = "Launch Chrome",
-          url = "http://localhost:3000",
+          url = function() return vim.fn.input("URL: ", "http://localhost:3000") end,
         },
       }
       for _, lang in ipairs({ "typescript", "javascript", "typescriptreact", "javascriptreact" }) do
