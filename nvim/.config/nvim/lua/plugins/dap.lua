@@ -99,6 +99,14 @@ return {
           args = { "${port}" },
         },
       }
+      local function js_alias(target_type)
+        return function(cb, config)
+          config.type = target_type
+          cb(js_adapter)
+        end
+      end
+      dap.adapters["node"] = js_alias("pwa-node")
+      dap.adapters["chrome"] = js_alias("pwa-chrome")
       dap.adapters["pwa-node"] = js_adapter
       dap.adapters["pwa-chrome"] = js_adapter
 
