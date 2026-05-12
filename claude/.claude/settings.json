@@ -90,7 +90,8 @@
     "security-guidance@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "worktrunk@worktrunk": true,
-    "playwright@claude-plugins-official": true
+    "playwright@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "worktrunk": {
