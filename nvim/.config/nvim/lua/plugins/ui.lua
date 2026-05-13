@@ -291,4 +291,10 @@ return {
     opts = {},
     config = true,
   },
+
+  {
+    "sphamba/smear-cursor.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
 }
