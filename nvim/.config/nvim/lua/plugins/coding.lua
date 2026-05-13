@@ -106,6 +106,17 @@ return {
     event = { "BufReadPost", "BufNewFile" },
   },
 
+  -- IME
+  {
+    "keaising/im-select.nvim",
+    event = "InsertEnter",
+    opts = {
+      default_im_select = "com.apple.inputmethod.Kotoeri.RomajiTyping.Roman",
+      default_command = "im-select",
+      set_previous_events = { "InsertEnter" },
+    },
+  },
+
   -- Miscellaneous
   {
     "vim-jp/vimdoc-ja",
