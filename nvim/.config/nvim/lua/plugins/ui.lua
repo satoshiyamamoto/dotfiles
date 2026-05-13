@@ -297,4 +297,10 @@ return {
     event = "VeryLazy",
     opts = {},
   },
+
+  {
+    "karb94/neoscroll.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
 }
