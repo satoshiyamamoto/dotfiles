@@ -59,6 +59,8 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       enable = true,
+      max_lines = 5,
+      trim_scope = "inner",
     },
     config = function(_, opts)
       require("treesitter-context").setup(opts)
