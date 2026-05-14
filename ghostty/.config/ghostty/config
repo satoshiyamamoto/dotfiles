@@ -29,3 +29,7 @@ macos-option-as-alt = true
 keybind = ctrl+shift+j=ignore
 keybind = ctrl+shift+;=ignore
 
+
+## Shaders
+custom-shader = shaders/ghostty-cursor-shaders/cursor_warp.glsl
+
