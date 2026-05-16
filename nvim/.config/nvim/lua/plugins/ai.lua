@@ -6,11 +6,20 @@ return {
     opts = {
       cli = {
         win = {
+          wo = {
+            -- Align top padding with dropbar.nvim winbar
+            winbar = " ",
+            winhighlight = "WinBar:Normal,WinBarNC:NormalNC",
+          },
+          layout = "left",
           keys = {
-            -- Disable window navigation keys (<C-h/j/k/l>)
-            nav_left  = false,
-            nav_down  = false,
-            nav_up    = false,
+            buffers = false,
+            files = false,
+            prompt = false,
+            stopinsert = false,
+            nav_left = false,
+            nav_down = false,
+            nav_up = false,
             nav_right = false,
           },
         },
