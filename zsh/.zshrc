@@ -80,31 +80,6 @@ gi() {
   curl -sLw "\n" https://www.gitignore.io/api/$@ ;
 }
 
-y() {
-  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
-  yazi "$@" --cwd-file="$tmp"
-  if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
-    builtin cd -- "$cwd"
-  fi
-  rm -f -- "$tmp"
-}
-
-git-repos() {
-  local repo
-  repo=$(ghq list | fzf \
-    --height=40% \
-    --reverse \
-    --prompt="repository> " \
-    --preview="bat --color=always --language=markdown $(ghq root)/{}/README.md" \
-  )
-  zle reset-prompt
-  [[ -z "$repo" ]] && return
-  BUFFER="builtin cd -- $(ghq root)/${repo}"
-  zle accept-line
-}
-zle     -N    git-repos
-bindkey '\eg' git-repos
-
 wsct() {
   local branch="${1:?Usage: wsct <branch> [-- prompt]}"
   shift
@@ -121,6 +96,73 @@ wsct() {
   [[ -n "$prompt" ]] && cmd+=" -- ${(q)prompt}"
   tmux new -d -s "${branch}" "${cmd}"
 }
+
+y() {
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    builtin cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+}
+
+.sync() {
+  local dotfiles_dir brewfile
+  local is_i386=false ret=0
+  local -a i386_excluded=(
+    'brew "container"'
+    'cask "google-gemini"'
+  )
+
+  # Resolve dotfiles directory path and navigate into it
+  dotfiles_dir="$(zoxide query dotfiles)" || return 1
+  pushd -q "$dotfiles_dir" || return 1
+
+  # Pull the latest changes from the remote repository
+  git pull || { popd -q; return 1; }
+
+  # Detect Rosetta (i386) environment and locate the Brewfile
+  [[ "$(arch)" == "i386" ]] && is_i386=true
+  brewfile="$(fd --hidden --type f '^Brewfile$' | head -n 1)"
+
+  if $is_i386 && [[ -n "$brewfile" ]]; then
+    # Temporarily comment out i386-unsupported formulas/casks
+    for formula in "${i386_excluded[@]}"; do
+      sed -i '' "s/^${formula}$/# ${formula}/" "$brewfile"
+    done
+
+    # Install or update all packages defined in the Brewfile
+    brew bundle -g || ret=$?
+
+    # Restore the commented-out entries after bundle completes
+    for formula in "${i386_excluded[@]}"; do
+      sed -i '' "s/^# ${formula}$/${formula}/" "$brewfile"
+    done
+  else
+    # Install or update all packages defined in the Brewfile
+    brew bundle -g || ret=$?
+  fi
+
+  popd -q
+  return $ret
+}
+
+## ZLE Widgets
+git-repos() {
+  local repo
+  repo=$(ghq list | fzf \
+    --height=40% \
+    --reverse \
+    --prompt="repository> " \
+    --preview="bat --color=always --language=markdown $(ghq root)/{}/README.md" \
+  )
+  zle reset-prompt
+  [[ -z "$repo" ]] && return
+  BUFFER="builtin cd -- $(ghq root)/${repo}"
+  zle accept-line
+}
+zle -N git-repos
+bindkey '\eg' git-repos
 
 tmux-select() {
   local session
@@ -139,7 +181,7 @@ tmux-select() {
     zle accept-line
   fi
 }
-zle     -N    tmux-select
+zle -N tmux-select
 bindkey '\es' tmux-select
 
 zmx-select() {
@@ -183,49 +225,8 @@ zmx-select() {
   BUFFER="zmx attach ${(q)session_name}"
   zle accept-line
 }
-zle     -N    zmx-select
+zle -N zmx-select
 bindkey '\ez' zmx-select
-
-.sync() {
-  local dotfiles_dir brewfile
-  local is_i386=false ret=0
-  local -a i386_excluded=(
-    'brew "container"'
-    'cask "google-gemini"'
-  )
-
-  # Resolve dotfiles directory path and navigate into it
-  dotfiles_dir="$(zoxide query dotfiles)" || return 1
-  pushd -q "$dotfiles_dir" || return 1
-
-  # Pull the latest changes from the remote repository
-  git pull || { popd -q; return 1; }
-
-  # Detect Rosetta (i386) environment and locate the Brewfile
-  [[ "$(arch)" == "i386" ]] && is_i386=true
-  brewfile="$(fd --hidden --type f '^Brewfile$' | head -n 1)"
-
-  if $is_i386 && [[ -n "$brewfile" ]]; then
-    # Temporarily comment out i386-unsupported formulas/casks
-    for formula in "${i386_excluded[@]}"; do
-      sed -i '' "s/^${formula}$/# ${formula}/" "$brewfile"
-    done
-
-    # Install or update all packages defined in the Brewfile
-    brew bundle -g || ret=$?
-
-    # Restore the commented-out entries after bundle completes
-    for formula in "${i386_excluded[@]}"; do
-      sed -i '' "s/^# ${formula}$/${formula}/" "$brewfile"
-    done
-  else
-    # Install or update all packages defined in the Brewfile
-    brew bundle -g || ret=$?
-  fi
-
-  popd -q
-  return $ret
-}
 
 
 
