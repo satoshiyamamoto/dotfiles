@@ -113,7 +113,7 @@ return {
     opts = {
       default_im_select = "com.apple.inputmethod.Kotoeri.RomajiTyping.Roman",
       default_command = "im-select",
-      set_previous_events = { "InsertEnter" },
+      set_default_events = { "InsertLeave", "CmdlineLeave" },
     },
   },
 
