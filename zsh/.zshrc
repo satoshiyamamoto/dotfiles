@@ -91,7 +91,12 @@ y() {
 
 git-repos() {
   local repo
-  repo=$(ghq list | fzf --height 40% --reverse --preview "bat --color=always --language=markdown $(ghq root)/{}/README.md")
+  repo=$(ghq list | fzf \
+    --height=40% \
+    --reverse \
+    --prompt="repository> " \
+    --preview="bat --color=always --language=markdown $(ghq root)/{}/README.md" \
+  )
   zle reset-prompt
   [[ -z "$repo" ]] && return
   BUFFER="builtin cd -- $(ghq root)/${repo}"
@@ -119,7 +124,12 @@ wsct() {
 
 tmux-select() {
   local session
-  session=$(tmux list-sessions 2>/dev/null | fzf --height 40% --reverse --preview 'tmux capture-pane -ep -t $(echo {} | cut -d: -f1)' | cut -d: -f1)
+  session=$(tmux list-sessions 2>/dev/null | fzf \
+    --height=40% \
+    --reverse \
+    --prompt="tmux> " \
+    --preview='tmux capture-pane -ep -t $(echo {} | cut -d: -f1)' \
+  | cut -d: -f1)
   zle reset-prompt
   [[ -z "$session" ]] && return
   if [[ -n "$TMUX" ]]; then
