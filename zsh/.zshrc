@@ -72,6 +72,10 @@ zsh-defer __load_plugins
 #
 # Functions
 #
+zshexit() {
+  (($? >= 128)) && exit 0
+}
+
 gi() {
   curl -sLw "\n" https://www.gitignore.io/api/$@ ;
 }
