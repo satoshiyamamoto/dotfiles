@@ -5,6 +5,7 @@ format = """
 [░▒▓](#a3aed2)\
 [ 󰀵 ](bg:#a3aed2 fg:#090c0c)\
 $hostname\
+${env_var.ZMX_SESSION}\
 [](bg:#769ff0 fg:#a3aed2)\
 $directory\
 $direnv\
@@ -121,3 +122,9 @@ symbol = ""
 style = "bg:#394260"
 format = '[[ $symbol $output ](fg:#769ff0 bg:#394260)]($style)'
 ignore_timeout = true
+
+[env_var.ZMX_SESSION]
+symbol = " "
+format = "[ $symbol$env_value ]($style)"
+description = "zmx session name"
+style = "bg:#a3aed2 fg:#090c0c"
