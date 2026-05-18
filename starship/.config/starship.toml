@@ -39,6 +39,12 @@ format = '[$hostname]($style)'
 trim_at = ".local"
 ssh_only = true
 
+[env_var.ZMX_SESSION]
+symbol = " "
+format = "[ $symbol$env_value ]($style)"
+description = "zmx session name"
+style = "bg:#a3aed2 fg:#090c0c"
+
 [directory]
 style = "fg:#e3e5e5 bg:#769ff0"
 format = "[ $path ]($style)"
@@ -122,9 +128,3 @@ symbol = ""
 style = "bg:#394260"
 format = '[[ $symbol $output ](fg:#769ff0 bg:#394260)]($style)'
 ignore_timeout = true
-
-[env_var.ZMX_SESSION]
-symbol = " "
-format = "[ $symbol$env_value ]($style)"
-description = "zmx session name"
-style = "bg:#a3aed2 fg:#090c0c"
