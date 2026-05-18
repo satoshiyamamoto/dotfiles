@@ -68,28 +68,26 @@ return {
 
   {
     "catgoose/nvim-colorizer.lua",
-    event = { "BufReadPost", "BufNewFile" },
-    config = function()
-      require("colorizer").setup({
-        filetypes = {
-          "*",
-          "!help",
-          "!lazy",
-          "!noice",
-          "!trouble",
-          "!snacks_dashboard",
-          "!snacks_notif",
-          "!snacks_notif_history",
-          "!snacks_picker_input",
-          "!snacks_picker_list",
-          "!snacks_picker_preview",
-          css = { css = true, tailwind = true },
-          html = { css = true, tailwind = true },
-          javascriptreact = { tailwind = true },
-          typescriptreact = { tailwind = true },
-        },
-      })
-    end,
+    event = { "BufReadPre", "BufNewFile" },
+    opts = {
+      filetypes = {
+        "*",
+        "!help",
+        "!lazy",
+        "!noice",
+        "!trouble",
+        "!snacks_dashboard",
+        "!snacks_notif",
+        "!snacks_notif_history",
+        "!snacks_picker_input",
+        "!snacks_picker_list",
+        "!snacks_picker_preview",
+        css = { css = true, tailwind = true },
+        html = { css = true, tailwind = true },
+        javascriptreact = { tailwind = true },
+        typescriptreact = { tailwind = true },
+      },
+    },
   },
 
   {
@@ -130,5 +128,4 @@ return {
     "dstein64/vim-startuptime",
     cmd = "StartupTime",
   },
-
 }

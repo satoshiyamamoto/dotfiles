@@ -18,7 +18,7 @@ return {
       experimental = {
         -- Placeholder to prevent find_tailwind_global_css() from running.
         -- The actual value is resolved in before_init below.
-        configFile = "",
+        configFile = "app/globals.css",
       },
     },
   },
