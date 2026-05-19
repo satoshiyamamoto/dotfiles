@@ -191,17 +191,18 @@ zmx-select() {
     pid=${pid#*pid=}
     clients=${clients#*clients=}
     dir=${dir#*start_dir=}
+    [[ "$pid" != *[!0-9]* ]] || continue
     printf "%-20s  pid:%-8s  clients:%-2s  %s\n" "$name" "$pid" "$clients" "$dir"
   done)
 
   local output query key selected session_name
   output=$({ [[ -n "$display" ]] && echo "$display"; } | fzf \
     --print-query \
-    --expect=ctrl-n \
+    --expect=alt-enter \
     --height=80% \
     --reverse \
     --prompt="zmx> " \
-    --header="Enter: select | Ctrl-N: create new" \
+    --header="Enter: attach | Alt-Enter: new session" \
     --preview='zmx history {1} --vt' \
     --preview-window=right:60%:follow \
   )
@@ -212,12 +213,10 @@ zmx-select() {
   key=$(echo "$output" | sed -n '2p')
   selected=$(echo "$output" | sed -n '3p')
 
-  if [[ "$key" == "ctrl-n" && -n "$query" ]]; then
+  if [[ "$key" == "alt-enter" && -n "$query" ]]; then
     session_name="$query"
-  elif [[ $rc -eq 0 && -n "$selected" ]]; then
+  elif [[ -n "$selected" ]]; then
     session_name=$(echo "$selected" | awk '{print $1}')
-  elif [[ -n "$query" ]]; then
-    session_name="$query"
   else
     return 130
   fi
@@ -226,7 +225,7 @@ zmx-select() {
   zle accept-line
 }
 zle -N zmx-select
-bindkey '\ez' zmx-select
+bindkey '^_' zmx-select
 
 
 
