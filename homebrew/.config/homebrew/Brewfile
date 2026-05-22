@@ -3,28 +3,6 @@ tap "neurosnap/tap"
 tap "teamookla/speedtest"
 # C++ Common Libraries
 brew "abseil"
-# Generic-purpose lossless compression algorithm by Google
-brew "brotli"
-# Library and utilities for processing GIFs
-brew "giflib"
-# Library of 2D and 3D vector, matrix, and math operations
-brew "imath"
-# Library for manipulating PNG images
-brew "libpng"
-# Extremely Fast Compression algorithm
-brew "lz4"
-# General-purpose data compression with high compression ratio
-brew "xz"
-# Zstandard is a real-time compression algorithm
-brew "zstd"
-# TIFF library and utilities
-brew "libtiff"
-# Color management engine supporting ICC profiles
-brew "little-cms2"
-# High dynamic-range image file format
-brew "openexr"
-# New file format for still image compression
-brew "jpeg-xl"
 # Get stuff done with container-native workflows for Kubernetes
 brew "argo"
 # GitOps Continuous Delivery for Kubernetes
@@ -37,14 +15,20 @@ brew "m4"
 brew "autoconf"
 # Compression/decompression library aiming for high speed
 brew "snappy"
+# General-purpose data compression with high compression ratio
+brew "xz"
 # Data serialization system
 brew "avro-c"
 # Mozilla CA certificate store
 brew "ca-certificates"
+# Extremely Fast Compression algorithm
+brew "lz4"
 # Library for decimal floating point arithmetic
 brew "mpdecimal"
 # Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
+# Zstandard is a real-time compression algorithm
+brew "zstd"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # C string library for manipulating Unicode strings
@@ -69,6 +53,8 @@ brew "bdw-gc"
 brew "biome"
 # Collection of portable C++ source libraries
 brew "boost"
+# Generic-purpose lossless compression algorithm by Google
+brew "brotli"
 # Resource monitor. C++ version and continuation of bashtop and bpytop
 brew "btop"
 # New way of working with Protocol Buffers
@@ -77,6 +63,8 @@ brew "buf"
 brew "c-ares"
 # Powerful, enterprise-ready, open source web server with automatic HTTPS
 brew "caddy"
+# Library for manipulating PNG images
+brew "libpng"
 # Software library to render fonts
 brew "freetype"
 # XML-based font configuration API for X Windows
@@ -155,8 +143,14 @@ brew "freetds"
 brew "fzf"
 # GNU awk utility
 brew "gawk"
+# Library and utilities for processing GIFs
+brew "giflib"
 # OpenType text shaping engine
 brew "harfbuzz"
+# TIFF library and utilities
+brew "libtiff"
+# Color management engine supporting ICC profiles
+brew "little-cms2"
 # Development kit for the Java programming language
 brew "openjdk"
 # Java garbage collection visualization tool
@@ -173,8 +167,6 @@ brew "ghq"
 brew "git-delta"
 # Render markdown on the CLI
 brew "glow"
-# Asynchronous event library
-brew "libevent"
 # International domain name library (IDNA2008, Punycode and TR46)
 brew "libidn2"
 # ASN.1 structure parser library
@@ -183,10 +175,12 @@ brew "libtasn1"
 brew "nettle"
 # Library to load and enumerate PKCS#11 modules
 brew "p11-kit"
-# Validating, recursive, caching DNS resolver
-brew "unbound"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
+# Asynchronous event library
+brew "libevent"
+# Validating, recursive, caching DNS resolver
+brew "unbound"
 # GNU Privacy Guard (OpenPGP)
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
@@ -225,10 +219,16 @@ brew "htop"
 brew "webp"
 # Tools and libraries to manipulate images in select formats
 brew "imagemagick"
+# Library of 2D and 3D vector, matrix, and math operations
+brew "imath"
 # Interactive computing in Python
 brew "ipython"
 # JSON diff and patch
 brew "jd"
+# High dynamic-range image file format
+brew "openexr"
+# New file format for still image compression
+brew "jpeg-xl"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Super fast CLI tool to decode and encode JWTs built in Rust
@@ -317,6 +317,8 @@ brew "openjdk@21"
 brew "openjpeg"
 # PAM module for reattaching to the user's GUI (Aqua) session
 brew "pam-reattach"
+# Swiss-army knife of markup format conversion
+brew "pandoc"
 # Perl compatible regular expressions library
 brew "pcre"
 # CLI for Postgres with auto-completion and syntax highlighting
@@ -327,6 +329,8 @@ brew "pipx"
 brew "pnpm"
 # Cowsay but with ponies
 brew "ponysay"
+# PDF rendering library (based on the xpdf-3.0 code base)
+brew "poppler"
 # Theme for zsh
 brew "powerlevel10k"
 # Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
@@ -479,6 +483,7 @@ mas "Keynote", id: 409183694
 mas "Kindle", id: 302584613
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
+mas "Speedtest", id: 1153157709
 mas "Tailscale", id: 1475387142
 mas "Vimlike", id: 1584519802
 mas "Xcode", id: 497799835
