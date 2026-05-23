@@ -162,7 +162,7 @@ git-repos() {
   zle accept-line
 }
 zle -N git-repos
-bindkey '\eg' git-repos
+bindkey '^[g' git-repos
 
 tmux-select() {
   local session
@@ -182,7 +182,7 @@ tmux-select() {
   fi
 }
 zle -N tmux-select
-bindkey '\es' tmux-select
+bindkey '^[s' tmux-select
 
 zmx-select() {
   local display
