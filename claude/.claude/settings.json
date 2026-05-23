@@ -88,23 +88,14 @@
     "lua-lsp@claude-plugins-official": true,
     "playwright@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true,
-    "prompts.chat@prompts.chat": true,
     "pyright-lsp@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true,
-    "worktrunk@worktrunk": true
+    "typescript-lsp@claude-plugins-official": true
   },
-  "extraKnownMarketplaces": {
-    "worktrunk": {
-      "source": {
-        "source": "github",
-        "repo": "max-sixty/worktrunk"
-      }
-    }
-  },
-  "language": "日本語",
+  "extraKnownMarketplaces": {},
+  "language": "japanese",
   "alwaysThinkingEnabled": true,
   "voiceEnabled": true
 }
