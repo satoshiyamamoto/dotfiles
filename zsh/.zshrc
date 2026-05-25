@@ -153,7 +153,7 @@ git-repos() {
   repo=$(ghq list | fzf \
     --height=40% \
     --reverse \
-    --prompt="repository> " \
+    --prompt="> " \
     --preview="bat --color=always --language=markdown $(ghq root)/{}/README.md" \
   )
   zle reset-prompt
@@ -162,14 +162,14 @@ git-repos() {
   zle accept-line
 }
 zle -N git-repos
-bindkey '^[g' git-repos
+bindkey '^G' git-repos
 
 tmux-select() {
   local session
   session=$(tmux list-sessions 2>/dev/null | fzf \
     --height=40% \
     --reverse \
-    --prompt="tmux> " \
+    --prompt="> " \
     --preview='tmux capture-pane -ep -t $(echo {} | cut -d: -f1)' \
   | cut -d: -f1)
   zle reset-prompt
@@ -182,7 +182,7 @@ tmux-select() {
   fi
 }
 zle -N tmux-select
-bindkey '^[s' tmux-select
+bindkey '^]' tmux-select
 
 zmx-select() {
   local display
@@ -201,7 +201,7 @@ zmx-select() {
     --expect=ctrl-/ \
     --height=80% \
     --reverse \
-    --prompt="zmx> " \
+    --prompt="> " \
     --header="Enter: attach | Ctrl-/: new session" \
     --preview='zmx history {1} --vt' \
     --preview-window=right:60%:follow \
