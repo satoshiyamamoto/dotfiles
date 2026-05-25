@@ -26,7 +26,7 @@ trim_at = ".local"
 ssh_only = true
 
 [env_var.ZMX_SESSION]
-symbol = "󰰶 "
+symbol = "⧖ "
 format = "[ $symbol$env_value ]($style)"
 description = "zmx session name"
 style = "bg:#a3aed2 fg:#090c0c"
