@@ -92,9 +92,17 @@
     "security-guidance@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true
+    "typescript-lsp@claude-plugins-official": true,
+    "apple-notes@apple-notes-mcp": true
   },
-  "extraKnownMarketplaces": {},
+  "extraKnownMarketplaces": {
+    "apple-notes-mcp": {
+      "source": {
+        "source": "github",
+        "repo": "sweetrb/apple-notes-mcp"
+      }
+    }
+  },
   "language": "japanese",
   "alwaysThinkingEnabled": true,
   "voiceEnabled": true
