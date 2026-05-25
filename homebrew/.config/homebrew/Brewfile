@@ -446,6 +446,8 @@ cask "ghostty"
 cask "git-credential-manager"
 # Web browser
 cask "google-chrome"
+# Client for the Google Drive storage service
+cask "google-drive"
 # Native desktop AI assistant from Google
 cask "google-gemini"
 # Open-source video transcoder
