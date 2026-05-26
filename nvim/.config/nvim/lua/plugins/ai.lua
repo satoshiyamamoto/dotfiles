@@ -27,45 +27,10 @@ return {
     },
     keys = {
       {
-        "<tab>",
-        function()
-          if not require("sidekick").nes_jump_or_apply() then
-            return "<Tab>"
-          end
-        end,
-        expr = true,
-        desc = "Goto/Apply Next Edit Suggestion",
-      },
-      {
         "<c-.>",
         function() require("sidekick.cli").focus() end,
         mode = { "n", "t", "i", "x" },
         desc = "Sidekick Focus",
-      },
-      {
-        "<leader>aa",
-        function() require("sidekick.cli").toggle() end,
-        desc = "Sidekick Toggle CLI",
-      },
-      {
-        "<leader>ac",
-        function() require("sidekick.cli").toggle({ name = "claude", focus = true }) end,
-        desc = "Sidekick Toggle Claude",
-      },
-      {
-        "<leader>ax",
-        function() require("sidekick.cli").toggle({ name = "codex", focus = true }) end,
-        desc = "Sidekick Toggle Codex",
-      },
-      {
-        "<leader>ag",
-        function() require("sidekick.cli").toggle({ name = "gemini", focus = true }) end,
-        desc = "Sidekick Toggle Gemini",
-      },
-      {
-        "<leader>as",
-        function() require("sidekick.cli").select() end,
-        desc = "Sidekick Select CLI",
       },
       {
         "<leader>at",
@@ -84,12 +49,6 @@ return {
         mode = { "x" },
         desc = "Sidekick Send Selection",
       },
-      {
-        "<leader>ap",
-        function() require("sidekick.cli").prompt() end,
-        mode = { "n", "x" },
-        desc = "Sidekick Select Prompt",
-      },
     },
   },
 
@@ -98,11 +57,11 @@ return {
     "coder/claudecode.nvim",
     dependencies = { "folke/snacks.nvim" },
     event = { "VeryLazy" },
-    config = true,
+    terminal = {
+      provider = "none",
+    },
     opts = {
-      terminal = {
-        provider = "none",
-      },
+      config = true,
     },
   },
 }
