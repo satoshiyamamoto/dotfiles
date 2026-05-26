@@ -57,11 +57,11 @@ return {
     "coder/claudecode.nvim",
     dependencies = { "folke/snacks.nvim" },
     event = { "VeryLazy" },
-    terminal = {
-      provider = "none",
-    },
+    config = true,
     opts = {
-      config = true,
+      terminal = {
+        provider = "none",
+      },
     },
   },
 }
