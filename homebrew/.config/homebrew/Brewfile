@@ -1,6 +1,6 @@
 tap "daipeihust/tap"
+tap "kavehtehrani/tap"
 tap "neurosnap/tap"
-tap "teamookla/speedtest"
 # C++ Common Libraries
 brew "abseil"
 # Get stuff done with container-native workflows for Kubernetes
@@ -83,6 +83,8 @@ brew "cairo"
 brew "certifi"
 # C parser in Python
 brew "pycparser"
+# Cloudflare-based speed test with optional TUI
+brew "cloudflare-speed-cli"
 # Console Matrix
 brew "cmatrix"
 # High performance code minimap generator
@@ -421,8 +423,6 @@ brew "zsh-you-should-use"
 brew "daipeihust/tap/im-select"
 # Session persistence for terminal processes
 brew "neurosnap/tap/zmx"
-# Ookla Speedtest
-brew "teamookla/speedtest/speedtest"
 # Anthropic's official Claude AI desktop app
 cask "claude"
 # Terminal-based AI coding assistant
