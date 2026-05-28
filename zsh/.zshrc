@@ -302,6 +302,7 @@ alias lt='eza --color=always --icons --long --header --group --git --color-scale
 alias lzd='lazydocker'
 alias mv='mv -i'
 alias rm='rm -i'
+alias speedtest='cloudflare-speed-cli'
 alias tailscale='/Applications/Tailscale.app/Contents/MacOS/Tailscale'
 alias trans='trans --brief :ja'
 alias tree='eza --color=always --icons --tree'
