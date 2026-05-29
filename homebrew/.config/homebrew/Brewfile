@@ -125,6 +125,8 @@ brew "docker-compose"
 brew "docker-credential-helper"
 # Text processing system for reStructuredText
 brew "docutils"
+# YAML Parser
+brew "libyaml"
 # Embeddable SQL OLAP Database Management System
 brew "duckdb"
 # Perl lib for reading and writing EXIF metadata
@@ -267,8 +269,6 @@ brew "unibilium"
 brew "libtermkey"
 # XML security library
 brew "libxmlsec1"
-# YAML Parser
-brew "libyaml"
 # C library for reading, creating, and modifying zip archives
 brew "libzip"
 # CLI for SQLite Databases with auto-completion and syntax highlighting
@@ -423,6 +423,10 @@ brew "zsh-you-should-use"
 brew "daipeihust/tap/im-select"
 # Session persistence for terminal processes
 brew "neurosnap/tap/zmx"
+# Agent orchestration platform
+cask "antigravity"
+# Terminal interface for Antigravity agents
+cask "antigravity-cli"
 # Anthropic's official Claude AI desktop app
 cask "claude"
 # Terminal-based AI coding assistant
