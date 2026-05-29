@@ -288,7 +288,17 @@ return {
     "akinsho/bufferline.nvim",
     version = "*",
     event = { "BufReadPost", "BufNewFile" },
-    opts = {},
+    opts = {
+      options = {
+        offsets = {
+          {
+            filetype = "snacks_layout_box",
+            text = "󰙅  File Explorer",
+            separator = true,
+          },
+        },
+      },
+    },
     config = true,
   },
 
