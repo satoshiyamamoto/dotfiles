@@ -52,10 +52,11 @@ truncation_length = 3
 truncation_symbol = "…/"
 
 [directory.substitutions]
-"Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = " "
-"Pictures" = " "
+"Desktop" = " "
+"Documents" = "󰲂 "
+"Downloads" = "󰉍 "
+"Music" = "󱍙 "
+"Pictures" = "󰉏 "
 
 [direnv]
 disabled = false
