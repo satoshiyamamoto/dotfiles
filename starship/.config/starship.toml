@@ -57,6 +57,7 @@ truncation_symbol = "…/"
 "Downloads" = "󰉍 "
 "Music" = "󱍙 "
 "Pictures" = "󰉏 "
+"Projects" = "󱧼 "
 
 [direnv]
 disabled = false

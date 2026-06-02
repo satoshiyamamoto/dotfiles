@@ -102,6 +102,9 @@ broken_symlink: { foreground: "#ff007c" }
 broken_path_overlay: { foreground: "#ff007c" }
 
 filenames:
+  Projects:
+    icon:
+      glyph: "󱧼"
   "Google Drive":
     icon:
       glyph: "󰉎"
