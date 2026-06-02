@@ -4,6 +4,7 @@ stow --verbose --adopt --target=$HOME \
   bat \
   claude \
   editorconfig \
+  eza \
   fd \
   flake8 \
   gh \

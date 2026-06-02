@@ -52,6 +52,11 @@ export FZF_CTRL_R_COMMAND='' # use atuin
 export FZF_CTRL_T_OPTS='--preview="[[ -d {} ]] && '"$FZF_PREVIEW_DIR"' || '"$FZF_PREVIEW_FILE"'"'
 export FZF_ALT_C_OPTS='--preview="${FZF_PREVIEW_DIR}"'
 
+## eza
+export EZA_CONFIG_DIR="$XDG_CONFIG_HOME/eza"
+unset LS_COLORS
+unset EZA_COLORS
+
 ## Direnv
 export DIRENV_LOG_FORMAT=""
 
