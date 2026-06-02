@@ -198,11 +198,11 @@ zmx-select() {
   local output query key selected session_name
   output=$({ [[ -n "$display" ]] && echo "$display"; } | fzf \
     --print-query \
-    --expect=ctrl-/ \
+    --expect=alt-enter \
     --height=80% \
     --reverse \
     --prompt="> " \
-    --header="Enter: attach | Ctrl-/: new session" \
+    --header="Enter: attach | Alt-Enter: new session" \
     --preview='zmx history {1} --vt' \
     --preview-window=right:60%:follow \
   )
@@ -213,7 +213,7 @@ zmx-select() {
   key=$(echo "$output" | sed -n '2p')
   selected=$(echo "$output" | sed -n '3p')
 
-  if [[ "$key" == "ctrl-/" && -n "$query" ]]; then
+  if [[ "$key" == "alt-enter" && -n "$query" ]]; then
     session_name="$query"
   elif [[ -n "$selected" ]]; then
     session_name=$(echo "$selected" | awk '{print $1}')
