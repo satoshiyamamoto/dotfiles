@@ -78,9 +78,9 @@ return {
         desc = "Breakpoint Log point message (Debug)",
       },
       {
-        "<Leader>du",
-        function() require("dapui").toggle() end,
-        desc = "Toggle Debugger UI (Debug)",
+        "<Leader>dv",
+        function() require("dap-view").toggle() end,
+        desc = "Toggle Debugger View (Debug)",
       },
     },
     config = function()
@@ -158,8 +158,7 @@ return {
       dap.configurations.java = vim.list_extend(dap.configurations.java or {}, java_configs)
 
       -- UIs
-      require("dapui").setup()
-      require("nvim-dap-virtual-text").setup()
+      require("dap-view").setup({ auto_toggle = true })
       vim.fn.sign_define("DapBreakpoint", { text = " ", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapBreakpointCondition", { text = " ", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapBreakpointRejected", { text = " ", texthl = "ErrorMsg" })
@@ -171,8 +170,7 @@ return {
       "mfussenegger/nvim-jdtls",
       "leoluz/nvim-dap-go",
       "nvim-neotest/nvim-nio",
-      "rcarriga/nvim-dap-ui",
-      "theHamsta/nvim-dap-virtual-text",
+      "igorlfs/nvim-dap-view",
       { "Joakker/lua-json5", build = "./install.sh" },
     },
   },
