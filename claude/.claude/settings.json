@@ -67,28 +67,6 @@
     ]
   },
   "hooks": {
-    "WorktreeCreate": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/hooks/worktree.sh",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
-    "WorktreeRemove": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash ~/.claude/hooks/worktree.sh",
-            "timeout": 15
-          }
-        ]
-      }
-    ],
     "PermissionRequest": [
       {
         "hooks": [
@@ -116,7 +94,8 @@
     "skill-creator@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "apple-notes@apple-notes-mcp": true
+    "apple-notes@apple-notes-mcp": true,
+    "worktrunk@worktrunk": true
   },
   "extraKnownMarketplaces": {
     "apple-notes-mcp": {
@@ -124,7 +103,17 @@
         "source": "github",
         "repo": "sweetrb/apple-notes-mcp"
       }
+    },
+    "worktrunk": {
+      "source": {
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
+      }
     }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "wt list statusline --format=claude-code"
   },
   "language": "japanese",
   "alwaysThinkingEnabled": true,

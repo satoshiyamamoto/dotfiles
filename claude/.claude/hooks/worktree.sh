@@ -1,13 +1,46 @@
 #!/bin/bash
+# Git worktree lifecycle hook for Claude Code.
+#
+# Register in ~/.claude/settings.json to enable:
+#
+#   "hooks": {
+#     "WorktreeCreate": [
+#       {
+#         "hooks": [
+#           {
+#             "type": "command",
+#             "command": "bash ~/.claude/hooks/worktree.sh",
+#             "timeout": 30
+#           }
+#         ]
+#       }
+#     ],
+#     "WorktreeRemove": [
+#       {
+#         "hooks": [
+#           {
+#             "type": "command",
+#             "command": "bash ~/.claude/hooks/worktree.sh",
+#             "timeout": 15
+#           }
+#         ]
+#       }
+#     ]
+#   }
+#
+# When the worktrunk Claude Code plugin is active, these entries are
+# unnecessary — the plugin routes WorktreeCreate/WorktreeRemove through
+# `wt switch --create` / `wt remove` instead.
 set -euo pipefail
 
 INPUT=$(cat)
 HOOK_EVENT=$(echo "$INPUT" | jq -r '.hook_event_name')
 BASE_REPO=$(echo "$INPUT" | jq -r '.base_repo_path // .cwd')
+WORKTREE_NAME=$(echo "$INPUT" | jq -r '.worktree_name // .name')
+WORKTREE_DIR="$BASE_REPO/.worktrees/$WORKTREE_NAME"
 
 worktree_create() {
-  local WORKTREE_NAME BRANCH
-  WORKTREE_NAME=$(echo "$INPUT" | jq -r '.worktree_name // .name')
+  local BRANCH
   BRANCH=$(echo "$INPUT" | jq -r '.branch // empty')
 
   if ! [[ "$WORKTREE_NAME" =~ ^[A-Za-z0-9_][A-Za-z0-9_/-]{0,127}$ ]] || [[ "$WORKTREE_NAME" =~ \.\. ]]; then
@@ -19,8 +52,6 @@ worktree_create() {
     echo "invalid branch: $BRANCH" >&2
     exit 1
   fi
-
-  local WORKTREE_DIR="$BASE_REPO/.worktrees/$WORKTREE_NAME"
 
   if [ -d "$WORKTREE_DIR" ]; then
     echo "$WORKTREE_DIR"
@@ -49,9 +80,8 @@ worktree_create() {
 }
 
 worktree_remove() {
-  local WORKTREE_PATH WORKTREE_NAME
+  local WORKTREE_PATH
   WORKTREE_PATH=$(echo "$INPUT" | jq -r '.worktree_path')
-  WORKTREE_NAME=$(echo "$INPUT" | jq -r '.worktree_name // .name')
 
   [ -d "$WORKTREE_PATH" ] || return 0
 
