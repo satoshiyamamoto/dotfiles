@@ -10,8 +10,13 @@ worktree_create() {
   WORKTREE_NAME=$(echo "$INPUT" | jq -r '.worktree_name // .name')
   BRANCH=$(echo "$INPUT" | jq -r '.branch // empty')
 
-  if ! [[ "$WORKTREE_NAME" =~ ^[A-Za-z0-9_/-]{1,128}$ ]] || [[ "$WORKTREE_NAME" =~ \.\. ]]; then
+  if ! [[ "$WORKTREE_NAME" =~ ^[A-Za-z0-9_][A-Za-z0-9_/-]{0,127}$ ]] || [[ "$WORKTREE_NAME" =~ \.\. ]]; then
     echo "invalid worktree name: $WORKTREE_NAME" >&2
+    exit 1
+  fi
+
+  if [ -n "$BRANCH" ] && (! [[ "$BRANCH" =~ ^[A-Za-z0-9_][A-Za-z0-9_/.-]{0,127}$ ]] || [[ "$BRANCH" =~ \.\. ]]); then
+    echo "invalid branch: $BRANCH" >&2
     exit 1
   fi
 
@@ -27,16 +32,16 @@ worktree_create() {
 
   if [ -n "$BRANCH" ]; then
     if git show-ref --verify --quiet "refs/heads/$BRANCH"; then
-      git worktree add "$WORKTREE_DIR" "$BRANCH" >&2
+      git worktree add -- "$WORKTREE_DIR" "$BRANCH" >&2
     else
-      git worktree add -b "$BRANCH" "$WORKTREE_DIR" HEAD >&2
+      git worktree add -b "$BRANCH" -- "$WORKTREE_DIR" HEAD >&2
     fi
   else
     local BRANCH_NAME="${WORKTREE_NAME//\//-}"
     if git show-ref --verify --quiet "refs/heads/$BRANCH_NAME"; then
-      git worktree add "$WORKTREE_DIR" "$BRANCH_NAME" >&2
+      git worktree add -- "$WORKTREE_DIR" "$BRANCH_NAME" >&2
     else
-      git worktree add -b "$BRANCH_NAME" "$WORKTREE_DIR" HEAD >&2
+      git worktree add -b "$BRANCH_NAME" -- "$WORKTREE_DIR" HEAD >&2
     fi
   fi
 
@@ -62,7 +67,7 @@ worktree_remove() {
 
   cd "$BASE_REPO" || return 0
   git worktree remove "$RESOLVED" --force 2>/dev/null || rm -rf "$RESOLVED"
-  git branch -D "${WORKTREE_NAME//\//-}" 2>/dev/null || true
+  git branch -D -- "${WORKTREE_NAME//\//-}" 2>/dev/null || true
 }
 
 case "$HOOK_EVENT" in
