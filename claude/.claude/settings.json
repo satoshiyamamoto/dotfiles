@@ -67,6 +67,28 @@
     ]
   },
   "hooks": {
+    "WorktreeCreate": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.name' | xargs -I{} wt switch --create {} --no-cd --format=json | jq -r '.path'",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "WorktreeRemove": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.worktree_path' | xargs wt remove --foreground",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
     "PermissionRequest": [
       {
         "hooks": [
@@ -77,6 +99,10 @@
         ]
       }
     ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "wt list statusline --format=claude-code"
   },
   "enabledPlugins": {
     "code-review@claude-plugins-official": true,
@@ -110,10 +136,6 @@
         "repo": "max-sixty/worktrunk"
       }
     }
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "wt list statusline --format=claude-code"
   },
   "language": "japanese",
   "alwaysThinkingEnabled": true,

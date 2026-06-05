@@ -79,8 +79,6 @@ tmux/.config/tmux/plugins/
 
 ### Claude Code ###
 claude/.claude/**
-!claude/.claude/hooks/
-!claude/.claude/hooks/**
 !claude/.claude/settings.json
 
 # MCPs
