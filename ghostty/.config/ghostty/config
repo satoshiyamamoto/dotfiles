@@ -1,6 +1,5 @@
 # Ghostty Configuration
 
-
 ## Options
 font-family = Operator Mono SSm Lig
 font-family = Symbols Nerd Font Mono
@@ -8,7 +7,6 @@ font-family = Hiragino Kaku Gothic ProN
 font-feature = -dlig
 font-size = 12
 font-codepoint-map = U+1FBF0-U+1FBF9=Noto Sans Symbols 2
-theme = light:TokyoNight,dark:TokyoNight
 title = " "
 adjust-cell-width = 0
 adjust-cell-height = 11
@@ -24,12 +22,12 @@ unfocused-split-opacity = 0.85
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
 
-
-## Keybindings
-keybind = ctrl+shift+j=ignore
-keybind = ctrl+shift+;=ignore
-
+## Theme
+config-file = ?auto/theme.ghostty
 
 ## Shaders
 custom-shader = shaders/ghostty-cursor-shaders/cursor_warp.glsl
 
+## Keybindings
+keybind = ctrl+shift+j=ignore
+keybind = ctrl+shift+;=ignore
