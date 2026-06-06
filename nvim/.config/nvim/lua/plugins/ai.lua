@@ -23,7 +23,17 @@ return {
     keys = {
       {
         "<c-.>",
-        function() require("sidekick.cli").focus() end,
+        function()
+          require("sidekick.cli").focus()
+          -- FIXME: workaround for Claude Code TUI one-line-up shift on focus
+          vim.defer_fn(function()
+            local buf = vim.api.nvim_get_current_buf()
+            local chan = vim.bo[buf].channel
+            if chan > 0 then
+              vim.api.nvim_chan_send(chan, "\x0c")
+            end
+          end, 100)
+        end,
         mode = { "n", "t", "i", "x" },
         desc = "Sidekick Focus",
       },
