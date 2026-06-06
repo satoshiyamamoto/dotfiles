@@ -77,11 +77,6 @@ return {
         function() require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: ")) end,
         desc = "Breakpoint Log point message (Debug)",
       },
-      {
-        "<Leader>dv",
-        function() require("dap-view").toggle() end,
-        desc = "Toggle Debugger View (Debug)",
-      },
     },
     config = function()
       local dap = require("dap")
@@ -158,7 +153,6 @@ return {
       dap.configurations.java = vim.list_extend(dap.configurations.java or {}, java_configs)
 
       -- UIs
-      require("dap-view").setup({ auto_toggle = true })
       vim.fn.sign_define("DapBreakpoint", { text = " ", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapBreakpointCondition", { text = " ", texthl = "ErrorMsg" })
       vim.fn.sign_define("DapBreakpointRejected", { text = " ", texthl = "ErrorMsg" })
@@ -170,8 +164,30 @@ return {
       "mfussenegger/nvim-jdtls",
       "leoluz/nvim-dap-go",
       "nvim-neotest/nvim-nio",
-      "igorlfs/nvim-dap-view",
       { "Joakker/lua-json5", build = "./install.sh" },
+    },
+  },
+
+  {
+    "igorlfs/nvim-dap-view",
+    event = "VeryLazy",
+    keys = {
+      { "<Leader>dv", function() require("dap-view").toggle() end, desc = "Toggle Debugger View (Debug)" },
+    },
+    opts = {
+      winbar = {
+        sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl", "console" },
+        default_section = "console",
+        controls = {
+          enabled = true,
+        },
+      },
+      windows = {
+        terminal = {
+          hide = true,
+        },
+      },
+      auto_toggle = true,
     },
   },
 
