@@ -34,7 +34,14 @@ return {
       vim.keymap.set("n", "]c", "<Cmd>Gitsigns next_hunk<CR>", {})
       vim.keymap.set("n", "[c", "<Cmd>Gitsigns prev_hunk<CR>", {})
     end,
-    config = function() require("gitsigns").setup() end,
+    opts = {
+      current_line_blame = true,
+      current_line_blame_opts = {
+        delay = 0,
+        virt_text_pos = "eol",
+      },
+      current_line_blame_formatter = " <author>, <author_time:%R> - <summary>",
+    },
   },
 
   {
