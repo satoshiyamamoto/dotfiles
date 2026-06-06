@@ -28,6 +28,7 @@ stow --verbose --adopt --target=$HOME \
   worktrunk \
   yamlfmt \
   yazi \
+  zed \
   zellij \
   zsh
 

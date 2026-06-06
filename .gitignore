@@ -83,3 +83,14 @@ claude/.claude/**
 
 # MCPs
 .playwright-mcp
+
+### Zed ###
+# Prompts Library database (local runtime data)
+zed/.config/zed/prompts/
+# Local conversation history
+zed/.config/zed/conversations/
+# Cached extensions
+zed/.config/zed/extensions/
+# Logs and crash reports
+zed/.config/zed/logs/
+zed/.config/zed/*.log
