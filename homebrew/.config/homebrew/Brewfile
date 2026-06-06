@@ -207,8 +207,6 @@ brew "pkgconf"
 brew "guile"
 # Kubernetes package manager
 brew "helm"
-# Language server for Helm
-brew "helm-ls"
 # HTTP load generator, ApacheBench (ab) replacement
 brew "hey"
 # Improved top (interactive process viewer)
