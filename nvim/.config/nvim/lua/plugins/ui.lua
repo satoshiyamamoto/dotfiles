@@ -10,7 +10,18 @@ return {
       image = {},
       indent = {},
       notifier = {},
-      picker = {},
+      picker = {
+        sources = {
+          explorer = {
+            layout = {
+              layout = {
+                position = "right",
+                width = 30,
+              },
+            },
+          },
+        },
+      },
       statuscolumn = {},
     },
     keys = {
@@ -291,6 +302,11 @@ return {
     opts = {
       options = {
         offsets = {
+          {
+            filetype = "sidekick_terminal",
+            text = "󱙺  Agent Panel",
+            separator = true,
+          },
           {
             filetype = "snacks_layout_box",
             text = "󰙅  File Explorer",

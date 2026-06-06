@@ -6,11 +6,6 @@ return {
     opts = {
       cli = {
         win = {
-          wo = {
-            -- Align top padding with dropbar.nvim winbar
-            winbar = " ",
-            winhighlight = "WinBar:Normal,WinBarNC:NormalNC",
-          },
           layout = "left",
           keys = {
             buffers = false,
