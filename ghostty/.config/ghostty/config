@@ -27,7 +27,3 @@ config-file = ?auto/theme.ghostty
 
 ## Shaders
 custom-shader = shaders/ghostty-cursor-shaders/cursor_warp.glsl
-
-## Keybindings
-keybind = ctrl+shift+j=ignore
-keybind = ctrl+shift+;=ignore
