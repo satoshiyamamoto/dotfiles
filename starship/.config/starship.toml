@@ -27,6 +27,7 @@ $kubernetes\
 $aws\
 $gcloud\
 ${custom.vpn}\
+$battery\
 [](fg:#a3aed2 bg:#394260)\
 $time\
 [▓▒░](#a3aed2)\
@@ -115,6 +116,14 @@ disabled = true
 symbol = "󱇶"
 style = "fg:#769ff0 bg:#394260"
 format = '[ $symbol $project ]($style)'
+
+[battery]
+format = "[$symbol[$percentage](fg:#e3e5e5 bg:#394260) ]($style)"
+
+[[battery.display]]
+threshold = 20
+style = "fg:red bg:#394260"
+discharging_symbol = "󰁺 "
 
 [time]
 disabled = false
