@@ -67,6 +67,9 @@ return {
       terminal = {
         provider = "none",
       },
+      diff_opts = {
+        layout = "horizontal", -- "vertical" or "horizontal"
+      },
     },
   },
 }
