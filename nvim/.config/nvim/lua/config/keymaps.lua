@@ -12,3 +12,7 @@ vim.keymap.set('n', '<Leader>u', '<Cmd>Undotree<CR>', { desc = 'Undotree' })
 vim.keymap.set("t", "<Esc>", "<C-Bslash><C-n>", {})
 vim.keymap.set("t", "<C-[>", "<C-Bslash><C-n>", {})
 vim.keymap.set("t", "<C-w>", "<C-Bslash><C-n><C-w>", {})
+
+-- IME
+vim.keymap.set("i", "<C-S-J>", "<Nop>", {})
+vim.keymap.set("i", "<C-S-;>", "<Nop>", {})

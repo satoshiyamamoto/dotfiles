@@ -185,6 +185,8 @@ smap <expr> <S-Tab>     vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '
 imap <expr> <Tab>       pumvisible() ? "\<C-n>" : "\<Tab>"
 imap <expr> <S-Tab>     pumvisible() ? "\<C-p>" : "\<S-Tab>"
 imap <expr> <CR>        pumvisible() ? "\<C-y>" : "\<CR>"
+inoremap <C-S-J>        <Nop>
+inoremap <C-S-;>        <Nop>
 
 " Themes
 set rtp+=~/.vim/plugged/tokyonight.nvim/extras/vim
