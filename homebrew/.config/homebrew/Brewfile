@@ -1,5 +1,3 @@
-tap "daipeihust/tap"
-tap "kavehtehrani/tap"
 tap "neurosnap/tap"
 # C++ Common Libraries
 brew "abseil"
@@ -415,10 +413,8 @@ brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 # ZSH plugin that reminds you to use existing aliases for commands you just typed
 brew "zsh-you-should-use"
-# Switch your input method through terminal
-brew "daipeihust/tap/im-select"
 # Session persistence for terminal processes
-brew "neurosnap/tap/zmx"
+brew "neurosnap/tap/zmx", trusted: true
 # Agent orchestration platform
 cask "antigravity"
 # Terminal interface for Antigravity agents
@@ -452,8 +448,6 @@ cask "google-gemini"
 cask "handbrake-app"
 # Java IDE by JetBrains
 cask "intellij-idea"
-# Keyboard customiser
-cask "karabiner-elements"
 # GPU-based terminal emulator
 cask "kitty"
 # Animated screen capture application
