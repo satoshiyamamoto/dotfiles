@@ -14,6 +14,7 @@ stow --verbose --adopt --target=$HOME \
   glow \
   homebrew \
   k9s \
+  karabiner \
   kitty \
   lazygit \
   mise \

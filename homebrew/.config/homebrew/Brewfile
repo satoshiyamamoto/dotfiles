@@ -107,6 +107,8 @@ brew "cryptography"
 brew "libnghttp2"
 # Multi-platform support library with a focus on asynchronous I/O
 brew "libuv"
+# Portable Foreign Function Interface library
+brew "libffi"
 # Open-source, cross-platform JavaScript runtime environment
 brew "node"
 # Reference implementation for the Development Containers specification
@@ -247,8 +249,6 @@ brew "lazygit"
 brew "lefthook"
 # Access DVDs as block devices without the decryption
 brew "libdvdcss"
-# Portable Foreign Function Interface library
-brew "libffi"
 # Provides library functionality for FIDO U2F & FIDO 2.0, including USB
 brew "libfido2"
 # Conversion library
@@ -452,6 +452,8 @@ cask "google-gemini"
 cask "handbrake-app"
 # Java IDE by JetBrains
 cask "intellij-idea"
+# Keyboard customiser
+cask "karabiner-elements"
 # GPU-based terminal emulator
 cask "kitty"
 # Animated screen capture application
