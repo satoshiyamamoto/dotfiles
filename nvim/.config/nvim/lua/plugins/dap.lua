@@ -161,11 +161,15 @@ return {
     end,
     dependencies = {
       "mfussenegger/nvim-dap-python",
-      "mfussenegger/nvim-jdtls",
       "leoluz/nvim-dap-go",
       "nvim-neotest/nvim-nio",
       { "Joakker/lua-json5", build = "./install.sh" },
     },
+  },
+
+  {
+    "mfussenegger/nvim-jdtls",
+    ft = "java",
   },
 
   {
@@ -225,6 +229,7 @@ return {
       require("neotest").setup({
         adapters = {
           require("neotest-golang"),
+          require("neotest-java")({}),
           require("neotest-python"),
         },
       })

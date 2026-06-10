@@ -33,6 +33,9 @@ return {
         "terraformls",
         "ts_ls",
       },
+      automatic_enable = {
+        exclude = { "jdtls" },
+      },
     },
     dependencies = {
       { "mason-org/mason.nvim", opts = {} },
