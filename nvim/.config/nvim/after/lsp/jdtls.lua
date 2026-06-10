@@ -46,10 +46,12 @@ return {
       data_dir = data_dir .. "/" .. vim.fn.fnamemodify(config.root_dir, ":p:h:t")
     end
 
+    local lombok_jar = vim.fn.stdpath("data") .. "/mason/packages/jdtls/lombok.jar"
     local config_cmd = {
       "jdtls",
       "-data",
       data_dir,
+      vim.fn.filereadable(lombok_jar) == 1 and ("--jvm-arg=-javaagent:" .. lombok_jar) or nil,
       get_jdtls_jvm_args(),
     }
 
