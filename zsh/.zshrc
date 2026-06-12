@@ -318,7 +318,7 @@ eval "$(starship init zsh)"
 __load_starship_config() {
   local width=$COLUMNS
 
-  if [[ $width -ge 80 ]]; then
+  if [[ $width -ge 100 ]]; then
     export STARSHIP_CONFIG=~/.config/starship.toml
   else
     export STARSHIP_CONFIG=~/.config/starship-minimal.toml
