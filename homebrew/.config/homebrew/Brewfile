@@ -239,6 +239,8 @@ brew "kcat"
 brew "krb5"
 # Kubernetes command-line interface
 brew "kubernetes-cli"
+# Kubectl plugin to browse Kubernetes object hierarchies as a tree
+brew "kubectl-tree"
 # Lazier way to manage everything docker
 brew "lazydocker"
 # Simple terminal UI for git commands
@@ -448,6 +450,8 @@ cask "google-gemini"
 cask "handbrake-app"
 # Java IDE by JetBrains
 cask "intellij-idea"
+# Keyboard customiser
+cask "karabiner-elements"
 # GPU-based terminal emulator
 cask "kitty"
 # Animated screen capture application
