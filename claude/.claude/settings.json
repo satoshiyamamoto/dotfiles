@@ -89,12 +89,13 @@
         ]
       }
     ],
-    "PermissionRequest": [
+    "Notification": [
       {
+        "matcher": "permission_prompt",
         "hooks": [
           {
             "type": "command",
-            "command": "tee /tmp/claude-permission.log | osascript -e 'display notification \"Claude Code needs your attention\" with title \"Claude Code\" sound name \"default\"'"
+            "command": "osascript -e 'display notification \"Claude Code needs your attention\" with title \"Claude Code\"'; afplay /System/Library/Sounds/Glass.aiff"
           }
         ]
       }
