@@ -11,6 +11,7 @@ $directory\
 $direnv\
 [](fg:#769ff0 bg:#394260)\
 $git_branch\
+${custom.git_worktree}\
 $git_status\
 [](fg:#394260 bg:#212736)\
 $jobs\
@@ -40,25 +41,22 @@ format = '[$hostname]($style)'
 trim_at = ".local"
 ssh_only = true
 
-[env_var.ZMX_SESSION]
-symbol = "⧖ "
-format = "[ $symbol$env_value ]($style)"
-description = "zmx session name"
-style = "bg:#a3aed2 fg:#090c0c"
-
 [directory]
 style = "fg:#e3e5e5 bg:#769ff0"
 format = "[ $path ]($style)"
 truncation_length = 3
 truncation_symbol = "…/"
-
-[directory.substitutions]
-"Desktop" = " "
-"Documents" = "󰲂 "
-"Downloads" = "󰉍 "
-"Music" = "󱍙 "
-"Pictures" = "󰉏 "
-"Projects" = "󱧼 "
+truncate_to_repo = false
+substitutions = [
+  { from = "^.*/src/[^/]+(?:/[^/]+)*/([^/]+)/\\.worktrees/[^/]+(/.*)?$", to = "…/$1$2", regex = true },
+  { from = "^.*/src/[^/]+/[^/]+/([^/]+)(/.*)?$", to = "…/$1$2", regex = true },
+  { from = "Desktop", to = " " },
+  { from = "Documents", to = "󰲂 " },
+  { from = "Downloads", to = "󰉍 " },
+  { from = "Music", to = "󱍙 " },
+  { from = "Pictures", to = "󰉏 " },
+  { from = "Projects", to = "󱧼 " },
+]
 
 [direnv]
 disabled = false
@@ -130,6 +128,21 @@ disabled = false
 time_format = "%T"
 style = "fg:#090c0c bg:#a3aed2"
 format = '[ $time  ]($style)'
+
+[env_var.ZMX_SESSION]
+symbol = "⧖ "
+format = "[ $symbol$env_value ]($style)"
+description = "zmx session name"
+style = "bg:#a3aed2 fg:#090c0c"
+
+[custom.git_worktree]
+description = "Show an icon when inside a linked git worktree"
+command = "printf ''"
+when = "test \"$(git rev-parse --path-format=absolute --git-dir 2>/dev/null)\" != \"$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null)\""
+require_repo = true
+symbol = "󰌹 "
+style = "fg:#769ff0 bg:#394260"
+format = '[$symbol ]($style)'
 
 [custom.vpn]
 disabled = true
