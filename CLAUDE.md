@@ -57,6 +57,23 @@ All plugins live under `lua/plugins/`, one file per category. Before adding a pl
 
 Add external nvim site paths via `performance.rtp.paths` in `lua/config/lazy.lua`, not `vim.opt.rtp:append()` (lazy.nvim overwrites the latter).
 
+### Investigating Plugins
+
+When investigating a Neovim plugin's behavior, API, or options, always consult the official source — the plugin's README/docs, `:help`, or the installed source under `~/.local/share/nvim/lazy/<plugin>` and the bundled runtime `~/.local/share/nvim/runtime` (or `$VIMRUNTIME`). Do not rely on assumptions or memory; verify against the actual code/docs for the installed version.
+
+### Verifying Changes
+
+Verify Neovim config changes on the real machine using headless mode, not by reasoning alone. Examples:
+
+```sh
+# Sync plugins and exit
+nvim --headless "+Lazy! sync" +qa
+
+# Inspect runtime state (e.g. resolved LSP client option)
+nvim --headless path/to/File.java "+sleep 3" \
+  "+lua print(vim.inspect((vim.lsp.get_clients()[1] or {}).exit_timeout))" +qa
+```
+
 ### Lua Formatting
 
 Formatter: **stylua** — config at `nvim/.config/nvim/.stylua.toml`
@@ -88,4 +105,4 @@ State the following and wait for confirmation:
 
 1. The minimal set of changes required (what and why)
 2. The specific files to be touched
-3. How to verify the change works (e.g., `:Lazy sync`, LSP restart, shell reload)
+3. How to verify the change works (for Neovim, confirm on the real machine in headless mode — see [Verifying Changes](#verifying-changes); otherwise `:Lazy sync`, LSP restart, shell reload)
