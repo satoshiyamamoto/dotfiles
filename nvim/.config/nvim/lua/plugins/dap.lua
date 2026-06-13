@@ -177,8 +177,22 @@ return {
     event = "VeryLazy",
     keys = {
       { "<Leader>dv", function() require("dap-view").toggle() end, desc = "Toggle Debugger View (Debug)" },
+      {
+        "<Leader>dh",
+        function() require("dap-view").hover() end,
+        mode = { "n", "v" },
+        desc = "Hover Variable (Debug)",
+      },
+      {
+        "<Leader>dV",
+        function() require("dap-view").virtual_text_toggle() end,
+        desc = "Toggle Virtual Text (Debug)",
+      },
     },
     opts = {
+      virtual_text = {
+        enabled = true,
+      },
       winbar = {
         sections = { "watches", "scopes", "exceptions", "breakpoints", "threads", "repl", "console" },
         default_section = "console",
