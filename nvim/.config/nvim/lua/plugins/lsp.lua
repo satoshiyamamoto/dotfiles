@@ -5,6 +5,7 @@ return {
     config = function()
       vim.lsp.config("*", {
         capabilities = require("blink.cmp").get_lsp_capabilities(),
+        exit_timeout = 1000,
       })
 
       -- vim.lsp.enable() is called automatically by mason-lspconfig

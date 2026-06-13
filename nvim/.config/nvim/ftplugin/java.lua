@@ -3,13 +3,9 @@ if not root_dir then
   return
 end
 
-local function jar_path(package)
-  return vim.fn.stdpath("data") .. "/mason/packages/" .. package .. "/extension/server/"
-end
+local function jar_path(package) return vim.fn.stdpath("data") .. "/mason/packages/" .. package .. "/extension/server/" end
 
-local function glob(pattern)
-  return vim.fn.glob(pattern, true, true)
-end
+local function glob(pattern) return vim.fn.glob(pattern, true, true) end
 
 local bundles = glob(jar_path("java-debug-adapter") .. "com.microsoft.java.debug.plugin-*.jar")
 
@@ -32,9 +28,7 @@ local function get_workspace_dir(root)
   return vim.fn.stdpath("cache") .. "/jdtls/workspace/" .. project_name .. "-" .. root_hash
 end
 
-local function is_lombok_agent_arg(arg)
-  return arg:match("^-javaagent:") and arg:match("lombok%.jar")
-end
+local function is_lombok_agent_arg(arg) return arg:match("^-javaagent:") and arg:match("lombok%.jar") end
 
 local function get_jvm_args()
   local args = {}
@@ -71,6 +65,7 @@ local config = {
   cmd = cmd,
   root_dir = root_dir,
   capabilities = capabilities,
+  exit_timeout = 1000,
   settings = {
     java = {
       signatureHelp = { enabled = true },
