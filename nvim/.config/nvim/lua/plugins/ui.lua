@@ -301,6 +301,7 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     opts = {
       options = {
+        numbers = function(opts) return opts.raise(opts.ordinal) end,
         offsets = {
           {
             filetype = "sidekick_terminal",
