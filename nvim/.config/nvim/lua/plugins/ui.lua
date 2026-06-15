@@ -28,6 +28,7 @@ return {
       -- Top Pickers & Explorer
       { "<leader><space>", function() Snacks.picker.smart() end, desc = "Smart Find Files" },
       { "<leader>,", function() Snacks.picker.buffers() end, desc = "Buffers" },
+      { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete buffer (keep layout)" },
       { "<leader>/", function() Snacks.picker.grep() end, desc = "Grep" },
       { "<leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
       { "<leader>n", function() Snacks.picker.notifications() end, desc = "Notification History" },
@@ -299,6 +300,20 @@ return {
     "akinsho/bufferline.nvim",
     version = "*",
     event = { "BufReadPost", "BufNewFile" },
+    keys = function()
+      local keys = {
+        { "<leader>bo", "<cmd>BufferLineCloseOthers<cr>", desc = "Close other buffers" },
+        { "<leader>bp", "<cmd>BufferLinePick<cr>", desc = "Pick buffer" },
+        { "<leader>0", "<cmd>BufferLineGoToBuffer -1<cr>", desc = "Go to last buffer" },
+      }
+      for i = 1, 9 do
+        table.insert(
+          keys,
+          { "<leader>" .. i, "<cmd>BufferLineGoToBuffer " .. i .. "<cr>", desc = "Go to buffer " .. i }
+        )
+      end
+      return keys
+    end,
     opts = {
       options = {
         numbers = function(opts) return opts.raise(opts.ordinal) end,
