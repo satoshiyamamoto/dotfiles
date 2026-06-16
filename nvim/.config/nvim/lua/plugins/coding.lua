@@ -83,10 +83,13 @@ return {
     opts = {
       filetypes = {
         "*",
+        "!dap-view",
+        "!dap-view-hover",
+        "!dap-view-term",
         "!help",
         "!lazy",
         "!noice",
-        "!trouble",
+        "!sidekick_terminal",
         "!snacks_dashboard",
         "!snacks_notif",
         "!snacks_notif_history",
@@ -94,6 +97,7 @@ return {
         "!snacks_picker_list",
         "!snacks_picker_preview",
         "!snacks_terminal",
+        "!trouble",
         css = { css = true, tailwind = true },
         html = { css = true, tailwind = true },
         javascriptreact = { tailwind = true },
