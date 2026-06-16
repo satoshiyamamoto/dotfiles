@@ -1,6 +1,5 @@
 {
   "permissions": {
-    "defaultMode": "auto",
     "allow": [
       "Bash(* --help *)",
       "Bash(* --version)",
@@ -109,7 +108,8 @@
       "Edit(~/Documents/**)",
       "Write(~/.claude/**)",
       "Write(~/Documents/**)"
-    ]
+    ],
+    "defaultMode": "auto"
   },
   "model": "opus[1m]",
   "hooks": {
@@ -186,5 +186,6 @@
   },
   "language": "japanese",
   "alwaysThinkingEnabled": true,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "skipWorkflowUsageWarning": true
 }
