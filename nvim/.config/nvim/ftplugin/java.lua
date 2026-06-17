@@ -7,19 +7,24 @@ local function jar_path(package) return vim.fn.stdpath("data") .. "/mason/packag
 
 local function glob(pattern) return vim.fn.glob(pattern, true, true) end
 
-local bundles = glob(jar_path("java-debug-adapter") .. "com.microsoft.java.debug.plugin-*.jar")
+local bundles = (function()
+  local bundles = glob(jar_path("java-debug-adapter") .. "com.microsoft.java.debug.plugin-*.jar")
 
-local excluded_test_bundles = {
-  ["com.microsoft.java.test.runner-jar-with-dependencies.jar"] = true,
-  ["jacocoagent.jar"] = true,
-}
+  -- vscode-java-test configuration
+  local excluded_test_bundles = {
+    ["com.microsoft.java.test.runner-jar-with-dependencies.jar"] = true,
+    ["jacocoagent.jar"] = true,
+  }
 
-for _, java_test_jar in ipairs(glob(jar_path("java-test") .. "*.jar")) do
-  local fname = vim.fn.fnamemodify(java_test_jar, ":t")
-  if not excluded_test_bundles[fname] then
-    table.insert(bundles, java_test_jar)
+  for _, java_test_jar in ipairs(glob(jar_path("java-test") .. "*.jar")) do
+    local fname = vim.fn.fnamemodify(java_test_jar, ":t")
+    if not excluded_test_bundles[fname] then
+      table.insert(bundles, java_test_jar)
+    end
   end
-end
+
+  return bundles
+end)()
 
 local function get_workspace_dir(root)
   local normalized_root = vim.fs.normalize(root)
@@ -28,10 +33,10 @@ local function get_workspace_dir(root)
   return vim.fn.stdpath("cache") .. "/jdtls/workspace/" .. project_name .. "-" .. root_hash
 end
 
-local function is_lombok_agent_arg(arg) return arg:match("^-javaagent:") and arg:match("lombok%.jar") end
-
 local function get_jvm_args()
   local args = {}
+
+  local function is_lombok_agent_arg(arg) return arg:match("^-javaagent:") and arg:match("lombok%.jar") end
 
   for arg in string.gmatch(os.getenv("JDTLS_JVM_ARGS") or "", "%S+") do
     if not is_lombok_agent_arg(arg) then
@@ -66,6 +71,9 @@ local config = {
   root_dir = root_dir,
   capabilities = capabilities,
   exit_timeout = 1000,
+  handlers = {
+    ["language/status"] = function() end,
+  },
   settings = {
     java = {
       signatureHelp = { enabled = true },

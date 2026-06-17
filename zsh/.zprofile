@@ -72,4 +72,4 @@ export STARSHIP_CONFIG=~/.config/starship.toml
 ## Java
 export JAVA_TOOL_OPTIONS='-Djava.net.preferIPv4Stack=true'
 export MAVEN_ARGS='-Dstyle.color=always -Dsurefire.failIfNoSpecifiedTests=false'
-export JDTLS_JVM_ARGS="-Xmx4G -Xlog:disable -javaagent:$HOME/.local/share/nvim/mason/packages/jdtls/lombok.jar"
+export JDTLS_JVM_ARGS="-Xmx4G -Xlog:disable"
