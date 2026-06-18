@@ -5,3 +5,12 @@ command = "CLAUDECODE= MAX_THINKING_TOKENS=0 claude -p --no-session-persistence 
 
 [post-start]
 copy-env = "cp {{ primary_worktree_path }}/.env* {{ worktree_path }}/ 2>/dev/null || true"
+
+[post-remove]
+merge-claude-sessions = """
+worktree=$HOME/.claude/projects/$(printf %s {{ worktree_path }} | sed 's/[^a-zA-Z0-9]/-/g')
+primary=$HOME/.claude/projects/$(printf %s {{ primary_worktree_path }} | sed 's/[^a-zA-Z0-9]/-/g')
+[ -d "$worktree" ] && [ "$worktree" != "$primary" ] || exit 0
+mkdir -p "$primary"
+find "$worktree" -maxdepth 1 -name '*.jsonl' -exec cp -n {} "$primary/" \\;
+"""
