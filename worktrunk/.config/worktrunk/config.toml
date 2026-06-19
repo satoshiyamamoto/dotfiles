@@ -4,7 +4,10 @@ worktree-path = "{{ repo_path }}/.worktrees/{{ branch | sanitize }}"
 command = "CLAUDECODE= MAX_THINKING_TOKENS=0 claude -p --no-session-persistence --model haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt='' 'Generate ONLY a one-line Git commit message following Conventional Commits format (type(scope): description). Types: feat, fix, docs, style, refactor, test, chore. Based strictly on the diff from stdin. Output ONLY the message, nothing else.'"
 
 [post-start]
-copy-env = "cp {{ primary_worktree_path }}/.env* {{ worktree_path }}/ 2>/dev/null || true"
+copy-env = """
+cp {{ primary_worktree_path }}/.env* {{ worktree_path }}/ 2>/dev/null || true
+[ -f {{ worktree_path }}/.envrc ] && direnv allow {{ worktree_path }} || true
+"""
 
 [post-remove]
 merge-claude-sessions = """
