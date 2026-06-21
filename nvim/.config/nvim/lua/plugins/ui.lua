@@ -1,3 +1,19 @@
+local sidekick_cli_sessions = {}
+
+local function sidekick_cli_status()
+  local count = vim.tbl_count(sidekick_cli_sessions)
+  if count == 0 then
+    return ""
+  end
+  return "󱙺 " .. (count > 1 and count or "")
+end
+
+local function refresh_lualine_status()
+  if package.loaded.lualine then
+    require("lualine").refresh({ place = { "statusline" } })
+  end
+end
+
 return {
   -- Snacks
   {
@@ -242,6 +258,19 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     event = { "VeryLazy" },
+    init = function()
+      vim.api.nvim_create_autocmd("User", {
+        group = vim.api.nvim_create_augroup("dotfiles_sidekick_cli_lualine_status", { clear = true }),
+        pattern = { "SidekickCliAttach", "SidekickCliDetach" },
+        callback = function(event)
+          local id = event.data and event.data.id
+          if id then
+            sidekick_cli_sessions[id] = event.match == "SidekickCliAttach" and true or nil
+          end
+          vim.schedule(refresh_lualine_status)
+        end,
+      })
+    end,
     opts = {
       options = {
         theme = "auto",
@@ -267,6 +296,10 @@ return {
             color = { fg = "#ff9e64" },
           },
           {
+            sidekick_cli_status,
+            color = function() return "Special" end,
+          },
+          {
             function()
               local env = vim.bo.filetype == "http" and vim.b._rest_nvim_env_file or ""
               return vim.fn.fnamemodify(env, ":t")
@@ -283,6 +316,15 @@ return {
             "datetime",
             style = "%-I:%M %p",
           },
+        },
+      },
+      inactive_sections = {
+        lualine_x = {
+          {
+            sidekick_cli_status,
+            color = function() return "Special" end,
+          },
+          "location",
         },
       },
     },
