@@ -186,6 +186,6 @@
   },
   "language": "japanese",
   "alwaysThinkingEnabled": true,
-  "voiceEnabled": true,
-  "skipWorkflowUsageWarning": true
+  "skipWorkflowUsageWarning": true,
+  "voiceEnabled": true
 }
