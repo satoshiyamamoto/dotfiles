@@ -3,6 +3,7 @@ stow --verbose --adopt --target=$HOME \
   alacritty \
   bat \
   claude \
+  codex \
   editorconfig \
   eza \
   fd \

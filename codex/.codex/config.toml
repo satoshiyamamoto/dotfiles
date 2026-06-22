@@ -1,0 +1,123 @@
+model = "gpt-5.5"
+model_reasoning_effort = "xhigh"
+personality = "pragmatic"
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+web_search = "cached"
+project_doc_max_bytes = 32768
+notify = ["/Users/a12019/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
+
+[history]
+persistence = "save-all"
+
+[features]
+hooks = true
+js_repl = false
+memories = false
+
+[tui]
+notifications = true
+notification_method = "auto"
+notification_condition = "unfocused"
+
+[tui.model_availability_nux]
+"gpt-5.5" = 1
+
+[[hooks.PermissionRequest]]
+matcher = "*"
+
+[[hooks.PermissionRequest.hooks]]
+type = "command"
+command = '/usr/bin/osascript -e "display notification \"Codex needs your attention\" with title \"Codex\"" && /usr/bin/afplay /System/Library/Sounds/Ping.aiff'
+timeout = 5
+statusMessage = "Sending approval notification"
+
+[hooks.state]
+
+[hooks.state."/Users/a12019/.codex/config.toml:permission_request:0:0"]
+trusted_hash = "sha256:5ea7ef2083d9b265706e73f30def1eb8c4e14d2ab6f055d0913afc5e4bd27b31"
+enabled = true
+
+[[skills.config]]
+path = "/Users/a12019/.agents/skills/find-skills/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.agents/skills/grill-me/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.agents/skills/grill-with-docs/SKILL.md"
+enabled = false
+
+[projects."/Users/a12019"]
+trust_level = "untrusted"
+
+[projects."/Users/a12019/Projects/src/github.com/ca-orion/orion-platform"]
+trust_level = "untrusted"
+
+[projects."/Users/a12019/Projects/src/github.com/satoshiyamamoto/riakuto"]
+trust_level = "trusted"
+
+[projects."/Users/a12019/Projects/src/github.com/satoshiyamamoto/dotfiles"]
+trust_level = "trusted"
+
+[projects."/Users/a12019/Projects/src/github.com/ca-orion/orion-filter"]
+trust_level = "trusted"
+
+[projects."/Users/a12019/Projects/src/github.com/ca-orion/orion-classic"]
+trust_level = "trusted"
+
+[plugins."github@openai-curated"]
+enabled = true
+
+[plugins."google-drive@openai-curated"]
+enabled = true
+
+[plugins."browser@openai-bundled"]
+enabled = true
+
+[plugins."sites@openai-bundled"]
+enabled = true
+
+[plugins."documents@openai-primary-runtime"]
+enabled = true
+
+[plugins."spreadsheets@openai-primary-runtime"]
+enabled = true
+
+[plugins."presentations@openai-primary-runtime"]
+enabled = true
+
+[marketplaces.openai-bundled]
+last_updated = "2026-06-18T02:55:31Z"
+source_type = "local"
+source = "/Users/a12019/.codex/.tmp/bundled-marketplaces/openai-bundled"
+
+[marketplaces.openai-primary-runtime]
+last_updated = "2026-06-12T22:38:25Z"
+source_type = "local"
+source = "/Users/a12019/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[mcp_servers.node_repl]
+args = []
+command = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node_repl"
+startup_timeout_sec = 120
+
+[mcp_servers.node_repl.env]
+NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
+NODE_REPL_NODE_MODULE_DIRS = "/Applications/Codex.app/Contents/Resources/cua_node/lib/node_modules"
+NODE_REPL_NODE_PATH = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/a12019/.codex"
+CODEX_HOME = "/Users/a12019/.codex"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "eb55d24cf065cd5311af6f99b16bade2b7a670790ff2db9accf60d012dd55dd1"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
+BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
+BROWSER_USE_CODEX_APP_VERSION = "26.611.62324"
+CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
+
+[desktop]
+conversationDetailMode = "STEPS_COMMANDS"
+ambient-suggestions-enabled = true
