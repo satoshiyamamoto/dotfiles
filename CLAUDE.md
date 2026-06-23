@@ -46,6 +46,13 @@ All plugins live under `lua/plugins/`, one file per category. Before adding a pl
 - Per-server settings: `lsp/<server>.lua` (loaded automatically by nvim-lspconfig)
 - Override/extend: `after/lsp/<server>.lua`
 
+### Filetype-specific Settings
+
+Settings that apply only to a specific filetype (options, keymaps, highlights) go in `ftplugin/<filetype>.lua`, not in `init.lua` or autocmds.
+
+- Set buffer-locally: `vim.opt_local` for options, `{ buffer = true }` for keymaps. Never use global `vim.opt` here, as it leaks into other filetypes.
+- Example: markdown-specific settings → `ftplugin/markdown.lua`
+
 ### Adding a Plugin
 
 1. Identify the correct category file from the table above.

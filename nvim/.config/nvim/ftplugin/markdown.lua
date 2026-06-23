@@ -1,5 +1,9 @@
 vim.b.snacks_indent = false
 
+-- 行番号を非表示
+vim.opt_local.number = false
+vim.opt_local.relativenumber = false
+
 -- Treesitter highlights (Glow glamour dark.json colors)
 -- https://github.com/charmbracelet/glamour/blob/master/styles/dark.json
 
