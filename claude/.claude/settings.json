@@ -184,8 +184,9 @@
       }
     }
   },
-  "language": "japanese",
   "alwaysThinkingEnabled": true,
+  "language": "japanese",
   "skipWorkflowUsageWarning": true,
+  "tui": "default",
   "voiceEnabled": true
 }
