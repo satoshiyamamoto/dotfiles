@@ -67,6 +67,111 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:rainbow_active = 1
 let g:rainbow_conf = { 'separately': { 'nerdtree': 0 } }
+
+""
+" Strips the auto-inserted closing pair character from a candidate's word.
+function! s:AsyncompleteStripPairCharacters(base, item) abort
+  let l:item = a:item
+  let l:pair = { '"': '"', '''': '''' }
+  if !empty(a:base) && has_key(l:pair, a:base[0])
+    let [l:lhs, l:rhs, l:str] =
+    \   [a:base[0], l:pair[a:base[0]], get(l:item, 'word', '')]
+    if len(l:str) > 1 && l:str[0] ==# l:lhs && l:str[-1:] ==# l:rhs
+      let l:item = extend({}, l:item)
+      let l:item['word'] = l:str[:-2]
+    endif
+  endif
+  return l:item
+endfunction
+
+""
+" Turns a pyright function completion into a "name($0)" snippet to insert ().
+function! s:PyrightFunctionCallSnippet(source_name, item) abort
+  if a:source_name !=# 'asyncomplete_lsp_pyright-langserver'
+    return a:item
+  endif
+  if index(['function', 'method', 'constructor'], get(a:item, 'kind', '')) < 0
+    return a:item
+  endif
+  let l:word = get(a:item, 'word', '')
+  if empty(l:word) || l:word =~# '[()]$'
+    return a:item
+  endif
+
+  let l:item = extend({}, a:item)
+  let l:managed = lsp#omni#get_managed_user_data_from_completed_item(a:item)
+  let l:completion_item =
+  \   copy(get(l:managed, 'completion_item', { 'label': l:word }))
+  let l:snippet = l:word . '($0)'
+
+  if has_key(l:completion_item, 'textEdit')
+  \   && type(l:completion_item['textEdit']) == type({})
+    let l:completion_item['textEdit'] = copy(l:completion_item['textEdit'])
+    let l:completion_item['textEdit']['newText'] = l:snippet
+  else
+    let l:completion_item['insertText'] = l:snippet
+  endif
+  let l:completion_item['insertTextFormat'] = 2
+
+  let l:item['abbr'] = get(l:item, 'abbr', l:word) . '()'
+  let l:item['user_data'] =
+  \   json_encode({ 'lsp': { 'completion_item': l:completion_item } })
+  return l:item
+endfunction
+
+""
+" Applies pair-stripping then the pyright () snippet transform to a candidate.
+function! s:ProcessItem(source_name, base, item) abort
+  return s:PyrightFunctionCallSnippet(
+  \   a:source_name, s:AsyncompleteStripPairCharacters(a:base, a:item))
+endfunction
+
+""
+" Default asyncomplete preprocessor plus the pyright () snippet transform.
+function! s:AsyncompletePreprocessor(options, matches) abort
+  let l:items = []
+  let l:startcols = []
+  for [l:source_name, l:matches] in items(a:matches)
+    let l:startcol = l:matches['startcol']
+    let l:base = a:options['typed'][l:startcol - 1:]
+    let l:source = asyncomplete#get_source_info(l:source_name)
+
+    if has_key(l:source, 'filter')
+      let l:result = l:source.filter(l:matches, l:startcol, l:base)
+      for l:item in l:result[0]
+        call add(l:items, s:PyrightFunctionCallSnippet(l:source_name, l:item))
+      endfor
+      let l:startcols += l:result[1]
+    elseif empty(l:base)
+      for l:item in l:matches['items']
+        call add(l:items, s:ProcessItem(l:source_name, l:base, l:item))
+        let l:startcols += [l:startcol]
+      endfor
+    elseif exists('*matchfuzzypos')
+    \   && get(g:, 'asyncomplete_matchfuzzy', exists('*matchfuzzypos'))
+      for l:item in
+      \   matchfuzzypos(l:matches['items'], l:base, { 'key': 'word' })[0]
+        call add(l:items, s:ProcessItem(l:source_name, l:base, l:item))
+        let l:startcols += [l:startcol]
+      endfor
+    else
+      for l:item in l:matches['items']
+        if stridx(l:item['word'], l:base) == 0
+          call add(l:items, s:ProcessItem(l:source_name, l:base, l:item))
+          let l:startcols += [l:startcol]
+        endif
+      endfor
+    endif
+  endfor
+
+  if !empty(l:startcols)
+    let a:options['startcol'] = min(l:startcols)
+  endif
+  call asyncomplete#preprocess_complete(a:options, l:items)
+endfunction
+let g:asyncomplete_preprocessor = [function('s:AsyncompletePreprocessor')]
+
+let g:lsp_settings_filetype_python = 'pyright-langserver'
 let g:lsp_settings = {
 \   'gopls': {
 \     'capabilities': {
@@ -76,17 +181,20 @@ let g:lsp_settings = {
 \       },
 \     },
 \   },
-\   'pylsp': {
-\     'workspace_config': {
-\       'pylsp': { 'plugins': { 'jedi_completion': { 'include_params': v:true } } },
-\     },
+\   'pyright-langserver': {
+\     'cmd':
+\       [expand('~/.local/share/nvim/mason/bin/pyright-langserver'), '--stdio'],
 \   },
 \   'rust-analyzer': {
 \     'cmd': [expand('~/.local/share/nvim/mason/bin/rust-analyzer')],
 \   },
 \   'typescript-language-server': {
-\     'cmd': [expand('~/.local/share/nvim/mason/bin/typescript-language-server'), '--stdio'],
-\     'workspace_config': { 'completions': { 'completeFunctionCalls': v:true } },
+\     'cmd': [
+\       expand('~/.local/share/nvim/mason/bin/typescript-language-server'),
+\       '--stdio',
+\     ],
+\     'workspace_config':
+\       { 'completions': { 'completeFunctionCalls': v:true } },
 \   },
 \ }
 let g:terminal_ansi_colors = [
