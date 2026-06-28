@@ -331,7 +331,7 @@ augroup terminal_settings
   autocmd TerminalWinOpen * setlocal nonumber norelativenumber
 augroup END
 
-function! s:TransparentHighlights() abort
+function! s:OverrideHighlights() abort
   highlight Normal       ctermbg=NONE guibg=NONE
   highlight SignColumn   ctermbg=NONE guibg=NONE
   highlight LineNr       ctermbg=NONE guibg=NONE
@@ -340,11 +340,12 @@ function! s:TransparentHighlights() abort
   highlight Pmenu        ctermbg=NONE guibg=NONE
   highlight PmenuSbar    ctermbg=NONE guibg=NONE
   highlight PmenuThumb   ctermbg=NONE guibg=NONE
+  highlight CursorLine   term=NONE cterm=NONE gui=NONE
 endfunction
 
-augroup transparency
+augroup highlight_overrides
   autocmd!
-  autocmd ColorScheme * call s:TransparentHighlights()
+  autocmd ColorScheme * call s:OverrideHighlights()
 augroup END
 
 set rtp+=~/.vim/plugged/tokyonight.nvim/extras/vim
