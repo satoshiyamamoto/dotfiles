@@ -31,6 +31,8 @@ nnoremap <C-L>              <C-W>l
 tnoremap <Esc>              <C-W>N
 tnoremap <C-[>              <C-W>N
 nnoremap <silent><C-/>      :bo terminal ++close ++rows=12<CR>
+" Ctrl+/ arrives as ^_ (<C-_>) over SSH/legacy terminals
+nmap     <C-_>              <C-/>
 "" Buffers
 nnoremap <silent><Esc>      :noh<CR>
 nnoremap <silent><C-[>      :noh<CR>
