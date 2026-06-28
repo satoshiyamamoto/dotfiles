@@ -59,20 +59,42 @@ smap <expr><C-L> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-L>'
 inoremap <C-S-J>            <Nop>
 inoremap <C-S-;>            <Nop>
 
-let g:terminal_ansi_colors = [
-    \ '#15161e', '#f7768e', '#9ece6a', '#e0af68',
-    \ '#7aa2f7', '#bb9af7', '#7dcfff', '#a9b1d6',
-    \ '#414868', '#f7768e', '#9ece6a', '#e0af68',
-    \ '#7aa2f7', '#bb9af7', '#7dcfff', '#c0caf5',
-    \ ]
+let g:EasyMotion_do_mapping = 0
+let g:NERDTreeCascadeOpenSingleChildDir = 1
 let g:airline_theme='tokyonight_night'
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:rainbow_active = 1
 let g:rainbow_conf = { 'separately': { 'nerdtree': 0 } }
-let g:EasyMotion_do_mapping = 0
-let g:NERDTreeCascadeOpenSingleChildDir = 1
+let g:lsp_settings = {
+\   'gopls': {
+\     'capabilities': {
+\       'textDocument': {
+\         'documentSymbol': { 'hierarchicalDocumentSymbolSupport': v:true },
+\         'completion': { 'completionItem': { 'snippetSupport': v:true } },
+\       },
+\     },
+\   },
+\   'pylsp': {
+\     'workspace_config': {
+\       'pylsp': { 'plugins': { 'jedi_completion': { 'include_params': v:true } } },
+\     },
+\   },
+\   'rust-analyzer': {
+\     'cmd': [expand('~/.local/share/nvim/mason/bin/rust-analyzer')],
+\   },
+\   'typescript-language-server': {
+\     'cmd': [expand('~/.local/share/nvim/mason/bin/typescript-language-server'), '--stdio'],
+\     'workspace_config': { 'completions': { 'completeFunctionCalls': v:true } },
+\   },
+\ }
+let g:terminal_ansi_colors = [
+    \ '#15161e', '#f7768e', '#9ece6a', '#e0af68',
+    \ '#7aa2f7', '#bb9af7', '#7dcfff', '#a9b1d6',
+    \ '#414868', '#f7768e', '#9ece6a', '#e0af68',
+    \ '#7aa2f7', '#bb9af7', '#7dcfff', '#c0caf5',
+    \ ]
 
 " Plugins
 " Install vim-plug if not found
