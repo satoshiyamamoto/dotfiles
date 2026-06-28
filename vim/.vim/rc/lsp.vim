@@ -1,0 +1,52 @@
+" Language server (vim-lsp + mattn/vim-lsp-settings)
+let g:lsp_settings_filetype_python = 'pyright-langserver'
+let g:lsp_settings = {
+\   'gopls': {
+\     'capabilities': {
+\       'textDocument': {
+\         'documentSymbol': { 'hierarchicalDocumentSymbolSupport': v:true },
+\         'completion': { 'completionItem': { 'snippetSupport': v:true } },
+\       },
+\     },
+\   },
+\   'pyright-langserver': {
+\     'cmd':
+\       [expand('~/.local/share/nvim/mason/bin/pyright-langserver'), '--stdio'],
+\   },
+\   'rust-analyzer': {
+\     'cmd': [expand('~/.local/share/nvim/mason/bin/rust-analyzer')],
+\   },
+\   'typescript-language-server': {
+\     'cmd': [
+\       expand('~/.local/share/nvim/mason/bin/typescript-language-server'),
+\       '--stdio',
+\     ],
+\     'workspace_config':
+\       { 'completions': { 'completeFunctionCalls': v:true } },
+\   },
+\ }
+
+function! s:OnLspBufferEnabled() abort
+  setlocal omnifunc=lsp#complete
+  setlocal signcolumn=yes
+  if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+  nmap <buffer> gO <Plug>(lsp-document-symbol-search)
+  nmap <buffer> grr <Plug>(lsp-references)
+  nmap <buffer> gri <Plug>(lsp-implementation)
+  nmap <buffer> grn <Plug>(lsp-rename)
+  nmap <buffer> gra <Plug>(lsp-code-action)
+  nmap <buffer> [d <Plug>(lsp-previous-diagnostic)
+  nmap <buffer> ]d <Plug>(lsp-next-diagnostic)
+  nmap <buffer> K <Plug>(lsp-hover)
+  nmap <buffer> <Leader>f <Plug>(lsp-document-format)
+  inoremap <buffer> <expr><C-F> lsp#scroll(+4)
+  inoremap <buffer> <expr><C-D> lsp#scroll(-4)
+
+  " let g:lsp_format_sync_timeout = 1000
+  " autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+endfunction
+
+augroup lsp_install
+  autocmd!
+  autocmd User lsp_buffer_enabled call s:OnLspBufferEnabled()
+augroup END
