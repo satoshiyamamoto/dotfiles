@@ -144,36 +144,36 @@ function! s:OnLspBufferEnabled() abort
 endfunction
 
 augroup lsp_install
-  au!
+  autocmd!
   autocmd User lsp_buffer_enabled call s:OnLspBufferEnabled()
 augroup END
 
-au User asyncomplete_setup call asyncomplete#register_source(
-    \ asyncomplete#sources#buffer#get_source_options({
-    \   'name': 'buffer',
-    \   'allowlist': ['*'],
-    \   'priority': 15,
-    \   'completor': function('asyncomplete#sources#buffer#completor'),
-    \   'config': { 'max_buffer_size': 1000000 },
-    \ }))
-
-au User asyncomplete_setup call asyncomplete#register_source(
-    \ asyncomplete#sources#file#get_source_options({
-    \   'name': 'file',
-    \   'allowlist': ['*'],
-    \   'priority': 10,
-    \   'completor': function('asyncomplete#sources#file#completor'),
-    \ }))
+augroup asyncomplete_sources
+  autocmd!
+  autocmd User asyncomplete_setup call asyncomplete#register_source(
+      \ asyncomplete#sources#buffer#get_source_options({
+      \   'name': 'buffer',
+      \   'allowlist': ['*'],
+      \   'priority': 15,
+      \   'completor': function('asyncomplete#sources#buffer#completor'),
+      \   'config': { 'max_buffer_size': 1000000 },
+      \ }))
+  autocmd User asyncomplete_setup call asyncomplete#register_source(
+      \ asyncomplete#sources#file#get_source_options({
+      \   'name': 'file',
+      \   'allowlist': ['*'],
+      \   'priority': 10,
+      \   'completor': function('asyncomplete#sources#file#completor'),
+      \ }))
+augroup END
 
 augroup filetype_settings
+  autocmd!
   autocmd FileType tf set filetype=terraform
 augroup END
 
-augroup terminal_settings
-  autocmd TerminalWinOpen * setlocal nonumber norelativenumber
-augroup END
-
 augroup autoformat_settings
+  autocmd!
   autocmd FileType bzl AutoFormatBuffer buildifier
   autocmd FileType c,cpp,proto,arduino AutoFormatBuffer clang-format
   autocmd FileType dart AutoFormatBuffer dartfmt
@@ -183,6 +183,11 @@ augroup autoformat_settings
   autocmd FileType java AutoFormatBuffer google-java-format
   autocmd FileType python AutoFormatBuffer black
   autocmd FileType rust AutoFormatBuffer rustfmt
+augroup END
+
+augroup terminal_settings
+  autocmd!
+  autocmd TerminalWinOpen * setlocal nonumber norelativenumber
 augroup END
 
 function! s:TransparentHighlights() abort
