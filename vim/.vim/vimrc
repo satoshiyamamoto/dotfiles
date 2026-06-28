@@ -337,6 +337,9 @@ function! s:TransparentHighlights() abort
   highlight LineNr       ctermbg=NONE guibg=NONE
   highlight CursorLineNr ctermbg=NONE guibg=NONE
   highlight FoldColumn   ctermbg=NONE guibg=NONE
+  highlight Pmenu        ctermbg=NONE guibg=NONE
+  highlight PmenuSbar    ctermbg=NONE guibg=NONE
+  highlight PmenuThumb   ctermbg=NONE guibg=NONE
 endfunction
 
 augroup transparency
