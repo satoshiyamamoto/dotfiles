@@ -1,26 +1,60 @@
 set mouse=a
 set number
 set relativenumber
-set colorcolumn=+1
 set splitbelow
 set splitright
 set incsearch
 set hlsearch
 set confirm
-set ttimeoutlen=50
 set updatetime=100
+set timeoutlen=300
+set ttimeoutlen=10
 set nocompatible
-set grepprg=grep\ -rnH\ --exclude-dir=.git
-set grepformat=%f:%l:%m
+set grepprg=rg\ --vimgrep\ --hidden\ --glob\ '!.git'
+set grepformat=%f:%l:%c:%m
+set termguicolors
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+set t_ut=
+set t_RB=
 
 if !1 | finish | endif
 let mapleader = ' '
 
-set termguicolors
-set t_ut=
-set t_RB=
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+" Mappings
+"" Windows
+nnoremap <C-J>              <C-W>j
+nnoremap <C-K>              <C-W>k
+nnoremap <C-H>              <C-W>h
+nnoremap <C-L>              <C-W>l
+tnoremap <Esc>              <C-W>N
+tnoremap <C-[>              <C-W>N
+nnoremap <silent><C-/>      :bo terminal ++close ++rows=12<CR>
+"" Buffers
+nnoremap <silent><Esc>      :noh<CR>
+nnoremap <silent><C-[>      :noh<CR>
+nnoremap <silent><Leader>bd :bprevious<Bar>bdelete #<CR>
+nnoremap <silent><Leader>bo :%bdelete<Bar>edit #<Bar>bdelete #<CR>
+nnoremap <silent>[c         <Plug>(GitGutterPrevHunk)<CR>
+nnoremap <silent>]c         <Plug>(GitGutterNextHunk)<CR>
+nmap     <silent>s          <Plug>(easymotion-s2)
+nmap     <silent>S          <Plug>(easymotion-bd-w)
+"" Pickers
+nnoremap <silent><C-P>      :Files<CR>
+nmap     <Leader><Leader>   <C-P>
+nnoremap <silent><Leader>/  :Rg<CR>
+nnoremap <silent><Leader>,  :Buffers<CR>
+nnoremap <silent><Leader>e  :NERDTreeToggle<CR>
+nnoremap <silent><Leader>r  :NERDTreeRefreshRoot<CR>
+nnoremap <silent><Leader>n  :NERDTreeFind<CR>
+"" Completions
+imap     <expr> <C-J>       vsnip#expandable() ? '<Plug>(vsnip-expand)'         : '<C-J>'
+smap     <expr> <C-J>       vsnip#expandable() ? '<Plug>(vsnip-expand)'         : '<C-J>'
+imap     <expr> <C-L>       vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-L>'
+smap     <expr> <C-L>       vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-L>'
+"" IME
+inoremap <C-S-J>        <Nop>
+inoremap <C-S-;>        <Nop>
 
 " Plugins
 " Install vim-plug if not found
@@ -34,8 +68,16 @@ autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
   \| PlugInstall --sync | source $MYVIMRC
 \| endif
 
-call plug#begin()
+let g:airline_theme='tokyonight_night'
+let g:airline_powerline_fonts = 0
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:rainbow_active = 1
+let g:rainbow_conf = { 'separately': { 'nerdtree': 0 } }
+let g:EasyMotion_do_mapping = 0
+let g:NERDTreeCascadeOpenSingleChildDir = 1
 
+call plug#begin()
 " language server & completion
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
@@ -45,7 +87,6 @@ Plug 'prabirshrestha/asyncomplete-buffer.vim'
 Plug 'prabirshrestha/asyncomplete-file.vim'
 Plug 'mattn/vim-lsp-settings'
 Plug 'lighttiger2505/sqls.vim'
-
 " snippet
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
@@ -58,7 +99,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
-
 " formatter
 Plug 'editorconfig/editorconfig-vim'
 Plug 'prettier/vim-prettier', {
@@ -67,7 +107,6 @@ Plug 'prettier/vim-prettier', {
 Plug 'google/vim-maktaba'
 Plug 'google/vim-codefmt'
 Plug 'google/vim-glaive'
-
 " finder
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -75,7 +114,6 @@ Plug 'preservim/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-
 " theme
 Plug 'folke/tokyonight.nvim'
 Plug 'satoshiyamamoto/vim-github-dark'
@@ -89,19 +127,17 @@ function! s:on_lsp_buffer_enabled() abort
   setlocal omnifunc=lsp#complete
   setlocal signcolumn=yes
   if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
-  nmap <buffer> gd <plug>(lsp-definition)
-  nmap <buffer> gs <plug>(lsp-document-symbol-search)
-  nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
-  nmap <buffer> gr <plug>(lsp-references)
-  nmap <buffer> gi <plug>(lsp-implementation)
-  nmap <buffer> <leader>rn <plug>(lsp-rename)
-  nmap <buffer> <leader>ca <plug>(lsp-code-action)
-  nmap <buffer> [d <plug>(lsp-previous-diagnostic)
-  nmap <buffer> ]d <plug>(lsp-next-diagnostic)
-  nmap <buffer> K <plug>(lsp-hover)
-  nmap <buffer> <leader>f <plug>(lsp-document-format)
-  inoremap <buffer> <expr><c-f> lsp#scroll(+4)
-  inoremap <buffer> <expr><c-d> lsp#scroll(-4)
+  nmap <buffer> gO <Plug>(lsp-document-symbol-search)
+  nmap <buffer> grr <Plug>(lsp-references)
+  nmap <buffer> gri <Plug>(lsp-implementation)
+  nmap <buffer> grn <Plug>(lsp-rename)
+  nmap <buffer> gra <Plug>(lsp-code-action)
+  nmap <buffer> [d <Plug>(lsp-previous-diagnostic)
+  nmap <buffer> ]d <Plug>(lsp-next-diagnostic)
+  nmap <buffer> K <Plug>(lsp-hover)
+  nmap <buffer> <Leader>f <Plug>(lsp-document-format)
+  inoremap <buffer> <expr><C-F> lsp#scroll(+4)
+  inoremap <buffer> <expr><C-D> lsp#scroll(-4)
 
   " let g:lsp_format_sync_timeout = 1000
   " autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
@@ -134,7 +170,7 @@ augroup filetype_settings
 augroup END
 
 augroup terminal_settings
-  autocmd TerminalOpen * setlocal nonumber norelativenumber
+  autocmd TerminalWinOpen * setlocal nonumber norelativenumber
 augroup END
 
 augroup autoformat_settings
@@ -155,7 +191,6 @@ function! s:transparent_highlights() abort
   highlight LineNr       ctermbg=NONE guibg=NONE
   highlight CursorLineNr ctermbg=NONE guibg=NONE
   highlight FoldColumn   ctermbg=NONE guibg=NONE
-  highlight ColorColumn  ctermbg=0    guibg=#1e2030
 endfunction
 
 augroup transparency
@@ -163,53 +198,5 @@ augroup transparency
   autocmd ColorScheme * call s:transparent_highlights()
 augroup END
 
-" Mappings
-imap <silent>jj         <Esc>
-nmap <C-j>              <C-w>j
-nmap <C-k>              <C-w>k
-nmap <C-h>              <C-w>h
-nmap <C-l>              <C-w>l
-nmap <silent>[c         :GitGutterPrevHunk<CR>
-nmap <silent>]c         :GitGutterNextHunk<CR>
-nmap <silent>[b         :bprevious<CR>
-nmap <silent>]b         :bnext<CR>
-nmap <silent>[B         :bfirst<CR>
-nmap <silent>]B         :blast<CR>
-nmap <silent>[q         :cprevious<CR>
-nmap <silent>]q         :cnext<CR>
-nmap <silent><C-\>      :bo terminal ++close ++rows=12<CR>
-tmap <C-\>              <C-c><C-d>
-tmap <Esc>              <C-\><C-n>
-tmap <C-[>              <C-\><C-n>
-nmap <silent>s          <Plug>(easymotion-s2)
-nmap <silent>S          <Plug>(easymotion-bd-w)
-nmap <silent><C-p>      :Files<CR>
-nmap <silent><leader>ff :Files<CR>
-nmap <silent><leader>fg :Rg<CR>
-nmap <silent><leader>fb :Buffers<CR>
-nmap <silent><leader>e  :NERDTreeToggle<CR>
-nmap <silent><leader>r  :NERDTreeRefreshRoot<CR>
-nmap <silent><leader>n  :NERDTreeFind<CR>
-imap <expr> <C-j>       vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-smap <expr> <C-j>       vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
-imap <expr> <C-l>       vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-smap <expr> <C-l>       vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
-imap <expr> <Tab>       vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-smap <expr> <Tab>       vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-imap <expr> <S-Tab>     vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-smap <expr> <S-Tab>     vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-imap <expr> <Tab>       pumvisible() ? "\<C-n>" : "\<Tab>"
-imap <expr> <S-Tab>     pumvisible() ? "\<C-p>" : "\<S-Tab>"
-imap <expr> <CR>        pumvisible() ? "\<C-y>" : "\<CR>"
-inoremap <C-S-J>        <Nop>
-inoremap <C-S-;>        <Nop>
-
 set rtp+=~/.vim/plugged/tokyonight.nvim/extras/vim
 colorscheme tokyonight-night
-let g:airline_theme='tokyonight_night'
-let g:airline_powerline_fonts = 0
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#formatter = 'unique_tail'
-let g:rainbow_active = 1
-let g:rainbow_conf = { 'separately': { 'nerdtree': 0 } }
-let g:NERDTreeCascadeOpenSingleChildDir = 1
