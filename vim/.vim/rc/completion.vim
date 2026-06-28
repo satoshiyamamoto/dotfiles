@@ -1,8 +1,8 @@
 " Completion (asyncomplete) and snippets (vsnip)
 
 ""
-" Strips the auto-inserted closing pair character from a candidate's word.
-function! s:AsyncompleteStripPairCharacters(base, item) abort
+" Strips the auto-inserted closing pair character from an item's word.
+function! s:StripClosingPair(base, item) abort
   let l:item = a:item
   let l:pair = { '"': '"', '''': '''' }
   if !empty(a:base) && has_key(l:pair, a:base[0])
@@ -17,8 +17,8 @@ function! s:AsyncompleteStripPairCharacters(base, item) abort
 endfunction
 
 ""
-" Turns a pyright function completion into a "name($0)" snippet to insert ().
-function! s:PyrightFunctionCallSnippet(source_name, item) abort
+" Rewrites a pyright function completion into a "name($0)" snippet to insert ().
+function! s:AddPyrightCallParens(source_name, item) abort
   if a:source_name !=# 'asyncomplete_lsp_pyright-langserver'
     return a:item
   endif
@@ -52,10 +52,10 @@ function! s:PyrightFunctionCallSnippet(source_name, item) abort
 endfunction
 
 ""
-" Applies pair-stripping then the pyright () snippet transform to a candidate.
-function! s:ProcessItem(source_name, base, item) abort
-  return s:PyrightFunctionCallSnippet(
-  \   a:source_name, s:AsyncompleteStripPairCharacters(a:base, a:item))
+" Applies closing-pair stripping then the pyright () snippet to an item.
+function! s:TransformItem(source_name, base, item) abort
+  return s:AddPyrightCallParens(
+  \   a:source_name, s:StripClosingPair(a:base, a:item))
 endfunction
 
 ""
@@ -71,25 +71,25 @@ function! s:AsyncompletePreprocessor(options, matches) abort
     if has_key(l:source, 'filter')
       let l:result = l:source.filter(l:matches, l:startcol, l:base)
       for l:item in l:result[0]
-        call add(l:items, s:PyrightFunctionCallSnippet(l:source_name, l:item))
+        call add(l:items, s:AddPyrightCallParens(l:source_name, l:item))
       endfor
       let l:startcols += l:result[1]
     elseif empty(l:base)
       for l:item in l:matches['items']
-        call add(l:items, s:ProcessItem(l:source_name, l:base, l:item))
+        call add(l:items, s:TransformItem(l:source_name, l:base, l:item))
         let l:startcols += [l:startcol]
       endfor
     elseif exists('*matchfuzzypos')
     \   && get(g:, 'asyncomplete_matchfuzzy', exists('*matchfuzzypos'))
       for l:item in
       \   matchfuzzypos(l:matches['items'], l:base, { 'key': 'word' })[0]
-        call add(l:items, s:ProcessItem(l:source_name, l:base, l:item))
+        call add(l:items, s:TransformItem(l:source_name, l:base, l:item))
         let l:startcols += [l:startcol]
       endfor
     else
       for l:item in l:matches['items']
         if stridx(l:item['word'], l:base) == 0
-          call add(l:items, s:ProcessItem(l:source_name, l:base, l:item))
+          call add(l:items, s:TransformItem(l:source_name, l:base, l:item))
           let l:startcols += [l:startcol]
         endif
       endfor
