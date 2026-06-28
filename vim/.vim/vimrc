@@ -48,13 +48,13 @@ nnoremap <silent><Leader>e  :NERDTreeToggle<CR>
 nnoremap <silent><Leader>r  :NERDTreeRefreshRoot<CR>
 nnoremap <silent><Leader>n  :NERDTreeFind<CR>
 "" Completions
-imap     <expr> <C-J>       vsnip#expandable() ? '<Plug>(vsnip-expand)'         : '<C-J>'
-smap     <expr> <C-J>       vsnip#expandable() ? '<Plug>(vsnip-expand)'         : '<C-J>'
-imap     <expr> <C-L>       vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-L>'
-smap     <expr> <C-L>       vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-L>'
+imap     <expr><C-J>        vsnip#expandable() ? '<Plug>(vsnip-expand)'         : '<C-J>'
+smap     <expr><C-J>        vsnip#expandable() ? '<Plug>(vsnip-expand)'         : '<C-J>'
+imap     <expr><C-L>        vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-L>'
+smap     <expr><C-L>        vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-L>'
 "" IME
-inoremap <C-S-J>        <Nop>
-inoremap <C-S-;>        <Nop>
+inoremap <C-S-J>            <Nop>
+inoremap <C-S-;>            <Nop>
 
 " Plugins
 " Install vim-plug if not found
@@ -123,7 +123,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'luochen1990/rainbow'
 call plug#end()
 
-function! s:on_lsp_buffer_enabled() abort
+function! s:OnLspBufferEnabled() abort
   setlocal omnifunc=lsp#complete
   setlocal signcolumn=yes
   if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
@@ -145,24 +145,24 @@ endfunction
 
 augroup lsp_install
   au!
-  autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+  autocmd User lsp_buffer_enabled call s:OnLspBufferEnabled()
 augroup END
 
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
-    \ 'name': 'buffer',
-    \ 'allowlist': ['*'],
-    \ 'priority': 15,
-    \ 'completor': function('asyncomplete#sources#buffer#completor'),
-    \ 'config': {
-    \    'max_buffer_size': 1000000,
-    \  },
+au User asyncomplete_setup call asyncomplete#register_source(
+    \ asyncomplete#sources#buffer#get_source_options({
+    \   'name': 'buffer',
+    \   'allowlist': ['*'],
+    \   'priority': 15,
+    \   'completor': function('asyncomplete#sources#buffer#completor'),
+    \   'config': { 'max_buffer_size': 1000000 },
     \ }))
 
-au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-    \ 'name': 'file',
-    \ 'allowlist': ['*'],
-    \ 'priority': 10,
-    \ 'completor': function('asyncomplete#sources#file#completor')
+au User asyncomplete_setup call asyncomplete#register_source(
+    \ asyncomplete#sources#file#get_source_options({
+    \   'name': 'file',
+    \   'allowlist': ['*'],
+    \   'priority': 10,
+    \   'completor': function('asyncomplete#sources#file#completor'),
     \ }))
 
 augroup filetype_settings
@@ -185,7 +185,7 @@ augroup autoformat_settings
   autocmd FileType rust AutoFormatBuffer rustfmt
 augroup END
 
-function! s:transparent_highlights() abort
+function! s:TransparentHighlights() abort
   highlight Normal       ctermbg=NONE guibg=NONE
   highlight SignColumn   ctermbg=NONE guibg=NONE
   highlight LineNr       ctermbg=NONE guibg=NONE
@@ -195,7 +195,7 @@ endfunction
 
 augroup transparency
   autocmd!
-  autocmd ColorScheme * call s:transparent_highlights()
+  autocmd ColorScheme * call s:TransparentHighlights()
 augroup END
 
 set rtp+=~/.vim/plugged/tokyonight.nvim/extras/vim
