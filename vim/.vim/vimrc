@@ -17,6 +17,8 @@ if !1 | finish | endif
 let mapleader = ' '
 
 set termguicolors
+set t_ut=
+set t_RB=
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
@@ -147,6 +149,20 @@ augroup autoformat_settings
   autocmd FileType rust AutoFormatBuffer rustfmt
 augroup END
 
+function! s:transparent_highlights() abort
+  highlight Normal       ctermbg=NONE guibg=NONE
+  highlight SignColumn   ctermbg=NONE guibg=NONE
+  highlight LineNr       ctermbg=NONE guibg=NONE
+  highlight CursorLineNr ctermbg=NONE guibg=NONE
+  highlight FoldColumn   ctermbg=NONE guibg=NONE
+  highlight ColorColumn  ctermbg=0    guibg=#1e2030
+endfunction
+
+augroup transparency
+  autocmd!
+  autocmd ColorScheme * call s:transparent_highlights()
+augroup END
+
 " Mappings
 imap <silent>jj         <Esc>
 nmap <C-j>              <C-w>j
@@ -188,15 +204,12 @@ imap <expr> <CR>        pumvisible() ? "\<C-y>" : "\<CR>"
 inoremap <C-S-J>        <Nop>
 inoremap <C-S-;>        <Nop>
 
-" Themes
 set rtp+=~/.vim/plugged/tokyonight.nvim/extras/vim
-colorscheme tokyonight
-let g:airline_theme='lucius'
-let g:airline_powerline_fonts = 1
+colorscheme tokyonight-night
+let g:airline_theme='tokyonight_night'
+let g:airline_powerline_fonts = 0
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#formatter = 'unique_tail'
 let g:rainbow_active = 1
 let g:rainbow_conf = { 'separately': { 'nerdtree': 0 } }
 let g:NERDTreeCascadeOpenSingleChildDir = 1
-highlight Normal ctermbg=NONE guibg=NONE
-highlight ColorColumn ctermbg=0 guibg=#1e2030

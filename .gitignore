@@ -64,8 +64,9 @@ Sessionx.vim
 tags
 # Persistent undo
 [._]*.un~
-# Auto-load
-vim/.vim/autoload
+# Auto-load (plug.vim etc.), but keep our own airline theme tracked
+vim/.vim/autoload/*
+!vim/.vim/autoload/airline
 # Pluggins
 vim/.vim/plugged
 
