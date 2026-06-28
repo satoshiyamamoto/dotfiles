@@ -17,6 +17,7 @@ let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 set t_ut=
 set t_RB=
+set background=dark
 
 if !1 | finish | endif
 let mapleader = ' '
@@ -48,26 +49,20 @@ nnoremap <silent><Leader>e  :NERDTreeToggle<CR>
 nnoremap <silent><Leader>r  :NERDTreeRefreshRoot<CR>
 nnoremap <silent><Leader>n  :NERDTreeFind<CR>
 "" Completions
-imap     <expr><C-J>        vsnip#expandable() ? '<Plug>(vsnip-expand)'         : '<C-J>'
-smap     <expr><C-J>        vsnip#expandable() ? '<Plug>(vsnip-expand)'         : '<C-J>'
-imap     <expr><C-L>        vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-L>'
-smap     <expr><C-L>        vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-L>'
+imap <expr><C-J> vsnip#expandable() ? '<Plug>(vsnip-expand)'         : '<C-J>'
+smap <expr><C-J> vsnip#expandable() ? '<Plug>(vsnip-expand)'         : '<C-J>'
+imap <expr><C-L> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-L>'
+smap <expr><C-L> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-L>'
 "" IME
 inoremap <C-S-J>            <Nop>
 inoremap <C-S-;>            <Nop>
 
-" Plugins
-" Install vim-plug if not found
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-endif
-
-" Run PlugInstall if there are missing plugins
-autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-  \| PlugInstall --sync | source $MYVIMRC
-\| endif
-
+let g:terminal_ansi_colors = [
+    \ '#15161e', '#f7768e', '#9ece6a', '#e0af68',
+    \ '#7aa2f7', '#bb9af7', '#7dcfff', '#a9b1d6',
+    \ '#414868', '#f7768e', '#9ece6a', '#e0af68',
+    \ '#7aa2f7', '#bb9af7', '#7dcfff', '#c0caf5',
+    \ ]
 let g:airline_theme='tokyonight_night'
 let g:airline_powerline_fonts = 0
 let g:airline#extensions#tabline#enabled = 1
@@ -76,6 +71,13 @@ let g:rainbow_active = 1
 let g:rainbow_conf = { 'separately': { 'nerdtree': 0 } }
 let g:EasyMotion_do_mapping = 0
 let g:NERDTreeCascadeOpenSingleChildDir = 1
+
+" Plugins
+" Install vim-plug if not found
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+      \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+endif
 
 call plug#begin()
 " language server & completion
@@ -102,8 +104,9 @@ Plug 'tpope/vim-unimpaired'
 " formatter
 Plug 'editorconfig/editorconfig-vim'
 Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install --frozen-lockfile --production',
-  \ 'for': ['javascript', 'typescript', 'css', 'json', 'markdown', 'vue', 'yaml', 'html'] }
+    \ 'do': 'yarn install --frozen-lockfile --production',
+    \ 'for': ['javascript', 'typescript', 'css', 'json',
+    \         'markdown', 'vue', 'yaml', 'html'] }
 Plug 'google/vim-maktaba'
 Plug 'google/vim-codefmt'
 Plug 'google/vim-glaive'
@@ -122,6 +125,11 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'airblade/vim-gitgutter'
 Plug 'luochen1990/rainbow'
 call plug#end()
+
+" Run PlugInstall if there are missing plugins
+autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+    \| PlugInstall --sync | source $MYVIMRC
+    \| endif
 
 function! s:OnLspBufferEnabled() abort
   setlocal omnifunc=lsp#complete
@@ -179,7 +187,8 @@ augroup autoformat_settings
   autocmd FileType dart AutoFormatBuffer dartfmt
   autocmd FileType go AutoFormatBuffer gofmt
   autocmd FileType gn AutoFormatBuffer gn
-  autocmd FileType javascript,html,css,sass,scss,less,json AutoFormatBuffer prettier
+  autocmd FileType javascript,html,css,sass,scss,less,json
+      \ AutoFormatBuffer prettier
   autocmd FileType java AutoFormatBuffer google-java-format
   autocmd FileType python AutoFormatBuffer black
   autocmd FileType rust AutoFormatBuffer rustfmt
