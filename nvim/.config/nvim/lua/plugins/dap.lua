@@ -269,4 +269,36 @@ return {
       "mfussenegger/nvim-dap-python",
     },
   },
+
+  {
+    "stevearc/overseer.nvim",
+    cmd = {
+      "OverseerOpen",
+      "OverseerClose",
+      "OverseerToggle",
+      "OverseerRun",
+      "OverseerShell",
+      "OverseerTaskAction",
+    },
+    keys = {
+      { "<Leader>or", "<Cmd>OverseerRun<CR>", desc = "Run Task" },
+      { "<Leader>ot", "<Cmd>OverseerToggle<CR>", desc = "Toggle Task List" },
+      { "<Leader>oo", "<Cmd>OverseerOpen<CR>", desc = "Open Task List" },
+      { "<Leader>oc", "<Cmd>OverseerClose<CR>", desc = "Close Task List" },
+      { "<Leader>oa", "<Cmd>OverseerTaskAction<CR>", desc = "Task Action (stop/restart/dispose)" },
+      { "<Leader>os", "<Cmd>OverseerShell<CR>", desc = "Run Shell Command" },
+    },
+    opts = {
+      dap = true,
+      task_list = {
+        direction = "bottom",
+        bindings = {
+          ["<C-h>"] = false,
+          ["<C-j>"] = false,
+          ["<C-k>"] = false,
+          ["<C-l>"] = false,
+        },
+      },
+    },
+  },
 }
