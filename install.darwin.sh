@@ -4,6 +4,7 @@ stow --verbose --adopt --target=$HOME \
   bat \
   claude \
   codex \
+  docker \
   editorconfig \
   eza \
   fd \
