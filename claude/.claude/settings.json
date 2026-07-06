@@ -187,7 +187,7 @@
   },
   "language": "japanese",
   "alwaysThinkingEnabled": true,
-  "effortLevel": "xhigh",
+  "effortLevel": "high",
   "tui": "default",
   "skipWorkflowUsageWarning": true,
   "voiceEnabled": true
