@@ -61,6 +61,7 @@ return {
       enable = true,
       max_lines = 5,
       trim_scope = "inner",
+      on_attach = function(bufnr) return vim.bo[bufnr].filetype ~= "markdown" end,
     },
     config = function(_, opts)
       require("treesitter-context").setup(opts)
