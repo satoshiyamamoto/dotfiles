@@ -175,10 +175,6 @@ brew "nettle"
 brew "p11-kit"
 # GNU Transport Layer Security (TLS) Library
 brew "gnutls"
-# Asynchronous event library
-brew "libevent"
-# Validating, recursive, caching DNS resolver
-brew "unbound"
 # GNU Privacy Guard (OpenPGP)
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
@@ -207,6 +203,8 @@ brew "pkgconf"
 brew "guile"
 # Kubernetes package manager
 brew "helm"
+# Agent multiplexer that lives in your terminal
+brew "herdr"
 # HTTP load generator, ApacheBench (ab) replacement
 brew "hey"
 # Improved top (interactive process viewer)
@@ -249,10 +247,14 @@ brew "lazygit"
 brew "lefthook"
 # Access DVDs as block devices without the decryption
 brew "libdvdcss"
+# Asynchronous event library
+brew "libevent"
 # Provides library functionality for FIDO U2F & FIDO 2.0, including USB
 brew "libfido2"
 # Conversion library
 brew "libiconv"
+# Validating, recursive, caching DNS resolver
+brew "unbound"
 # Postgres C API library
 brew "libpq"
 # Reliable Internet Stream Transport (RIST)
