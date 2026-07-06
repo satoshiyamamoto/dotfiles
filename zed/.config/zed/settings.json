@@ -15,6 +15,9 @@
       "type": "registry",
     },
     "claude-acp": {
+      "default_config_options": {
+        "model": "sonnet"
+      },
       "type": "registry",
     },
   },
