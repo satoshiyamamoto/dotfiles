@@ -111,7 +111,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "opus[1m]",
+  "model": "sonnet",
   "hooks": {
     "WorktreeCreate": [
       {
@@ -187,6 +187,7 @@
   },
   "language": "japanese",
   "alwaysThinkingEnabled": true,
+  "effortLevel": "xhigh",
   "tui": "default",
   "skipWorkflowUsageWarning": true,
   "voiceEnabled": true
