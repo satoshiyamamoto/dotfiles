@@ -1,0 +1,13 @@
+#!/bin/sh
+awk '
+  /^\[tui\.model_availability_nux\]([[:space:]]*(#.*)?)?$/ {
+    skip = 1
+    next
+  }
+  /^\[/ {
+    skip = 0
+  }
+  !skip {
+    print
+  }
+'

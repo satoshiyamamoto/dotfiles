@@ -45,6 +45,11 @@
   process = git-lfs filter-process
   required = true
 
+[filter "codex-config-clean"]
+  clean = .git-filters/codex-config-clean
+  smudge = cat
+  required = true
+
 [credential]
 	helper =
 	helper = /usr/local/share/gcm-core/git-credential-manager
