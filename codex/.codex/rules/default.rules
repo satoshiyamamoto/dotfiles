@@ -1,0 +1,312 @@
+prefix_rule(
+    pattern = ["git", [
+        "add",
+        "branch",
+        "checkout",
+        "commit",
+        "diff",
+        "fetch",
+        "log",
+        "rebase",
+        "restore",
+        "show",
+        "stash",
+        "status",
+        "switch",
+    ]],
+    decision = "allow",
+    justification = "Match Claude Code's allowed git workflow commands.",
+    match = [
+        "git status",
+        "git diff --stat",
+        "git commit -m update",
+        "git rebase main",
+    ],
+    not_match = [
+        "git push",
+        "git reset --hard",
+        "git clean -fd",
+    ],
+)
+
+prefix_rule(
+    pattern = ["gh", "issue", ["list", "view"]],
+    decision = "allow",
+    justification = "Match Claude Code's allowed read-only issue commands.",
+    match = [
+        "gh issue list",
+        "gh issue view 123",
+    ],
+    not_match = [
+        "gh issue comment 123 --body ok",
+        "gh issue edit 123 --title update",
+    ],
+)
+
+prefix_rule(
+    pattern = ["gh", "label", "list"],
+    decision = "allow",
+    justification = "Match Claude Code's allowed read-only label command.",
+    match = [
+        "gh label list",
+    ],
+    not_match = [
+        "gh label create bug",
+    ],
+)
+
+prefix_rule(
+    pattern = ["gh", "pr", ["diff", "list", "view"]],
+    decision = "allow",
+    justification = "Match Claude Code's allowed read-only pull request commands.",
+    match = [
+        "gh pr list",
+        "gh pr view 123",
+        "gh pr diff 123",
+    ],
+    not_match = [
+        "gh pr comment 123 --body ok",
+        "gh pr merge 123",
+    ],
+)
+
+prefix_rule(
+    pattern = ["gh", "repo", ["list", "view"]],
+    decision = "allow",
+    justification = "Match Claude Code's allowed read-only repository commands.",
+    match = [
+        "gh repo list",
+        "gh repo view openai/codex",
+    ],
+    not_match = [
+        "gh repo create example",
+    ],
+)
+
+prefix_rule(
+    pattern = ["gh", "run", ["list", "view", "watch"]],
+    decision = "allow",
+    justification = "Match Claude Code's allowed GitHub Actions inspection commands.",
+    match = [
+        "gh run list",
+        "gh run view 123",
+        "gh run watch 123",
+    ],
+    not_match = [
+        "gh run cancel 123",
+    ],
+)
+
+prefix_rule(
+    pattern = ["gh", "workflow", ["list", "view"]],
+    decision = "allow",
+    justification = "Match Claude Code's allowed read-only workflow commands.",
+    match = [
+        "gh workflow list",
+        "gh workflow view ci.yml",
+    ],
+    not_match = [
+        "gh workflow run ci.yml",
+    ],
+)
+
+prefix_rule(
+    pattern = ["jq"],
+    decision = "allow",
+    justification = "Match Claude Code's allowed jq usage.",
+    match = [
+        "jq . package.json",
+    ],
+)
+
+prefix_rule(
+    pattern = ["mvn"],
+    decision = "allow",
+    justification = "Match Claude Code's allowed Maven usage.",
+    match = [
+        "mvn test",
+    ],
+)
+
+prefix_rule(
+    pattern = ["./mvnw"],
+    decision = "allow",
+    justification = "Match Claude Code's allowed Maven wrapper usage.",
+    match = [
+        "./mvnw test",
+    ],
+)
+
+prefix_rule(
+    pattern = ["npm", ["audit", "run"]],
+    decision = "allow",
+    justification = "Match Claude Code's allowed npm commands.",
+    match = [
+        "npm audit",
+        "npm run test",
+    ],
+    not_match = [
+        "npm install",
+        "npm publish",
+    ],
+)
+
+prefix_rule(
+    pattern = ["pnpm", ["audit", "run"]],
+    decision = "allow",
+    justification = "Match Claude Code's allowed pnpm commands.",
+    match = [
+        "pnpm audit",
+        "pnpm run test",
+    ],
+    not_match = [
+        "pnpm install",
+        "pnpm publish",
+    ],
+)
+
+prefix_rule(
+    pattern = ["uv", ["audit", "run"]],
+    decision = "allow",
+    justification = "Match Claude Code's allowed uv commands.",
+    match = [
+        "uv audit",
+        "uv run pytest",
+    ],
+    not_match = [
+        "uv publish",
+    ],
+)
+
+prefix_rule(
+    pattern = ["docker", "compose"],
+    decision = "allow",
+    justification = "Match Claude Code's allowed docker compose command without adding Docker socket permissions.",
+    match = [
+        "docker compose ps",
+        "docker compose up --build",
+    ],
+)
+
+prefix_rule(
+    pattern = ["wt"],
+    decision = "allow",
+    justification = "Match Claude Code's allowed Worktrunk command usage.",
+    match = [
+        "wt list",
+    ],
+)
+
+prefix_rule(
+    pattern = ["gh", "api", "-X", ["DELETE", "PATCH", "POST", "PUT"]],
+    decision = "prompt",
+    justification = "Ask before GitHub API write operations, matching Claude Code.",
+    match = [
+        "gh api -X POST repos/owner/repo/issues",
+        "gh api -X DELETE repos/owner/repo/hooks/1",
+    ],
+)
+
+prefix_rule(
+    pattern = ["gh", "issue", ["comment", "create", "edit"]],
+    decision = "prompt",
+    justification = "Ask before issue mutations, matching Claude Code.",
+    match = [
+        "gh issue comment 123 --body ok",
+        "gh issue create --title bug",
+        "gh issue edit 123 --title update",
+    ],
+)
+
+prefix_rule(
+    pattern = ["gh", "pr", ["comment", "create", "edit", "merge"]],
+    decision = "prompt",
+    justification = "Ask before pull request mutations, matching Claude Code.",
+    match = [
+        "gh pr comment 123 --body ok",
+        "gh pr create --title update",
+        "gh pr edit 123 --title update",
+        "gh pr merge 123",
+    ],
+)
+
+prefix_rule(
+    pattern = ["gh", "release", "create"],
+    decision = "prompt",
+    justification = "Ask before creating releases, matching Claude Code.",
+    match = [
+        "gh release create v1.0.0",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", ["clean", "reset"]],
+    decision = "prompt",
+    justification = "Ask before destructive git cleanup or reset commands, matching Claude Code.",
+    match = [
+        "git clean -fd",
+        "git reset --hard HEAD",
+    ],
+)
+
+prefix_rule(
+    pattern = ["rm", "-rf"],
+    decision = "prompt",
+    justification = "Ask before recursive forced deletion, matching Claude Code.",
+    match = [
+        "rm -rf build",
+    ],
+    not_match = [
+        "rm -r build",
+        "rm -f file",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", "push", "--force"],
+    decision = "forbidden",
+    justification = "Force pushing is blocked, matching Claude Code.",
+    match = [
+        "git push --force origin main",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", "push", "-f"],
+    decision = "forbidden",
+    justification = "Force pushing is blocked, matching Claude Code.",
+    match = [
+        "git push -f origin main",
+    ],
+)
+
+prefix_rule(
+    pattern = ["kubectl", ["apply", "delete", "patch", "replace"]],
+    decision = "forbidden",
+    justification = "Destructive Kubernetes operations are blocked, matching Claude Code.",
+    match = [
+        "kubectl apply -f deploy.yaml",
+        "kubectl delete pod example",
+        "kubectl patch deploy app -p {}",
+        "kubectl replace -f deploy.yaml",
+    ],
+)
+
+prefix_rule(
+    pattern = ["kubectl", "rollout", "restart"],
+    decision = "forbidden",
+    justification = "Kubernetes rollout restarts are blocked, matching Claude Code.",
+    match = [
+        "kubectl rollout restart deployment/app",
+    ],
+)
+
+prefix_rule(
+    pattern = ["terraform", ["apply", "destroy"]],
+    decision = "forbidden",
+    justification = "Destructive Terraform operations are blocked, matching Claude Code.",
+    match = [
+        "terraform apply",
+        "terraform destroy",
+    ],
+)

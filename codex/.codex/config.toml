@@ -2,13 +2,19 @@ model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 personality = "pragmatic"
 approval_policy = "on-request"
-sandbox_mode = "workspace-write"
-web_search = "cached"
+approvals_reviewer = "auto_review"
+allow_login_shell = true
+default_permissions = "dev-autonomous"
+web_search = "live"
 project_doc_max_bytes = 32768
-notify = ["/Users/a12019/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
+notify = ["/bin/sh", "-lc", "exec \"$HOME/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient\" turn-ended"]
 
 [history]
 persistence = "save-all"
+
+[shell_environment_policy]
+inherit = "all"
+ignore_default_excludes = false
 
 [features]
 hooks = true
@@ -121,3 +127,58 @@ CODEX_CLI_PATH = "/Applications/Codex.app/Contents/Resources/codex"
 [desktop]
 conversationDetailMode = "STEPS_COMMANDS"
 ambient-suggestions-enabled = true
+
+[permissions.dev-autonomous.filesystem]
+glob_scan_max_depth = 4
+":root" = "read"
+":tmpdir" = "write"
+":slash_tmp" = "write"
+"~/Projects/src" = "write"
+"~/.aws" = "deny"
+"~/.config/gcloud" = "deny"
+"~/.config/gh" = "deny"
+"~/.codex/auth.json" = "deny"
+"~/.codex/log" = "write"
+"~/.codex/shell_snapshots" = "write"
+"~/.codex/tmp" = "write"
+"~/.docker/config.json" = "deny"
+"~/.git-credentials" = "deny"
+"~/.gnupg" = "deny"
+"~/.kube" = "deny"
+"~/.netrc" = "deny"
+"~/.npmrc" = "deny"
+"~/.ssh" = "deny"
+"~/Library/Keychains" = "deny"
+"~/**/*.key" = "deny"
+"~/**/*.pem" = "deny"
+"~/**/.env*" = "deny"
+"~/**/secrets/**" = "deny"
+
+[permissions.dev-autonomous.network]
+enabled = true
+mode = "limited"
+allow_local_binding = false
+
+[permissions.dev-autonomous.network.domains]
+"127.0.0.1" = "allow"
+"api.github.com" = "allow"
+"api.openai.com" = "allow"
+"auth.docker.io" = "allow"
+"chatgpt.com" = "allow"
+"crates.io" = "allow"
+"developers.openai.com" = "allow"
+"files.pythonhosted.org" = "allow"
+"ghcr.io" = "allow"
+"github.com" = "allow"
+"localhost" = "allow"
+"objects.githubusercontent.com" = "allow"
+"pkg-containers.githubusercontent.com" = "allow"
+"production.cloudflare.docker.com" = "allow"
+"proxy.golang.org" = "allow"
+"pypi.org" = "allow"
+"raw.githubusercontent.com" = "allow"
+"registry-1.docker.io" = "allow"
+"registry.npmjs.org" = "allow"
+"repo.maven.apache.org" = "allow"
+"static.crates.io" = "allow"
+"sum.golang.org" = "allow"
