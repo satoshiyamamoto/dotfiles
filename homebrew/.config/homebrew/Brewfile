@@ -5,6 +5,8 @@ brew "abseil"
 brew "argo"
 # GitOps Continuous Delivery for Kubernetes
 brew "argocd"
+# Record and share terminal sessions
+brew "asciinema"
 # Improved shell history for zsh, bash, fish and nushell
 brew "atuin"
 # Macro processing language
