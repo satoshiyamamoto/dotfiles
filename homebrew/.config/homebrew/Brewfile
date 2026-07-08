@@ -77,6 +77,8 @@ brew "lzo"
 brew "pixman"
 # Vector graphics library with cross-device output support
 brew "cairo"
+# Console Bonsai is a bonsai tree generator, written in C using ncurses
+brew "cbonsai"
 # Mozilla CA bundle for Python
 brew "certifi"
 # C parser in Python
