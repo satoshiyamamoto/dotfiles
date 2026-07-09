@@ -213,6 +213,8 @@ brew "herdr"
 brew "hey"
 # Improved top (interactive process viewer)
 brew "htop"
+# Review-first terminal diff viewer for agent-authored changesets
+brew "hunk"
 # Image format providing lossless and lossy compression for web images
 brew "webp"
 # Tools and libraries to manipulate images in select formats
