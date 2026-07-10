@@ -1,6 +1,6 @@
 [core]
   editor = nvim
-  pager = delta
+  pager = hunk pager
   whitespace = cr-at-eol
 
 [diff]
@@ -26,15 +26,6 @@
 
 [pull]
 	rebase = true
-
-[interactive]
-  diffFilter = delta --color-only
-
-[delta]
-  navigate = true
-  line-numbers = true
-  side-by-side = false
-  syntax-theme = tokyonight_night
 
 [ghq]
   root = ~/Projects/src
