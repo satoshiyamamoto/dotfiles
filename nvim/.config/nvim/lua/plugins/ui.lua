@@ -256,6 +256,7 @@ return {
       vim.api.nvim_set_hl(0, "@property.json", { fg = "#7aa2f7" })
       vim.api.nvim_set_hl(0, "@property.yaml", { fg = "#f7768e" })
       vim.api.nvim_set_hl(0, "@property.gotmpl", { fg = "#f7768e" })
+      vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#737AA2" })
     end,
   },
 

@@ -6,7 +6,7 @@ function! s:OverrideHighlights() abort
   highlight Normal       ctermbg=NONE guibg=NONE
   highlight SignColumn   ctermbg=NONE guibg=NONE
   highlight LineNr       ctermbg=NONE guibg=NONE
-  highlight CursorLineNr ctermbg=NONE guibg=NONE
+  highlight CursorLineNr ctermbg=NONE guibg=NONE guifg=#737aa2 cterm=NONE term=NONE
   highlight FoldColumn   ctermbg=NONE guibg=NONE
   highlight Pmenu        ctermbg=NONE guibg=NONE
   highlight PmenuSbar    ctermbg=NONE guibg=NONE
