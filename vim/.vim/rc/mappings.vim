@@ -1,9 +1,5 @@
 " Global key mappings
 "" Windows
-nnoremap <C-J>              <C-W>j
-nnoremap <C-K>              <C-W>k
-nnoremap <C-H>              <C-W>h
-nnoremap <C-L>              <C-W>l
 tnoremap <Esc>              <C-W>N
 tnoremap <C-[>              <C-W>N
 nnoremap <silent><C-/>      :bo terminal ++close ++rows=12<CR>

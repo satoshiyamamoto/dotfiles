@@ -22,12 +22,6 @@ unfocused-split-opacity = 0.85
 macos-titlebar-proxy-icon = hidden
 macos-option-as-alt = true
 
-## Keybinds
-keybind = super+alt+h=goto_split:left
-keybind = super+alt+j=goto_split:down
-keybind = super+alt+k=goto_split:up
-keybind = super+alt+l=goto_split:right
-
 ## Theme
 config-file = ?auto/theme.ghostty
 
