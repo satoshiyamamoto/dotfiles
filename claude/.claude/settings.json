@@ -111,7 +111,6 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "sonnet",
   "hooks": {
     "WorktreeCreate": [
       {
@@ -187,7 +186,7 @@
   },
   "language": "japanese",
   "alwaysThinkingEnabled": true,
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
   "tui": "default",
   "skipWorkflowUsageWarning": true,
   "voiceEnabled": true
