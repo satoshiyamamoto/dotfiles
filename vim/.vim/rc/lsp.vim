@@ -9,18 +9,7 @@ let g:lsp_settings = {
 \       },
 \     },
 \   },
-\   'pyright-langserver': {
-\     'cmd':
-\       [expand('~/.local/share/nvim/mason/bin/pyright-langserver'), '--stdio'],
-\   },
-\   'rust-analyzer': {
-\     'cmd': [expand('~/.local/share/nvim/mason/bin/rust-analyzer')],
-\   },
 \   'typescript-language-server': {
-\     'cmd': [
-\       expand('~/.local/share/nvim/mason/bin/typescript-language-server'),
-\       '--stdio',
-\     ],
 \     'workspace_config':
 \       { 'completions': { 'completeFunctionCalls': v:true } },
 \   },
