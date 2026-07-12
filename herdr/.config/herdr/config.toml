@@ -1,0 +1,25 @@
+onboarding = false
+
+[theme]
+name = "tokyo-night"
+auto_switch = false
+
+[ui]
+agent_panel_sort = "spaces"
+show_agent_labels_on_pane_borders = false
+
+[ui.toast]
+delivery = "system"
+
+[keys]
+new_worktree = ""
+
+[[keys.command]]
+key = "prefix+shift+g"
+type = "shell"
+command = "p=${HERDR_ACTIVE_PANE_ID:-$(herdr pane current --current | jq -r .result.pane.pane_id)}; herdr pane send-text $p 'wt switch'; herdr pane send-keys $p enter"
+description = "worktrunk: wt switch in current pane"
+
+[experimental]
+switch_ascii_input_source_in_prefix = false
+pane_history = false
