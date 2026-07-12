@@ -121,6 +121,10 @@ y() {
   # Pull the latest changes from the remote repository
   git pull || { popd -q; return 1; }
 
+  # Refresh dotfile symlinks from the repo (--restow: repo is source of truth,
+  # no --adopt so unexpected local files surface as errors instead of overwriting)
+  STOW_FLAGS="--restow" sh install.darwin.sh || ret=$?
+
   # Detect Rosetta (i386) environment and locate the Brewfile
   [[ "$(arch)" == "i386" ]] && is_i386=true
   brewfile="$(fd --hidden --type f '^Brewfile$' | head -n 1)"

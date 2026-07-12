@@ -1,5 +1,11 @@
+#!/bin/sh
 # Stow Packages
-stow --verbose --adopt --target=$HOME \
+# STOW_FLAGS defaults to --adopt --verbose (first install: absorb pre-existing
+# files and show every link). Override for sync, e.g. STOW_FLAGS="--restow" to
+# refresh links treating the repo as source of truth (conflicts surface as
+# errors instead of being adopted) while staying quiet on success.
+STOW_FLAGS="${STOW_FLAGS:---adopt --verbose}"
+stow $STOW_FLAGS --target="$HOME" \
   alacritty \
   bat \
   claude \
