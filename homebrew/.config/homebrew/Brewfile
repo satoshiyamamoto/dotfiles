@@ -431,14 +431,14 @@ brew "neurosnap/tap/zmx", trusted: true
 cask "antigravity"
 # Terminal interface for Antigravity agents
 cask "antigravity-cli"
+# OpenAI's official ChatGPT desktop app
+cask "chatgpt"
 # Anthropic's official Claude AI desktop app
 cask "claude"
 # Terminal-based AI coding assistant
 cask "claude-code@latest"
 # OpenAI's coding agent that runs in your terminal
 cask "codex"
-# OpenAI's Codex desktop app for managing coding agents
-cask "codex-app"
 # Collaborative team software
 cask "figma"
 cask "font-ipaexfont"
@@ -489,6 +489,7 @@ mas "iMovie", id: 408981434
 mas "JSON Peep", id: 1458969831
 mas "Keynote", id: 409183694
 mas "Kindle", id: 302584613
+mas "Noir", id: 1592917505
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Speedtest", id: 1153157709
