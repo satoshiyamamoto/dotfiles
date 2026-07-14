@@ -74,6 +74,9 @@ trust_level = "trusted"
 [projects."/Users/a12019/Projects/src/github.com/ca-orion/orion-python"]
 trust_level = "trusted"
 
+[projects."/Users/a12019/Projects/src/github.com/ca-orion/orion-content-moderation-ai"]
+trust_level = "trusted"
+
 [plugins."github@openai-curated"]
 enabled = true
 
