@@ -48,7 +48,6 @@
       "Skill",
       "WebFetch(*)",
       "WebSearch(*)",
-      "Write(~/Projects/src/**)",
       "mcp__claude_ai_Datadog",
       "mcp__claude_ai_Slack",
       "mcp__plugin_apple-notes_apple-notes",
@@ -83,10 +82,7 @@
       "Read(~/.netrc)",
       "Read(~/.npmrc)",
       "Read(~/.ssh/**)",
-      "Read(~/Library/Keychains/**)",
-      "Write(~/.aws/**)",
-      "Write(~/.gnupg/**)",
-      "Write(~/.ssh/**)"
+      "Read(~/Library/Keychains/**)"
     ],
     "ask": [
       "Bash(gh api -X DELETE:*)",
@@ -105,9 +101,7 @@
       "Bash(git reset:*)",
       "Bash(rm -rf:*)",
       "Edit(~/.claude/**)",
-      "Edit(~/Documents/**)",
-      "Write(~/.claude/**)",
-      "Write(~/Documents/**)"
+      "Edit(~/Documents/**)"
     ],
     "defaultMode": "auto"
   },
