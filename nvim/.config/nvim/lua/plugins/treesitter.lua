@@ -1,3 +1,18 @@
+local function supports_colored_underline()
+  -- Herdr currently drops SGR 58 while rendering its server/client frames.
+  if vim.env.HERDR_PANE_ID then
+    return false
+  end
+
+  local term = vim.env.TERM
+  if not term or term == "" or vim.fn.executable("infocmp") ~= 1 then
+    return false
+  end
+
+  local result = vim.system({ "infocmp", "-x", "-1", term }, { text = true }):wait()
+  return result.code == 0 and (result.stdout or ""):match("[\r\n]%s*Setulc=") ~= nil
+end
+
 return {
   {
     "nvim-treesitter/nvim-treesitter",
@@ -66,7 +81,11 @@ return {
     config = function(_, opts)
       require("treesitter-context").setup(opts)
       vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "None" })
-      vim.api.nvim_set_hl(0, "TreesitterContextBottom", { underline = true, sp = "#000000" })
+      vim.api.nvim_set_hl(
+        0,
+        "TreesitterContextBottom",
+        supports_colored_underline() and { underline = true, sp = "#000000" } or {}
+      )
     end,
     dependencies = {
       { "nvim-treesitter/nvim-treesitter" },
