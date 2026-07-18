@@ -353,6 +353,8 @@ brew "rust"
 brew "rustup"
 # Simple keystroke visualizer
 brew "showkey"
+# Open agent skills ecosystem
+brew "skills"
 # Prints a steam locomotive if you type sl instead of ls
 brew "sl"
 # SOcket CAT: netcat on steroids
