@@ -163,7 +163,8 @@
     "typescript-lsp@claude-plugins-official": true,
     "worktrunk@worktrunk": true,
     "mattpocock-skills@mattpocock": true,
-    "agent-skills@addy-agent-skills": true
+    "agent-skills@addy-agent-skills": true,
+    "vercel@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "apple-notes-mcp": {
@@ -194,6 +195,7 @@
   "language": "japanese",
   "alwaysThinkingEnabled": true,
   "effortLevel": "xhigh",
+  "pluginConfigs": {},
   "tui": "default",
   "skipWorkflowUsageWarning": true,
   "voiceEnabled": true
