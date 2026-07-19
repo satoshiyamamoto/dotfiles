@@ -454,6 +454,8 @@ cask "git-credential-manager"
 cask "google-chrome"
 # Client for the Google Drive storage service
 cask "google-drive"
+# Extensible coding agent for the terminal
+cask "grok-build"
 # Open-source video transcoder
 cask "handbrake-app"
 # Java IDE by JetBrains
@@ -494,3 +496,4 @@ mas "Speedtest", id: 1153157709
 mas "Tailscale", id: 1475387142
 mas "Vimlike", id: 1584519802
 mas "Xcode", id: 497799835
+npm "@earendil-works/pi-coding-agent"
