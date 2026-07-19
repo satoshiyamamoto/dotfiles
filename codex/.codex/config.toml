@@ -102,6 +102,12 @@ enabled = true
 [plugins."presentations@openai-primary-runtime"]
 enabled = true
 
+[plugins."agent-skills@agent-skills"]
+enabled = true
+
+[plugins."mattpocock-skills@mattpocock"]
+enabled = true
+
 [marketplaces.openai-bundled]
 last_updated = "2026-06-18T02:55:31Z"
 source_type = "local"
@@ -111,6 +117,18 @@ source = "/Users/a12019/.codex/.tmp/bundled-marketplaces/openai-bundled"
 last_updated = "2026-06-12T22:38:25Z"
 source_type = "local"
 source = "/Users/a12019/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
+
+[marketplaces.agent-skills]
+last_updated = "2026-07-19T02:46:34Z"
+last_revision = "2fbfa004a0192529bc997d103fc12f19a3804aab"
+source_type = "git"
+source = "https://github.com/addyosmani/agent-skills.git"
+
+[marketplaces.mattpocock]
+last_updated = "2026-07-19T04:36:25Z"
+last_revision = "9603c1cc8118d08bc1b3bf34cf714f62178dea3b"
+source_type = "git"
+source = "https://github.com/mattpocock/skills.git"
 
 [mcp_servers.node_repl]
 command = "/Applications/Codex.app/Contents/Resources/cua_node/bin/node_repl"
