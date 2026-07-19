@@ -65,6 +65,7 @@ export DIRENV_LOG_FORMAT=""
 export GITHUB_PERSONAL_ACCESS_TOKEN=$(gh auth token 2>/dev/null)
 
 ## Claude Code
+export CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE=1
 export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 
 ## Starship
