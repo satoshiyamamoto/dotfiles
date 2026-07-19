@@ -427,8 +427,6 @@ brew "zsh-syntax-highlighting"
 brew "zsh-you-should-use"
 # Session persistence for terminal processes
 brew "neurosnap/tap/zmx", trusted: true
-# Agent orchestration platform
-cask "antigravity"
 # Terminal interface for Antigravity agents
 cask "antigravity-cli"
 # OpenAI's official ChatGPT desktop app
@@ -454,8 +452,6 @@ cask "git-credential-manager"
 cask "google-chrome"
 # Client for the Google Drive storage service
 cask "google-drive"
-# Native desktop AI assistant from Google
-cask "google-gemini"
 # Open-source video transcoder
 cask "handbrake-app"
 # Java IDE by JetBrains
