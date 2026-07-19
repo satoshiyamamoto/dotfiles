@@ -311,6 +311,10 @@ brew "nkf"
 brew "nmap"
 # Renders an animated, color, ANSI-text loop of the Poptart Cat
 brew "nyancat"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# AI coding agent, built for the terminal
+brew "opencode"
 # Development kit for the Java programming language
 brew "openjdk@21"
 # Library for JPEG-2000 image manipulation
@@ -343,8 +347,6 @@ brew "pygments"
 brew "python-lsp-server"
 # Generic machine emulator and virtualizer
 brew "qemu"
-# Search tool like grep and The Silver Searcher
-brew "ripgrep"
 # Safe, concurrent, practical language
 brew "rust"
 # Rust toolchain installer
