@@ -10,8 +10,8 @@ nnoremap <silent><Esc>      :noh<CR>
 nnoremap <silent><C-[>      :noh<CR>
 nnoremap <silent><Leader>bd :bprevious<Bar>bdelete #<CR>
 nnoremap <silent><Leader>bo :%bdelete<Bar>edit #<Bar>bdelete #<CR>
-nnoremap <silent>[c         <Plug>(GitGutterPrevHunk)<CR>
-nnoremap <silent>]c         <Plug>(GitGutterNextHunk)<CR>
+nmap     <silent>[c         <Plug>(GitGutterPrevHunk)
+nmap     <silent>]c         <Plug>(GitGutterNextHunk)
 nmap     <silent>s          <Plug>(easymotion-s2)
 nmap     <silent>S          <Plug>(easymotion-bd-w)
 "" Pickers
