@@ -181,8 +181,6 @@ brew "gnutls"
 brew "gnupg"
 # Open source programming language to build simple/reliable/efficient software
 brew "go"
-# Go formatter that additionally inserts import statements
-brew "goimports"
 # Reformats Java source code to comply with Google Java Style
 brew "google-java-format"
 # CLI for Drive, Gmail, Calendar, Sheets, Docs, Chat, Admin, and more
@@ -341,8 +339,6 @@ brew "prettier"
 brew "pwgen"
 # Generic syntax highlighter
 brew "pygments"
-# Python Language Server for the Language Server Protocol
-brew "python-lsp-server"
 # Generic machine emulator and virtualizer
 brew "qemu"
 # Safe, concurrent, practical language
