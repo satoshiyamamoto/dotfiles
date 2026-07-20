@@ -49,8 +49,6 @@ brew "bat"
 brew "bat-extras"
 # Garbage collector for C and C++
 brew "bdw-gc"
-# Toolchain of the web
-brew "biome"
 # Collection of portable C++ source libraries
 brew "boost"
 # Generic-purpose lossless compression algorithm by Google
@@ -333,8 +331,6 @@ brew "ponysay"
 brew "poppler"
 # Theme for zsh
 brew "powerlevel10k"
-# Code formatter for JavaScript, CSS, JSON, GraphQL, Markdown, YAML
-brew "prettier"
 # Password generator
 brew "pwgen"
 # Generic syntax highlighter
@@ -492,4 +488,6 @@ go "github.com/go-delve/delve/cmd/dlv"
 go "golang.org/x/tools/cmd/goimports"
 go "github.com/golangci/golangci-lint/cmd/golangci-lint"
 go "golang.org/x/tools/gopls"
+npm "@biomejs/biome"
 npm "@earendil-works/pi-coding-agent"
+npm "prettier"
