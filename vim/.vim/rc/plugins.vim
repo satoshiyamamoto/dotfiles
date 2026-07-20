@@ -19,8 +19,8 @@ Plug 'lighttiger2505/sqls.vim'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'rafamadriz/friendly-snippets'
-Plug 'mattn/vim-goimports'
-Plug 'mattn/emmet-vim'
+Plug 'mattn/vim-goimports', { 'for': 'go' }
+Plug 'mattn/emmet-vim', { 'for': ['html', 'css', 'scss', 'sass', 'less', 'javascriptreact', 'typescriptreact', 'vue'] }
 Plug 'jiangmiao/auto-pairs'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-fugitive'
@@ -38,11 +38,11 @@ Plug 'google/vim-codefmt'
 Plug 'google/vim-glaive'
 " finder
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'preservim/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'junegunn/fzf.vim', { 'on': ['Files', 'GFiles', 'Buffers', 'Rg', 'RG', 'Lines', 'BLines', 'History', 'Commits', 'BCommits'] }
+Plug 'preservim/nerdtree', { 'on': ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind', 'NERDTreeRefreshRoot'] }
+Plug 'Xuyuanp/nerdtree-git-plugin', { 'on': ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind', 'NERDTreeRefreshRoot'] }
 Plug 'ryanoasis/vim-devicons'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight', { 'on': ['NERDTree', 'NERDTreeToggle', 'NERDTreeFind', 'NERDTreeRefreshRoot'] }
 " theme
 Plug 'folke/tokyonight.nvim'
 Plug 'satoshiyamamoto/vim-github-dark'
