@@ -31,8 +31,8 @@ Plug 'tpope/vim-unimpaired'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'prettier/vim-prettier', {
     \ 'do': 'yarn install --frozen-lockfile --production',
-    \ 'for': ['javascript', 'typescript', 'css', 'json',
-    \         'markdown', 'vue', 'yaml', 'html'] }
+    \ 'for': ['javascript', 'javascriptreact', 'typescript', 'typescriptreact',
+    \         'css', 'html', 'json', 'jsonc'] }
 Plug 'google/vim-maktaba'
 Plug 'google/vim-codefmt'
 Plug 'google/vim-glaive'
