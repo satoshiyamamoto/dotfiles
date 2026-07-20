@@ -351,8 +351,6 @@ brew "sops"
 brew "source-highlight"
 # Cross-shell prompt for astronauts
 brew "starship"
-# State of the art linter for the Go programming language
-brew "staticcheck"
 # Tail multiple Kubernetes pods & their containers
 brew "stern"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
@@ -478,6 +476,7 @@ go "github.com/go-delve/delve/cmd/dlv"
 go "golang.org/x/tools/cmd/goimports"
 go "github.com/golangci/golangci-lint/cmd/golangci-lint"
 go "golang.org/x/tools/gopls"
+go "honnef.co/go/tools/cmd/staticcheck"
 uv "docutils"
 uv "ipython"
 uv "ruff"
