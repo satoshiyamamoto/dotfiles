@@ -327,8 +327,6 @@ brew "pandoc"
 brew "pcre"
 # CLI for Postgres with auto-completion and syntax highlighting
 brew "pgcli"
-# Execute binaries from Python packages in isolated environments
-brew "pipx"
 # Fast, disk space efficient package manager
 brew "pnpm"
 # Cowsay but with ponies
