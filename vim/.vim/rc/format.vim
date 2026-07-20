@@ -6,7 +6,7 @@ augroup autoformat_settings
   autocmd FileType dart AutoFormatBuffer dartfmt
   autocmd FileType gn AutoFormatBuffer gn
   autocmd FileType java AutoFormatBuffer google-java-format
-  autocmd FileType python AutoFormatBuffer black
+  autocmd FileType python AutoFormatBuffer ruff
   autocmd FileType rust AutoFormatBuffer rustfmt
 augroup END
 
