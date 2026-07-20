@@ -329,8 +329,6 @@ brew "poppler"
 brew "powerlevel10k"
 # Password generator
 brew "pwgen"
-# Generic syntax highlighter
-brew "pygments"
 # Generic machine emulator and virtualizer
 brew "qemu"
 # Safe, concurrent, practical language
@@ -381,8 +379,6 @@ brew "ttyd"
 brew "utimer"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
-# ASGI web server
-brew "uvicorn"
 # Modern watch command
 brew "viddy"
 # Generator for LS_COLORS with support for multiple color themes
