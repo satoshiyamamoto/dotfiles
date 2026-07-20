@@ -15,13 +15,22 @@ let g:lsp_settings = {
 \   },
 \ }
 
+let g:lsp_diagnostics_signs_error = {'text': ''}
+let g:lsp_diagnostics_signs_warning = {'text': ''}
+let g:lsp_diagnostics_signs_information = {'text': ''}
+let g:lsp_diagnostics_signs_hint = {'text': ''}
+let g:lsp_diagnostics_virtual_text_enabled = 0
+let g:lsp_diagnostics_echo_cursor = 1
+
 function! s:OnLspBufferEnabled() abort
   setlocal omnifunc=lsp#complete
   setlocal signcolumn=yes
   if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+  nmap <buffer> gd <Plug>(lsp-definition)
   nmap <buffer> gO <Plug>(lsp-document-symbol-search)
   nmap <buffer> grr <Plug>(lsp-references)
   nmap <buffer> gri <Plug>(lsp-implementation)
+  nmap <buffer> grt <Plug>(lsp-type-definition)
   nmap <buffer> grn <Plug>(lsp-rename)
   nmap <buffer> gra <Plug>(lsp-code-action)
   nmap <buffer> [d <Plug>(lsp-previous-diagnostic)
