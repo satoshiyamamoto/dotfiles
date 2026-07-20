@@ -1,4 +1,5 @@
 " Editor options
+set nocompatible
 set mouse=a
 set number
 set relativenumber
@@ -6,11 +7,19 @@ set splitbelow
 set splitright
 set incsearch
 set hlsearch
+set ignorecase
+set smartcase
 set confirm
+set hidden
+set autoread
+set belloff=all
+set completeopt=menuone,noselect
+set shortmess+=cI
+set helplang=ja,en
+set laststatus=3
 set updatetime=100
 set timeoutlen=300
 set ttimeoutlen=10
-set nocompatible
 set grepprg=rg\ --vimgrep\ --hidden\ --glob\ '!.git'
 set grepformat=%f:%l:%c:%m
 set termguicolors
