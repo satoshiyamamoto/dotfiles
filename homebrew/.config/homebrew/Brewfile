@@ -409,8 +409,6 @@ brew "wget"
 brew "worktrunk"
 # Extensible command-line tool to format YAML files
 brew "yamlfmt"
-# JavaScript package manager
-brew "yarn"
 # Blazing fast terminal file manager written in Rust, based on async I/O
 brew "yazi"
 # Process YAML, JSON, XML, CSV and properties documents from the CLI
