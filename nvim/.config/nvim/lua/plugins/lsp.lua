@@ -29,18 +29,35 @@ return {
         "jdtls",
         "lua_ls",
         "pyright",
-        "rust_analyzer",
         "tailwindcss",
         "terraformls",
         "ts_ls",
       },
       automatic_enable = {
-        exclude = { "jdtls" },
+        -- rust_analyzer is managed by rustaceanvim, not nvim-lspconfig.
+        exclude = { "jdtls", "rust_analyzer" },
       },
     },
     dependencies = {
       { "mason-org/mason.nvim", opts = {} },
       { "neovim/nvim-lspconfig" },
     },
+  },
+
+  {
+    "mrcjkb/rustaceanvim",
+    version = "^9",
+    lazy = false, -- rustaceanvim lazy-loads itself; do not lazy-load via lazy.nvim
+    config = function()
+      -- Configure via vim.g.rustaceanvim (do NOT call setup()).
+      -- Function form defers require("blink.cmp") until rust-analyzer starts.
+      vim.g.rustaceanvim = function()
+        return {
+          server = {
+            capabilities = require("blink.cmp").get_lsp_capabilities(),
+          },
+        }
+      end
+    end,
   },
 }
