@@ -103,12 +103,12 @@ brew "gmp"
 brew "coreutils"
 # Cryptographic recipes and primitives for Python
 brew "cryptography"
+# Portable Foreign Function Interface library
+brew "libffi"
 # HTTP/2 C Library
 brew "libnghttp2"
 # Multi-platform support library with a focus on asynchronous I/O
 brew "libuv"
-# Portable Foreign Function Interface library
-brew "libffi"
 # Open-source, cross-platform JavaScript runtime environment
 brew "node"
 # Reference implementation for the Development Containers specification
@@ -496,4 +496,8 @@ mas "Speedtest", id: 1153157709
 mas "Tailscale", id: 1475387142
 mas "Vimlike", id: 1584519802
 mas "Xcode", id: 497799835
+go "github.com/go-delve/delve/cmd/dlv"
+go "golang.org/x/tools/cmd/goimports"
+go "github.com/golangci/golangci-lint/cmd/golangci-lint"
+go "golang.org/x/tools/gopls"
 npm "@earendil-works/pi-coding-agent"
