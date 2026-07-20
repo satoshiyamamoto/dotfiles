@@ -121,8 +121,6 @@ brew "docker-buildx"
 brew "docker-compose"
 # Platform keystore credential helper for Docker
 brew "docker-credential-helper"
-# Text processing system for reStructuredText
-brew "docutils"
 # YAML Parser
 brew "libyaml"
 # Embeddable SQL OLAP Database Management System
@@ -215,8 +213,6 @@ brew "webp"
 brew "imagemagick"
 # Library of 2D and 3D vector, matrix, and math operations
 brew "imath"
-# Interactive computing in Python
-brew "ipython"
 # JSON diff and patch
 brew "jd"
 # High dynamic-range image file format
@@ -355,8 +351,6 @@ brew "socket_vmnet"
 brew "sops"
 # Source-code syntax highlighter
 brew "source-highlight"
-# SQL linter and auto-formatter for Humans
-brew "sqlfluff"
 # Cross-shell prompt for astronauts
 brew "starship"
 # State of the art linter for the Go programming language
@@ -491,3 +485,7 @@ go "golang.org/x/tools/gopls"
 npm "@biomejs/biome"
 npm "@earendil-works/pi-coding-agent"
 npm "prettier"
+uv "docutils"
+uv "ipython"
+uv "ruff"
+uv "sqlfluff"
