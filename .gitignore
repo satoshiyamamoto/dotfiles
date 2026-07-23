@@ -93,3 +93,6 @@ zed/.config/zed/extensions/
 # Logs and crash reports
 zed/.config/zed/logs/
 zed/.config/zed/*.log
+
+### Hunk ###
+hunk/.config/hunk/state.json
