@@ -34,6 +34,7 @@ stow $STOW_FLAGS --target="$HOME" \
   sqlfluff \
   sqlite \
   starship \
+  testcontainers \
   tmux \
   vim \
   worktrunk \
