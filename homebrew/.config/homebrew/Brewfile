@@ -201,6 +201,8 @@ brew "guile"
 brew "helm"
 # Agent multiplexer that lives in your terminal
 brew "herdr"
+# Self-improving AI agent that creates skills from experience
+brew "hermes-agent"
 # HTTP load generator, ApacheBench (ab) replacement
 brew "hey"
 # Improved top (interactive process viewer)
