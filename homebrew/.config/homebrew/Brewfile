@@ -403,7 +403,7 @@ brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 # ZSH plugin that reminds you to use existing aliases for commands you just typed
 brew "zsh-you-should-use"
-# Session persistence for terminal processes
+# Session attach/detach for the terminal
 brew "neurosnap/tap/zmx", trusted: true
 # Terminal interface for Antigravity agents
 cask "antigravity-cli"
@@ -434,8 +434,6 @@ cask "google-drive"
 cask "grok-build"
 # Open-source video transcoder
 cask "handbrake-app"
-# Java IDE by JetBrains
-cask "intellij-idea"
 # Keyboard customiser
 cask "karabiner-elements"
 # GPU-based terminal emulator
