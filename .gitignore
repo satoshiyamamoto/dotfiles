@@ -105,6 +105,6 @@ hermes/.hermes/**
 !hermes/.hermes/SOUL.md
 !hermes/.hermes/skills/
 !hermes/.hermes/skills/**
-# Re-exclude runtime state under skills/ (hub provenance/cache, usage stats)
-hermes/.hermes/skills/.hub/
-hermes/.hermes/skills/.usage.json*
+# Re-exclude Hermes' own runtime state at the skills/ root (hub provenance and
+# caches, usage telemetry, curator state) — anything dot-prefixed there.
+hermes/.hermes/skills/.*
