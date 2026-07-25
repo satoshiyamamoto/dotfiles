@@ -96,3 +96,12 @@ zed/.config/zed/*.log
 
 ### Hunk ###
 hunk/.config/hunk/state.json
+
+### Hermes Agent ###
+# Manage config and skills only — secrets (.env, auth.json) and runtime state
+# (*.db, sessions/, logs/, cache/, cron/jobs.json) must never be committed.
+hermes/.hermes/**
+!hermes/.hermes/config.yaml
+!hermes/.hermes/SOUL.md
+!hermes/.hermes/skills/
+!hermes/.hermes/skills/**

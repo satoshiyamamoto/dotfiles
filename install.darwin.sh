@@ -21,6 +21,7 @@ stow $STOW_FLAGS --target="$HOME" \
   git \
   glow \
   herdr \
+  hermes \
   homebrew \
   hunk \
   k9s \
