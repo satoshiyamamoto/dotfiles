@@ -103,8 +103,9 @@ hunk/.config/hunk/state.json
 hermes/.hermes/**
 !hermes/.hermes/config.yaml
 !hermes/.hermes/SOUL.md
+# Only skills/personal/ is hand-written and ours. Everything else under skills/
+# belongs to Hermes — bundled skills seeded by the installer, hub-installed
+# skills, hub provenance, usage telemetry, curator state — and stays untracked.
 !hermes/.hermes/skills/
-!hermes/.hermes/skills/**
-# Re-exclude Hermes' own runtime state at the skills/ root (hub provenance and
-# caches, usage telemetry, curator state) — anything dot-prefixed there.
-hermes/.hermes/skills/.*
+!hermes/.hermes/skills/personal/
+!hermes/.hermes/skills/personal/**
