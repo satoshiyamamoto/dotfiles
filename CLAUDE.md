@@ -41,6 +41,7 @@ Drop `--skip-setup` only on a machine with no `~/.hermes/config.yaml` yet; the w
 - `hermes update` does a git pull on `main`. From a detached HEAD it switches to `main` automatically (autostashing local changes), so tag pinning and `hermes update` are mutually exclusive.
 - `~/.hermes` is shared by every install method, so switching methods keeps all config and state. The installer skips files that already exist, and `atomic_yaml_write` preserves symlinks (upstream #16743) — stow-linked `config.yaml` / `SOUL.md` / `skills/` are never clobbered.
 - The launchd plist points at `~/.hermes/hermes-agent/venv/bin/python`, which carries no version, so `hermes update` won't break the gateway. Re-run `hermes gateway install` only when switching install methods.
+- The installer shells out to `brew install` for missing system tools (ripgrep, ffmpeg, git). That is why `ffmpeg` is declared in the Brewfile — keep it there so the Brewfile stays in sync with what Hermes needs.
 
 ## Neovim Configuration
 
