@@ -192,6 +192,12 @@
         "source": "github",
         "repo": "addyosmani/agent-skills"
       }
+    },
+    "satoshiyamamoto": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/a12019/Projects/src/github.com/satoshiyamamoto/skills"
+      }
     }
   },
   "language": "japanese",
