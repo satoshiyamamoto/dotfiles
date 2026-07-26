@@ -24,13 +24,23 @@ Config files are placed under `<package>/.config/<tool>/` to follow the [XDG Bas
 
 `homebrew/.config/homebrew/Brewfile` is periodically regenerated with `brew bundle dump`, which strips every comment. Record package-specific caveats here instead of in the Brewfile.
 
-- **hermes-agent** (`uv "hermes-agent"`) — upstream caps Python at `<3.14` because its Rust-backed transitives ship no cp314 wheels, but `uv tool install` ignores `requires-python` and builds the tool env with the machine's default interpreter. On 3.14 every skills-catalog command dies with `AttributeError` in `DaemonThreadPoolExecutor._adjust_thread_count`. Install it explicitly:
+- **hermes-agent is deliberately absent from the Brewfile.** Upstream lists both `brew install hermes-agent` and PyPI installs (`uv tool install`, `pip install`) as unsupported distribution methods that receive no further updates, and `hermes update` prints a deprecation notice on every run. Use the official installer instead — see [Hermes Agent](#hermes-agent).
 
-  ```sh
-  uv tool install --python 3.13 --force hermes-agent
-  ```
+## Hermes Agent
 
-  `brew bundle` compares uv tool names only (never versions), so an already-installed copy is left untouched and the pin survives repeated `brew bundle install` runs. After reinstalling, run `hermes gateway install` — the launchd plist hardcodes the interpreter path.
+Installed with the official script — a Tier 1 supported method — **not** Homebrew or uv:
+
+```sh
+curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --skip-setup
+```
+
+Drop `--skip-setup` only on a machine with no `~/.hermes/config.yaml` yet; the wizard would otherwise rewrite existing settings.
+
+- Code lives in `~/.hermes/hermes-agent` (git checkout of `main` plus a Python 3.11 venv driven by Hermes' own uv at `~/.hermes/bin/uv`). The `hermes` command is a shim at `~/.local/bin/hermes`.
+- **Never pass `--branch <tag>`.** `git clone --depth 1 --branch <tag>` pins the refspec to that single tag and leaves no remote-tracking branch, so `hermes update` dies with `Branch 'main' not found on origin`. Recover with `git remote set-branches origin main && git fetch --depth 1 origin main`.
+- `hermes update` does a git pull on `main`. From a detached HEAD it switches to `main` automatically (autostashing local changes), so tag pinning and `hermes update` are mutually exclusive.
+- `~/.hermes` is shared by every install method, so switching methods keeps all config and state. The installer skips files that already exist, and `atomic_yaml_write` preserves symlinks (upstream #16743) — stow-linked `config.yaml` / `SOUL.md` / `skills/` are never clobbered.
+- The launchd plist points at `~/.hermes/hermes-agent/venv/bin/python`, which carries no version, so `hermes update` won't break the gateway. Re-run `hermes gateway install` only when switching install methods.
 
 ## Neovim Configuration
 
