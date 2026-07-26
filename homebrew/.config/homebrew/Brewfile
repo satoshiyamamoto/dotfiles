@@ -201,8 +201,6 @@ brew "guile"
 brew "helm"
 # Agent multiplexer that lives in your terminal
 brew "herdr"
-# Self-improving AI agent that creates skills from experience
-brew "hermes-agent"
 # HTTP load generator, ApacheBench (ab) replacement
 brew "hey"
 # Improved top (interactive process viewer)
@@ -478,6 +476,10 @@ go "github.com/golangci/golangci-lint/cmd/golangci-lint"
 go "golang.org/x/tools/gopls"
 go "honnef.co/go/tools/cmd/staticcheck"
 uv "docutils"
+# Upstream caps Python at <3.14, but `uv tool install` ignores requires-python and
+# builds the tool env with the default interpreter (3.14 here), which crashes on
+# any catalog fan-out. Install with: uv tool install --python 3.13 --force hermes-agent
+uv "hermes-agent"
 uv "ipython"
 uv "ruff"
 uv "sqlfluff"
