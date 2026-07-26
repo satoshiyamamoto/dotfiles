@@ -20,6 +20,18 @@ Dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/). Each top-l
 
 Config files are placed under `<package>/.config/<tool>/` to follow the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/latest/) (`$XDG_CONFIG_HOME`). Prefer this layout when adding new packages. Place files directly under `<package>/` only when the tool does not support XDG (e.g., `~/.editorconfig`, `~/.bash_aliases`).
 
+## Homebrew / Brewfile
+
+`homebrew/.config/homebrew/Brewfile` is periodically regenerated with `brew bundle dump`, which strips every comment. Record package-specific caveats here instead of in the Brewfile.
+
+- **hermes-agent** (`uv "hermes-agent"`) — upstream caps Python at `<3.14` because its Rust-backed transitives ship no cp314 wheels, but `uv tool install` ignores `requires-python` and builds the tool env with the machine's default interpreter. On 3.14 every skills-catalog command dies with `AttributeError` in `DaemonThreadPoolExecutor._adjust_thread_count`. Install it explicitly:
+
+  ```sh
+  uv tool install --python 3.13 --force hermes-agent
+  ```
+
+  `brew bundle` compares uv tool names only (never versions), so an already-installed copy is left untouched and the pin survives repeated `brew bundle install` runs. After reinstalling, run `hermes gateway install` — the launchd plist hardcodes the interpreter path.
+
 ## Neovim Configuration
 
 Entry point: `nvim/.config/nvim/init.lua`  
