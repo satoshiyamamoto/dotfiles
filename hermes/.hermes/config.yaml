@@ -39,6 +39,16 @@ known_plugin_toolsets:
   cli:
     - spotify
 
+# ── Skills ────────────────────────────────────────────────────────────
+# Personal skills live in the satoshiyamamoto/skills repo, not in
+# ~/.hermes/skills — that directory belongs to Hermes (bundled skills,
+# hub installs, .hub/ state) and must not be stow-managed. A local path
+# needs no auth even though the repo is private, and edits are live.
+# Requires the clone at the path below; see CLAUDE.md > Hermes Agent.
+skills:
+  external_dirs:
+    - ~/Projects/src/github.com/satoshiyamamoto/skills/hermes
+
 # ── Security ──────────────────────────────────────────────────────────
 # Secret redaction is ON by default — strings that look like API keys,
 # tokens, and passwords are masked in tool output, logs, and chat

@@ -39,9 +39,29 @@ Drop `--skip-setup` only on a machine with no `~/.hermes/config.yaml` yet; the w
 - Code lives in `~/.hermes/hermes-agent` (git checkout of `main` plus a Python 3.11 venv driven by Hermes' own uv at `~/.hermes/bin/uv`). The `hermes` command is a shim at `~/.local/bin/hermes`.
 - **Never pass `--branch <tag>`.** `git clone --depth 1 --branch <tag>` pins the refspec to that single tag and leaves no remote-tracking branch, so `hermes update` dies with `Branch 'main' not found on origin`. Recover with `git remote set-branches origin main && git fetch --depth 1 origin main`.
 - `hermes update` does a git pull on `main`. From a detached HEAD it switches to `main` automatically (autostashing local changes), so tag pinning and `hermes update` are mutually exclusive.
-- `~/.hermes` is shared by every install method, so switching methods keeps all config and state. The installer skips files that already exist, and `atomic_yaml_write` preserves symlinks (upstream #16743) — stow-linked `config.yaml` / `SOUL.md` / `skills/` are never clobbered.
+- `~/.hermes` is shared by every install method, so switching methods keeps all config and state. The installer skips files that already exist, and `atomic_yaml_write` preserves symlinks (upstream #16743) — stow-linked `config.yaml` / `SOUL.md` are never clobbered.
+- **The `hermes` package deliberately stows only `config.yaml` and `SOUL.md`.** `~/.hermes/skills` belongs to Hermes (bundled skills seeded by the installer, hub installs, `.hub/` provenance, usage telemetry) and must stay out of stow's reach — see [Personal Skills](#personal-skills) for why.
 - The launchd plist points at `~/.hermes/hermes-agent/venv/bin/python`, which carries no version, so `hermes update` won't break the gateway. Re-run `hermes gateway install` only when switching install methods.
 - The installer shells out to `brew install` for missing system tools (ripgrep, ffmpeg, git). That is why `ffmpeg` is declared in the Brewfile — keep it there so the Brewfile stays in sync with what Hermes needs.
+
+### Personal Skills
+
+Hand-written skills are **not** in this repo. They live in [satoshiyamamoto/skills](https://github.com/satoshiyamamoto/skills), which serves two agents from two trees:
+
+```
+skills/<skill-name>/SKILL.md             Claude Code (plugin.json "skills": "./skills")
+hermes/<category>/<skill-name>/SKILL.md  Hermes Agent (skills.external_dirs)
+```
+
+Hermes reads the `hermes/` tree via `skills.external_dirs` in `config.yaml`, pointed at the local clone. A local path needs no auth even though the repo is private, and edits are live. The directory level under `hermes/` becomes the skill's category.
+
+Three reasons not to put personal skills under `~/.hermes/skills` instead:
+
+1. **Stow folding breaks `hermes skills install`.** If any part of `~/.hermes/skills` comes from stow, stow collapses the whole directory into one symlink pointing at this repo, and installs fail with `Installation blocked: '<repo path>' is not in the subpath of '/Users/<user>/.hermes/skills'`. Upstream bug: `install_from_quarantine()` in `tools/skills_hub.py` compares a `resolve()`d `install_dir` against an unresolved `_skills_dir()`. It raises *after* `shutil.move()`, so the skill lands on disk but never reaches `lock.json` — recover by re-running the install.
+2. **`--no-folding` dodges that but trips the trust check.** `skill_view()` resolves both sides before comparing against `_trusted_dirs`, so a symlinked `SKILL.md` under a real `~/.hermes/skills` logs `skill file is outside the trusted skills directory` on every load. Paths from `external_dirs` are in `_trusted_dirs`, so they stay quiet.
+3. `~/.hermes/skills` also accumulates ~48 MB of bundled skills plus `.hub/` state, which has no business in a dotfiles working tree.
+
+`hermes skills tap add satoshiyamamoto/skills` is the wrong tool for these: taps install a **copy** through the GitHub API, which needs auth for a private repo and drops the live link.
 
 ## Neovim Configuration
 

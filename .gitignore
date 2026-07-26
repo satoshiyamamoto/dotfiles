@@ -98,14 +98,11 @@ zed/.config/zed/*.log
 hunk/.config/hunk/state.json
 
 ### Hermes Agent ###
-# Manage config and skills only — secrets (.env, auth.json) and runtime state
-# (*.db, sessions/, logs/, cache/, cron/jobs.json) must never be committed.
+# Manage config only — secrets (.env, auth.json) and runtime state (*.db,
+# sessions/, logs/, cache/, cron/jobs.json) must never be committed. Skills
+# are not managed here at all: ~/.hermes/skills belongs to Hermes, and
+# personal skills live in the satoshiyamamoto/skills repo, wired in via
+# skills.external_dirs in config.yaml.
 hermes/.hermes/**
 !hermes/.hermes/config.yaml
 !hermes/.hermes/SOUL.md
-# Only skills/personal/ is hand-written and ours. Everything else under skills/
-# belongs to Hermes — bundled skills seeded by the installer, hub-installed
-# skills, hub provenance, usage telemetry, curator state — and stays untracked.
-!hermes/.hermes/skills/
-!hermes/.hermes/skills/personal/
-!hermes/.hermes/skills/personal/**
