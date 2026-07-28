@@ -42,9 +42,11 @@ path=(
 )
 
 ## Homebrew
-export HOMEBREW_PREFIX='/opt/homebrew'
-export HOMEBREW_NO_ENV_HINTS='true'
 export HOMEBREW_BUNDLE_MAS_SKIP=''
+export HOMEBREW_CURLRC="$XDG_CONFIG_HOME/homebrew/curlrc"
+export HOMEBREW_NO_ENV_HINTS='true'
+export HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS='1'
+export HOMEBREW_PREFIX='/opt/homebrew'
 
 ## fzf
 FZF_PREVIEW_FILE='bat --style=changes,header --color=always --line-range :50 {}'
