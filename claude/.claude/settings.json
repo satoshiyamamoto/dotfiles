@@ -166,7 +166,8 @@
     "mattpocock-skills@mattpocock": true,
     "agent-skills@addy-agent-skills": true,
     "vercel@claude-plugins-official": true,
-    "data-agent-kit-starter-pack@claude-plugins-official": true
+    "data-agent-kit-starter-pack@claude-plugins-official": true,
+    "satoshiyamamoto-skills@satoshiyamamoto": true
   },
   "extraKnownMarketplaces": {
     "apple-notes-mcp": {
