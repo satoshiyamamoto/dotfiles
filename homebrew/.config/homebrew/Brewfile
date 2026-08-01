@@ -49,6 +49,8 @@ brew "bat"
 brew "bat-extras"
 # Garbage collector for C and C++
 brew "bdw-gc"
+# Terminal EPUB Reader
+brew "bk"
 # Collection of portable C++ source libraries
 brew "boost"
 # Generic-purpose lossless compression algorithm by Google
@@ -151,6 +153,8 @@ brew "harfbuzz"
 brew "libtiff"
 # Color management engine supporting ICC profiles
 brew "little-cms2"
+# Image format providing lossless and lossy compression for web images
+brew "webp"
 # Development kit for the Java programming language
 brew "openjdk"
 # Java garbage collection visualization tool
@@ -209,8 +213,6 @@ brew "hey"
 brew "htop"
 # Review-first terminal diff viewer for agent-authored changesets
 brew "hunk"
-# Image format providing lossless and lossy compression for web images
-brew "webp"
 # Tools and libraries to manipulate images in select formats
 brew "imagemagick"
 # Library of 2D and 3D vector, matrix, and math operations
@@ -251,8 +253,6 @@ brew "libevent"
 brew "libfido2"
 # Conversion library
 brew "libiconv"
-# Validating, recursive, caching DNS resolver
-brew "unbound"
 # Postgres C API library
 brew "libpq"
 # Reliable Internet Stream Transport (RIST)
@@ -375,6 +375,8 @@ brew "tree"
 brew "tree-sitter-cli"
 # Command-line tool for sharing terminal over the web
 brew "ttyd"
+# Validating, recursive, caching DNS resolver
+brew "unbound"
 # Multifunction timer tool
 brew "utimer"
 # Extremely fast Python package installer and resolver, written in Rust
