@@ -17,6 +17,8 @@ $git_status\
 $jobs\
 [](fg:#212736 bg:#1d2230)\
 [ ](fg:#1d2230)\
+$fill\
+$battery\
 \n$character"""
 
 
@@ -63,6 +65,17 @@ disabled = false
 symbol = ""
 format = '[ $symbol $number]($style)'
 style = "bg:#212736"
+
+[fill]
+symbol = " "
+
+[battery]
+format = "[$symbol[$percentage](fg:#e3e5e5) ]($style)"
+
+[[battery.display]]
+threshold = 20
+style = "fg:red"
+discharging_symbol = "󰁺 "
 
 [env_var.ZMX_SESSION]
 symbol = "⧖ "
