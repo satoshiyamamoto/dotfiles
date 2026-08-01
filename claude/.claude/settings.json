@@ -106,6 +106,7 @@
     "defaultMode": "auto"
   },
   "model": "opus[1m]",
+  "skillOverrides": {},
   "hooks": {
     "WorktreeCreate": [
       {
@@ -165,8 +166,7 @@
     "worktrunk@worktrunk": true,
     "mattpocock-skills@mattpocock": true,
     "agent-skills@addy-agent-skills": true,
-    "vercel@claude-plugins-official": true,
-    "data-agent-kit-starter-pack@claude-plugins-official": true,
+    "vercel@claude-plugins-official": false,
     "satoshiyamamoto-skills@satoshiyamamoto": true
   },
   "extraKnownMarketplaces": {
