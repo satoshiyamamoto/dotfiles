@@ -2,6 +2,9 @@
   name = Satoshi Yamamoto
   email = satoshiyamamoto@me.com
 
+[init]
+  defaultBranch = main
+
 [credential "https://dev.azure.com"]
 	provider = generic
 	useHttpPath = true
