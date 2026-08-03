@@ -166,7 +166,7 @@ git-repos() {
   zle accept-line
 }
 zle -N git-repos
-bindkey '\eg' git-repos        # alt+g for ghq
+bindkey '\er' git-repos        # alt+r for repos
 
 # The three session pickers below work both as ZLE widgets and as plain
 # commands. $WIDGET is only set while a widget runs, so it tells the two apart:
