@@ -168,6 +168,11 @@ git-repos() {
 zle -N git-repos
 bindkey '^G' git-repos
 
+# The three session pickers below work both as ZLE widgets and as plain
+# commands. $WIDGET is only set while a widget runs, so it tells the two apart:
+# from a widget a TTY-taking command has to go through BUFFER and accept-line,
+# while called by name the function already owns the TTY and can run it
+# directly. Binding or unbinding a key then needs no change to the body
 tmux-sessions() {
   local session
   session=$(tmux list-sessions 2>/dev/null | fzf \
@@ -177,17 +182,18 @@ tmux-sessions() {
     --preview='tmux capture-pane -ep -t $(echo {} | cut -d: -f1)' \
     --preview-window=right:50%:follow \
   | cut -d: -f1)
-  zle reset-prompt
+  [[ -n "$WIDGET" ]] && zle reset-prompt
   [[ -z "$session" ]] && return
   if [[ -n "$TMUX" ]]; then
     tmux switch-client -t "$session"
-  else
+  elif [[ -n "$WIDGET" ]]; then
     BUFFER="tmux attach -t ${(q)session}"
     zle accept-line
+  else
+    tmux attach -t "$session"
   fi
 }
 zle -N tmux-sessions
-bindkey '^]' tmux-sessions
 
 zmx-sessions() {
   local display
@@ -209,20 +215,19 @@ zmx-sessions() {
     --preview='zmx history {1} --vt' \
     --preview-window=right:50%:follow \
   )
-  zle reset-prompt
+  [[ -n "$WIDGET" ]] && zle reset-prompt
   [[ -z "$selected" ]] && return
 
   session_name=$(echo "$selected" | awk '{print $1}')
-  BUFFER="zmx attach ${(q)session_name}"
-  zle accept-line
+  if [[ -n "$WIDGET" ]]; then
+    BUFFER="zmx attach ${(q)session_name}"
+    zle accept-line
+  else
+    zmx attach "$session_name"
+  fi
 }
 zle -N zmx-sessions
-bindkey '^_' zmx-sessions
 
-# Not a ZLE widget: with no keybinding it is called by name, and a widget
-# invoked from the command line dies on "widgets can only be called when ZLE
-# is active". Calling it directly already has a TTY, so the BUFFER and
-# accept-line dance the widgets above need is unnecessary here
 herdr-sessions() {
   # Nested herdr is disabled by default, so no session can be attached from
   # inside another one. Detach exists only as the prefix+q keybinding and
@@ -253,11 +258,19 @@ herdr-sessions() {
     --preview='HERDR_SOCKET_PATH={5} herdr api snapshot | jq -r ".result.snapshot.workspaces[] | [(.number|tostring)+\".\", .label, .agent_status, \"panes:\"+(.pane_count|tostring)] | join(\"|\")" | column -t -s"|"' \
     --preview-window=right:50% \
   )
+  [[ -n "$WIDGET" ]] && zle reset-prompt
   [[ -z "$selected" ]] && return
 
   # Attach doubles as start, so stopped sessions work too
-  herdr session attach "${selected%% *}"
+  local name=${selected%% *}
+  if [[ -n "$WIDGET" ]]; then
+    BUFFER="herdr session attach ${(q)name}"
+    zle accept-line
+  else
+    herdr session attach "$name"
+  fi
 }
+zle -N herdr-sessions
 
 
 
