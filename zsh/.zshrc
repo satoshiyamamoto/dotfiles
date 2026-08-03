@@ -161,20 +161,22 @@ herdr-select() {
 
   local display
   display=$(herdr session list --json 2>/dev/null \
-    | jq -r '.sessions[] | [.name, (if .running then "running" else "stopped" end), .socket_path] | @tsv' \
-    | while IFS=$'\t' read -r name state sock; do
-        printf "%-20s  %-8s  %s\n" "$name" "$state" "$sock"
+    | jq -r '.sessions[] | [.name, (if .default then "*" else "-" end), (if .running then "running" else "stopped" end), .session_dir, .socket_path] | @tsv' \
+    | while IFS=$'\t' read -r name mark state dir sock; do
+        printf "%-20s  %-1s  %-8s  %-40s  %s\n" "$name" "$mark" "$state" "${dir/#$HOME/~}" "$sock"
       done)
   [[ -z "$display" ]] && return
 
   local selected
-  # socket path は preview の {3} に要るが一覧では邪魔なので --with-nth で隠す
+  # socket path は preview の {5} に要るが一覧では邪魔なので --with-nth で隠す。
+  # preview の区切りに | を使うのは、--preview='...' が単一引用符で囲まれていて
+  # $'\t' や "$(printf '\t')" を書けないため。column -t が全角幅も揃えてくれる。
   selected=$(echo "$display" | fzf \
     --height=80% \
     --reverse \
     --prompt="> " \
-    --with-nth=1,2 \
-    --preview='HERDR_SOCKET_PATH={3} herdr api snapshot | jq -r ".result.snapshot.workspaces[] | \"\(.number). \(.label) [\(.agent_status)] panes:\(.pane_count)\""' \
+    --with-nth=1,2,3,4 \
+    --preview='HERDR_SOCKET_PATH={5} herdr api snapshot | jq -r ".result.snapshot.workspaces[] | [(.number|tostring)+\".\", .label, .agent_status, \"panes:\"+(.pane_count|tostring)] | join(\"|\")" | column -t -s"|"' \
     --preview-window=right:50% \
   )
   [[ -z "$selected" ]] && return
