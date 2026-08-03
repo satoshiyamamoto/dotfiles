@@ -271,6 +271,7 @@ herdr-sessions() {
   fi
 }
 zle -N herdr-sessions
+bindkey '\em' herdr-sessions   # alt+m for multiplexer
 
 
 
