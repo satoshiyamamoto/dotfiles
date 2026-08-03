@@ -151,6 +151,38 @@ y() {
   return $ret
 }
 
+herdr-select() {
+  # herdr はネストを既定で無効にしているので、セッション内からは attach できない。
+  # detach は prefix+q のキーバインドにしか無く、プログラムからは発火できない。
+  if [[ "${HERDR_ENV:-}" == "1" ]]; then
+    echo "error: nested herdr is disabled; detach with prefix+q before switching sessions" >&2
+    return 1
+  fi
+
+  local display
+  display=$(herdr session list --json 2>/dev/null \
+    | jq -r '.sessions[] | [.name, (if .running then "running" else "stopped" end), .socket_path] | @tsv' \
+    | while IFS=$'\t' read -r name state sock; do
+        printf "%-20s  %-8s  %s\n" "$name" "$state" "$sock"
+      done)
+  [[ -z "$display" ]] && return
+
+  local selected
+  # socket path は preview の {3} に要るが一覧では邪魔なので --with-nth で隠す
+  selected=$(echo "$display" | fzf \
+    --height=80% \
+    --reverse \
+    --prompt="> " \
+    --with-nth=1,2 \
+    --preview='HERDR_SOCKET_PATH={3} herdr api snapshot | jq -r ".result.snapshot.workspaces[] | \"\(.number). \(.label) [\(.agent_status)] panes:\(.pane_count)\""' \
+    --preview-window=right:50% \
+  )
+  [[ -z "$selected" ]] && return
+
+  # 停止中のセッションでも attach が起動を兼ねる
+  herdr session attach "${selected%% *}"
+}
+
 ## ZLE Widgets
 git-repos() {
   local repo
@@ -175,6 +207,7 @@ tmux-select() {
     --reverse \
     --prompt="> " \
     --preview='tmux capture-pane -ep -t $(echo {} | cut -d: -f1)' \
+    --preview-window=right:50%:follow \
   | cut -d: -f1)
   zle reset-prompt
   [[ -z "$session" ]] && return
@@ -202,11 +235,11 @@ zmx-select() {
 
   local selected session_name
   selected=$(echo "$display" | fzf \
-    --height=80% \
+    --height=40% \
     --reverse \
     --prompt="> " \
     --preview='zmx history {1} --vt' \
-    --preview-window=right:60%:follow \
+    --preview-window=right:50%:follow \
   )
   zle reset-prompt
   [[ -z "$selected" ]] && return
