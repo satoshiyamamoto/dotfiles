@@ -198,33 +198,20 @@ zmx-select() {
     [[ "$pid" != *[!0-9]* ]] || continue
     printf "%-20s  pid:%-8s  clients:%-2s  %s\n" "$name" "$pid" "$clients" "$dir"
   done)
+  [[ -z "$display" ]] && return
 
-  local output query key selected session_name
-  output=$({ [[ -n "$display" ]] && echo "$display"; } | fzf \
-    --print-query \
-    --expect=alt-enter \
+  local selected session_name
+  selected=$(echo "$display" | fzf \
     --height=80% \
     --reverse \
     --prompt="> " \
-    --header="Enter: attach | Alt-Enter: new session" \
     --preview='zmx history {1} --vt' \
     --preview-window=right:60%:follow \
   )
-  local rc=$?
   zle reset-prompt
+  [[ -z "$selected" ]] && return
 
-  query=$(echo "$output" | sed -n '1p')
-  key=$(echo "$output" | sed -n '2p')
-  selected=$(echo "$output" | sed -n '3p')
-
-  if [[ "$key" == "alt-enter" && -n "$query" ]]; then
-    session_name="$query"
-  elif [[ -n "$selected" ]]; then
-    session_name=$(echo "$selected" | awk '{print $1}')
-  else
-    return 130
-  fi
-
+  session_name=$(echo "$selected" | awk '{print $1}')
   BUFFER="zmx attach ${(q)session_name}"
   zle accept-line
 }
