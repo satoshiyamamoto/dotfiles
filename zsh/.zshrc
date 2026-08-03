@@ -151,40 +151,6 @@ y() {
   return $ret
 }
 
-herdr-select() {
-  # herdr はネストを既定で無効にしているので、セッション内からは attach できない。
-  # detach は prefix+q のキーバインドにしか無く、プログラムからは発火できない。
-  if [[ "${HERDR_ENV:-}" == "1" ]]; then
-    echo "error: nested herdr is disabled; detach with prefix+q before switching sessions" >&2
-    return 1
-  fi
-
-  local display
-  display=$(herdr session list --json 2>/dev/null \
-    | jq -r '.sessions[] | [.name, (if .default then "*" else "-" end), (if .running then "running" else "stopped" end), .session_dir, .socket_path] | @tsv' \
-    | while IFS=$'\t' read -r name mark state dir sock; do
-        printf "%-20s  %-1s  %-8s  %-40s  %s\n" "$name" "$mark" "$state" "${dir/#$HOME/~}" "$sock"
-      done)
-  [[ -z "$display" ]] && return
-
-  local selected
-  # socket path は preview の {5} に要るが一覧では邪魔なので --with-nth で隠す。
-  # preview の区切りに | を使うのは、--preview='...' が単一引用符で囲まれていて
-  # $'\t' や "$(printf '\t')" を書けないため。column -t が全角幅も揃えてくれる。
-  selected=$(echo "$display" | fzf \
-    --height=80% \
-    --reverse \
-    --prompt="> " \
-    --with-nth=1,2,3,4 \
-    --preview='HERDR_SOCKET_PATH={5} herdr api snapshot | jq -r ".result.snapshot.workspaces[] | [(.number|tostring)+\".\", .label, .agent_status, \"panes:\"+(.pane_count|tostring)] | join(\"|\")" | column -t -s"|"' \
-    --preview-window=right:50% \
-  )
-  [[ -z "$selected" ]] && return
-
-  # 停止中のセッションでも attach が起動を兼ねる
-  herdr session attach "${selected%% *}"
-}
-
 ## ZLE Widgets
 git-repos() {
   local repo
@@ -202,7 +168,7 @@ git-repos() {
 zle -N git-repos
 bindkey '^G' git-repos
 
-tmux-select() {
+tmux-sessions() {
   local session
   session=$(tmux list-sessions 2>/dev/null | fzf \
     --height=40% \
@@ -220,10 +186,10 @@ tmux-select() {
     zle accept-line
   fi
 }
-zle -N tmux-select
-bindkey '^]' tmux-select
+zle -N tmux-sessions
+bindkey '^]' tmux-sessions
 
-zmx-select() {
+zmx-sessions() {
   local display
   display=$(zmx list 2>/dev/null | while IFS=$'\t' read -r name pid clients created dir; do
     name=${name#*name=}
@@ -250,8 +216,48 @@ zmx-select() {
   BUFFER="zmx attach ${(q)session_name}"
   zle accept-line
 }
-zle -N zmx-select
-bindkey '^_' zmx-select
+zle -N zmx-sessions
+bindkey '^_' zmx-sessions
+
+# Not a ZLE widget: with no keybinding it is called by name, and a widget
+# invoked from the command line dies on "widgets can only be called when ZLE
+# is active". Calling it directly already has a TTY, so the BUFFER and
+# accept-line dance the widgets above need is unnecessary here
+herdr-sessions() {
+  # Nested herdr is disabled by default, so no session can be attached from
+  # inside another one. Detach exists only as the prefix+q keybinding and
+  # cannot be triggered programmatically
+  if [[ "${HERDR_ENV:-}" == "1" ]]; then
+    echo "error: nested herdr is disabled; detach with prefix+q before switching sessions" >&2
+    return 1
+  fi
+
+  local display
+  display=$(herdr session list --json 2>/dev/null \
+    | jq -r '.sessions[] | [.name, (if .default then "*" else "-" end), (if .running then "running" else "stopped" end), .session_dir, .socket_path] | @tsv' \
+    | while IFS=$'\t' read -r name mark state dir sock; do
+        printf "%-20s  %-1s  %-8s  %-40s  %s\n" "$name" "$mark" "$state" "${dir/#$HOME/~}" "$sock"
+      done)
+  [[ -z "$display" ]] && return
+
+  local selected
+  # The socket path is needed as {5} in the preview but only clutters the list,
+  # so --with-nth hides it. The preview joins fields on | rather than a tab
+  # because --preview is single-quoted, which rules out $'\t'; column -t also
+  # lines up East Asian wide characters
+  selected=$(echo "$display" | fzf \
+    --height=80% \
+    --reverse \
+    --prompt="> " \
+    --with-nth=1,2,3,4 \
+    --preview='HERDR_SOCKET_PATH={5} herdr api snapshot | jq -r ".result.snapshot.workspaces[] | [(.number|tostring)+\".\", .label, .agent_status, \"panes:\"+(.pane_count|tostring)] | join(\"|\")" | column -t -s"|"' \
+    --preview-window=right:50% \
+  )
+  [[ -z "$selected" ]] && return
+
+  # Attach doubles as start, so stopped sessions work too
+  herdr session attach "${selected%% *}"
+}
 
 
 
