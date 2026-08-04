@@ -147,6 +147,7 @@
     "command": "wt list statusline --format=claude-code"
   },
   "enabledPlugins": {
+    "agent-skills@addy-agent-skills": true,
     "apple-notes@apple-notes-mcp": true,
     "code-review@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
@@ -157,28 +158,28 @@
     "gopls-lsp@claude-plugins-official": true,
     "jdtls-lsp@claude-plugins-official": true,
     "lua-lsp@claude-plugins-official": true,
+    "mattpocock-skills@mattpocock": true,
     "playwright@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true,
     "pyright-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "satoshiyamamoto-skills@satoshiyamamoto": true,
     "security-guidance@claude-plugins-official": true,
     "skill-creator@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "worktrunk@worktrunk": true,
-    "mattpocock-skills@mattpocock": true,
-    "agent-skills@addy-agent-skills": true,
-    "satoshiyamamoto-skills@satoshiyamamoto": true
+    "worktrunk@worktrunk": true
   },
   "extraKnownMarketplaces": {
+    "addy-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "addyosmani/agent-skills"
+      }
+    },
     "apple-notes-mcp": {
       "source": {
         "source": "github",
         "repo": "sweetrb/apple-notes-mcp"
-      }
-    },
-    "worktrunk": {
-      "source": {
-        "source": "github",
-        "repo": "max-sixty/worktrunk"
       }
     },
     "mattpocock": {
@@ -187,21 +188,20 @@
         "repo": "mattpocock/skills"
       }
     },
-    "addy-agent-skills": {
-      "source": {
-        "source": "github",
-        "repo": "addyosmani/agent-skills"
-      }
-    },
     "satoshiyamamoto": {
       "source": {
         "source": "directory",
         "path": "/Users/a12019/Projects/src/github.com/satoshiyamamoto/skills"
       }
+    },
+    "worktrunk": {
+      "source": {
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
+      }
     }
   },
   "language": "japanese",
-  "alwaysThinkingEnabled": true,
   "effortLevel": "xhigh",
   "pluginConfigs": {},
   "tui": "default",
