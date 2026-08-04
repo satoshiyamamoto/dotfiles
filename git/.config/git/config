@@ -9,12 +9,6 @@
 	provider = generic
 	useHttpPath = true
 
-[credential "https://github.com"]
-	provider = github
-
-[credential "https://ghe.ca-tools.org"]
-	provider = github
-
 [include]
     path = ~/.config/git/config.darwin
 

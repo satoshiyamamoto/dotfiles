@@ -39,3 +39,10 @@
 [credential]
 	helper =
 	helper = /usr/local/share/gcm-core/git-credential-manager
+
+# GCM stores tokens in the macOS Keychain, which is unreadable from a non-Aqua
+# session (ssh login), so it re-prompts every time. gh keeps its token in a
+# plain file and works in both. Must stay after the reset above to survive it.
+[credential "https://github.com"]
+	helper =
+	helper = !gh auth git-credential
