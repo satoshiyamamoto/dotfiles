@@ -1,6 +1,9 @@
 git:
   diffRenderers:
-    - command: delta --dark --paging=never --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}" --file-style="omit"
+    - name: hunk
+      command: hunk pager --no-line-numbers
+    - name: delta
+      command: delta --dark --paging=never --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}" --file-style="omit"
 gui:
   nerdFontsVersion: "3"
   theme:
