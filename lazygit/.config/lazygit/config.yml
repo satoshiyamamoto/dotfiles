@@ -1,6 +1,6 @@
 git:
-  pagers:
-    - pager: delta --dark --paging=never --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}" --file-style="omit"
+  diffRenderers:
+    - command: delta --dark --paging=never --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}" --file-style="omit"
 gui:
   nerdFontsVersion: "3"
   theme:
@@ -34,18 +34,6 @@ customCommands:
     context: files
     description: AI commit message (Claude Haiku)
     command: >-
-      git diff --cached |
-      CLAUDECODE= MAX_THINKING_TOKENS=0
-      claude -p
-      --no-session-persistence
-      --model haiku
-      --tools=''
-      --disable-slash-commands
-      --setting-sources=''
-      --system-prompt=''
-      'Generate ONLY a one-line Git commit message following Conventional Commits format
-      (type(scope): description). Types: feat, fix, docs, style, refactor, test, chore.
-      Based strictly on the diff from stdin. Output ONLY the message, nothing else.'
-      | git commit -e -F -
+      git diff --cached | CLAUDECODE= MAX_THINKING_TOKENS=0 claude -p --no-session-persistence --model haiku --tools='' --disable-slash-commands --setting-sources='' --system-prompt='' 'Generate ONLY a one-line Git commit message following Conventional Commits format (type(scope): description). Types: feat, fix, docs, style, refactor, test, chore. Based strictly on the diff from stdin. Output ONLY the message, nothing else.' | git commit -e -F -
     output: terminal
     loadingText: Generating commit message...
