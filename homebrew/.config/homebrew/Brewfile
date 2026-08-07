@@ -1,4 +1,5 @@
 tap "neurosnap/tap"
+tap "rjyo/moshi"
 # C++ Common Libraries
 brew "abseil"
 # Get stuff done with container-native workflows for Kubernetes
@@ -287,6 +288,8 @@ brew "mermaid-cli"
 brew "minikube"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
+# Remote terminal application
+brew "mosh"
 # Library for a binary-based efficient data interchange format
 brew "msgpack"
 # CLI for MySQL with auto-completion and syntax highlighting
@@ -409,6 +412,8 @@ brew "zsh-syntax-highlighting"
 brew "zsh-you-should-use"
 # Session attach/detach for the terminal
 brew "neurosnap/tap/zmx", trusted: true
+# Portable daemon + CLI that bridges AI coding agents to the Moshi mobile app
+brew "rjyo/moshi/moshi-hook", trusted: true
 # Terminal interface for Antigravity agents
 cask "antigravity-cli"
 # OpenAI's official ChatGPT desktop app
