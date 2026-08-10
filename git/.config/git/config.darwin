@@ -3,6 +3,12 @@
   pager = hunk pager
   whitespace = cr-at-eol
 
+# hunk's pager parses ANSI-coloured input in quadratic time, so an unbounded
+# `git log` on a large history stalls for over a minute before drawing anything.
+# Diffs keep hunk; log alone falls back to less.
+[pager]
+  log = less -R
+
 [diff]
   tool = nvimdiff
   colorMoved = dimmed-zebra
