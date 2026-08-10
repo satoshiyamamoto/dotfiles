@@ -44,6 +44,21 @@ Drop `--skip-setup` only on a machine with no `~/.hermes/config.yaml` yet; the w
 - The launchd plist points at `~/.hermes/hermes-agent/venv/bin/python`, which carries no version, so `hermes update` won't break the gateway. Re-run `hermes gateway install` only when switching install methods.
 - The installer shells out to `brew install` for missing system tools (ripgrep, ffmpeg, git). That is why `ffmpeg` is declared in the Brewfile — keep it there so the Brewfile stays in sync with what Hermes needs.
 
+### Computer Use (cua-driver)
+
+`/Applications/CuaDriver.app` (`com.trycua.driver`, signed by Cua AI, Inc.) is installed **by Hermes, not by Homebrew** — no cask exists. When `platform_toolsets` in `config.yaml` includes `computer_use`, the post-setup hook (`install_cua_driver()` in `hermes_cli/tools_config.py`) runs the upstream installer:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/trycua/cua/main/libs/cua-driver/scripts/install.sh | bash
+```
+
+- The installer unpacks to `/Applications/CuaDriver.app` and symlinks `~/.local/bin/cua-driver` to the executable. Hermes skips the install when `/Applications` is not writable.
+- Refresh with `hermes computer-use install --upgrade` (also called by `hermes update`). The installer always pulls the latest release, so re-running *is* the upgrade path — there is no version pin. Inspect with `hermes computer-use status` / `doctor`.
+- macOS TCC grants (Accessibility, Screen Recording) attach to `com.trycua.driver` itself — approve **Cua Driver** in System Settings, not the terminal or Hermes.
+- Unlike `ffmpeg`, it never appears in the Brewfile, and `brew bundle` alone will not restore it on a new machine.
+
+Full notes: `~/Documents/knowledge/hermes.md` §8.
+
 ### Personal Skills
 
 Hand-written skills are **not** in this repo. They live in [satoshiyamamoto/skills](https://github.com/satoshiyamamoto/skills), which serves two agents from two trees:
