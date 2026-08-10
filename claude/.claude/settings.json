@@ -105,7 +105,6 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "opus[1m]",
   "skillOverrides": {},
   "hooks": {
     "WorktreeCreate": [
@@ -202,7 +201,7 @@
     }
   },
   "language": "japanese",
-  "effortLevel": "xhigh",
+  "effortLevel": "high",
   "pluginConfigs": {},
   "tui": "default",
   "skipWorkflowUsageWarning": true,
