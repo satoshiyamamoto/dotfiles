@@ -1,5 +1,5 @@
 model = "gpt-5.6-sol"
-model_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
 personality = "pragmatic"
 approval_policy = "on-request"
 approvals_reviewer = "auto_review"
@@ -50,6 +50,10 @@ enabled = true
 
 [hooks.state."/Users/a12019/.codex/hooks.json:session_start:0:0"]
 trusted_hash = "sha256:204f068267ba45d5e3879906e7f53b829121b3f1db59bdc5e024b795e26dbfe4"
+
+[hooks.state."agent-skills@agent-skills:hooks/hooks.json:session_start:0:0"]
+trusted_hash = "sha256:e57b811de94b257c81cbacec569ef2906e2bc71ccc3f0ffc7c996bc575a681f4"
+enabled = true
 
 [[skills.config]]
 path = "/Users/a12019/.agents/skills/find-skills/SKILL.md"
@@ -137,14 +141,14 @@ source_type = "local"
 source = "/Users/a12019/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
 [marketplaces.agent-skills]
-last_updated = "2026-08-06T11:48:55Z"
-last_revision = "f03b4a84b08b76608bbab3133e56e49e361f230b"
+last_updated = "2026-08-10T04:15:38Z"
+last_revision = "7676817c12a1317454ae3898a0c5c1eacf5dd3d5"
 source_type = "git"
 source = "https://github.com/addyosmani/agent-skills.git"
 
 [marketplaces.mattpocock]
-last_updated = "2026-08-06T11:48:56Z"
-last_revision = "8b36d4fb2635b3c21998dcd8144439c9e5ba7302"
+last_updated = "2026-08-10T04:15:39Z"
+last_revision = "84fdeffd12f2ee307994d1eb6feb48173b6e0502"
 source_type = "git"
 source = "https://github.com/mattpocock/skills.git"
 
