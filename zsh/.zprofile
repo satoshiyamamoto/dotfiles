@@ -43,6 +43,7 @@ path=(
 
 ## Homebrew
 export HOMEBREW_BUNDLE_MAS_SKIP=''
+export HOMEBREW_CASK_OPTS='--no-quarantine'
 export HOMEBREW_CURLRC="$XDG_CONFIG_HOME/homebrew/curlrc"
 export HOMEBREW_NO_ENV_HINTS='true'
 export HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS='1'
