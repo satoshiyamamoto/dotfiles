@@ -1,4 +1,4 @@
-theme = "auto"
+theme = "github-dark-default"
 mode = "auto"
 vcs = "git"
 watch = false
@@ -6,5 +6,8 @@ exclude_untracked = false
 line_numbers = true
 wrap_lines = true
 menu_bar = true
-agent_notes = false
+agent_notes = true
 transparent_background = true
+hunk_headers = true
+copy_decorations = false
+cursor_line = "row"
