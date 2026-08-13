@@ -21,13 +21,25 @@ return {
 
   -- HTTP
   {
-    "rest-nvim/rest.nvim",
-    ft = "http",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    "mistweaverco/kulala.nvim",
+    ft = { "http", "rest" },
+    -- Load before session save/restore hooks run
+    event = { "SessionLoadPost", "VimLeavePre" },
     keys = {
-      { "<Leader>rr", "<cmd>Rest run<cr>", desc = "Run HTTP Request" },
-      { "<Leader>rl", "<cmd>Rest last<cr>", desc = "Re-run Last HTTP Request" },
-      { "<Leader>re", "<cmd>Rest env select<cr>", desc = "Select REST Environment" },
+      -- Lazy-load stubs for the keymaps kulala registers globally;
+      -- the rest are only mapped inside http/rest buffers.
+      { "<Leader>Rs", desc = "Send Request" },
+      { "<Leader>Ra", desc = "Send All Requests" },
+      { "<Leader>Rr", desc = "Replay Last Request" },
+      { "<Leader>Ro", desc = "Open Kulala" },
+      { "<Leader>Rb", desc = "Open Scratchpad" },
+    },
+    opts = {
+      global_keymaps = true,
+      global_keymaps_prefix = "<Leader>R",
+      lsp = {
+        filetypes = { "http", "rest" },
+      },
     },
   },
 

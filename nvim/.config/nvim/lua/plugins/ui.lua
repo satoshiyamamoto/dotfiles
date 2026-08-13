@@ -187,6 +187,7 @@ return {
     opts = {
       spec = {
         { "<leader>o", group = "overseer" },
+        { "<leader>R", group = "kulala" },
       },
     },
     keys = {
@@ -305,10 +306,7 @@ return {
             color = function() return "Special" end,
           },
           {
-            function()
-              local env = vim.bo.filetype == "http" and vim.b._rest_nvim_env_file or ""
-              return vim.fn.fnamemodify(env, ":t")
-            end,
+            function() return vim.bo.filetype == "http" and vim.g.kulala_selected_env or "" end,
             icon = { "", color = { fg = "#428890" } },
           },
           "encoding",
@@ -337,7 +335,6 @@ return {
       { "folke/noice.nvim" },
       { "folke/tokyonight.nvim" },
       { "projekt0n/github-nvim-theme" },
-      { "rest-nvim/rest.nvim" },
     },
   },
 

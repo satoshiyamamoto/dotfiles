@@ -90,7 +90,7 @@ All plugins live under `lua/plugins/`, one file per category. Before adding a pl
 | File | Contents |
 |------|----------|
 | `ai.lua` | AI tools: sidekick.nvim (Claude/Codex/Gemini), claudecode.nvim |
-| `coding.lua` | Editing helpers: flash, surround, gitsigns, colorizer, todo-comments, IME |
+| `coding.lua` | Editing helpers: flash, surround, gitsigns, colorizer, todo-comments, IME, kulala.nvim (HTTP) |
 | `completion.lua` | blink.cmp, LuaSnip, nvim-autopairs |
 | `dap.lua` | nvim-dap adapters/configs, dap-ui, neotest, venv-selector |
 | `formatting.lua` | conform.nvim (formatters), nvim-lint (linters) |
@@ -121,6 +121,25 @@ Settings that apply only to a specific filetype (options, keymaps, highlights) g
 ### External Runtime Paths
 
 Add external nvim site paths via `performance.rtp.paths` in `lua/config/lazy.lua`, not `vim.opt.rtp:append()` (lazy.nvim overwrites the latter).
+
+### HTTP Client (kulala.nvim)
+
+`mistweaverco/kulala.nvim` in `lua/plugins/coding.lua` replaced `rest-nvim/rest.nvim`, which was the only plugin here that needed lazy.nvim's luarocks/hererocks machinery.
+
+Two artifacts are managed by the plugin itself, not by Homebrew — `brew bundle` alone will not restore them on a new machine:
+
+- **`kulala-core`** — the backend that executes HTTP/gRPC/WebSocket/GraphQL requests and formats responses. Auto-downloaded from GitHub Releases into nvim's data dir on first use. Override with `kulala_core.path` only when using a hand-installed binary.
+- **`kulala_http` Tree-sitter parser** — kulala clones `tree-sitter-kulala-http` at a pinned commit into `~/.local/share/nvim/kulala.nvim/`, builds it with the Tree-sitter CLI, and installs `site/parser/kulala_http.dylib` plus `site/queries/kulala_http/`. This is why `brew "tree-sitter-cli"` must stay in the Brewfile; `git` and `curl` are also required. Because kulala registers `kulala_http` for the `http` and `rest` filetypes, `http` is deliberately absent from the `require("nvim-treesitter").install({...})` list in `lua/plugins/treesitter.lua`.
+
+Check both with `:checkhealth kulala` (the plugin is lazy-loaded, so run `:Lazy load kulala.nvim` first in a non-`http` buffer). Neovim 0.12+ is required.
+
+**The grammar fetch is async and not crash-safe.** `fetch_grammar()` in `lua/kulala/config/parser.lua` runs `git init` → `git remote add origin` → `git fetch` as chained callbacks, but its resume check only tests whether `.git` exists. If Neovim exits between `init` and `remote add` — easy to hit with `nvim --headless ... +qa` — every later run skips `remote add` and dies with `fatal: 'origin' does not appear to be a git repository`, silently leaving `http` files without highlighting. Recover by deleting the clone and reopening an `.http` file in a session that stays alive for ~2 minutes:
+
+```sh
+rm -rf ~/.local/share/nvim/kulala.nvim/tree-sitter-kulala-http
+```
+
+Keymaps come from kulala's own `global_keymaps = true` under the `<Leader>R` prefix (which-key group in `ui.lua`). The `keys` entries in the spec are lazy-load stubs for the subset kulala maps globally; the rest are filetype-local to `http`/`rest`. The lualine environment indicator reads `vim.g.kulala_selected_env` directly so that lualine never loads kulala.
 
 ### Investigating Plugins
 

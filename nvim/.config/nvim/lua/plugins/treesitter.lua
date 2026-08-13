@@ -27,7 +27,6 @@ return {
         "gotmpl",
         "hcl",
         "html",
-        "http",
         "java",
         "javascript",
         "json",
