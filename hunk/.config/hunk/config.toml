@@ -1,4 +1,4 @@
-theme = "github-dark-default"
+theme = "auto"
 mode = "auto"
 vcs = "git"
 watch = false
