@@ -26,6 +26,24 @@ Config files are placed under `<package>/.config/<tool>/` to follow the [XDG Bas
 
 - **hermes-agent is deliberately absent from the Brewfile.** Upstream lists both `brew install hermes-agent` and PyPI installs (`uv tool install`, `pip install`) as unsupported distribution methods that receive no further updates, and `hermes update` prints a deprecation notice on every run. Use the official installer instead — see [Hermes Agent](#hermes-agent).
 
+### Cask Quarantine — do not set `HOMEBREW_CASK_OPTS='--no-quarantine'`
+
+`--no-quarantine` was removed in Homebrew 6.x (deprecated in `ffe954753b`, 2025-10-23; removed in `ba25213c81`, 2026-07-30). `cask_opts_quarantine?` is gone from `env_config.rb` and `Cask::Installer` no longer takes a `quarantine:` argument. The flag is now **silently ignored** — `brew install --cask` exits 0 with no warning — so it looks like it still works. `brew config` echoes `HOMEBREW_CASK_OPTS` verbatim and is not evidence that the flag is honored. Supported values are only `--*dir`, `--language`, `--require-sha` and `--no-binaries` (`env_config.rb:228`).
+
+The replacement is automatic and needs no configuration. `0a137ee80b` ("Preserve cask quarantine approval", 2026-07-11) makes `brew upgrade --cask` inherit the old version's Gatekeeper approval when both hold:
+
+1. the old app's `com.apple.quarantine` has the user-approved bit `0x0040` set (i.e. it was approved once by hand), and
+2. the new app satisfies the old app's designated requirement, verified through Security.framework rather than `codesign`.
+
+`quarantine_release_decision` in `cask/upgrade.rb:302` decides this and warns with the reason otherwise (`signer_changed` / `signer_unverified` / `unapproved`). So each app prompts **once**, on first launch after it is first quarantined, and never again across upgrades.
+
+Apps installed while `--no-quarantine` still worked carry no quarantine attribute at all, so they read as `unapproved` and will prompt once on their next upgrade. That one-time cost is expected — do not try to suppress it by reintroducing the flag. Inspect any app's state with:
+
+```sh
+brew ruby -e 'require "cask/quarantine"; p2 = Pathname(ARGV[0]);
+  puts "status=#{Cask::Quarantine.status(p2)} approved=#{Cask::Quarantine.user_approved?(p2)}"' /Applications/Zed.app
+```
+
 ## Hermes Agent
 
 Installed with the official script — a Tier 1 supported method — **not** Homebrew or uv:
