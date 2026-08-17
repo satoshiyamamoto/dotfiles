@@ -2,9 +2,9 @@ model = "gpt-5.6-sol"
 model_reasoning_effort = "high"
 personality = "pragmatic"
 approval_policy = "on-request"
-approvals_reviewer = "auto_review"
+approvals_reviewer = "user"
 allow_login_shell = true
-default_permissions = "dev-autonomous"
+default_permissions = ":danger-full-access"
 web_search = "live"
 project_doc_max_bytes = 32768
 service_tier = "default"
@@ -94,6 +94,9 @@ trust_level = "trusted"
 [projects."/Users/a12019/Documents"]
 trust_level = "trusted"
 
+[projects."/Users/a12019/Projects/src/github.com/ca-orion/orion-manifests"]
+trust_level = "trusted"
+
 [plugins."github@openai-curated"]
 enabled = true
 
@@ -147,8 +150,8 @@ source_type = "git"
 source = "https://github.com/addyosmani/agent-skills.git"
 
 [marketplaces.mattpocock]
-last_updated = "2026-08-14T10:22:44Z"
-last_revision = "8b78b531ab965735c5dc74f6f7a219e1e37326df"
+last_updated = "2026-08-17T08:38:34Z"
+last_revision = "9c9f36ccd3995266cd675468af71639c8dde1ec5"
 source_type = "git"
 source = "https://github.com/mattpocock/skills.git"
 
@@ -188,6 +191,12 @@ glob_scan_max_depth = 4
 ":tmpdir" = "write"
 ":slash_tmp" = "write"
 "~/Projects/src" = "write"
+"~/.agents/skills" = "read"
+"~/.codex/hooks" = "read"
+"~/.codex/hooks.json" = "read"
+"~/.codex/plugins" = "read"
+"~/.codex/sessions" = "read"
+"~/.codex/skills" = "read"
 "~/.aws" = "deny"
 "~/.config/gcloud" = "deny"
 "~/.config/gh" = "deny"
