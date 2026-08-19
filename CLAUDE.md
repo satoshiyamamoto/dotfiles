@@ -96,6 +96,26 @@ Three reasons not to put personal skills under `~/.hermes/skills` instead:
 
 `hermes skills tap add satoshiyamamoto/skills` is the wrong tool for these: taps install a **copy** through the GitHub API, which needs auth for a private repo and drops the live link.
 
+## Moshi (moshi-hook)
+
+`moshi-hook serve` runs as a Homebrew launchd agent (`brew "rjyo/moshi/moshi-hook", trusted: true`) and bridges AI coding agents to the Moshi mobile app. The `moshi` package stows only `~/.config/moshi/config.toml`; everything else moshi-hook owns lives in `~/Library/Application Support/Moshi/` (socket, `hook.log`, pairing state) and must stay out of the repo.
+
+`moshi-hook set` writes **through** the stow symlink rather than replacing it, so the CLI and the repo stay in sync — no `--no-folding` needed, unlike the Hermes skills case above. It also sorts the port list on write. Editing `config.toml` by hand is equivalent; `set` just saves you finding the file.
+
+### `scan_ports` is a deliberate allowlist — do not set it back to `all`
+
+With the default `scan_ports = all`, moshi-hook HTTP-probes **every** loopback listener to decide which ones are dev servers (`gateway.listListeningPorts` -> `filterConfiguredScanPorts` -> `probeHTTPServer` -> `classifyServeSim`, detecting tokens like `Vite` / `Next.js` / `X-Powered-By`). Each probe is a bare `GET /` from Go's http.Client, sent twice per port — once with `Host: 127.0.0.1:<port>`, once with `Host: localhost:<port>`, identifiable by `User-Agent: Go-http-client/1.1`.
+
+claudecode.nvim serves WebSocket only, on a random port in 10000-65535, so those probes make it answer 400 `Bad WebSocket upgrade request: Missing or invalid Upgrade header` (body is exactly 64 bytes, so `Content-Length: 64` is the fingerprint) and log a WARN. That path then trips an upstream bug: `server/client.lua` schedules `client.tcp_handle:close()` without the `is_closing()` guard that `server/tcp.lua` `_remove_client` has, so when the peer hangs up first Neovim reports `handle 0x... is already closing` with `[C]: in function 'close'`. Both messages are noise — the Claude Code CLI's own `/ide` handshake is valid and unaffected.
+
+Because the claudecode.nvim port is random, an allowlist is the only fix that survives a restart. **Ranges are not supported** — `moshi-hook set scan-ports 3000-3005` fails with `invalid scan port "3000-3005" (use 1-65535)` (that `1-65535` is the valid range for a *single* port, not range syntax). Only `all`, `none`, or comma-separated individual ports are accepted.
+
+The listed ports come from what this machine actually runs: 3000 (`next dev` / `remix dev` / `wrangler pages dev`, and orion-classic's web app), 8080 (orion-classic's admin app), 5173 (`vite`), 3001 / 5174 (the Next.js and Vite fallbacks when the default is taken), and 4180 (oauth2-proxy in orion-classic's `docker-compose.yml`, which is the URL you actually open in a browser).
+
+Two ports from that compose file are deliberately **not** listed: redis on 6379 speaks no HTTP, and imgproxy on 18080 serves signed-URL image transforms rather than a browsable page, so listing it would only buy an extra probe. Ports outside the list are invisible to the Moshi app — Chrome's `:9222` DevTools endpoint no longer shows up in `moshi-hook servers`, which is the intended trade-off.
+
+Scan-port changes apply on the next discovery refresh (no restart); boolean settings such as `always-on-discovery` need the daemon restarted. Verify with `moshi-hook set` (lists every setting) and `moshi-hook servers` (JSON of what was discovered).
+
 ## Neovim Configuration
 
 Entry point: `nvim/.config/nvim/init.lua`  

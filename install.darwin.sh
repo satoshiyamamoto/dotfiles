@@ -29,6 +29,7 @@ stow $STOW_FLAGS --target="$HOME" \
   kitty \
   lazygit \
   mise \
+  moshi \
   puppeteer \
   nvim \
   powerlevel10k \
