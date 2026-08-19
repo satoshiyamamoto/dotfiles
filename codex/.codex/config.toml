@@ -150,8 +150,8 @@ source_type = "git"
 source = "https://github.com/addyosmani/agent-skills.git"
 
 [marketplaces.mattpocock]
-last_updated = "2026-08-17T08:38:34Z"
-last_revision = "9c9f36ccd3995266cd675468af71639c8dde1ec5"
+last_updated = "2026-08-19T23:42:59Z"
+last_revision = "885e2ca4d842d139e9aef4e48d366c63cb1b8013"
 source_type = "git"
 source = "https://github.com/mattpocock/skills.git"
 
