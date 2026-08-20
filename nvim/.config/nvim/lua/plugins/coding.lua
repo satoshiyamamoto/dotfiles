@@ -40,6 +40,10 @@ return {
       lsp = {
         filetypes = { "http", "rest" },
       },
+      ui = {
+        -- Show the body in the result panel instead of a path to the temp file
+        max_response_size = 10 * 1024 * 1024,
+      },
     },
   },
 
