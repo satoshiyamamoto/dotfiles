@@ -4,14 +4,28 @@ onboarding = false
 name = "tokyo-night"
 auto_switch = false
 
+[keys]
+switch_tab = "prefix+1..9"
+switch_workspace = "prefix+shift+1..9"
+focus_agent = "prefix+alt+1..9"
+
 [ui]
-agent_panel_sort = "priority"
-show_agent_labels_on_pane_borders = false
+prompt_new_tab_name = true
+pane_borders = true
+pane_gaps = true
+agent_panel_sort = "spaces"
+tab_bar_right = [
+  # { type = "zoom" },
+  # { type = "hostname" },
+  # { type = "datetime", format = "%Y-%m-%d %H:%M" },
+  # { type = "text", text = "prod" },
+  # { type = "command", command = "~/.config/herdr/status.sh", interval_seconds = 5, timeout_seconds = 2 },
+]
+tab_bar_right_separator = " · "
 
 [ui.toast]
 delivery = "herdr"
 
 [experimental]
-switch_ascii_input_source_in_prefix = false
-pane_history = false
+switch_ascii_input_source_in_prefix = true
 kitty_graphics = true
