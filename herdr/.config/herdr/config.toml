@@ -15,9 +15,9 @@ pane_borders = true
 pane_gaps = true
 agent_panel_sort = "spaces"
 tab_bar_right = [
-  # { type = "zoom" },
-  # { type = "hostname" },
-  # { type = "datetime", format = "%Y-%m-%d %H:%M" },
+  { type = "zoom" },
+  { type = "hostname" },
+  { type = "datetime", format = "%H:%M" },
   # { type = "text", text = "prod" },
   # { type = "command", command = "~/.config/herdr/status.sh", interval_seconds = 5, timeout_seconds = 2 },
 ]
