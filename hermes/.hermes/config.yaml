@@ -64,3 +64,6 @@ skills:
 #   tirith_path: "tirith"
 #   tirith_timeout: 5
 #   tirith_fail_open: true
+plugins:
+  enabled:
+    - herdr-agent-state
