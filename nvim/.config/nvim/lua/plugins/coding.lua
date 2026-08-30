@@ -37,9 +37,14 @@ return {
     opts = {
       global_keymaps = true,
       global_keymaps_prefix = "<Leader>R",
-      lsp = {
-        filetypes = { "http", "rest" },
-      },
+      -- Highlight with nvim-treesitter's `http` parser instead of kulala's own
+      -- `kulala_http`: the latter makes the value in `@var = ...` mandatory and
+      -- errors on the empty placeholders these files use.
+      treesitter = { enable = false },
+      -- config/init.lua gates the LSP on that parser, so it could never start
+      -- anyway; say so outright. Request execution and the response UI do not
+      -- go through it. `keymaps = false` is kulala's default, kept explicit.
+      lsp = { enable = false, keymaps = false },
       ui = {
         -- Show the body in the result panel instead of a path to the temp file
         max_response_size = 10 * 1024 * 1024,

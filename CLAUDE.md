@@ -186,20 +186,25 @@ Add external nvim site paths via `performance.rtp.paths` in `lua/config/lazy.lua
 
 `mistweaverco/kulala.nvim` in `lua/plugins/coding.lua` replaced `rest-nvim/rest.nvim`, which was the only plugin here that needed lazy.nvim's luarocks/hererocks machinery.
 
-Two artifacts are managed by the plugin itself, not by Homebrew — `brew bundle` alone will not restore them on a new machine:
-
-- **`kulala-core`** — the backend that executes HTTP/gRPC/WebSocket/GraphQL requests and formats responses. Auto-downloaded from GitHub Releases into nvim's data dir on first use. Override with `kulala_core.path` only when using a hand-installed binary.
-- **`kulala_http` Tree-sitter parser** — kulala clones `tree-sitter-kulala-http` at a pinned commit into `~/.local/share/nvim/kulala.nvim/`, builds it with the Tree-sitter CLI, and installs `site/parser/kulala_http.dylib` plus `site/queries/kulala_http/`. This is why `brew "tree-sitter-cli"` must stay in the Brewfile; `git` and `curl` are also required. Because kulala registers `kulala_http` for the `http` and `rest` filetypes, `http` is deliberately absent from the `require("nvim-treesitter").install({...})` list in `lua/plugins/treesitter.lua`.
-
-Check both with `:checkhealth kulala` (the plugin is lazy-loaded, so run `:Lazy load kulala.nvim` first in a non-`http` buffer). Neovim 0.12+ is required.
-
-**The grammar fetch is async and not crash-safe.** `fetch_grammar()` in `lua/kulala/config/parser.lua` runs `git init` → `git remote add origin` → `git fetch` as chained callbacks, but its resume check only tests whether `.git` exists. If Neovim exits between `init` and `remote add` — easy to hit with `nvim --headless ... +qa` — every later run skips `remote add` and dies with `fatal: 'origin' does not appear to be a git repository`, silently leaving `http` files without highlighting. Recover by deleting the clone and reopening an `.http` file in a session that stays alive for ~2 minutes:
-
-```sh
-rm -rf ~/.local/share/nvim/kulala.nvim/tree-sitter-kulala-http
-```
+`kulala-core` — the backend that executes HTTP/gRPC/WebSocket/GraphQL requests and formats responses — is managed by the plugin itself, not by Homebrew: it is auto-downloaded from GitHub Releases into nvim's data dir on first use, so `brew bundle` alone will not restore it on a new machine. Override with `kulala_core.path` only when using a hand-installed binary. Check it with `:checkhealth kulala` (the plugin is lazy-loaded, so run `:Lazy load kulala.nvim` first in a non-`http` buffer). Neovim 0.12+ is required.
 
 Keymaps come from kulala's own `global_keymaps = true` under the `<Leader>R` prefix (which-key group in `ui.lua`). The `keys` entries in the spec are lazy-load stubs for the subset kulala maps globally; the rest are filetype-local to `http`/`rest`. The lualine environment indicator reads `vim.g.kulala_selected_env` directly so that lualine never loads kulala.
+
+#### Highlighting: `treesitter = { enable = false }`, use nvim-treesitter's `http`
+
+kulala ships its own `kulala_http` grammar and, left enabled, clones `tree-sitter-kulala-http` into `~/.local/share/nvim/kulala.nvim/`, builds it, and installs `site/parser/kulala_http.dylib` plus `site/queries/kulala_http/`. **That is disabled here** (`treesitter = { enable = false }` in `lua/plugins/coding.lua`); `http` is in the `require("nvim-treesitter").install({...})` list in `lua/plugins/treesitter.lua` instead, and the FileType autocmd there starts it like any other language.
+
+Two reasons:
+
+1. **`kulala_http` errors on value-less variables.** `variable_declaration` makes the value mandatory (`grammar.js:297-306`, still true on upstream `main`), so a placeholder line like `@token =` is a parse error. On `orion-classic/api/orion-api/requests.http` that is **91 ERROR nodes vs 0** for the standard parser, and each one spans three lines — swallowing the `POST` keyword of the request that follows, which then loses its highlight.
+2. Everything else is close enough: `###` separators, `< ./body.json`, `>> ./response.json`, `{% script %}`, `{{var}}` and the json/xml/graphql injections all parse the same under both. Only kulala-specific `run #name` / `import ./other.http` (misread as a request URL) and multi-line query params (flat `target_url` instead of `query_param`) degrade, and neither produces an error.
+
+**The trade-off is kulala's LSP layer.** `config/init.lua:34` gates `require("kulala.cmd.lsp").start()` on `Parser.is_up_to_date()`, i.e. on `parser/kulala_http.*` and `queries/kulala_http/*.scm` being findable on `runtimepath`. With the parser gone, inlay hints, completion, hover, code actions, document symbols and folding are all off (`cmd/lsp.lua:143` needs the parser directly for folding), so the spec says `lsp = { enable = false, keymaps = false }` outright rather than leaving a block that cannot take effect (`keymaps = false` is already kulala's default — it maps `K` and `<leader>l*` only when asked). Request execution (`<Leader>Rs`) and the response UI are unaffected — `parser/document.lua` is plain Lua and `ui/init.lua` passes an explicit language to `vim.treesitter.start`.
+
+Two consequences worth remembering:
+
+- `brew "tree-sitter-cli"` must still stay in the Brewfile, but for nvim-treesitter's own sake: it shells out to `tree-sitter build` for every parser it compiles (`install.lua:305-317`).
+- A bare `:TSUpdate` used to fail with `Parser not available for language "kulala_http"`. `config.get_installed()` builds its list by scanning `site/parser` and `site/queries`, so kulala's artifacts looked like nvim-treesitter's own; `norm_languages` returns that list verbatim for `'all'` (`config.lua:105-109`), and the unknown language then errors in `get_parser_install_info`. Re-enabling kulala's treesitter handling brings that back. The alternative fix — moving nvim-treesitter's own `install_dir` out of `site/` — was rejected as the bigger change.
 
 ### Investigating Plugins
 
