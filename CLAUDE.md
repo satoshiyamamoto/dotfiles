@@ -44,6 +44,28 @@ brew ruby -e 'require "cask/quarantine"; p2 = Pathname(ARGV[0]);
   puts "status=#{Cask::Quarantine.status(p2)} approved=#{Cask::Quarantine.user_approved?(p2)}"' /Applications/Zed.app
 ```
 
+### Intel Macs — Homebrew no longer publishes x86_64 bottles
+
+kenya.local is an Intel Mac (macOS 15.7.9, `x86_64`, default prefix `/usr/local`). Homebrew has stopped building macOS Intel bottles for many formulae, so `brew bundle` there dies with `Error: <formula>: no bottle available!`. As of 2026-08-30 these nine Brewfile entries have **no** x86_64 macOS bottle at all (only `arm64_*` and `*_linux`): `atuin awscli grpc hunk lefthook node qemu uv zellij`. Formulae that still carry a legacy `sonoma` Intel bottle (ripgrep, fd, git, …) keep installing fine, because Sequoia falls back to the older tag.
+
+The accompanying `This is a Tier 3 configuration` text is **boilerplate**, not a diagnosis: `formula_installer.rb:452` appends it to every no-bottle error because *building from source* is Tier 3. The machine itself still meets the Tier 1 conditions (Apple-supported macOS, default prefix, bottles). `/opt/homebrew` on kenya is a symlink to `/usr/local`, so the hard-coded `HOMEBREW_PREFIX` in `zsh/.zprofile` is harmless — `brew config` resolves the real prefix.
+
+`brew info --json=v2` cannot answer "does an Intel bottle exist?": it lists only the tags usable on the machine running it. Query the API instead:
+
+```sh
+curl -fsSL https://formulae.brew.sh/api/formula/uv.json |
+  python3 -c 'import json,sys; print(sorted(json.load(sys.stdin)["bottle"]["stable"]["files"]))'
+```
+
+How this is handled:
+
+- **`HOMEBREW_BUNDLE_BREW_SKIP` in `zsh/.zprofile`, guarded by `$CPUTYPE`.** The skip list lives in the shell config, never in the Brewfile, because `brew bundle dump` regenerates the Brewfile from the arm64 machine. `bundle/skipper.rb:55` reads it; it is a no-op on arm64.
+- **`brew pin awscli grpc hunk lefthook node qemu`** on kenya. `bundle/brew.rb:179` computes `outdated_formulae - pinned_formulae`, and pinning also keeps a plain `brew upgrade` from failing. Those versions are now frozen until an Intel bottle reappears or they are built from source.
+- **uv, atuin and zellij come from upstream release tarballs into `~/.local/bin`**, not Homebrew. Only `brew`/`cask`/`mas`/`tap`/`flatpak`/`winget` entries can be skipped (`bundle/skipper.rb:55`), so the `uv "docutils"` … lines cannot be; instead `bundle/extensions/extension.rb:57` resolves `uv` with `which`, so a uv on `PATH` satisfies them without the formula. Do not use the atuin/uv official install scripts on kenya — they append to the stowed `~/.zshrc`. `zellij-x86_64-apple-darwin.sha256sum` hashes the **extracted binary**, not the tarball; `uv`/`atuin` publish `.tar.gz.sha256` of the archive.
+- **node deliberately stays on Homebrew** despite being pinned to an old version. `brew uses --installed node` on kenya returns devcontainer, mermaid-cli, opencode and skills, and `~/.config/mise` is a stow symlink into this repo, so `mise use -g node@lts` would write the tool into the shared `mise/.config/mise/config.toml` and leak to the arm64 machine.
+
+Verify with `brew bundle check --verbose` on kenya: the nine entries must print `Skipping <name>` rather than an error.
+
 ## Hermes Agent
 
 Installed with the official script — a Tier 1 supported method — **not** Homebrew or uv:

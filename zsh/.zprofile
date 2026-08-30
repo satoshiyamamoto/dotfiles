@@ -47,6 +47,9 @@ export HOMEBREW_CURLRC="$XDG_CONFIG_HOME/homebrew/curlrc"
 export HOMEBREW_NO_ENV_HINTS='true'
 export HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS='1'
 export HOMEBREW_PREFIX='/opt/homebrew'
+# Intel Macs: Homebrew no longer publishes x86_64 bottles for these formulae
+[[ "$CPUTYPE" == 'x86_64' ]] &&
+  export HOMEBREW_BUNDLE_BREW_SKIP='atuin awscli grpc hunk lefthook node qemu uv zellij'
 
 ## fzf
 FZF_PREVIEW_FILE='bat --style=changes,header --color=always --line-range :50 {}'
