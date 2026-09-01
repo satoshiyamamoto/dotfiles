@@ -49,7 +49,7 @@ export HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS='1'
 export HOMEBREW_PREFIX='/opt/homebrew'
 # Intel Macs: Homebrew no longer publishes x86_64 bottles for these formulae
 [[ "$CPUTYPE" == 'x86_64' ]] &&
-  export HOMEBREW_BUNDLE_BREW_SKIP='atuin awscli grpc hunk lefthook mycli node pandoc qemu unibilium uv zellij'
+  export HOMEBREW_BUNDLE_BREW_SKIP='atuin awscli grpc grpcurl hunk lefthook mise mycli neovim node openssl@3 pandoc qemu tree-sitter tree-sitter-cli unibilium uv zellij'
 
 ## fzf
 FZF_PREVIEW_FILE='bat --style=changes,header --color=always --line-range :50 {}'
