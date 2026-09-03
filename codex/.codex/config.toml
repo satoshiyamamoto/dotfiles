@@ -135,18 +135,18 @@ enabled = true
 enabled = true
 
 [marketplaces.openai-bundled]
-last_updated = "2026-08-20T08:27:41Z"
+last_updated = "2026-09-03T08:01:29Z"
 source_type = "local"
 source = "/Users/a12019/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
 [marketplaces.openai-primary-runtime]
-last_updated = "2026-08-20T08:28:09Z"
+last_updated = "2026-09-03T08:01:58Z"
 source_type = "local"
 source = "/Users/a12019/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
 [marketplaces.agent-skills]
-last_updated = "2026-08-26T01:59:35Z"
-last_revision = "5a5ea45e806f82273549fd85e60adb95d55f510d"
+last_updated = "2026-09-03T08:01:22Z"
+last_revision = "020ec10a788f5703108d093a4bd3d9a7c3847d36"
 source_type = "git"
 source = "https://github.com/addyosmani/agent-skills.git"
 
