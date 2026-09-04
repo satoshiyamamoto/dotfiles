@@ -140,7 +140,7 @@ source_type = "local"
 source = "/Users/a12019/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
 [marketplaces.openai-primary-runtime]
-last_updated = "2026-09-03T08:01:58Z"
+last_updated = "2026-09-04T03:36:31Z"
 source_type = "local"
 source = "/Users/a12019/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
