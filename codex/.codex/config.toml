@@ -1,5 +1,5 @@
-model = "gpt-5.6-sol"
-model_reasoning_effort = "high"
+model = "gpt-6-astra"
+model_reasoning_effort = "low"
 personality = "pragmatic"
 approval_policy = "on-request"
 approvals_reviewer = "user"
@@ -20,6 +20,8 @@ ignore_default_excludes = false
 
 [shell_environment_policy.set]
 NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "6d25aa7656feac858f3a3bdaea5bcbab0dbfd426c9de8e6931ce90c399ee8e4f,e13fd947e846d3d306e9249dd3c73d14931b6494803dbafb16cef85e6add9506"
+BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/a12019/.codex"
 
 [features]
 hooks = true
@@ -30,6 +32,9 @@ memories = false
 notifications = true
 notification_method = "auto"
 notification_condition = "unfocused"
+
+[tui.model_availability_nux]
+gpt-6-astra = 1
 
 [[hooks.PermissionRequest]]
 matcher = "*"
@@ -95,6 +100,9 @@ trust_level = "trusted"
 [projects."/Users/a12019/Projects/src/github.com/ca-orion/orion-manifests"]
 trust_level = "trusted"
 
+[projects."/Users/a12019/Documents/Codex/2026-09-05/realtime-voice-chat"]
+trust_level = "trusted"
+
 [plugins."github@openai-curated"]
 enabled = true
 
@@ -135,24 +143,24 @@ enabled = true
 enabled = true
 
 [marketplaces.openai-bundled]
-last_updated = "2026-09-03T08:01:29Z"
+last_updated = "2026-09-05T05:59:22Z"
 source_type = "local"
 source = "/Users/a12019/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
 [marketplaces.openai-primary-runtime]
-last_updated = "2026-09-04T03:36:31Z"
+last_updated = "2026-09-05T06:19:49Z"
 source_type = "local"
 source = "/Users/a12019/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
 [marketplaces.agent-skills]
-last_updated = "2026-09-03T08:01:22Z"
-last_revision = "020ec10a788f5703108d093a4bd3d9a7c3847d36"
+last_updated = "2026-09-05T05:59:19Z"
+last_revision = "84ee50673804b95c287d1e4eb4f1c1dad7c5188a"
 source_type = "git"
 source = "https://github.com/addyosmani/agent-skills.git"
 
 [marketplaces.mattpocock]
-last_updated = "2026-08-26T01:59:36Z"
-last_revision = "6654f6b60cd9d5be8b54c6fafe44346dabeb3b76"
+last_updated = "2026-09-05T05:59:22Z"
+last_revision = "3cca18b368ae95cdbdebbff572ccafa662551015"
 source_type = "git"
 source = "https://github.com/mattpocock/skills.git"
 
@@ -165,15 +173,15 @@ startup_timeout_sec = 120
 NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
 NODE_REPL_NODE_MODULE_DIRS = "/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
 NODE_REPL_NODE_PATH = "/Applications/ChatGPT.app/Contents/Resources/cua_node/bin/node"
-NODE_REPL_TRUSTED_CODE_PATHS = "/Users/a12019/.codex:/Applications/ChatGPT.app/Contents/Resources/cua_node/lib/node_modules"
+NODE_REPL_TRUSTED_CODE_PATHS = "/Users/a12019/.codex"
 CODEX_HOME = "/Users/a12019/.codex"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "6d25aa7656feac858f3a3bdaea5bcbab0dbfd426c9de8e6931ce90c399ee8e4f,e13fd947e846d3d306e9249dd3c73d14931b6494803dbafb16cef85e6add9506"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
 NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
 NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = "Control desktop apps on macOS through Computer Use."
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.814.41957"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/a12019/.codex/plugins/cache/openai-bundled/browser/26.814.41957/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
+BROWSER_USE_CODEX_APP_VERSION = "26.721.41059"
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
 
 [mcp_servers.computer-use]
