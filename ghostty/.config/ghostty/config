@@ -2,8 +2,11 @@
 
 ## Options
 font-family = Operator Mono SSm Lig
+font-family = Apple Color Emoji
 font-family = Symbols Nerd Font Mono
 font-family = Hiragino Kaku Gothic ProN
+font-style-bold = Medium
+font-style-bold-italic = Medium Italic
 font-feature = -dlig
 font-size = 12
 font-codepoint-map = U+1FBF0-U+1FBF9=Noto Sans Symbols 2
