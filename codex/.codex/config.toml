@@ -9,7 +9,9 @@ web_search = "live"
 project_doc_max_bytes = 32768
 service_tier = "default"
 
-notify = ["/Users/a12019/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended", "--previous-notify", "[\"\\/bin\\/sh\",\"-lc\",\"exec \\\"$HOME\\/.codex\\/computer-use\\/Codex Computer Use.app\\/Contents\\/SharedSupport\\/SkyComputerUseClient.app\\/Contents\\/MacOS\\/SkyComputerUseClient\\\" turn-ended\"]"]
+
+
+notify = ["/Users/a12019/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
 
 [history]
 persistence = "save-all"
@@ -19,7 +21,7 @@ inherit = "all"
 ignore_default_excludes = false
 
 [shell_environment_policy.set]
-NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "6d25aa7656feac858f3a3bdaea5bcbab0dbfd426c9de8e6931ce90c399ee8e4f,e13fd947e846d3d306e9249dd3c73d14931b6494803dbafb16cef85e6add9506"
+NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "6d25aa7656feac858f3a3bdaea5bcbab0dbfd426c9de8e6931ce90c399ee8e4f,d0b55a8f9e8e7e9c88421416ea4ce9542c302abf43aa7fc871be4553ea70dd26"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
 NODE_REPL_TRUSTED_CODE_PATHS = "/Users/a12019/.codex"
 
@@ -34,7 +36,7 @@ notification_method = "auto"
 notification_condition = "unfocused"
 
 [tui.model_availability_nux]
-gpt-6-astra = 2
+gpt-6-astra = 4
 
 [[hooks.PermissionRequest]]
 matcher = "*"
@@ -142,24 +144,25 @@ enabled = true
 [plugins."codex-app-tools@openai-bundled"]
 enabled = true
 
+[plugins."unified-computer-use@openai-bundled"]
+enabled = true
+
 [marketplaces.openai-bundled]
-last_updated = "2026-09-05T05:59:22Z"
 source_type = "local"
 source = "/Users/a12019/.codex/.tmp/bundled-marketplaces/openai-bundled"
 
 [marketplaces.openai-primary-runtime]
-last_updated = "2026-09-05T06:19:49Z"
 source_type = "local"
 source = "/Users/a12019/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
 [marketplaces.agent-skills]
-last_updated = "2026-09-05T05:59:19Z"
-last_revision = "84ee50673804b95c287d1e4eb4f1c1dad7c5188a"
+last_updated = "2026-09-06T07:57:57Z"
+last_revision = "48cb1168aeaaa70dfc2bbf709eddfa2a8ed8129a"
 source_type = "git"
 source = "https://github.com/addyosmani/agent-skills.git"
 
 [marketplaces.mattpocock]
-last_updated = "2026-09-05T05:59:22Z"
+last_updated = "2026-09-05T07:46:31Z"
 last_revision = "3cca18b368ae95cdbdebbff572ccafa662551015"
 source_type = "git"
 source = "https://github.com/mattpocock/skills.git"
@@ -177,18 +180,13 @@ NODE_REPL_TRUSTED_CODE_PATHS = "/Users/a12019/.codex"
 CODEX_HOME = "/Users/a12019/.codex"
 NODE_REPL_TRUSTED_BROWSER_CLIENT_SHA256S = "6d25aa7656feac858f3a3bdaea5bcbab0dbfd426c9de8e6931ce90c399ee8e4f,e13fd947e846d3d306e9249dd3c73d14931b6494803dbafb16cef85e6add9506"
 BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
-NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
-NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
-NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = "Control desktop apps on macOS through Computer Use."
+BROWSER_USE_TINYSKY_ENABLED = "1"
+NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
+NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.721.41059"
+BROWSER_USE_CODEX_APP_VERSION = "26.901.20858"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/a12019/.codex/plugins/cache/openai-bundled/browser/26.901.20858/scripts/browser-service.mjs"}'
 CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
-
-[mcp_servers.computer-use]
-command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
-args = ["mcp"]
-cwd = "."
-enabled = false
 
 [desktop]
 conversationDetailMode = "STEPS_PROSE"
