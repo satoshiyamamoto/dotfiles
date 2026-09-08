@@ -1,5 +1,5 @@
-model = "gpt-5.6-sol"
-model_reasoning_effort = "medium"
+model = "gpt-6-astra"
+model_reasoning_effort = "low"
 personality = "pragmatic"
 approval_policy = "on-request"
 approvals_reviewer = "user"
@@ -68,6 +68,214 @@ enabled = false
 
 [[skills.config]]
 path = "/Users/a12019/.agents/skills/grill-with-docs/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/openai-curated-remote/ads-manager/0.1.19/skills/ads-manager-account-admin/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/openai-curated-remote/ads-manager/0.1.19/skills/ads-manager-entity-management/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/openai-curated-remote/ads-manager/0.1.19/skills/ads-manager-onboarding/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/openai-curated-remote/openai-templates/0.1.1/skills/artifact-template-analytics-dashboard/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/openai-curated-remote/ads-manager/0.1.19/skills/ads-manager-ad-creation/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/openai-curated-remote/ads-manager/0.1.19/skills/ads-manager-start-agent/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/openai-curated-remote/ads-manager/0.1.19/skills/ads-manager-review/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/openai-curated-remote/ads-manager/0.1.19/skills/ads-manager-insights/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/openai-curated-remote/ads-manager/0.1.19/skills/ads-manager-help/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/openai-curated-remote/ads-manager/0.1.19/skills/ads-manager-actionable-review/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/openai-curated-remote/ads-manager/0.1.19/skills/ads-manager-delivery-recovery/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/mattpocock/mattpocock-skills/1.2.3/skills/productivity/grill-me/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/mattpocock/mattpocock-skills/1.2.3/skills/engineering/grill-with-docs/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/mattpocock/mattpocock-skills/1.2.3/skills/productivity/grilling/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/mattpocock/mattpocock-skills/1.2.3/skills/engineering/implement/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/mattpocock/mattpocock-skills/1.2.3/skills/engineering/improve-codebase-architecture/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/mattpocock/mattpocock-skills/1.2.3/skills/engineering/prototype/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/mattpocock/mattpocock-skills/1.2.3/skills/engineering/research/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/mattpocock/mattpocock-skills/1.2.3/skills/engineering/resolving-merge-conflicts/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/mattpocock/mattpocock-skills/1.2.3/skills/engineering/tdd/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/mattpocock/mattpocock-skills/1.2.3/skills/engineering/ask-matt/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/mattpocock/mattpocock-skills/1.2.3/skills/engineering/code-review/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/mattpocock/mattpocock-skills/1.2.3/skills/engineering/codebase-design/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/mattpocock/mattpocock-skills/1.2.3/skills/engineering/diagnosing-bugs/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/mattpocock/mattpocock-skills/1.2.3/skills/engineering/domain-modeling/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/api-and-interface-design/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/browser-testing-with-devtools/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/ci-cd-and-automation/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/code-review-and-quality/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/code-simplification/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/constraint-driven-development/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/context-engineering/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/debugging-and-error-recovery/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/deprecation-and-migration/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/documentation-and-adrs/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/doubt-driven-development/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/frontend-ui-engineering/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/git-workflow-and-versioning/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/idea-refine/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/incremental-implementation/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/interview-me/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/observability-and-instrumentation/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/performance-optimization/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/planning-and-task-breakdown/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/security-and-hardening/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/shipping-and-launch/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/source-driven-development/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/spec-driven-development/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/test-driven-development/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/agent-skills/agent-skills/0.6.9/skills/using-agent-skills/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/mattpocock/mattpocock-skills/1.2.3/skills/engineering/setup-matt-pocock-skills/SKILL.md"
+enabled = false
+
+[[skills.config]]
+path = "/Users/a12019/.codex/plugins/cache/mattpocock/mattpocock-skills/1.2.3/skills/productivity/handoff/SKILL.md"
 enabled = false
 
 [projects."/Users/a12019"]
