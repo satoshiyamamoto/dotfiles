@@ -160,6 +160,7 @@
   "enabledPlugins": {
     "agent-skills@addy-agent-skills": true,
     "apple-notes@apple-notes-mcp": true,
+    "aws-core@claude-plugins-official": true,
     "code-review@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
     "commit-commands@claude-plugins-official": true,
