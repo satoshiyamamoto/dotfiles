@@ -105,7 +105,9 @@
     ],
     "defaultMode": "auto"
   },
+  "model": "opus[1m]",
   "skillOverrides": {},
+  "deniedMcpServers": [],
   "hooks": {
     "WorktreeCreate": [
       {
