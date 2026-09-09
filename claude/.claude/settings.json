@@ -217,6 +217,7 @@
   },
   "language": "japanese",
   "effortLevel": "high",
+  "autoCompactWindow": 200000,
   "pluginConfigs": {},
   "tui": "default",
   "skipWorkflowUsageWarning": true,
