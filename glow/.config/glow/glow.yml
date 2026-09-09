@@ -2,3 +2,5 @@
 style: "auto"
 # mouse support (TUI-mode only)
 mouse: true
+# use pager to display markdown
+pager: true
