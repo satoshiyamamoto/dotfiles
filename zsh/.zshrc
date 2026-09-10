@@ -158,7 +158,7 @@ wt-switch() {
 zle -N wt-switch
 bindkey '\ew' wt-switch        # alt+w for worktrees
 
-# The three session pickers below work both as ZLE widgets and as plain
+# The two session pickers below work both as ZLE widgets and as plain
 # commands. $WIDGET is only set while a widget runs, so it tells the two apart:
 # from a widget a TTY-taking command has to go through BUFFER and accept-line,
 # while called by name the function already owns the TTY and can run it
@@ -217,53 +217,6 @@ zmx-sessions() {
   fi
 }
 zle -N zmx-sessions
-
-herdr-sessions() {
-  # Nested herdr is disabled by default, so no session can be attached from
-  # inside another one. Detach exists only as the prefix+q keybinding and
-  # cannot be triggered programmatically
-  if [[ "${HERDR_ENV:-}" == "1" ]]; then
-    echo "error: nested herdr is disabled; detach with prefix+q before switching sessions" >&2
-    return 1
-  fi
-
-  local display
-  display=$(herdr session list --json 2>/dev/null \
-    | jq -r '.sessions[] | [.name, (if .default then "*" else "-" end), (if .running then "running" else "stopped" end), .session_dir, .socket_path] | @tsv' \
-    | while IFS=$'\t' read -r name mark state dir sock; do
-        printf "%-20s  %-1s  %-8s  %-40s  %s\n" "$name" "$mark" "$state" "${dir/#$HOME/~}" "$sock"
-      done)
-  [[ -z "$display" ]] && return
-
-  local selected
-  # The socket path is needed as {5} in the preview but only clutters the list,
-  # so --with-nth hides it. The preview joins fields on | rather than a tab
-  # because --preview is single-quoted, which rules out $'\t'; column -t also
-  # lines up East Asian wide characters
-  selected=$(echo "$display" | fzf \
-    --height=80% \
-    --reverse \
-    --prompt="> " \
-    --with-nth=1,2,3,4 \
-    --preview='HERDR_SOCKET_PATH={5} herdr api snapshot | jq -r ".result.snapshot.workspaces[] | [(.number|tostring)+\".\", .label, .agent_status, \"panes:\"+(.pane_count|tostring)] | join(\"|\")" | column -t -s"|"' \
-    --preview-window=right:50% \
-  )
-  [[ -n "$WIDGET" ]] && zle reset-prompt
-  [[ -z "$selected" ]] && return
-
-  # Attach doubles as start, so stopped sessions work too
-  local name=${selected%% *}
-  if [[ -n "$WIDGET" ]]; then
-    BUFFER="herdr session attach ${(q)name}"
-    zle accept-line
-  else
-    herdr session attach "$name"
-  fi
-}
-zle -N herdr-sessions
-bindkey '\em' herdr-sessions   # alt+m for multiplexer
-
-
 
 #
 # Aliases
