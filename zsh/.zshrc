@@ -151,6 +151,13 @@ git-repos() {
 zle -N git-repos
 bindkey '\er' git-repos        # alt+r for repos
 
+wt-switch() {
+  BUFFER="wt switch"
+  zle accept-line
+}
+zle -N wt-switch
+bindkey '\ew' wt-switch        # alt+w for worktrees
+
 # The three session pickers below work both as ZLE widgets and as plain
 # commands. $WIDGET is only set while a widget runs, so it tells the two apart:
 # from a widget a TTY-taking command has to go through BUFFER and accept-line,
@@ -337,7 +344,6 @@ alias trans='trans --brief :ja'
 alias tree='eza --color=always --icons --tree'
 alias vpnon='starship config custom.vpn.disabled false'
 alias vpnoff='starship config custom.vpn.disabled true'
-alias wts='wt switch'
 
 #
 # Prompt
