@@ -9,6 +9,14 @@ switch_tab = "prefix+1..9"
 switch_workspace = "prefix+shift+1..9"
 focus_agent = "prefix+alt+1..9"
 
+[[keys.command]]
+key = "prefix+alt+g"
+type = "popup"
+command = "lazygit"
+description = "run lazygit"
+width = "90%"
+height = "85%"
+
 [ui]
 prompt_new_tab_name = true
 pane_borders = true
