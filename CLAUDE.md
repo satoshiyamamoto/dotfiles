@@ -25,6 +25,7 @@ Config files are placed under `<package>/.config/<tool>/` to follow the [XDG Bas
 `homebrew/.config/homebrew/Brewfile` is periodically regenerated with `brew bundle dump`, which strips every comment. Record package-specific caveats here instead of in the Brewfile.
 
 - **hermes-agent is deliberately absent from the Brewfile.** Upstream lists both `brew install hermes-agent` and PyPI installs (`uv tool install`, `pip install`) as unsupported distribution methods that receive no further updates, and `hermes update` prints a deprecation notice on every run. Use the official installer instead — see [Hermes Agent](#hermes-agent).
+- **node comes from Homebrew, not mise.** `~/.config/mise` is a stow symlink into this repo, so `mise use -g node@lts` would write the tool into the version-controlled `mise/.config/mise/config.toml` instead of a machine-local file. Keep `brew "node"` in the Brewfile and let `brew bundle` own the version.
 
 ### Cask Quarantine — do not set `HOMEBREW_CASK_OPTS='--no-quarantine'`
 
@@ -43,31 +44,6 @@ Apps installed while `--no-quarantine` still worked carry no quarantine attribut
 brew ruby -e 'require "cask/quarantine"; p2 = Pathname(ARGV[0]);
   puts "status=#{Cask::Quarantine.status(p2)} approved=#{Cask::Quarantine.user_approved?(p2)}"' /Applications/Zed.app
 ```
-
-### Intel Macs — Homebrew no longer publishes x86_64 bottles
-
-kenya.local is an Intel Mac (macOS 15.7.9, `x86_64`, default prefix `/usr/local`). Homebrew has stopped building macOS Intel bottles for many formulae, so `brew bundle` there dies with `Error: <formula>: no bottle available!`. As of 2026-09-01 these eighteen Brewfile entries have **no** x86_64 macOS bottle at all (only `arm64_*` and `*_linux`): `atuin awscli grpc grpcurl hunk lefthook mise mycli neovim node openssl@3 pandoc qemu tree-sitter tree-sitter-cli unibilium uv zellij`. The list only ever grows, so re-check with the API query below rather than trusting it. Formulae that still carry a legacy `sonoma` Intel bottle (ripgrep, fd, git, …) keep installing fine, because Sequoia falls back to the older tag.
-
-The accompanying `This is a Tier 3 configuration` text is **boilerplate**, not a diagnosis: `formula_installer.rb:452` appends it to every no-bottle error because *building from source* is Tier 3. The machine itself still meets the Tier 1 conditions (Apple-supported macOS, default prefix, bottles). `/opt/homebrew` on kenya is a symlink to `/usr/local`, so the hard-coded `HOMEBREW_PREFIX` in `zsh/.zprofile` is harmless — `brew config` resolves the real prefix.
-
-`brew info --json=v2` cannot answer "does an Intel bottle exist?": it lists only the tags usable on the machine running it. Query the API instead:
-
-```sh
-curl -fsSL https://formulae.brew.sh/api/formula/uv.json |
-  python3 -c 'import json,sys; print(sorted(json.load(sys.stdin)["bottle"]["stable"]["files"]))'
-```
-
-How this is handled:
-
-- **`HOMEBREW_BUNDLE_BREW_SKIP` in `zsh/.zprofile`, guarded by `$CPUTYPE`.** The skip list lives in the shell config, never in the Brewfile, because `brew bundle dump` regenerates the Brewfile from the arm64 machine. `bundle/skipper.rb:55` reads it; it is a no-op on arm64.
-- **Skipping an entry does not skip it as a dependency.** `HOMEBREW_BUNDLE_BREW_SKIP` drops the matching *entry* only; a formula that is also a dependency of a non-skipped entry is still upgraded along with it, and then fails. `openssl@3` is a dependency of ~50 installed formulae (bat, eza, git-delta, tmux, python@3.13, …) and `tree-sitter`/`unibilium` are dependencies of `neovim`, so they surface as `Upgrading <name> has failed!` (`bundle/installer.rb:316`) even while listed in the skip list. `brew pin` is what actually stops those.
-- **`brew pin awscli grpc grpcurl hunk lefthook mise mycli neovim node openssl@3 pandoc qemu tree-sitter tree-sitter-cli unibilium`** on kenya — the skip list minus uv/atuin/zellij, which are not Homebrew formulae there. `bundle/brew.rb:179` computes `outdated_formulae - pinned_formulae`, and pinning also keeps a plain `brew upgrade` from failing. Those versions are now frozen until an Intel bottle reappears or they are built from source.
-- **Pinning `openssl@3` is a deliberate trade-off — keep it pinned.** It is a dependency of ~50 installed formulae, so a plain `brew upgrade` now stops on every outdated dependent with ``Error: You must `brew unpin openssl@3` as installing <name> requires the latest version of pinned dependencies``; on 2026-09-01 that was `gpgme`, `pydantic` and seven `aws-c-*` formulae. `brew bundle` is unaffected: none of the nine is a Brewfile entry, and their dependents (`gnupg`, `poppler`, `litecli`, `awscli`) are either up to date or skipped. Unpinning would only trade this for an openssl source build on every release, and the remaining 13 outdated formulae upgrade normally as it stands.
-- **uv, atuin and zellij come from upstream release tarballs into `~/.local/bin`**, not Homebrew. Only `brew`/`cask`/`mas`/`tap`/`flatpak`/`winget` entries can be skipped (`bundle/skipper.rb:55`), so the `uv "docutils"` … lines cannot be; instead `bundle/extensions/extension.rb:57` resolves `uv` with `which`, so a uv on `PATH` satisfies them without the formula. Do not use the atuin/uv official install scripts on kenya — they append to the stowed `~/.zshrc`. `zellij-x86_64-apple-darwin.sha256sum` hashes the **extracted binary**, not the tarball; `uv`/`atuin` publish `.tar.gz.sha256` of the archive.
-- **node deliberately stays on Homebrew** despite being pinned to an old version. `brew uses --installed node` on kenya returns devcontainer, mermaid-cli, opencode and skills, and `~/.config/mise` is a stow symlink into this repo, so `mise use -g node@lts` would write the tool into the shared `mise/.config/mise/config.toml` and leak to the arm64 machine.
-- **`.zprofile` is read by login shells only.** `.sync` (`zsh/.zshrc:109`) runs `git pull` -> restow -> `brew bundle -g` inside the *running* shell, so a skip list that the pull just updated does not take effect for that same run. After a `.sync` that changes the list, open a new login shell before re-running it.
-
-Verify with `brew bundle check --verbose` on kenya: the eighteen entries must print `Skipping <name>` rather than an error.
 
 ## Hermes Agent
 

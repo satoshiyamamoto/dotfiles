@@ -90,12 +90,7 @@ y() {
 }
 
 .sync() {
-  local dotfiles_dir brewfile
-  local is_i386=false ret=0
-  local -a i386_excluded=(
-    'brew "container"'
-    'cask "google-gemini"'
-  )
+  local dotfiles_dir ret=0
 
   # Resolve dotfiles directory path and navigate into it
   dotfiles_dir="$(zoxide query dotfiles)" || return 1
@@ -108,27 +103,8 @@ y() {
   # no --adopt so unexpected local files surface as errors instead of overwriting)
   STOW_FLAGS="--restow" sh install.darwin.sh || ret=$?
 
-  # Detect Rosetta (i386) environment and locate the Brewfile
-  [[ "$(arch)" == "i386" ]] && is_i386=true
-  brewfile="$(fd --hidden --type f '^Brewfile$' | head -n 1)"
-
-  if $is_i386 && [[ -n "$brewfile" ]]; then
-    # Temporarily comment out i386-unsupported formulas/casks
-    for formula in "${i386_excluded[@]}"; do
-      sed -i '' "s/^${formula}$/# ${formula}/" "$brewfile"
-    done
-
-    # Install or update all packages defined in the Brewfile
-    brew bundle -g || ret=$?
-
-    # Restore the commented-out entries after bundle completes
-    for formula in "${i386_excluded[@]}"; do
-      sed -i '' "s/^# ${formula}$/${formula}/" "$brewfile"
-    done
-  else
-    # Install or update all packages defined in the Brewfile
-    brew bundle -g || ret=$?
-  fi
+  # Install or update all packages defined in the Brewfile
+  brew bundle -g || ret=$?
 
   popd -q
   return $ret
