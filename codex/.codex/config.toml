@@ -371,8 +371,8 @@ source_type = "local"
 source = "/Users/a12019/.cache/codex-runtimes/codex-primary-runtime/plugins/openai-primary-runtime"
 
 [marketplaces.agent-skills]
-last_updated = "2026-09-06T07:57:57Z"
-last_revision = "48cb1168aeaaa70dfc2bbf709eddfa2a8ed8129a"
+last_updated = "2026-09-12T01:51:45Z"
+last_revision = "6ca0cd7db39b41b1c37e26d335c507ee92382c6d"
 source_type = "git"
 source = "https://github.com/addyosmani/agent-skills.git"
 
