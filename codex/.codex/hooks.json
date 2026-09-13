@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "command": "/usr/bin/osascript -e \"display notification \\\"Codex needs your attention\\\" with title \\\"Codex\\\"\" && /usr/bin/afplay /System/Library/Sounds/Ping.aiff",
+            "statusMessage": "Sending approval notification",
+            "timeout": 5,
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "bash '/Users/a12019/.codex/herdr-agent-state.sh' session",
+            "timeout": 10,
+            "type": "command"
+          }
+        ]
+      }
+    ]
+  }
+}

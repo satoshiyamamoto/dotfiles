@@ -36,18 +36,9 @@ notification_condition = "unfocused"
 [tui.model_availability_nux]
 gpt-6-astra = 4
 
-[[hooks.PermissionRequest]]
-matcher = "*"
-
-[[hooks.PermissionRequest.hooks]]
-type = "command"
-command = '/usr/bin/osascript -e "display notification \"Codex needs your attention\" with title \"Codex\"" && /usr/bin/afplay /System/Library/Sounds/Ping.aiff'
-timeout = 5
-statusMessage = "Sending approval notification"
-
 [hooks.state]
 
-[hooks.state."/Users/a12019/.codex/config.toml:permission_request:0:0"]
+[hooks.state."/Users/a12019/.codex/hooks.json:permission_request:0:0"]
 trusted_hash = "sha256:5ea7ef2083d9b265706e73f30def1eb8c4e14d2ab6f055d0913afc5e4bd27b31"
 enabled = true
 
