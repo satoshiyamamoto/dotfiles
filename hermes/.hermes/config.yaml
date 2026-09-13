@@ -12,9 +12,16 @@ display:
 tts:
   use_gateway: false
 _config_version: 33
+# tencent/hy3:free was dropped from Nous' catalog when its free period
+# ended, so it answered every fallback with HTTP 404 and turned each
+# primary-model 429 into a hard failure. Keep more than one entry here:
+# the :free tier of the default model is fair-share rate limited and
+# returns 429 whenever it is at capacity.
 fallback_model:
   - provider: nous
-    model: tencent/hy3:free
+    model: meituan/longcat-2.0:free
+  - provider: nous
+    model: upstage/solar-pro4:free
 session_reset:
   mode: none
 platform_toolsets:
