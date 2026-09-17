@@ -181,7 +181,8 @@
     "skill-creator@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "worktrunk@worktrunk": true,
-    "ponytail@ponytail": true
+    "ponytail@ponytail": true,
+    "serena@synced": false
   },
   "extraKnownMarketplaces": {
     "addy-agent-skills": {
