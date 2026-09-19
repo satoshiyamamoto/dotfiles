@@ -56,7 +56,6 @@ in
       argo-workflows
       argocd
       asciinema
-      atuin
       awscli
       bash
       bat
@@ -194,8 +193,16 @@ in
     # container is Apple's own runtime and Apple Silicon only. The rest cannot
     # be had from 26.05, which Kenya pins: cloudflare-speed-cli, herdr and hunk
     # are absent from it, and mycli pulls arrow-cpp through llm, which 26.05
-    # marks broken on x86_64-darwin alone. Kenya keeps all four on Homebrew
+    # marks broken on x86_64-darwin alone. Kenya keeps all five on Homebrew
     # instead (hosts/Kenya.nix).
+    #
+    # atuin is here for the opposite reason: 26.05 has it, but at 18.15.2,
+    # older than whatever last migrated the local SQLite history. An older
+    # client refuses a migrated database outright ("migration <id> was
+    # previously applied but is missing in the resolved migrations") and every
+    # `atuin history start` -- which runs synchronously in preexec -- then
+    # takes 4-8 seconds instead of 10ms, stalling every single command.
+    # Homebrew carries a current atuin, so Kenya takes it from there.
     #
     # antigravity-cli and grok-build both declare
     # platforms = lib.attrNames sourceData and upstream publishes no darwin-x64
@@ -204,6 +211,7 @@ in
       with pkgs;
       [
         antigravity-cli
+        atuin
         cloudflare-speed-cli
         container
         grok-build

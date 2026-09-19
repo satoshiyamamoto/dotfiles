@@ -319,12 +319,13 @@ argo-workflows argocd asciinema atuin awscli bash bat bat-extras.batdiff bat-ext
 - `npm "…"` 3 行 → `biome prettier pi-coding-agent`。
 - `rustup component add rust-analyzer` は従来通り (CLAUDE.md メモ)。
 - `vivid` は移さない。`.zprofile` の `LS_COLORS` 生成が唯一の利用元で、その配線ごと落とした (`060fd5e`)。`eza` は自前の配色を持つ。
-- aarch64 限定は最終的に 7 つになった: `lib.optionals stdenv.hostPlatform.isAarch64 [ antigravity-cli cloudflare-speed-cli container grok-build herdr hunk mycli ]`。
+- aarch64 限定は最終的に 8 つになった: `lib.optionals stdenv.hostPlatform.isAarch64 [ antigravity-cli atuin cloudflare-speed-cli container grok-build herdr hunk mycli ]`。
   - `grok-build` `antigravity-cli`: unstable の `package.nix` が aarch64-darwin のハッシュしか持たず、26.05 は antigravity-cli を欠く。(**訂正 2026-09-19**: 当初は Kenya に 26.05 の `grok-build` 0.2.93 を置く方針だったが、使っていないので置かない)
   - `container`: Apple 純正ランタイムで Apple Silicon 専用。
   - `cloudflare-speed-cli` `herdr` `hunk`: 26.05 に存在しない。
   - `mycli`: eval は通るが `llm` 経由で `arrow-cpp` を引き、26.05 はこれを **x86_64-darwin でのみ `broken = true`** としている (aarch64 では false)。`meta` を見るだけの可用性チェックでは検出できず、`darwinConfigurations.Kenya` の eval で初めて出た。
-  - 後ろ 4 つは homebrew/core にあるので `hosts/Kenya.nix` の `homebrew.brews` で維持する。tap は不要。
+  - `atuin`: **追加 2026-09-19 (Phase 4 実施後)**。26.05 にはあるが 18.15.2 で、Kenya が既に移行済みの履歴 DB を開けない (`migration <id> was previously applied but is missing in the resolved migrations`)。`_atuin_preexec` は `atuin history start` を**同期実行**するため、全コマンドが 4-8 秒待たされた。Homebrew は 18.22.0。
+  - `atuin` `cloudflare-speed-cli` `herdr` `hunk` `mycli` の 5 つは homebrew/core にあるので `hosts/Kenya.nix` の `homebrew.brews` で維持する。tap は不要。
 - CLI 系 cask 4 つ (`claude-code@latest` `codex` `grok-build` `antigravity-cli`) はここに含めた。`codex` は cask だが CLI で、GUI は別 cask `codex-app` (Kenya のみ)。`codex-app` と `antigravity` は Kenya にしか無く dotfiles から参照もされないので宣言せず、cleanup に任せる。
 - 残る cask は 3 台共通で 18 個 (Brewfile の `cask` 27 行 − フォント 3 − `gcloud-cli` 1 − CLI 4 − `handbrake-app` 1)。`handbrake-app` は Nix に移せない (nixpkgs の `handbrake` は `broken = true`、`meta.platforms` に `x86_64-darwin` が無い) が、使っていないので Homebrew にも残さない。`intellij-idea` も同様に非宣言 (Brewfile には元から無く、この端末だけの手動導入だった)。
 
@@ -540,7 +541,7 @@ sudo nix --extra-experimental-features "nix-command flakes" \
 | repo | 18 コミット遅れ | 事前に `git pull` |
 
 - **§5 を実施。** この端末だけ brew prefix が `/usr/local`、user が `satoshi`、アーキテクチャが x86_64 なので、他 2 台の結果を流用しない。`homebrew.prefix` は hostPlatform から `/usr/local` が導かれるので明示不要 (確認済み)。
-- 26.05 で入手できない 4 つは `hosts/Kenya.nix` の `homebrew.brews` に落とした (§4.4)。`darwinConfigurations.Kenya` の eval を通すことが判定手段で、`meta` だけ見る可用性チェックでは `mycli` を取りこぼす。
+- 26.05 で入手できない 4 つは `hosts/Kenya.nix` の `homebrew.brews` に落とした (§4.4)。`atuin` も switch 後に同じ扱いへ移した (下記)。`darwinConfigurations.Kenya` の eval を通すことが判定手段で、`meta` だけ見る可用性チェックでは `mycli` を取りこぼす。
 - claude-code は 26.05/x86_64 で評価済み: §3.5 の `callPackage "${inputs.nixpkgs}/pkgs/by-name/cl/claude-code/package.nix"` が **2.1.272** を解決し、`src` も `darwin-x64` を指す (26.05 の凍結版は 2.1.223)。unstable を丸ごと import しないので x86_64 の throw を踏まない。switch 前に `darwin-rebuild build --flake …#Kenya && ./result/sw/bin/claude --version` で実物を確認する。
 - **switch 前に手で済ませること** (Kenya は sudo にパスワードが要るのでリモートからは実行できない):
 
@@ -554,6 +555,9 @@ sudo nix --extra-experimental-features "nix-command flakes" \
 - cleanup で消える Kenya 固有物: cask 11 個 (`antigravity` `antigravity-cli` `claude-code@latest` `codex` `codex-app` `font-ipaexfont` `font-noto-sans-symbols-2` `font-symbols-only-nerd-font` `gcloud-cli` `grok-build` `handbrake-app`) と、leaf のうち `cmake` `code-minimap` `go-bindata` `go-md2man` `helm-ls` `kcat` `pam-reattach` `rust` `vivid` `z`。いずれも dotfiles から参照されていないか、既に方針が決まっている (§4.2 / §4.3)。
 - `/opt/homebrew -> /usr/local` リンクは `.zprofile` 修正後に不要になるので、動作確認後に削除。
 - hermes gateway は brew 非依存 (§11.3)、moshi-hook は `homebrew.brews` で継続。
+- **switch 後に判明: atuin のダウングレード。** `~/.local/bin/atuin` 18.20.1 (手動導入、常駐 daemon もこれ) が移行済みの `history.db` / `records.db` を、26.05 の 18.15.2 が開けない。PATH は Nix が先なので全コマンドで `atuin history start` が 4-8 秒ブロックした (`preexec` は同期実行)。実測: 18.15.2 が 4.01/7.67/8.00s、18.20.1 が 0.01s。`atuin` を aarch64 限定に移し、Kenya は Homebrew (18.22.0) から取る。
+  - 確認: `whence -p atuin` が `/usr/local/bin/atuin`、`atuin --version` が 18.22.0、`atuin status` が migration エラーを出さない、`/usr/bin/time -p atuin history start -- ls` が 0.0x 秒。
+  - 残件: 4 日前から動いている 18.20.1 の daemon を一度落として `autostart = true` に再起動させる。PATH 外の `~/.local/bin/atuin` は Homebrew の cleanup が届かないので、削除するかは別途判断。
 
 ### Phase 5: Stow → home-manager `home.file` (別計画)
 
