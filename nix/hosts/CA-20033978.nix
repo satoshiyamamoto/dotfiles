@@ -23,6 +23,14 @@
     promptInit = "";
   };
 
+  # Replaces the hand-written /etc/pam.d/sudo_local from macos-setup.md.
+  # pam-reattach comes from nixpkgs instead of /opt/homebrew/lib/pam, so it
+  # need not be in environment.systemPackages.
+  security.pam.services.sudo_local = {
+    touchIdAuth = true;
+    reattach = true;
+  };
+
   # Phase 0 keeps this empty on purpose: Homebrew still owns every package and
   # every cask. environment.systemPackages arrives in Phase 2, the homebrew
   # module right after it. See docs/nix-migration.md.

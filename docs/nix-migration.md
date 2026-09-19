@@ -118,6 +118,44 @@ security.pam.services.sudo_local = {
 
 nix-darwin の `modules/security/pam.nix` が `/etc/pam.d/sudo_local` を生成し、`pkgs.pam-reattach` も自身で引く。そのため `environment.systemPackages` に入れる必要はない (§4.1)。
 
+**これは Phase 2 ではなく Phase 1 で必要になる** (2026-09-19、CA-20033978 の初回 switch で判明)。理由は 2 つ:
+
+1. `security.pam.services.sudo_local.enable` の既定が **true** (`modules/security/pam.nix:15-16`)。手書きの `/etc/pam.d/sudo_local` が既にあると activation が
+   `error: Unexpected files in /etc, aborting activation` で中断するので、`sudo mv /etc/pam.d/sudo_local{,.before-nix-darwin}` が必須になる。
+2. リネームしただけで `touchIdAuth` / `reattach` を入れずに switch すると、生成されるのは **0 バイトの空ファイル** (両オプションの既定は false、`pam.nix:64-67` が `lib.optional` で行を組み立てる)。Touch ID sudo がその場で壊れる。
+
+つまりリネームと §3.6 の投入は**同じ switch で**行う。生成結果は手書き版と同じ 2 行で、`pam_reattach.so` のパスだけが `/opt/homebrew/lib/pam` から nix store に変わる。仮に store パスの読み込みに失敗しても `pam_reattach` は `optional` / `pam_tid` は `sufficient` なので、sudo はパスワード認証にフォールバックする (ロックアウトしない)。
+
+### 3.7 `/etc/zshrc` と compinit の二重実行
+
+`programs.zsh.enable` の既定は **true** (`modules/programs/zsh/default.nix:19-21`) で、nix-darwin が `/etc/zshrc` を生成する。これは `~/.zshrc` より先に読まれ、既定では次を実行する:
+
+```zsh
+autoload -U promptinit && promptinit && prompt suse && setopt prompt_sp
+autoload -U compinit && compinit      # -C なし・同期実行
+autoload -U bashcompinit && bashcompinit
+```
+
+`zsh/.zshrc:49` は `zsh-defer compinit -C` で意図的に遅延・キャッシュ利用しているので、その前に素の `compinit` が走ると遅延化が丸ごと無効になる。`prompt suse` は starship に上書きされるだけ無駄。よって切る:
+
+```nix
+programs.zsh = {
+  enableCompletion = false;      # compinit は ~/.zshrc が zsh-defer で持つ
+  enableBashCompletion = false;
+  promptInit = "";               # prompt は starship
+};
+```
+
+`programs.zsh.enable = false` は**不可**。生成される `/etc/zshenv` が `set-environment` を source して `/run/current-system/sw/bin` と `/nix/var/nix/profiles/default/bin` を PATH に入れているので、これを止めると §4 で入れる Nix パッケージが PATH に乗らない。`~/.zprofile` の `path=(...)` はその後に前置されるため Homebrew 優先の順序は保たれる。
+
+history 設定 (`HISTSIZE=2000` 等) と `bindkey -e` も生成されるが、`~/.zshrc` が後から上書きするので放置でよい。
+
+### 3.8 `nix.enable` は既定のまま (nix は 2.34.8 に下がる)
+
+インストーラーが入れる Nix は 2.35.2、`nixpkgs-unstable` の既定は 2.34.8。`nix.enable` の既定が true なので switch で後者に下がり、launchd daemon も nix-darwin 管理になる。インストールされているのは upstream Nix (Determinate Nix ではない) ので nix-darwin 管理は正規サポート内であり、nixpkgs がテストしている組み合わせなのでそのまま受け入れる。
+
+`nix.enable = false` にすればインストーラー管理の 2.35.2 を維持できるが、`/etc/nix/nix.conf` が宣言的管理から外れて §3.1 の `nix.settings.*` が全部無効になるので採らない。新しめに寄せたい場合だけ `nix.package = pkgs.nixVersions.latest` を検討する。
+
 ## 4. Brewfile → Nix マッピング
 
 nixpkgs-unstable の `packages.json` (2026-09 取得) で照合。Brewfile の `brew` 207 行を、leaf として移すもの / 依存として落とすもの / 名前が変わるもの / Nix にないもの に分類した。
@@ -198,13 +236,18 @@ brew autoremove                                  # 4 つだけが使っていた
 
 ### Phase 1: この端末 (CA-20033978) に Nix + nix-darwin 最小構成
 
+`hosts/<host>.nix` には §3.6 (Touch ID sudo) と §3.7 (`programs.zsh`) を**この時点で**入れておく。どちらも初回 switch で効いてくる。
+
 ```sh
 curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install --enable-flakes
 # 新しいシェルで
+sudo mv /etc/pam.d/sudo_local{,.before-nix-darwin}   # §3.6: 手書き版があると activation が止まる
 sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake ~/Projects/src/github.com/satoshiyamamoto/dotfiles/nix
 ```
 
-検証: `darwin-rebuild --list-generations`、`nix doctor`、`nix config show sandbox` が `false` または `relaxed` (§3.5)、新シェルで `echo $PATH` に `/run/current-system/sw/bin` と `/etc/profiles/per-user/a12019/bin` が入ること。brew はまだ全部残っているので日常作業に影響なし。
+`/etc/zshrc` と `/etc/bashrc` も activation に弾かれることがある。これらは nix-installer が書いたものなので同様に `.before-nix-darwin` へリネームしてよい (nix の PATH は §3.7 のとおり生成される `/etc/zshenv` が引き継ぐ)。
+
+検証: `darwin-rebuild --list-generations`、`nix doctor`、`nix config show sandbox` が `false` または `relaxed` (§3.5)、新シェルで `echo $PATH` に `/run/current-system/sw/bin` と `/etc/profiles/per-user/a12019/bin` が入ること、`sudo -k; sudo true` が tmux の中でも Touch ID を出すこと (§3.6)、`/etc/zshrc` に `compinit` が無いこと (§3.7)。brew はまだ全部残っているので日常作業に影響なし。
 
 ### Phase 2: この端末でパッケージ移行
 
@@ -222,12 +265,13 @@ sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake ~/Projects/src/g
 ### Phase 4: Kenya (satoshi, x86_64, 26.05 固定)
 
 ```sh
-curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install | sh   # multi-user を選ぶ
+sh <(curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install) --daemon   # multi-user
 sudo nix --extra-experimental-features "nix-command flakes" \
   run nix-darwin/nix-darwin-26.05#darwin-rebuild -- switch --flake ~/Projects/src/github.com/satoshiyamamoto/dotfiles/nix
 ```
 
 - 事前に `git pull` して遅れを解消。
+- 3 台とも `macos-setup.md` の手順で `/etc/pam.d/sudo_local` を手書きしているので、Phase 1 と同じく switch 前に `sudo mv /etc/pam.d/sudo_local{,.before-nix-darwin}` が要る (§3.6)。
 - `hosts/Kenya.nix` は 26.05 系 inputs で組む。§4.4 のうち 26.05 にない / x86_64-darwin で壊れているパッケージが出たら、その場で `homebrew.brews` にフォールバック (推測で外さず、`nix build` のエラーで判断)。
 - switch 前に `darwin-rebuild build --flake …#Kenya && ./result/sw/bin/claude --version` で claude-code を通す (§3.5 は `let` 束縛なので `pkgs.claude-code` は 26.05 の 2.1.223 を指し、単体 `nix build` の対象にならない)。失敗したら §3.5 のフォールバックへ。
 - AI エージェント CLI は 26.05 の版になる: codex 0.146.0、opencode 1.15.10、pi-coding-agent 0.75.4、skills 1.5.7、grok-build 0.2.93 (いずれも x86_64-darwin の Hydra キャッシュあり、ローカルビルドなし)。grok-build は 1.0.34 → 0.2.93 の大幅な戻りなので switch 後に `grok --version` と一度の対話で動作確認し、壊れていれば cask に戻さず**外す**。antigravity-cli (`agy`) は Kenya では外す (GUI の `antigravity` cask は残す)。
