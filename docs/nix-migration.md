@@ -2,6 +2,64 @@
 
 作成 2026-09-19 (全項目決定済み、同日ゼロベースで再構成) / 対象: `satoshiyamamoto/dotfiles`
 
+## 進捗 (2026-09-20 時点)
+
+**Phase 0-0〜4 完了。残るは Phase 5 のみ。** 3 台とも同一コミットに同期済み。
+
+### Phase 0-0: Nix にない formula を先に捨てる (§6)
+
+- [x] `gcviewer` / `showkey` / `socket_vmnet` / `utimer` を 3 台からアンインストール
+- [x] Brewfile から該当行を削除
+
+### Phase 0: リポジトリ準備 (§6)
+
+- [x] `nix/` を scaffold (`flake.nix` + `hosts/CA-20033978.nix`)
+- [x] この端末の stow リンク切れを修正 (`starship.toml` / `mise`)
+
+### Phase 1: CA-20033978 に nix-darwin 最小構成 (§6)
+
+- [x] Nix インストール (flakes 有効)
+- [x] Touch ID sudo (§3.6) と `programs.zsh` (§3.7) を初回 switch 前に投入
+- [x] 初回 switch。想定外 3 件は §5 の監査手順として反映済み
+
+### Phase 2: CA-20033978 のパッケージ移行 (§4, §7)
+
+- [x] Brewfile を `packages.nix` / `homebrew.nix` へ転記
+- [x] `zsh/.zprofile` を §7 のとおり書き換え
+- [x] `zsh/.zshrc` を §7 のとおり書き換え (`.sync` が `darwin-rebuild switch` を呼ぶ形へ)
+- [x] `homebrew/` stow パッケージを整理し `.gitignore` に trust store を追加
+- [x] Brewfile を repo から削除
+
+### Phase 3: CA-20031962 (§6)
+
+- [x] switch 完了
+- [x] 未宣言 tap の残骸を手で untap (`cleanup = "uninstall"` の abort 対処)
+
+### Phase 4: Kenya (§4.5, §4.6, §6)
+
+- [x] `sudo scutil --set LocalHostName Kenya` を手で実施 (activation より前に解決されるため)
+- [x] `nixpkgs-2605` / `nix-darwin-2605` 入力を追加
+- [x] 26.05/x86_64 で入手できないものを aarch64 限定ゲートへ (§4.4)
+- [x] switch 完了
+- [x] atuin のダウングレード問題に対処 — Kenya は atuin を一切使わない
+- [x] `networking.localHostName` を削除 (`7878a00`)
+- [x] herdr を `numtide/llm-agents.nix` から取る (§4.6、`53bd064`)
+- [x] `cloudflare-speed-cli` / `hunk` / `mycli` を削除し `homebrew.brews` を空に (§4.6)
+- [x] atuin の残骸を削除 (`~/.local/bin/atuin.disabled`、`~/.local/share/atuin`、`~/.atuin`、`~/.config/atuin`、計 289MB)
+- [x] CLAUDE.md の「Kenya は未 switch」記述を訂正 (`09da96d`)
+- [x] `nix/` 全体に nixfmt を適用し CLAUDE.md に手順を記載 (`93d4ee0`)
+
+### Phase 5: Stow → home-manager `home.file` (§6、別計画)
+
+- [ ] `install.darwin.sh` の stow 一覧を `home.file` へ転記
+- [ ] `.sync` から stow 行を外し `darwin-rebuild switch` 1 本にする
+
+### 期限付き・保留の宿題
+
+- [ ] **Kenya の 26.05 EOL 対応 (2026-12-31 まで)** — チャンネル更新か端末の退役。x86_64-darwin は unstable に無いので実質は退役の検討 (§11.1)
+- [ ] `zsh/.zshrc` の `alias speedtest='cloudflare-speed-cli'` が Kenya でデッドエイリアスになっている (意図的に未対応)
+- [ ] `hunk` の bun-bin `darwin-x64` オーバーライド — Kenya では不要と判断して保留 (§4.6)
+
 ## 1. 方針
 
 | 項目 | 決定 |
