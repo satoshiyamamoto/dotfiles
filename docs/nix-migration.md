@@ -148,6 +148,10 @@ nix-darwin の `modules/security/pam.nix` が `/etc/pam.d/sudo_local` を生成�
 
 つまりリネームと §3.6 の投入は**同じ switch で**行う。生成結果は手書き版と同じ 2 行で、`pam_reattach.so` のパスだけが `/opt/homebrew/lib/pam` から nix store に変わる。仮に store パスの読み込みに失敗しても `pam_reattach` は `optional` / `pam_tid` は `sufficient` なので、sudo はパスワード認証にフォールバックする (ロックアウトしない)。
 
+**検証済み (2026-09-19, CA-20033978)**: 生成された `/etc/pam.d/sudo_local` は `/etc/static/pam.d/sudo_local` へのシンボリックリンクで、中身は予想どおり `pam_reattach.so` (nix store の `pam_reattach-1.3`) → `pam_tid.so` の 2 行。`/etc/pam.d/sudo` の 1 行目が `auth include sudo_local` なので順序も保たれている。`sudo -k; sudo true` が **tmux の外でも中でも** Touch ID を出すことを確認した。Phase 3 / 4 でも同じ結果を期待してよい。
+
+tmux 内の確認は `tmux new-session -d -s … 'sudo true'` では**できない**。クライアントが繋がっていないと sudo に prompt を出す TTY が無く、コマンドが即終了してセッションごと消える。対話的にアタッチして手で打つこと。
+
 ### 3.7 `/etc/zshrc` と compinit の二重実行
 
 `programs.zsh.enable` の既定は **true** (`modules/programs/zsh/default.nix:19-21`) で、nix-darwin が `/etc/zshrc` を生成する。これは `~/.zshrc` より先に読まれ、既定では次を実行する:
