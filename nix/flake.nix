@@ -14,14 +14,23 @@
   # with its own 26.05 inputs -- see docs/nix-migration.md.
   outputs =
     inputs@{ nix-darwin, ... }:
+    let
+      mkHost =
+        hostModule:
+        nix-darwin.lib.darwinSystem {
+          specialArgs = { inherit inputs; };
+          modules = [
+            hostModule
+            ./modules/common.nix
+            ./modules/homebrew.nix
+            ./modules/packages.nix
+          ];
+        };
+    in
     {
-      darwinConfigurations."CA-20033978" = nix-darwin.lib.darwinSystem {
-        specialArgs = { inherit inputs; };
-        modules = [
-          ./hosts/CA-20033978.nix
-          ./modules/homebrew.nix
-          ./modules/packages.nix
-        ];
+      darwinConfigurations = {
+        "CA-20033978" = mkHost ./hosts/CA-20033978.nix;
+        "CA-20031962" = mkHost ./hosts/CA-20031962.nix;
       };
     };
 }
