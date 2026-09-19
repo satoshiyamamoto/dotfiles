@@ -39,7 +39,11 @@ Temporary Items
 # Edit at https://www.toptal.com/developers/gitignore?templates=homebrew
 
 ### Homebrew ###
-Brewfile.lock.json
+# stow folds ~/.config/homebrew into this directory, so the trust store brew
+# writes there lands in the working tree. It is per-machine state that brew
+# regenerates on demand, and the copy the nix-darwin activation actually reads
+# is ~/.homebrew/trust.json -- see docs/nix-migration.md.
+homebrew/.config/homebrew/trust.json*
 
 ### Karabiner Elements ###
 karabiner/.config/karabiner/automatic_backups

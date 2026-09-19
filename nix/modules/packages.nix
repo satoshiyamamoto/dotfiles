@@ -31,6 +31,17 @@ in
     "/share/zsh-syntax-highlighting"
   ];
 
+  # Replaces the font-symbols-only-nerd-font / font-ipaexfont /
+  # font-noto-sans-symbols-2 casks. noto-fonts is the only nixpkgs attribute
+  # that ships NotoSansSymbols2, which tokyo-night-tmux needs for its segmented
+  # window numbers. The fonts module only rsyncs /Library/Fonts/Nix Fonts, so
+  # cask-installed fonts elsewhere in /Library/Fonts are left alone.
+  fonts.packages = with pkgs; [
+    ipaexfont
+    nerd-fonts.symbols-only
+    noto-fonts
+  ];
+
   nixpkgs.config.allowUnfreePredicate =
     pkg:
     builtins.elem (lib.getName pkg) [

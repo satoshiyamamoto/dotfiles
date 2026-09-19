@@ -19,6 +19,7 @@
         specialArgs = { inherit inputs; };
         modules = [
           ./hosts/CA-20033978.nix
+          ./modules/homebrew.nix
           ./modules/packages.nix
         ];
       };

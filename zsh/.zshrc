@@ -99,8 +99,10 @@ y() {
   # no --adopt so unexpected local files surface as errors instead of overwriting)
   STOW_FLAGS="--restow" sh install.darwin.sh || ret=$?
 
-  # Install or update all packages defined in the Brewfile
-  brew bundle -g || ret=$?
+  # Rebuild the system from the flake: Nix packages, Homebrew casks and the
+  # Mac App Store apps all come from nix/modules. sudo resets PATH, so
+  # darwin-rebuild has to be called by its absolute path.
+  sudo /run/current-system/sw/bin/darwin-rebuild switch --flake "$dotfiles_dir/nix" || ret=$?
 
   popd -q
   return $ret
