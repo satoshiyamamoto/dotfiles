@@ -30,7 +30,7 @@ SAVEHIST=5000
 ## Completions
 fpath=(
   $GOPATH/src/github.com/wbingli/zsh-claudecode-completion(N)
-  $HOMEBREW_PREFIX/share/zsh/site-functions(N)
+  /run/current-system/sw/share/zsh/site-functions(N)
   $fpath
 )
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' 'm:{[:upper:]}={[:lower:]}' 'r:|=*' 'l:|=*'
@@ -53,12 +53,9 @@ autoload -Uz compinit && zsh-defer compinit -C && zsh-defer compdef _tailscale T
 # Plugins
 #
 __load_plugins() {
-  source "$HOMEBREW_PREFIX/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-  source "$HOMEBREW_PREFIX/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-  source "$HOMEBREW_PREFIX/share/zsh-you-should-use/you-should-use.plugin.zsh"
-  source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
-  source "$HOMEBREW_PREFIX/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
-  source "$HOMEBREW_PREFIX/etc/profile.d/z.sh"
+  source "/run/current-system/sw/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  source "/run/current-system/sw/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  source "/run/current-system/sw/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh"
   eval "$(atuin init --disable-up-arrow zsh)"
   eval "$(direnv hook zsh)"
   eval "$(fzf --zsh)"

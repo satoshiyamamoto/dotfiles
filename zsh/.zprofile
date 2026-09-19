@@ -11,7 +11,7 @@ export LANG='en_US.UTF-8'
 
 ## Colors
 export COLORTERM='truecolor'
-export LS_COLORS="${$(/opt/homebrew/bin/vivid generate tokyonight-night 2>/dev/null || echo ''):-'di=34:ln=35:so=32:pi=33:ex=31:bd=36;01:cd=33;01:su=31;40;07:sg=36;40;07:tw=32;40;07:ow=33;40;07:'}"
+export LS_COLORS="${$(vivid generate tokyonight-night 2>/dev/null || echo ''):-'di=34:ln=35:so=32:pi=33:ex=31:bd=36;01:cd=33;01:su=31;40;07:sg=36;40;07:tw=32;40;07:ow=33;40;07:'}"
 
 # Paths
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
@@ -42,11 +42,9 @@ path=(
 )
 
 ## Homebrew
-export HOMEBREW_BUNDLE_MAS_SKIP=''
 export HOMEBREW_CURLRC="$XDG_CONFIG_HOME/homebrew/curlrc"
 export HOMEBREW_NO_ENV_HINTS='true'
 export HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS='1'
-export HOMEBREW_PREFIX='/opt/homebrew'
 
 ## fzf
 FZF_PREVIEW_FILE='bat --style=changes,header --color=always --line-range :50 {}'
@@ -67,7 +65,6 @@ export DIRENV_LOG_FORMAT=""
 export GITHUB_PERSONAL_ACCESS_TOKEN=$(gh auth token 2>/dev/null)
 
 ## Claude Code
-export CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE=1
 export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 
 ## Starship
