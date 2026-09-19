@@ -48,7 +48,10 @@ export HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS='1'
 ## fzf
 FZF_PREVIEW_FILE='bat --style=changes,header --color=always --line-range :50 {}'
 FZF_PREVIEW_DIR='eza --tree --all --color=always --icons=always {}'
-export FZF_CTRL_R_COMMAND='' # use atuin
+# Ctrl-R belongs to atuin where atuin exists -- an empty value is how fzf's
+# shell integration is told to leave the binding alone. Kenya has no atuin
+# (nix/modules/packages.nix), so there fzf keeps Ctrl-R.
+(( $+commands[atuin] )) && export FZF_CTRL_R_COMMAND=''
 export FZF_CTRL_T_OPTS='--preview="[[ -d {} ]] && '"$FZF_PREVIEW_DIR"' || '"$FZF_PREVIEW_FILE"'"'
 export FZF_ALT_C_OPTS='--preview="${FZF_PREVIEW_DIR}"'
 

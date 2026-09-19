@@ -55,7 +55,7 @@ __load_plugins() {
   source "/run/current-system/sw/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
   source "/run/current-system/sw/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
   source "/run/current-system/sw/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh"
-  eval "$(atuin init --disable-up-arrow zsh)"
+  (( $+commands[atuin] )) && eval "$(atuin init --disable-up-arrow zsh)"
   eval "$(direnv hook zsh)"
   eval "$(fzf --zsh)"
   eval "$(mise activate zsh)"

@@ -324,8 +324,8 @@ argo-workflows argocd asciinema atuin awscli bash bat bat-extras.batdiff bat-ext
   - `container`: Apple 純正ランタイムで Apple Silicon 専用。
   - `cloudflare-speed-cli` `herdr` `hunk`: 26.05 に存在しない。
   - `mycli`: eval は通るが `llm` 経由で `arrow-cpp` を引き、26.05 はこれを **x86_64-darwin でのみ `broken = true`** としている (aarch64 では false)。`meta` を見るだけの可用性チェックでは検出できず、`darwinConfigurations.Kenya` の eval で初めて出た。
-  - `atuin`: **追加 2026-09-19 (Phase 4 実施後)**。26.05 にはあるが 18.15.2 で、Kenya が既に移行済みの履歴 DB を開けない (`migration <id> was previously applied but is missing in the resolved migrations`)。`_atuin_preexec` は `atuin history start` を**同期実行**するため、全コマンドが 4-8 秒待たされた。Homebrew は 18.22.0。
-  - `atuin` `cloudflare-speed-cli` `herdr` `hunk` `mycli` の 5 つは homebrew/core にあるので `hosts/Kenya.nix` の `homebrew.brews` で維持する。tap は不要。
+  - `atuin`: **追加 2026-09-19 (Phase 4 実施後)**。26.05 にはあるが 18.15.2 で、Kenya が既に移行済みの履歴 DB を開けない (`migration <id> was previously applied but is missing in the resolved migrations`)。`_atuin_preexec` は `atuin history start` を**同期実行**するため、全コマンドが 4-8 秒待たされた。Homebrew への退避も不可 (下記) なので、**Kenya では atuin を使わない**。`zsh/.zshrc` の `atuin init` を `(( $+commands[atuin] ))` でガードし、`zsh/.zprofile` の `FZF_CTRL_R_COMMAND=''` も同条件にして Ctrl-R を fzf に戻す。
+  - 後ろ 4 つ (`cloudflare-speed-cli` `herdr` `hunk` `mycli`) は homebrew/core にあるので `hosts/Kenya.nix` の `homebrew.brews` で維持する。tap は不要。
 - CLI 系 cask 4 つ (`claude-code@latest` `codex` `grok-build` `antigravity-cli`) はここに含めた。`codex` は cask だが CLI で、GUI は別 cask `codex-app` (Kenya のみ)。`codex-app` と `antigravity` は Kenya にしか無く dotfiles から参照もされないので宣言せず、cleanup に任せる。
 - 残る cask は 3 台共通で 18 個 (Brewfile の `cask` 27 行 − フォント 3 − `gcloud-cli` 1 − CLI 4 − `handbrake-app` 1)。`handbrake-app` は Nix に移せない (nixpkgs の `handbrake` は `broken = true`、`meta.platforms` に `x86_64-darwin` が無い) が、使っていないので Homebrew にも残さない。`intellij-idea` も同様に非宣言 (Brewfile には元から無く、この端末だけの手動導入だった)。
 
@@ -557,7 +557,8 @@ sudo nix --extra-experimental-features "nix-command flakes" \
 - hermes gateway は brew 非依存 (§11.3)、moshi-hook は `homebrew.brews` で継続。
 - **switch 後に判明: atuin のダウングレード。** `~/.local/bin/atuin` 18.20.1 (手動導入、常駐 daemon もこれ) が移行済みの `history.db` / `records.db` を、26.05 の 18.15.2 が開けない。PATH は Nix が先なので全コマンドで `atuin history start` が 4-8 秒ブロックした (`preexec` は同期実行)。実測: 18.15.2 が 4.01/7.67/8.00s、18.20.1 が 0.01s。`atuin` を aarch64 限定に移し、Kenya は Homebrew (18.22.0) から取る。
   - 確認: `whence -p atuin` が `/usr/local/bin/atuin`、`atuin --version` が 18.22.0、`atuin status` が migration エラーを出さない、`/usr/bin/time -p atuin history start -- ls` が 0.0x 秒。
-  - 残件: 4 日前から動いている 18.20.1 の daemon を一度落として `autostart = true` に再起動させる。PATH 外の `~/.local/bin/atuin` は Homebrew の cleanup が届かないので、削除するかは別途判断。
+  - **Homebrew への退避は失敗した。** Homebrew は macOS 15 / x86_64 を [Tier 3](https://docs.brew.sh/Support-Tiers#tier-3) とし、この構成向けの bottle を配布しなくなった (`Homebrew no longer builds bottles for this configuration.`)。加えて `openssl@3` が pin されており `Error: You must \`brew unpin openssl@3\`` で停止する。unpin しても Rust のソースビルドになるため断念し、Kenya では atuin を無効化した。この制約は今後 `homebrew.brews` に何かを足せないことも意味する。
+  - 残件: 18.20.1 の daemon を停止する。`~/.local/bin/atuin` と `~/.local/share/atuin` の DB (history 90M / records 146M) をどうするかは別途判断。
 
 ### Phase 5: Stow → home-manager `home.file` (別計画)
 
