@@ -17,7 +17,10 @@
     {
       darwinConfigurations."CA-20033978" = nix-darwin.lib.darwinSystem {
         specialArgs = { inherit inputs; };
-        modules = [ ./hosts/CA-20033978.nix ];
+        modules = [
+          ./hosts/CA-20033978.nix
+          ./modules/packages.nix
+        ];
       };
     };
 }

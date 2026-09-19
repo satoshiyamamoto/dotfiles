@@ -228,6 +228,21 @@ nix-darwin は「既存のマルチユーザー Nix」を前提とするモジ�
 - `101` の参照先 `/etc/ssh/nix_authorized_keys.d/` は `users.users.<name>.openssh.authorizedKeys` が空だと**生成されない**。sshd は `AuthorizedKeysFile` (`~/.ssh/authorized_keys`) を先に見て一致すればそこで終わるので公開鍵認証は壊れないが、一致しなかった場合に `/bin/cat` が失敗してログに出る。この端末は Remote Login 有効 (`com.openssh.sshd => enabled`)。
 - 鍵を宣言的に置きたくなったら `users.users.a12019.openssh.authorizedKeys.keys` を使う。現状は使っていない。
 
+### 3.10 `environment.pathsToLink`: nix-darwin の既定は NixOS より狭い
+
+`modules/environment.nix` の既定は `[ "/share/zsh" "/info" "/share/info" "/share/man" "/share/terminfo" "/bin" "/share/locale" ]` だけで、NixOS のように `/share` を丸ごと張らない。`environment.systemPackages` に入れても、ここに無いサブパスは `/run/current-system/sw` に現れない。症状は「バイナリはあるのに相方の `share` / `libexec` が無い」で、パッケージ側の問題に見えるので紛らわしい。
+
+Phase 2 step 1 で実際に 2 つ足りなかった (build 後に `ls` して判明、§7 の 2 行が依存する)。
+
+```nix
+environment.pathsToLink = [
+  "/libexec/docker/cli-plugins"   # docker-buildx / docker-compose
+  "/share/zsh-syntax-highlighting"
+];
+```
+
+`/share/zsh` は既定にあるので、`zsh-autosuggestions` / `zsh-you-should-use` / `zsh-powerlevel10k` / 各種補完 (`share/zsh/site-functions`) は追加不要。
+
 ## 4. Brewfile → Nix マッピング
 
 nixpkgs-unstable の `packages.json` (2026-09 取得) で照合。Brewfile の `brew` 207 行を、leaf として移すもの / 依存として落とすもの / 名前が変わるもの / Nix にないもの に分類した。
@@ -244,6 +259,7 @@ nixpkgs-unstable の `packages.json` (2026-09 取得) で照合。Brewfile の `
 | mysql-client | `mysql84` (CLI が要るなら) |
 | tree-sitter-cli | `tree-sitter` |
 | powerlevel10k | `zsh-powerlevel10k` |
+| bat-extras | `bat-extras.{batdiff,batgrep,batman,batpipe,batwatch,prettybat}` — nixpkgs では scope で、`bat-extras` 自体も `bat-extras.core` もインストール可能な derivation ではない (`core` は `cp -a . $out` でソースを置くだけ) |
 | jd | `jd-diff-patch` |
 | docker-credential-helper | `docker-credential-helpers` |
 | source-highlight | `sourceHighlight` |
@@ -265,17 +281,18 @@ nixpkgs-unstable の `packages.json` (2026-09 取得) で照合。Brewfile の `
 |---|---|
 | `rjyo/moshi/moshi-hook` | `homebrew.brews` に残す (§3.2) |
 | gcviewer / showkey / socket_vmnet / utimer | Phase 0-0 で `brew uninstall` + Brewfile から除去。Nix 側には何も書かない |
+| kcat | 同上。nixpkgs の `kcat` は aarch64-darwin でビルドできない — 依存の `libserdes` が `avro-c++` のヘッダを通せない (`Exception.hh` が `<fmt/core.h>` を include するが fmt 12 で `fmt::format` はそこから外れた)。`kcat/package.nix` に avro を切るオプションはない |
 | `neurosnap/tap/zmx` | nixpkgs に `zmx` あり → Nix 側。tap は不要になる (同一物か `nix run nixpkgs#zmx -- --version` で確認) |
 
 ### 4.3 依存としてしか使っていない行 → Nix リストから落とす (Nix はランタイム依存を自動で持つ)
 
-abseil avro-c bdw-gc boost brotli c-ares ca-certificates cairo certifi cryptography fontconfig freetype gettext giflib glib gmp gnutls harfbuzz imath krb5 libevent libffi libfido2 libgit2 libidn2 libnghttp2 libpng libpq librdkafka libssh libtasn1 libtiff libtool libunistring libuv libyaml libzip little-cms2 luajit luv lz4 lzo m4 mpdecimal ncurses nettle oniguruma openexr openjpeg openssl@3 p11-kit pcre pcre2 pixman pkgconf pycparser re2 snappy unibilium utf8proc webp xz zstd libiconv libtermkey msgpack gdbm guile autoconf libdvdcss librist freetds
+abseil avro-c bdw-gc boost brotli c-ares ca-certificates cairo certifi cryptography fontconfig freetype gettext giflib glib gmp gnutls harfbuzz imath krb5 libevent libffi libfido2 libgit2 libidn2 libnghttp2 libpng libpq librdkafka libssh libtasn1 libtiff libtool libunistring libuv libyaml libzip little-cms2 luajit luv lz4 lzo m4 mpdecimal ncurses nettle oniguruma openexr openjpeg openssl@3 p11-kit pcre pcre2 pixman pkgconf pycparser re2 snappy unibilium utf8proc webp xz zstd libiconv libtermkey msgpack gdbm guile autoconf libdvdcss librist freetds lima
 
 約 70 行が消え、`environment.systemPackages` は 120 前後になる。
 
 ### 4.4 leaf として Nix へ移すもの (nixpkgs attr)
 
-argocd asciinema atuin awscli bash bat bat-extras bk btop buf caddy cbonsai cloudflare-speed-cli cmatrix colima colordiff container coreutils devcontainer direnv docker docker-buildx docker-compose docker-credential-helpers duckdb exiftool eza fastfetch fd ffmpeg fzf gawk gh ghq delta glow gnupg go google-cloud-sdk google-java-format gws gping gradle protobuf grpc grpcurl kubernetes-helm herdr hey htop hunk imagemagick jd-diff-patch jq jwt-cli k9s kcat kubectl kubectl-tree lazydocker lazygit lefthook litecli lolcat luarocks mas maven mermaid-cli minikube mise mosh mycli mysql84 tree-sitter neovim nkf nmap nyancat ripgrep opencode codex jdk jdk21 pandoc pgcli pnpm ponysay poppler zsh-powerlevel10k pwgen qemu rustup skills sl socat sops sourceHighlight starship stern stow stylua inetutils tfenv tldr tmux translate-shell tree ttyd unbound uv viddy vivid watch wget worktrunk yamlfmt yazi yq zellij zoxide zsh-autosuggestions zsh-syntax-highlighting zsh-you-should-use zmx nodejs
+argo-workflows argocd asciinema atuin awscli bash bat bat-extras.batdiff bat-extras.batgrep bat-extras.batman bat-extras.batpipe bat-extras.batwatch bat-extras.prettybat bk btop buf caddy cbonsai cloudflare-speed-cli cmatrix colima colordiff container coreutils devcontainer direnv docker docker-buildx docker-compose docker-credential-helpers duckdb exiftool eza fastfetch fd ffmpeg fzf gawk gh ghq delta glow gnupg go google-cloud-sdk google-java-format gws gping gradle protobuf grpc grpcurl kubernetes-helm herdr hey htop hunk imagemagick jd-diff-patch jq jwt-cli k9s kubectl kubectl-tree lazydocker lazygit lefthook litecli lolcat luarocks mas maven mermaid-cli minikube mise mosh mycli mysql84 tree-sitter neovim nkf nmap nyancat ripgrep opencode codex jdk jdk21 pandoc pgcli pnpm ponysay poppler zsh-powerlevel10k pwgen qemu rustup skills sl socat sops sourceHighlight starship stern stow stylua inetutils tfenv tldr tmux translate-shell tree ttyd unbound uv viddy vivid watch wget worktrunk yamlfmt yazi yq zellij zoxide zsh-autosuggestions zsh-syntax-highlighting zsh-you-should-use zmx nodejs
 
 - `go "…"` 5 行 → `delve gopls gotools golangci-lint go-tools` (staticcheck は go-tools)。`GOPATH=$HOME/Projects` は維持。
 - `uv "…"` 4 行 → `ruff sqlfluff python313Packages.ipython python313Packages.docutils`。
@@ -539,13 +556,13 @@ gh auth login && gh extension install dlvhdr/gh-dash
 | 行 | 現在 | 変更 |
 |---|---|---|
 | 33 | `$HOMEBREW_PREFIX/share/zsh/site-functions(N)` | `/run/current-system/sw/share/zsh/site-functions(N)` (nix-darwin が補完を集約) |
-| 56-58 | `$HOMEBREW_PREFIX/share/zsh-*` | `/run/current-system/sw/share/zsh-autosuggestions/zsh-autosuggestions.zsh`、`…/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh`、`…/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh` (nixpkgs の配置。`nix build nixpkgs#zsh-you-should-use && ls result/share` で確定させる) |
+| 56-58 | `$HOMEBREW_PREFIX/share/zsh-*` | `/run/current-system/sw/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh`、`…/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh`、`…/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh` (Phase 2 step 1 の switch 後に実測。autosuggestions だけ `share/zsh/plugins/` 配下、syntax-highlighting だけ `share/` 直下で、3 つとも配置が違う。後者は §3.10 の `pathsToLink` 追加が前提) |
 | 59-61 | gcloud `path.zsh.inc` / `completion.zsh.inc` と `z.sh` | **削除**。nixpkgs `google-cloud-sdk` は `bin/gcloud` を PATH に、補完を `share/zsh/site-functions/_gcloud` (`#compdef` 付き) に出すので、行 33 の fpath 変更だけで補完が効く。`z.sh` は 3 台とも存在しないデッド行 (z は zoxide が代替) |
 | 104-107 `.sync` | `STOW_FLAGS=--restow sh install.darwin.sh` + `brew bundle -g` | stow 行は維持、`brew bundle -g` を `sudo darwin-rebuild switch --flake "$dotfiles_dir/nix"` に置換 |
 
 ### その他
 
-- `docker/.docker/config.json`: `cliPluginsExtraDirs` の `/opt/homebrew/lib/docker/cli-plugins` → Nix の `docker-buildx` / `docker-compose` は `$out/libexec/docker/cli-plugins` に出るので、home-manager 側で `~/.docker/cli-plugins` にリンクするか `/run/current-system/sw/libexec/docker/cli-plugins` を指す (実パスは build 後に確認)。
+- `docker/.docker/config.json`: `cliPluginsExtraDirs` の `/opt/homebrew/lib/docker/cli-plugins` → `/run/current-system/sw/libexec/docker/cli-plugins` を指す (`docker-buildx` / `docker-compose` の 2 本が実在することを switch 後に確認済み)。§3.10 の `pathsToLink` 追加が前提。
 - `homebrew/` stow パッケージ: `Brewfile`、`trust.json`、`trust.json.lock` を `git rm` し `curlrc` のみ残す。`.gitignore` に `homebrew/.config/homebrew/trust.json*` を追加 (brew が `~/.config/homebrew/` に書き続けるため、stow 経由で repo に現れないように)。`Brewfile.lock.json` の行は不要になる。Brewfile ごと消えるので `brew "rust"` や CLI 系 cask の行単位削除は発生しない。
 - `install.darwin.sh`: stow 一覧はそのまま。末尾に `darwin-rebuild` は足さない (初回は `nix run` 経由、以後は `.sync`)。
 - `install.sh` (Linux): 変更なし。

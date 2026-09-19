@@ -230,8 +230,6 @@ brew "jwt-cli"
 brew "k9s"
 # Apache Kafka C/C++ library
 brew "librdkafka"
-# Generic command-line non-JVM Apache Kafka producer and consumer
-brew "kcat"
 # Network authentication protocol
 brew "krb5"
 # Kubernetes command-line interface
