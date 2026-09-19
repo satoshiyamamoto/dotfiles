@@ -158,8 +158,6 @@ brew "little-cms2"
 brew "webp"
 # Development kit for the Java programming language
 brew "openjdk"
-# Java garbage collection visualization tool
-brew "gcviewer"
 # GNU database manager
 brew "gdbm"
 # GitHub command-line tool
@@ -340,16 +338,12 @@ brew "qemu"
 brew "rust"
 # Rust toolchain installer
 brew "rustup"
-# Simple keystroke visualizer
-brew "showkey"
 # Open agent skills ecosystem
 brew "skills"
 # Prints a steam locomotive if you type sl instead of ls
 brew "sl"
 # SOcket CAT: netcat on steroids
 brew "socat"
-# Daemon to provide vmnet.framework support for rootless QEMU
-brew "socket_vmnet"
 # Editor of encrypted files
 brew "sops"
 # Source-code syntax highlighter
@@ -380,8 +374,6 @@ brew "tree-sitter-cli"
 brew "ttyd"
 # Validating, recursive, caching DNS resolver
 brew "unbound"
-# Multifunction timer tool
-brew "utimer"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
 # Modern watch command
