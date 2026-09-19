@@ -86,7 +86,7 @@ y() {
 }
 
 .sync() {
-  local dotfiles_dir ret=0
+  local dotfiles_dir ret=0 darwin_rebuild=/run/current-system/sw/bin/darwin-rebuild
 
   # Resolve dotfiles directory path and navigate into it
   dotfiles_dir="$(zoxide query dotfiles)" || return 1
@@ -102,7 +102,15 @@ y() {
   # Rebuild the system from the flake: Nix packages, Homebrew casks and the
   # Mac App Store apps all come from nix/modules. sudo resets PATH, so
   # darwin-rebuild has to be called by its absolute path.
-  sudo /run/current-system/sw/bin/darwin-rebuild switch --flake "$dotfiles_dir/nix" || ret=$?
+  #
+  # The migration is staged per machine (docs/nix-migration.md), so the binary
+  # is absent until a host joins. Skip rather than fail there: stow has already
+  # run, which is the only half of .sync those machines can still use.
+  if [[ -x $darwin_rebuild ]]; then
+    sudo $darwin_rebuild switch --flake "$dotfiles_dir/nix" || ret=$?
+  else
+    print -u2 ".sync: nix-darwin not installed on this host, skipping the rebuild"
+  fi
 
   popd -q
   return $ret
