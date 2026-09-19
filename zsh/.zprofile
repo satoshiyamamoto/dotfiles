@@ -27,14 +27,14 @@ cdpath=(
   $cdpath
 )
 path=(
+  /etc/profiles/per-user/$USER/bin(N)
+  /run/current-system/sw/bin(N)
   $GOPATH/bin(N)
   $HOME/.cargo/bin(N)
   $HOME/.local/bin(N)
   $HOME/{,s}bin(N)
   /opt/ca-data-pf/cdap-cli/(N)
   /opt/cycloud-io/cycloud-cli(N)
-  /opt/homebrew/opt/mysql-client/bin(N)
-  /opt/homebrew/opt/rustup/bin(N)
   /opt/homebrew/{,s}bin(N)
   /usr/local/{,s}bin(N)
   /{,s}bin(N)
