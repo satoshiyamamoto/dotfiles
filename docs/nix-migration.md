@@ -18,7 +18,15 @@
 | `homebrew/trust.json` | repo から外して `.gitignore`。`trusted = true` は nix-darwin 側で宣言 |
 | Nix にない formula | gcviewer / showkey / socket_vmnet / utimer は移行前に削除。moshi-hook だけ `homebrew.brews` に残す |
 
-判断根拠となる実測値は §10 にまとめた。
+判断根拠となる実測値は §11 にまとめた。
+
+### この計画を一度立て直した理由 (2026-09-19)
+
+Phase 1 の初回 switch で想定外が 3 件出た。activation が `/etc/pam.d/sudo_local` で中断し、`/etc/zshrc` が nix-darwin 生成物に置き換わって `zsh-defer compinit -C` が無効化され、`nix` が PATH に 2 つ並んだ。いずれも原因は同じで、**自分が書くつもりのオプション (`homebrew.*`, `security.pam.*`) だけを事前調査し、既定で有効になるオプションを調査しなかった**ことにある。`security.pam.services.sudo_local.enable` / `programs.zsh.enable` / `nix.enable` はどれも既定 `true` で、設定ファイルに一行も書かなくても効く。
+
+さらに悪いことに、「既定が `true` のオプション」を全列挙しても 3 件目は捕まらない。`environment.profiles` は真偽値ではなく**既定値が空でないリスト**で、その中身 (`/nix/var/nix/profiles/default`) が nix 二重化の直接原因だった (§3.8)。オプションの型を見るだけでは足りず、**効果面 (`environment.etc` / `activationScripts` / `launchd` / `environment.systemPath`) を評価して読む**必要がある。
+
+再発防止として §5「切り替え前監査」を全フェーズ共通の必須手順として追加した。上の 3 件はすべて §5 を回していれば switch 前に見えていたものである。
 
 ## 2. 対象端末 (2026-09-19 SSH 実測)
 
@@ -64,6 +72,20 @@ nix/
 - `homebrew.masApps = { "AdGuard Mini" = 1440147259; … }` (14 個)。
 - `homebrew.onActivation = { autoUpdate = false; upgrade = false; cleanup = "none"; }` で開始し、Nix 側が安定したら `cleanup = "uninstall"` に上げて残存 formulae を一括削除。`zap` は使わない (cask 設定まで消える)。
 - `homebrew.global.autoUpdate = false`。`homebrew.caskArgs` に `--no-quarantine` は入れない (CLAUDE.md の cask quarantine 節どおり)。
+
+#### このモジュールが実際にやること (2026-09-19 実測)
+
+`homebrew.enable = true` の実体は activation スクリプト 1 本だけで、`environment.etc` にも `launchd.daemons` にも `launchd.user.agents` にも何も足さない (§5.3 の `extendModules` で確認済み)。つまり Phase 2 に「既定で有効になる隠れオプション」の類は無い。危険なのは生成されるコマンドそのもの:
+
+```sh
+PATH="/opt/homebrew/bin:/nix/store/…-mas-7.0.0/bin:$PATH" sudo --preserve-env=PATH \
+  --user=a12019 --set-home env HOMEBREW_NO_AUTO_UPDATE=1 \
+  brew bundle --file='/nix/store/…-Brewfile' --no-upgrade
+```
+
+- **`--file` が nix store の生成物になるので、リポジトリの `homebrew/.config/homebrew/Brewfile` は参照されなくなる。** `.sync` の `brew bundle -g` (グローバル Brewfile = stow リンク先) を残すと二重管理になるため、§7 のとおり同じ Phase で差し替える。
+- `cleanup` を `"uninstall"` にすると `--cleanup --force-cleanup` が、`"zap"` にするとさらに `--zap` が付き、**宣言に無い formula / cask を switch のたびに削除する**。Phase 2-3 までは `"none"` のまま進め、`brew list --formula` を目視してから上げる。
+- `mas` はモジュールが自前で PATH に足すので `environment.systemPackages` に入れる必要はない。
 
 ### 3.3 unfree
 
@@ -150,11 +172,57 @@ programs.zsh = {
 
 history 設定 (`HISTSIZE=2000` 等) と `bindkey -e` も生成されるが、`~/.zshrc` が後から上書きするので放置でよい。
 
-### 3.8 `nix.enable` は既定のまま (nix は 2.34.8 に下がる)
+### 3.8 `nix.enable` は既定のまま / `nix config check` の FAIL は黙認する
 
 インストーラーが入れる Nix は 2.35.2、`nixpkgs-unstable` の既定は 2.34.8。`nix.enable` の既定が true なので switch で後者に下がり、launchd daemon も nix-darwin 管理になる。インストールされているのは upstream Nix (Determinate Nix ではない) ので nix-darwin 管理は正規サポート内であり、nixpkgs がテストしている組み合わせなのでそのまま受け入れる。
 
 `nix.enable = false` にすればインストーラー管理の 2.35.2 を維持できるが、`/etc/nix/nix.conf` が宣言的管理から外れて §3.1 の `nix.settings.*` が全部無効になるので採らない。新しめに寄せたい場合だけ `nix.package = pkgs.nixVersions.latest` を検討する。
+
+#### nix が PATH に 2 つ並ぶ (黙認する)
+
+上の結果、switch 後に `nix config check` (旧 `nix doctor`) が FAIL する:
+
+```
+[FAIL] Multiple versions of nix found in PATH:
+  /nix/store/…-nix-2.35.2/bin   ← /nix/var/nix/profiles/default/bin (インストーラー)
+  /nix/store/…-nix-2.34.8/bin   ← /run/current-system/sw/bin       (nix-darwin)
+```
+
+原因は 2 つのモジュールの既定値の組み合わせで、**設定ファイルには一行も書いていない**:
+
+- `modules/nix/default.nix:730-736` — `nix.enable = true` が nixpkgs の nix を `environment.systemPackages` に入れる。
+- `modules/environment/default.nix:145-148` — `environment.profiles` の既定が `[ "$HOME/.nix-profile" "/run/current-system/sw" "/nix/var/nix/profiles/default" ]`。3 つ目にインストーラーの nix が残っている。
+
+nix-darwin は「既存のマルチユーザー Nix」を前提とするモジュールであり、NixOS/nix-installer・公式 nixos.org・Determinate・Lix のどれで入れてもこのプロファイルは作られる。**先に nix-darwin を入れておけば避けられた、という順序の問題ではない**。既定設定で nix-darwin を使う全員に起きる。
+
+**この FAIL は黙認する。** 根拠:
+
+- `environment.profiles` の並び順のおかげで `/run/current-system/sw/bin` が `/nix/var/nix/profiles/default/bin` より**前**に来る。実測でも `which nix` は 2.34.8 を返し、2.35.2 は完全にシャドウされていて呼ばれない。
+- nix-darwin 作者 (LnL7) の見解として、nix-darwin 配下では宣言的に指定した Nix が常に優先されるのでこの警告は実際には問題ではなく、**古いインストールへロールバックできる余地を残すために意図的に消していない**と明言されている ([NixOS Discourse #19890](https://discourse.nixos.org/t/fail-multiple-versions-of-nix-found-in-path/19890))。
+- `/nix/var/nix/profiles/default` はインストーラー版 nix の GC root でもある。消すと `/nix/nix-installer uninstall` の退路が細くなる (§10)。
+
+消したくなった場合の手段は 2 つあるが、いずれも今は採らない:
+
+1. `sudo -i nix-env -e nix` — 端末ごとの手作業で宣言に残らず、上の GC root も失う。
+2. `environment.profiles = lib.mkForce [ "$HOME/.nix-profile" "/run/current-system/sw" ];` — 宣言的で 3 台に伝播する。**Discourse には `mkForce []` (空リスト) と書かれているが、それをそのまま写すと `/run/current-system/sw` まで落ちて全パッケージが PATH から消える。** 採用するなら残す 2 つを必ず明示すること。
+
+日本語記事 (Zenn / Qiita) にこの件の解決策を扱ったものは 2026-09 時点で見当たらない。nix-darwin 導入記事はセットアップ手順で終わっており、`nix config check` を打つところまで書かれていない。
+
+なお同じ出力に `[INFO] You are not trusted by store uri: daemon` も出る。現状は無害だが、Phase 2 以降で `nix.settings.substituters` を足すなら `nix.settings.trusted-users` に自分を入れる必要がある。
+
+### 3.9 SSH: `enable` に関係なく置かれる 2 ファイル
+
+`services.openssh.enable` の既定は `null` = 「macOS に任せる」で、`systemsetup -setremotelogin` は呼ばれない。しかし `services.openssh` と `programs.ssh` は **enable と無関係に** 設定ファイルを 2 つ置く。Phase 1 で実際に入った。
+
+| ファイル | 生成元 | 中身 |
+|---|---|---|
+| `/etc/ssh/sshd_config.d/099-host-keys.conf` | `modules/services/openssh.nix:125` | `HostKey /etc/ssh/ssh_host_{rsa,ecdsa,ed25519}_key` |
+| `/etc/ssh/sshd_config.d/101-authorized-keys.conf` | `modules/programs/ssh.nix:180-186` | `AuthorizedKeysCommand /bin/cat /etc/ssh/nix_authorized_keys.d/%u` + `AuthorizedKeysCommandUser _sshd` |
+
+- macOS 既定の `100-macos.conf` とはファイル名が衝突しないので共存する。`sshd_config:19` の `Include /etc/ssh/sshd_config.d/*` は `UsePAM` 等より前にあり、既存設定は生きている。
+- `099` は既存 4 本のうち dsa を落とすが、OpenSSH は DSA を廃止済みなので実害なし。**ただし該当の鍵が無い端末では `system.activationScripts.openssh` (`keygenScript`) が `ssh-keygen` で新規生成する。** 3 台とも 2025-07-14 の既存鍵を持つので今回は no-op だが、新端末では「nix-darwin が host key を作る」= 相手側の `known_hosts` が食い違う、という点を憶えておく。
+- `101` の参照先 `/etc/ssh/nix_authorized_keys.d/` は `users.users.<name>.openssh.authorizedKeys` が空だと**生成されない**。sshd は `AuthorizedKeysFile` (`~/.ssh/authorized_keys`) を先に見て一致すればそこで終わるので公開鍵認証は壊れないが、一致しなかった場合に `/bin/cat` が失敗してログに出る。この端末は Remote Login 有効 (`com.openssh.sshd => enabled`)。
+- 鍵を宣言的に置きたくなったら `users.users.a12019.openssh.authorizedKeys.keys` を使う。現状は使っていない。
 
 ## 4. Brewfile → Nix マッピング
 
@@ -213,7 +281,135 @@ argocd asciinema atuin awscli bash bat bat-extras bk btop buf caddy cbonsai clou
 - CLI 系 cask 4 つ (`claude-code@latest` `codex` `grok-build` `antigravity-cli`) はここに含めた。`codex` は cask だが CLI で、GUI は別 cask `codex-app` (Kenya のみ)。
 - 残る cask は 3 台共通で 22 個 (元 30 個 − フォント 3 − gcloud-cli − CLI 4)。
 
-## 5. 段階的ロールアウト
+## 5. 切り替え前監査 (全フェーズ共通の必須手順)
+
+`darwin-rebuild switch` の前に必ず実施する。目的は **設定ファイルに書いていないのに効く既定値** を switch 前に全部見ること。この構成で nix-darwin が公開するオプションは 1225 個、うち既定値を持つものが 1112 個、既定が `true` のものが 56 個 (2026-09-19 実測)。さらに「既定値が空でないリストで、その中身が副作用を持つ」ものが別にある (§5.5)。ドキュメントを読んで拾うのではなく、**実際の設定を評価して機械的に列挙する**。
+
+以下 `$FLAKE` は `~/Projects/src/github.com/satoshiyamamoto/dotfiles/nix`、`$H` は `scutil --get LocalHostName`。flake は untracked ファイルを無視するので、`nix/` 配下は `git add` 済みであること。
+
+### 5.1 ビルドだけ先に通す
+
+```sh
+FLAKE=~/Projects/src/github.com/satoshiyamamoto/dotfiles/nix
+H=$(scutil --get LocalHostName)
+darwin-rebuild build --flake "$FLAKE#$H"     # ./result ができる (nix/result は .gitignore 済み)
+```
+
+`result/etc` が `/etc` に入る中身、`result/Library/LaunchDaemons` が入る daemon、`result/sw` が PATH に乗る中身そのもの。5.2 以降はこれを読む。初回で `result` が無いうちは `nix eval` (5.3) だけでも同じことが分かる。
+
+### 5.2 `/etc` の衝突を検出する
+
+activation は `result/etc` 内の全シンボリックリンクについて、同名の `/etc` 実ファイルが `/etc/static/…` へのリンクでなければ既知 sha256 と照合し、**一致しなければ `error: Unexpected files in /etc, aborting activation` で止まり、一致すれば警告なく `.before-nix-darwin` にリネームして置き換える** (`result/activate:810-856`, `:2318`)。止まる側と黙って入れ替わる側の両方を見たいので、ハッシュ照合はせず「触られるファイル」を全部出す:
+
+```sh
+sys=$(readlink -f ./result)          # 既存システムを見るときは sys=/run/current-system
+find -H "$sys/etc" -type l -print0 | while IFS= read -r -d '' f; do
+  sub=${f#"$sys"/etc/}
+  [ -e "/etc/$sub" ] || continue                       # 新規作成 = 衝突なし
+  [ "$(readlink "/etc/$sub")" = "/etc/static/$sub" ] && continue   # 既に nix-darwin 管理
+  echo "TOUCHED: /etc/$sub"
+done
+```
+
+sudo は要らない。switch 済みのシステムに対して走らせると 0 件になる (実測済み)。出たファイルは一つずつ、
+
+1. 中身を `cat` して、**その設定を nix 側で再現する必要がないか**を判断する。
+2. 必要なら対応するオプションを `hosts/*.nix` に書いてから、
+3. `sudo mv /etc/<file>{,.before-nix-darwin}` してリネームする。
+
+1 を飛ばすと事故る。`/etc/pam.d/sudo_local` はリネームだけして switch すると nix-darwin 版が 0 バイトの空ファイルになり、Touch ID sudo がその場で壊れる (§3.6)。Phase 1 でこれを踏んだ。
+
+### 5.3 効果面を列挙する
+
+オプション名ではなく「何が置かれるか」を見る。ここが §5.4 で拾えないものを補う本体。
+
+```sh
+for a in environment.etc system.activationScripts launchd.daemons launchd.user.agents; do
+  echo "== $a"
+  nix eval --json "$FLAKE#darwinConfigurations.$H.config.$a" --apply builtins.attrNames
+done
+nix eval --raw "$FLAKE#darwinConfigurations.$H.config.environment.systemPath"; echo
+```
+
+`nix eval` は JSON の前に `warning: Nix search path entry … does not exist` を出すことがある。そのまま `jq` に食わせると落ちるので、必要なら `2>/dev/null` を付ける。
+
+**次フェーズの差分を先に見る**には、コミットせずに `extendModules` で足して同じことをする:
+
+```nix
+# /tmp/forecast.nix — nix eval --json -f /tmp/forecast.nix
+let
+  flake = builtins.getFlake "/Users/a12019/Projects/src/github.com/satoshiyamamoto/dotfiles/nix";
+  base = flake.darwinConfigurations."CA-20033978";
+  next = base.extendModules {
+    modules = [ { homebrew.enable = true; environment.systemPackages = [ base.pkgs.ripgrep ]; } ];
+  };
+  added = a: b: builtins.filter (x: !(builtins.elem x (builtins.attrNames a))) (builtins.attrNames b);
+in {
+  etc        = added base.config.environment.etc          next.config.environment.etc;
+  daemons    = added base.config.launchd.daemons          next.config.launchd.daemons;
+  agents     = added base.config.launchd.user.agents      next.config.launchd.user.agents;
+  activation = added base.config.system.activationScripts next.config.system.activationScripts;
+}
+```
+
+Phase 2 についてこれを回した結果 (2026-09-19 実測) は `{"activation":[],"agents":[],"daemons":[],"etc":[]}` で、**属性名の差分はどれも 0 件**。`system.activationScripts.homebrew` と `.mas` は `homebrew.enable = false` でも属性としては存在し (中身が空文字列)、有効化すると中身だけが埋まる (0 → 430 バイト)。つまりこの差分の取り方は「新しく現れるもの」しか見ないので、**中身の変化は別に見る必要がある**:
+
+```sh
+nix eval --impure --raw --expr "let
+  b = (builtins.getFlake \"$FLAKE\").darwinConfigurations.\"$H\";
+  n = b.extendModules { modules = [ { homebrew.enable = true; } ]; };
+in n.config.system.activationScripts.homebrew.text"
+```
+
+結論として Phase 2 に隠れた既定値の地雷は無く、危険なのはその activation スクリプトの中身そのものだった (§3.2)。
+
+### 5.4 既定で有効な真偽値オプションを列挙する
+
+```nix
+# /tmp/opts.nix — nix eval --json -f /tmp/opts.nix
+let
+  flake = builtins.getFlake "/Users/a12019/Projects/src/github.com/satoshiyamamoto/dotfiles/nix";
+  sys = flake.darwinConfigurations."CA-20033978";
+  docs = sys.pkgs.lib.optionAttrSetToDocList sys.options;
+  render = d: if builtins.isAttrs d && d ? text then d.text else builtins.toJSON d;
+in
+  builtins.map (o: o.name)
+    (builtins.filter (o: !(o.internal or false) && o ? default && render o.default == "true") docs)
+```
+
+Phase 1 時点で 56 件。この中に `nix.enable` / `programs.zsh.enable` / `programs.bash.enable` / `security.pam.services.sudo_local.enable` が並んでいる。**この 4 つが Phase 1 の事故のうち 2 件の原因だった。** フィルタを外せば既定値つきオプション全部 (1112 件) が出る。
+
+読むときの注意 2 点:
+
+- `environment.etc.<name>.enable` のように `<name>` を含む行は submodule の**宣言**であって、その submodule が実際に使われているとは限らない。効いているかは §5.3 の `environment.etc` の attrNames 側で確かめる。
+- ここに出るのは**宣言された既定値**であって解決後の値ではない。`programs.zsh.enableCompletion` は `hosts/CA-20033978.nix` で `false` にしているのにこのリストに出る。実際の値は `nix eval "$FLAKE#darwinConfigurations.$H.config.programs.zsh.enableCompletion"` で見る。
+
+### 5.5 既定値そのものが副作用を持つ非真偽値オプション
+
+5.4 のフィルタは真偽値しか見ないので、`environment.profiles` のような「既定値が空でないリスト」は引っかからない。実際 §3.8 の nix 二重化はこれで見落とした。5.3 の効果面列挙がこれを補うが、特に注意して読むものを挙げておく:
+
+| オプション | 既定 | 効果 |
+|---|---|---|
+| `environment.profiles` | `[ "$HOME/.nix-profile" "/run/current-system/sw" "/nix/var/nix/profiles/default" ]` | PATH / `NIX_PROFILES` / `XDG_{CONFIG,DATA}_DIRS` の生成元。nix が 2 つ並ぶ原因 (§3.8) |
+| `environment.systemPath` | 上から生成 + `/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin` | `/etc/zshenv` が export する PATH そのもの |
+| `services.openssh.hostKeys` | rsa / ecdsa / ed25519 の 3 本 | `HostKey` を明示し、**鍵が無ければ activation が生成する** (§3.9) |
+| `environment.etc.<n>.knownSha256Hashes` | モジュールごと | 5.2 の「黙って `.before-nix-darwin` に退避される」側の判定材料 |
+
+### 5.6 switch 後の確認
+
+```sh
+darwin-rebuild --list-generations
+nix config check                 # §3.8 の FAIL 1 件は既知・黙認。他が出たら調べる
+find -H /run/current-system/etc -type l | wc -l   # /etc に入った本数
+```
+
+シェル環境を実測するときは、**Claude Code の Bash ツールや既存の端末から `zsh -lic` を叩いても正しく測れない**。親シェルが既に `__NIX_DARWIN_SET_ENVIRONMENT_DONE=1` を持っているため `/etc/zshenv` の `set-environment` がスキップされる。まっさらなログインシェルで測ること:
+
+```sh
+env -i HOME="$HOME" USER="$USER" TERM="$TERM" SHELL=/bin/zsh /bin/zsh -lic 'echo $PATH'
+```
+
+## 6. 段階的ロールアウト
 
 ### Phase 0-0: Nix にない formula を先に捨てる (3 台、Nix 導入前)
 
@@ -241,26 +437,33 @@ brew autoremove                                  # 4 つだけが使っていた
 ```sh
 curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install --enable-flakes
 # 新しいシェルで
-sudo mv /etc/pam.d/sudo_local{,.before-nix-darwin}   # §3.6: 手書き版があると activation が止まる
+nix run nix-darwin/master#darwin-rebuild -- build --flake ~/Projects/src/github.com/satoshiyamamoto/dotfiles/nix
+```
+
+**ここで §5 を実施する。** 5.2 で出たファイルを 1 件ずつ処理してから switch すること。この端末では `/etc/pam.d/sudo_local` (手書き版) と `/etc/zshrc` / `/etc/bashrc` (nix-installer が書いたもの) が該当した。前者は §3.6 のオプションを先に書いてからリネームする — 空の `sudo_local` に置き換わると Touch ID sudo がその場で壊れる。
+
+```sh
+sudo mv /etc/pam.d/sudo_local{,.before-nix-darwin}
 sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake ~/Projects/src/github.com/satoshiyamamoto/dotfiles/nix
 ```
 
-`/etc/zshrc` と `/etc/bashrc` も activation に弾かれることがある。これらは nix-installer が書いたものなので同様に `.before-nix-darwin` へリネームしてよい (nix の PATH は §3.7 のとおり生成される `/etc/zshenv` が引き継ぐ)。
+nix の PATH は §3.7 のとおり生成される `/etc/zshenv` が引き継ぐので、`/etc/zshrc` を退避しても壊れない。
 
-検証: `darwin-rebuild --list-generations`、`nix doctor`、`nix config show sandbox` が `false` または `relaxed` (§3.5)、新シェルで `echo $PATH` に `/run/current-system/sw/bin` と `/etc/profiles/per-user/a12019/bin` が入ること、`sudo -k; sudo true` が tmux の中でも Touch ID を出すこと (§3.6)、`/etc/zshrc` に `compinit` が無いこと (§3.7)。brew はまだ全部残っているので日常作業に影響なし。
+検証: `darwin-rebuild --list-generations`、`nix config check` (§3.8 の `Multiple versions of nix` 1 件だけは既知・黙認、他が出たら調べる)、`nix config show sandbox` が `false` または `relaxed` (§3.5)、新シェルで `echo $PATH` に `/run/current-system/sw/bin` と `/etc/profiles/per-user/a12019/bin` が入ること、`sudo -k; sudo true` が tmux の中でも Touch ID を出すこと (§3.6)、`/etc/zshrc` に `compinit` が無いこと (§3.7)。brew はまだ全部残っているので日常作業に影響なし。
 
 ### Phase 2: この端末でパッケージ移行
 
-1. `modules/packages.nix` に §4.4 と §3.5 を投入、`darwin-rebuild switch`。brew と Nix が両方 PATH にある状態で `.zprofile` の path 順を Nix 優先にし (§6)、1〜2 日使う。`claude` の実体が `/opt/homebrew/bin/claude` から `/run/current-system/sw/bin/claude` に変わるので、`grep -r '/opt/homebrew/bin/claude'` で claudecode.nvim / sidekick.nvim / moshi-hook 等が絶対パスを持っていないか確認する。
-2. `.zshrc` / `.zprofile` の Homebrew 依存を §6 のとおり書き換え、`exec zsh` で検証。
+0. **§5 を実施。** Phase 2 の予測は §5.3 に実測済み (新規 `/etc` 0 件・新規 daemon 0 件・増えるのは `activationScripts.homebrew` のみ) なので、ここで想定外が出たら上流が変わったということ。止まって調べる。
+1. `modules/packages.nix` に §4.4 と §3.5 を投入、`darwin-rebuild switch`。brew と Nix が両方 PATH にある状態で `.zprofile` の path 順を Nix 優先にし (§7)、1〜2 日使う。`claude` の実体が `/opt/homebrew/bin/claude` から `/run/current-system/sw/bin/claude` に変わるので、`grep -r '/opt/homebrew/bin/claude'` で claudecode.nvim / sidekick.nvim / moshi-hook 等が絶対パスを持っていないか確認する。
+2. `.zshrc` / `.zprofile` の Homebrew 依存を §7 のとおり書き換え、`exec zsh` で検証。
 3. `homebrew.enable = true` + §3.2 (cleanup = "none") を投入、`darwin-rebuild switch` が内部で `brew bundle` を走らせるのを確認。`homebrew` stow パッケージから Brewfile / `trust.json` / `trust.json.lock` を外す (`curlrc` は残す)。
 4. 問題なければ `cleanup = "uninstall"` にして switch。`brew list --formula` が moshi-hook だけになることを確認。
-5. `.sync` を `sudo darwin-rebuild switch --flake "$dotfiles_dir/nix"` に差し替え (§6)。
-6. CLAUDE.md 更新 (§7)。
+5. `.sync` を `sudo darwin-rebuild switch --flake "$dotfiles_dir/nix"` に差し替え (§7)。
+6. CLAUDE.md 更新 (§8)。
 
 ### Phase 3: CA-20031962 (a12019, arm)
 
-`git pull` → `hosts/CA-20031962.nix` (graphviz / handbrake を追加。cask `google-cloud-sdk` は共通の Nix パッケージに吸収されるので書かない) → Phase 1 と同じインストーラー → `darwin-rebuild switch`。Phase 2 の内容は既に main に入っているので 1 回で終わる想定。
+`git pull` → `hosts/CA-20031962.nix` (graphviz / handbrake を追加。cask `google-cloud-sdk` は共通の Nix パッケージに吸収されるので書かない) → Phase 1 と同じインストーラー → **§5 を実施** → `darwin-rebuild switch`。Phase 2 の内容は既に main に入っているので 1 回で終わる想定だが、`/etc` の状態は端末ごとに違うので §5.2 は省略しない (§5.6 で 2 台の `environment.systemPath` を突き合わせておくと差分が早く分かる)。
 
 ### Phase 4: Kenya (satoshi, x86_64, 26.05 固定)
 
@@ -271,12 +474,13 @@ sudo nix --extra-experimental-features "nix-command flakes" \
 ```
 
 - 事前に `git pull` して遅れを解消。
-- 3 台とも `macos-setup.md` の手順で `/etc/pam.d/sudo_local` を手書きしているので、Phase 1 と同じく switch 前に `sudo mv /etc/pam.d/sudo_local{,.before-nix-darwin}` が要る (§3.6)。
+- **§5 を実施。** この端末だけ brew prefix が `/usr/local`、user が `satoshi`、アーキテクチャが x86_64 なので、他 2 台の結果を流用しない。
+- 3 台とも `macos-setup.md` の手順で `/etc/pam.d/sudo_local` を手書きしているので、Phase 1 と同じく switch 前に `sudo mv /etc/pam.d/sudo_local{,.before-nix-darwin}` が要る (§3.6, §5.2)。
 - `hosts/Kenya.nix` は 26.05 系 inputs で組む。§4.4 のうち 26.05 にない / x86_64-darwin で壊れているパッケージが出たら、その場で `homebrew.brews` にフォールバック (推測で外さず、`nix build` のエラーで判断)。
 - switch 前に `darwin-rebuild build --flake …#Kenya && ./result/sw/bin/claude --version` で claude-code を通す (§3.5 は `let` 束縛なので `pkgs.claude-code` は 26.05 の 2.1.223 を指し、単体 `nix build` の対象にならない)。失敗したら §3.5 のフォールバックへ。
 - AI エージェント CLI は 26.05 の版になる: codex 0.146.0、opencode 1.15.10、pi-coding-agent 0.75.4、skills 1.5.7、grok-build 0.2.93 (いずれも x86_64-darwin の Hydra キャッシュあり、ローカルビルドなし)。grok-build は 1.0.34 → 0.2.93 の大幅な戻りなので switch 後に `grok --version` と一度の対話で動作確認し、壊れていれば cask に戻さず**外す**。antigravity-cli (`agy`) は Kenya では外す (GUI の `antigravity` cask は残す)。
 - `/opt/homebrew -> /usr/local` リンクは `.zprofile` 修正後に不要になるので、動作確認後に削除。
-- hermes gateway は brew 非依存 (§10.3)、moshi-hook は `homebrew.brews` で継続。
+- hermes gateway は brew 非依存 (§11.3)、moshi-hook は `homebrew.brews` で継続。
 
 ### Phase 5: Stow → home-manager `home.file` (別計画)
 
@@ -315,7 +519,7 @@ gh auth login && gh extension install dlvhdr/gh-dash
 - 2 回目以降の更新は `.sync` (= `darwin-rebuild switch`) だけ。`brew bundle` を手で叩く手順は消える。
 - Touch ID sudo の手編集も消える (§3.6)。
 
-## 6. dotfiles 側の変更 (Phase 2 で実施)
+## 7. dotfiles 側の変更 (Phase 2 で実施)
 
 ### `zsh/.zprofile`
 
@@ -342,7 +546,7 @@ gh auth login && gh extension install dlvhdr/gh-dash
 - `install.darwin.sh`: stow 一覧はそのまま。末尾に `darwin-rebuild` は足さない (初回は `nix run` 経由、以後は `.sync`)。
 - `install.sh` (Linux): 変更なし。
 
-## 7. CLAUDE.md の更新点
+## 8. CLAUDE.md の更新点
 
 - 「Homebrew / Brewfile」節を「Nix (nix-darwin)」節に置き換え: `nix/` 構成、`sudo darwin-rebuild switch --flake …/nix`、Kenya は 26.05 固定で EOL 2026-12-31、x86_64-darwin は unstable にない。
 - 「node comes from Homebrew, not mise」→「node comes from nixpkgs (`nodejs`), not mise」。理由 (mise の config.toml が stow 管理) は同じ。
@@ -352,7 +556,7 @@ gh auth login && gh extension install dlvhdr/gh-dash
 - kulala / tree-sitter-cli 節: `brew "tree-sitter-cli"` → `tree-sitter` (nixpkgs)。
 - claude-code / codex 等の AI エージェント CLI は nixpkgs 版で自己更新しない旨を追加。
 
-## 8. 検証
+## 9. 検証
 
 - 各 Phase 後: `darwin-rebuild --list-generations`、`which -a <tool>` で Nix 側が先に来ること、`brew list --formula` の残り、`darwin-rebuild switch` の `brew bundle` 出力。
 - zsh: `exec zsh` 後の起動時間 (`zprof`)、`type __load_plugins` 後の `bindkey` で autosuggestions が生きていること。
@@ -362,21 +566,21 @@ gh auth login && gh extension install dlvhdr/gh-dash
 - docker: `docker buildx version`、`docker compose version`。
 - claude-code: `claude --version` が unstable の版 (3 台同じ) であること。
 
-## 9. ロールバック
+## 10. ロールバック
 
 - nix-darwin の世代戻し: `darwin-rebuild --list-generations` → `sudo darwin-rebuild switch --rollback` (または `--switch-generation N`)。
 - nix-darwin 撤去: `sudo nix --extra-experimental-features "nix-command flakes" run nix-darwin#darwin-uninstaller` (Kenya は `nix-darwin/nix-darwin-26.05#darwin-uninstaller`)。
 - Nix 本体撤去: arm 2 台は `/nix/nix-installer uninstall`。Kenya は公式手順 (`/etc/zshrc` 等の `.backup-before-nix` 復元、launchd 2 本、`_nixbld` ユーザー/グループ、`synthetic.conf`、fstab、`diskutil apfs deleteVolume /nix`)。**nix-darwin を消す前に Nix を消さない** (ネットワーク設定が壊れる既知の quirk)。
 - Homebrew は `cleanup = "uninstall"` を入れるまで formulae が残るので、Phase 2-4 より前ならロールバックコストはゼロ。それ以降は `git show <rev>:homebrew/.config/homebrew/Brewfile > /tmp/Brewfile && brew bundle --file=/tmp/Brewfile` で復元可能。
 
-## 10. 判断根拠 (2026-09-19 実測)
+## 11. 判断根拠 (2026-09-19 実測)
 
-### 10.1 x86_64-darwin の現状
+### 11.1 x86_64-darwin の現状
 
 - nixpkgs master/unstable は `x86_64-darwin` を削除済み (bd832325 "lib/systems/doubles: drop x86_64-darwin"、PR #492189 で評価時エラー化、2026-06)。`nixpkgs-26.05-darwin` にはまだ残る (`lib/systems/doubles.nix:14`)。
 - インストーラー: Determinate は 2025-10 に Intel ビルド停止 (#1693)、NixOS/nix-installer は 2.35.1 (2026-07-15) から `nix-installer-x86_64-darwin` を配布せず、Lix installer は Intel 非サポートを警告。公式 `nixos.org/nix/install` は `nix-2.35.2-x86_64-darwin.tar.xz` を配布中。
 
-### 10.2 AI エージェント CLI の版と遅れ
+### 11.2 AI エージェント CLI の版と遅れ
 
 claude-code (upstream 最新 2.1.277、09-18):
 
@@ -403,10 +607,10 @@ upstream はほぼ毎日リリース (08-12〜09-18 で 40 版)。nixpkgs master
 - codex を Kenya で unstable からソースビルドすると、x86_64-darwin の unstable にキャッシュがないため i7 で毎回 Rust コンパイルになる。26.05 の 0.146.0 を採る。
 - upstream は grok-build (`grok-<ver>-macos-x86_64`) と antigravity-cli (`darwin-x64`) の Intel 版を配っているが、nixpkgs の `sourceData` にハッシュがない (§3.5 末尾)。
 
-### 10.3 hermes の brew 依存
+### 11.3 hermes の brew 依存
 
 公式 `install.sh` (3945 行) を取得して確認。`install_system_packages()` は `command -v rg` / `command -v ffmpeg` で探し、両方見つかれば brew を呼ばない。見つからない場合だけ macOS で `brew install ripgrep ffmpeg`。git も `attempt_install_git()` が `command -v git` を先に見る。`hermes doctor` (`hermes_cli/doctor.py`) も `shutil.which` で検出し、`brew install <pkg>` は案内文の文言にすぎない。→ Nix の `ripgrep` / `ffmpeg` / `git` が PATH にあれば Homebrew 側は不要。
 
-### 10.4 gcloud
+### 11.4 gcloud
 
 nixpkgs `google-cloud-sdk`: unstable 583.0.0 (aarch64-darwin)、26.05 565.0.0 (x86_64-darwin あり)。cask は 569.0.0。追加コンポーネント gsutil / gcloud-crc32c はどちらも同梱。
