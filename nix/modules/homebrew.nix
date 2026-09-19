@@ -9,13 +9,14 @@
   homebrew = {
     enable = true;
 
-    # cleanup = "none" until the Nix side has proven itself; raising it to
-    # "uninstall" is a separate step so the removals land in one reviewable
-    # switch. "zap" is never used: it deletes cask app settings too.
+    # Anything not declared above is uninstalled: the Brewfile in this repo is
+    # gone, so Homebrew's own state is no longer a second source of truth.
+    # "zap" is never used -- it deletes cask app settings and Application
+    # Support data along with the app.
     onActivation = {
       autoUpdate = false;
       upgrade = false;
-      cleanup = "none";
+      cleanup = "uninstall";
     };
 
     global.autoUpdate = false;
