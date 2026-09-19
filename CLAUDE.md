@@ -41,6 +41,10 @@ The absolute path is required — `sudo` resets PATH, so a bare `darwin-rebuild`
 
 **The migration is not finished.** Only CA-20033978 runs nix-darwin. CA-20031962 and Kenya are still Homebrew-only, have no `darwin-rebuild`, and no longer receive a Brewfile from stow, so packages there are whatever is already installed. `.sync` skips the rebuild on those machines and says so. Do not assume a Nix path exists before checking. Plan and current state: `docs/nix-migration.md`.
 
+Kenya will pin nixpkgs 26.05 rather than follow unstable, because it is the only x86_64 Mac here and unstable has dropped `x86_64-darwin` from several of these packages' `meta.platforms`. That pin has an expiry: 26.05 goes EOL on 2026-12-31, so Kenya needs a channel bump — or a retirement — before then.
+
+**The AI agent CLIs do not self-update.** `claude`, `codex`, `opencode`, `pi-coding-agent`, `grok-build` and `skills` all come from the Nix store, which is read-only, so an in-place updater could not work even if it tried; nixpkgs wraps `claude` with `DISABLE_AUTOUPDATER=1` and `opencode` with `DISABLE_AUTOUPDATE=true` outright. Their versions move only when the flake inputs are updated (`nix flake update` in `nix/`, then a switch), so a stale CLI is a lockfile question, not a broken updater.
+
 - **hermes-agent is deliberately absent from `packages.nix`.** Upstream lists both `brew install hermes-agent` and PyPI installs (`uv tool install`, `pip install`) as unsupported distribution methods that receive no further updates, and `hermes update` prints a deprecation notice on every run. Use the official installer instead — see [Hermes Agent](#hermes-agent).
 - **node comes from nixpkgs, not mise.** `~/.config/mise` is a stow symlink into this repo, so `mise use -g node@lts` would write the tool into the version-controlled `mise/.config/mise/config.toml` instead of a machine-local file. Keep `nodejs` in `nix/modules/packages.nix` and let the flake own the version.
 
