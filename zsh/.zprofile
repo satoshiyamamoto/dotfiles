@@ -11,7 +11,6 @@ export LANG='en_US.UTF-8'
 
 ## Colors
 export COLORTERM='truecolor'
-export LS_COLORS="${$(vivid generate tokyonight-night 2>/dev/null || echo ''):-'di=34:ln=35:so=32:pi=33:ex=31:bd=36;01:cd=33;01:su=31;40;07:sg=36;40;07:tw=32;40;07:ow=33;40;07:'}"
 
 # Paths
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
@@ -55,7 +54,6 @@ export FZF_ALT_C_OPTS='--preview="${FZF_PREVIEW_DIR}"'
 
 ## eza
 export EZA_CONFIG_DIR="$XDG_CONFIG_HOME/eza"
-unset LS_COLORS
 unset EZA_COLORS
 
 ## Direnv
