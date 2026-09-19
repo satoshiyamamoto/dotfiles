@@ -33,7 +33,7 @@ Phase 1 の初回 switch で想定外が 3 件出た。activation が `/etc/pam.
 | ホスト | user | CPU | macOS | brew | 特記 |
 |---|---|---|---|---|---|
 | CA-20033978 (この端末) | a12019 | M4 / arm64 | 26.6.2 | 7.0.4 `/opt/homebrew`、304 formulae / 28 casks | `~/.config/starship.toml` が実ファイル、`~/.config/mise` が空の実ディレクトリ (stow リンク切れ)。追加 cask: intellij-idea。moshi-hook サービス稼働。bundle check で drift (codex, argo, snappy, awscli, node, openjdk, gradle, openexr, mise, mycli, skills, uv) |
-| CA-20031962 | a12019 | M4 Max / arm64 | 26.6.2 | 7.0.4、317 / 29 | stow 正常。追加 formula: graphviz。追加 cask: google-cloud-sdk, handbrake。go pkgs / zmx / moshi-hook 未導入 |
+| CA-20031962 | a12019 | M4 Max / arm64 | 26.6.2 | 7.0.4、317 / 29 | stow 正常。追加 formula: graphviz。追加 cask: google-cloud-sdk (共通 Brewfile の `gcloud-cli` とは別名の同一 SDK)。`handbrake` も入っているが共通 Brewfile の `handbrake-app` の旧名で別物ではない。go pkgs / zmx / moshi-hook 未導入 |
 | Kenya | **satoshi** | i7-8700B / **x86_64** | 15.8 | 7.0.4 **`/usr/local`**、root に `/opt/homebrew -> /usr/local` シンボリックリンク、305 / 29 | repo が 2 コミット遅れ。追加 formulae: code-minimap, helm-ls, z。追加 cask: antigravity, codex-app。grok-build 1.0.34 (x86_64 バイナリ) と antigravity-cli 1.0.3 (`agy`、5 月から未更新) が cask で入っている。hermes gateway + moshi-hook 稼働 |
 
 共通: admin、SIP 有効、zsh 5.9、nvim 0.12.5、tmux 3.7c、Xcode CLT あり、Nix 未導入。
@@ -48,7 +48,7 @@ nix/
                          home-manager, home-manager-2605
   hosts/
     CA-20033978.nix      nixpkgs.hostPlatform = "aarch64-darwin"; system.primaryUser = "a12019"
-    CA-20031962.nix      同上 (+ graphviz / handbrake)
+    CA-20031962.nix      同上 (+ graphviz)
     Kenya.nix            nixpkgs.hostPlatform = "x86_64-darwin"; primaryUser = "satoshi"
                          (26.05 系 inputs、+ code-minimap / helm-ls / z / antigravity / codex-app)
   modules/
@@ -67,8 +67,8 @@ nix/
 
 ### 3.2 `homebrew` モジュール
 
-- `homebrew.taps = ["rjyo/moshi"]`、`homebrew.brews = [{ name = "rjyo/moshi/moshi-hook"; trusted = true; restart_service = "changed"; }]`。Homebrew に残す唯一の formula。
-- `homebrew.casks`: 3 台共通 22 個 (§4.4)。ホスト差分は `hosts/*.nix`。
+- `homebrew.taps = ["rjyo/moshi"]`、`homebrew.brews = [{ name = "rjyo/moshi/moshi-hook"; restart_service = "changed"; }]`。Homebrew に残す唯一の formula。`trusted` は書かない — nix-darwin の `modules/homebrew.nix:547` で `default = true` で、完全修飾名にだけ効く。
+- `homebrew.casks`: 3 台共通 18 個 (§4.4)。ホスト差分は `hosts/*.nix`。現時点でホスト固有の cask は無い。
 - `homebrew.masApps = { "AdGuard Mini" = 1440147259; … }` (14 個)。
 - `homebrew.onActivation = { autoUpdate = false; upgrade = false; cleanup = "none"; }` で開始し、Nix 側が安定したら `cleanup = "uninstall"` に上げて残存 formulae を一括削除。`zap` は使わない (cask 設定まで消える)。
 - `homebrew.global.autoUpdate = false`。`homebrew.caskArgs` に `--no-quarantine` は入れない (CLAUDE.md の cask quarantine 節どおり)。
@@ -300,7 +300,7 @@ argo-workflows argocd asciinema atuin awscli bash bat bat-extras.batdiff bat-ext
 - `rustup component add rust-analyzer` は従来通り (CLAUDE.md メモ)。
 - `grok-build` `antigravity-cli` は `lib.optionals stdenv.hostPlatform.isAarch64 [ grok-build antigravity-cli ]` で arm 2 台に限定する。unstable の `package.nix` が aarch64-darwin のハッシュしか持たず、26.05 は antigravity-cli を欠く。Kenya の grok-build だけ 26.05 の `grok-build` (0.2.93) を `hosts/Kenya.nix` に置く。
 - CLI 系 cask 4 つ (`claude-code@latest` `codex` `grok-build` `antigravity-cli`) はここに含めた。`codex` は cask だが CLI で、GUI は別 cask `codex-app` (Kenya のみ)。
-- 残る cask は 3 台共通で 22 個 (元 30 個 − フォント 3 − gcloud-cli − CLI 4)。
+- 残る cask は 3 台共通で 18 個 (Brewfile の `cask` 27 行 − フォント 3 − `gcloud-cli` 1 − CLI 4 − `handbrake-app` 1)。`handbrake-app` は Nix に移せない (nixpkgs の `handbrake` は `broken = true`、`meta.platforms` に `x86_64-darwin` が無い) が、使っていないので Homebrew にも残さない。`intellij-idea` も同様に非宣言 (Brewfile には元から無く、この端末だけの手動導入だった)。
 
 ## 5. 切り替え前監査 (全フェーズ共通の必須手順)
 
@@ -478,13 +478,13 @@ nix の PATH は §3.7 のとおり生成される `/etc/zshenv` が引き継ぐ
 1. `modules/packages.nix` に §4.4 と §3.5 を投入、`darwin-rebuild switch`。brew と Nix が両方 PATH にある状態で `.zprofile` の path 順を Nix 優先にし (§7)、1〜2 日使う。`claude` の実体が `/opt/homebrew/bin/claude` から `/run/current-system/sw/bin/claude` に変わるので、`grep -r '/opt/homebrew/bin/claude'` で claudecode.nvim / sidekick.nvim / moshi-hook 等が絶対パスを持っていないか確認する。
 2. `.zshrc` / `.zprofile` の Homebrew 依存を §7 のとおり書き換え、`exec zsh` で検証。
 3. `homebrew.enable = true` + §3.2 (cleanup = "none") を投入、`darwin-rebuild switch` が内部で `brew bundle` を走らせるのを確認。`homebrew` stow パッケージから Brewfile / `trust.json` / `trust.json.lock` を外す (`curlrc` は残す)。
-4. 問題なければ `cleanup = "uninstall"` にして switch。`brew list --formula` が moshi-hook だけになることを確認。
-5. `.sync` を `sudo darwin-rebuild switch --flake "$dotfiles_dir/nix"` に差し替え (§7)。
+4. 問題なければ `cleanup = "uninstall"` にして switch。`brew list --formula` が moshi-hook だけになることを確認。switch 後に `brew trust --formula rjyo/moshi/moshi-hook` を 1 回実行する (これが無いと `brew services list` がエラーも出さず空になる)。**宣言に無い cask も同時に消える**ので、Brewfile の外で手動導入していた cask を事前に棚卸しする。
+5. `.sync` を `sudo /run/current-system/sw/bin/darwin-rebuild switch --flake "$dotfiles_dir/nix"` に差し替え (§7)。`sudo` は `env_reset` で PATH を捨てるため絶対パスが要る。
 6. CLAUDE.md 更新 (§8)。
 
 ### Phase 3: CA-20031962 (a12019, arm)
 
-`git pull` → `hosts/CA-20031962.nix` (graphviz / handbrake を追加。cask `google-cloud-sdk` は共通の Nix パッケージに吸収されるので書かない) → Phase 1 と同じインストーラー → **§5 を実施** → `darwin-rebuild switch`。Phase 2 の内容は既に main に入っているので 1 回で終わる想定だが、`/etc` の状態は端末ごとに違うので §5.2 は省略しない (§5.6 で 2 台の `environment.systemPath` を突き合わせておくと差分が早く分かる)。
+`git pull` → `hosts/CA-20031962.nix` (graphviz を追加。cask `google-cloud-sdk` は共通の Nix パッケージに吸収されるので書かない。`handbrake` は 3 台とも非宣言なので switch で消える) → Phase 1 と同じインストーラー → **§5 を実施** → `darwin-rebuild switch`。Phase 2 の内容は既に main に入っているので 1 回で終わる想定だが、`/etc` の状態は端末ごとに違うので §5.2 は省略しない (§5.6 で 2 台の `environment.systemPath` を突き合わせておくと差分が早く分かる)。
 
 ### Phase 4: Kenya (satoshi, x86_64, 26.05 固定)
 
@@ -548,7 +548,7 @@ gh auth login && gh extension install dlvhdr/gh-dash
 |---|---|---|
 | 14 | `/opt/homebrew/bin/vivid generate …` | `vivid generate …` (PATH 解決) |
 | 29-42 `path=(…)` | `/opt/homebrew/opt/mysql-client/bin`、`/opt/homebrew/opt/rustup/bin`、`/opt/homebrew/{,s}bin` | 先頭に `/etc/profiles/per-user/$USER/bin(N)` と `/run/current-system/sw/bin(N)` を追加。`mysql-client` / `rustup` の opt 行は削除 (Nix は bin に直接出す)。`/opt/homebrew/{,s}bin(N)` は残す (brew 本体と `moshi-hook`、cask が bin に出す CLI 用)。Kenya は `/usr/local/{,s}bin(N)` が既にある |
-| 44-49 `## Homebrew` | `HOMEBREW_PREFIX='/opt/homebrew'` 決め打ち | `HOMEBREW_PREFIX` 行を削除 (brew 自身が shellenv で決める。Kenya は `/usr/local`)。`HOMEBREW_BUNDLE_MAS_SKIP` は削除 (nix-darwin が Brewfile を生成する)。`HOMEBREW_CURLRC`、`HOMEBREW_NO_ENV_HINTS`、`HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS` は残す |
+| 44-49 `## Homebrew` | `HOMEBREW_PREFIX='/opt/homebrew'` 決め打ち | `HOMEBREW_PREFIX` 行を削除 (brew 自身が shellenv で決める。Kenya は `/usr/local`)。`HOMEBREW_BUNDLE_MAS_SKIP` は削除 (値が `''` で、`bundle/skipper.rb:67` が `split` した結果は空リスト。元から何もスキップしていなかった)。`HOMEBREW_CURLRC`、`HOMEBREW_NO_ENV_HINTS`、`HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS` は残す |
 | 70 `## Claude Code` | `CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE=1` | **削除**。nixpkgs 版は `DISABLE_AUTOUPDATER=1` でラップされるので意味を持たない。`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` は残す |
 
 ### `zsh/.zshrc`
@@ -557,12 +557,12 @@ gh auth login && gh extension install dlvhdr/gh-dash
 |---|---|---|
 | 33 | `$HOMEBREW_PREFIX/share/zsh/site-functions(N)` | `/run/current-system/sw/share/zsh/site-functions(N)` (nix-darwin が補完を集約) |
 | 56-58 | `$HOMEBREW_PREFIX/share/zsh-*` | `/run/current-system/sw/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh`、`…/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh`、`…/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh` (Phase 2 step 1 の switch 後に実測。autosuggestions だけ `share/zsh/plugins/` 配下、syntax-highlighting だけ `share/` 直下で、3 つとも配置が違う。後者は §3.10 の `pathsToLink` 追加が前提) |
-| 59-61 | gcloud `path.zsh.inc` / `completion.zsh.inc` と `z.sh` | **削除**。nixpkgs `google-cloud-sdk` は `bin/gcloud` を PATH に、補完を `share/zsh/site-functions/_gcloud` (`#compdef` 付き) に出すので、行 33 の fpath 変更だけで補完が効く。`z.sh` は 3 台とも存在しないデッド行 (z は zoxide が代替) |
-| 104-107 `.sync` | `STOW_FLAGS=--restow sh install.darwin.sh` + `brew bundle -g` | stow 行は維持、`brew bundle -g` を `sudo darwin-rebuild switch --flake "$dotfiles_dir/nix"` に置換 |
+| 59-61 | gcloud `path.zsh.inc` / `completion.zsh.inc` と `z.sh` | **削除**。nixpkgs `google-cloud-sdk` は `bin/gcloud` を PATH に、補完を `share/zsh/site-functions/_gcloud` (`#compdef` 付き) に出すので、行 33 の fpath 変更だけで補完が効く。3 行とも既にデッドだった。gcloud の 2 行が指す `Caskroom/google-cloud-sdk/` はこの端末の cask (`gcloud-cli`) と別名で存在せず、`z.sh` も 3 台とも無い (z は zoxide が代替) |
+| 104-107 `.sync` | `STOW_FLAGS=--restow sh install.darwin.sh` + `brew bundle -g` | stow 行は維持、`brew bundle -g` を `sudo /run/current-system/sw/bin/darwin-rebuild switch --flake "$dotfiles_dir/nix"` に置換 (`sudo` が PATH を捨てるので絶対パス) |
 
 ### その他
 
-- `docker/.docker/config.json`: `cliPluginsExtraDirs` の `/opt/homebrew/lib/docker/cli-plugins` → `/run/current-system/sw/libexec/docker/cli-plugins` を指す (`docker-buildx` / `docker-compose` の 2 本が実在することを switch 後に確認済み)。§3.10 の `pathsToLink` 追加が前提。
+- `docker/.docker/config.json`: **変更不要**。§3.10 の `pathsToLink` が `/run/current-system/sw/libexec/docker/cli-plugins` に `docker-buildx` / `docker-compose` の 2 本を出すので、switch 後に `docker compose version` (5.5.1) と `docker buildx version` (v0.35.0) がそのまま通る。
 - `homebrew/` stow パッケージ: `Brewfile`、`trust.json`、`trust.json.lock` を `git rm` し `curlrc` のみ残す。`.gitignore` に `homebrew/.config/homebrew/trust.json*` を追加 (brew が `~/.config/homebrew/` に書き続けるため、stow 経由で repo に現れないように)。`Brewfile.lock.json` の行は不要になる。Brewfile ごと消えるので `brew "rust"` や CLI 系 cask の行単位削除は発生しない。
 - `install.darwin.sh`: stow 一覧はそのまま。末尾に `darwin-rebuild` は足さない (初回は `nix run` 経由、以後は `.sync`)。
 - `install.sh` (Linux): 変更なし。
@@ -571,7 +571,7 @@ gh auth login && gh extension install dlvhdr/gh-dash
 
 - 「Homebrew / Brewfile」節を「Nix (nix-darwin)」節に置き換え: `nix/` 構成、`sudo darwin-rebuild switch --flake …/nix`、Kenya は 26.05 固定で EOL 2026-12-31、x86_64-darwin は unstable にない。
 - 「node comes from Homebrew, not mise」→「node comes from nixpkgs (`nodejs`), not mise」。理由 (mise の config.toml が stow 管理) は同じ。
-- hermes の ffmpeg 記述を「installer は `command -v rg` / `command -v ffmpeg` / `command -v git` で探し、見つかれば brew を呼ばない。`ripgrep` / `ffmpeg` / `git` は `modules/packages.nix` に置き、インストーラーは Nix パスが PATH に入ったログインシェルから実行する」に。
+- hermes の ffmpeg 記述を「installer は `command -v rg` / `command -v ffmpeg` / `command -v git` で探し、見つかれば brew を呼ばない。`ripgrep` / `ffmpeg` は `modules/packages.nix` に置く。`git` は 3 台とも Apple Git (`/usr/bin/git`) で Homebrew にも nixpkgs にも無いので宣言しない (新端末は `xcode-select --install` のまま)。インストーラーは Nix パスが PATH に入ったログインシェルから実行する」に。
 - moshi-hook: brew launchd service は継続、宣言場所が `modules/homebrew.nix` の `brews` に変わる。
 - cask quarantine 節: そのまま有効。`homebrew.caskArgs` に `--no-quarantine` を入れない旨を 1 行追加。
 - kulala / tree-sitter-cli 節: `brew "tree-sitter-cli"` → `tree-sitter` (nixpkgs)。
