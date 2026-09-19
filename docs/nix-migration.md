@@ -33,7 +33,7 @@ Phase 1 の初回 switch で想定外が 3 件出た。activation が `/etc/pam.
 | ホスト | user | CPU | macOS | brew | 特記 |
 |---|---|---|---|---|---|
 | CA-20033978 (この端末) | a12019 | M4 / arm64 | 26.6.2 | 7.0.4 `/opt/homebrew`、304 formulae / 28 casks | `~/.config/starship.toml` が実ファイル、`~/.config/mise` が空の実ディレクトリ (stow リンク切れ)。追加 cask: intellij-idea。moshi-hook サービス稼働。bundle check で drift (codex, argo, snappy, awscli, node, openjdk, gradle, openexr, mise, mycli, skills, uv) |
-| CA-20031962 | a12019 | M4 Max / arm64 | 26.6.2 | 7.0.4、317 / 29 | stow 正常。追加 formula: graphviz。追加 cask: google-cloud-sdk (共通 Brewfile の `gcloud-cli` とは別名の同一 SDK)。`handbrake` も入っているが共通 Brewfile の `handbrake-app` の旧名で別物ではない。go pkgs / zmx / moshi-hook 未導入 |
+| CA-20031962 | a12019 | M4 Max / arm64 | 26.6.2 | 7.0.4、317 / 29 | stow 正常。追加 formula: graphviz。追加 tap: neurosnap/tap (zmx の供給元)。追加 cask: google-cloud-sdk (共通 Brewfile の `gcloud-cli` とは別名の同一 SDK)。`handbrake` も入っているが共通 Brewfile の `handbrake-app` の旧名で別物ではない。go pkgs / moshi-hook 未導入 (**訂正 2026-09-19**: 当初「zmx 未導入」と記録したが誤りで、`neurosnap/tap` から導入済みだった。Phase 3 で判明) |
 | Kenya | **satoshi** | i7-8700B / **x86_64** | 15.8 | 7.0.4 **`/usr/local`**、root に `/opt/homebrew -> /usr/local` シンボリックリンク、305 / 29 | repo が 2 コミット遅れ。追加 formulae: code-minimap, helm-ls, z。追加 cask: antigravity, codex-app。grok-build 1.0.34 (x86_64 バイナリ) と antigravity-cli 1.0.3 (`agy`、5 月から未更新) が cask で入っている。hermes gateway + moshi-hook 稼働 |
 
 共通: admin、SIP 有効、zsh 5.9、nvim 0.12.5、tmux 3.7c、Xcode CLT あり、Nix 未導入。
@@ -48,10 +48,12 @@ nix/
                          home-manager, home-manager-2605
   hosts/
     CA-20033978.nix      nixpkgs.hostPlatform = "aarch64-darwin"; system.primaryUser = "a12019"
-    CA-20031962.nix      同上 (+ graphviz)
+    CA-20031962.nix      同上 (graphviz は不要と判断し引き継がない)
     Kenya.nix            nixpkgs.hostPlatform = "x86_64-darwin"; primaryUser = "satoshi"
                          (26.05 系 inputs、+ code-minimap / helm-ls / z / antigravity / codex-app)
   modules/
+    common.nix           全ホスト共通: stateVersion / experimental-features / programs.zsh /
+                         security.pam (ホスト固有は hosts/ に残す)
     packages.nix         environment.systemPackages (§4)、claude-code の callPackage (§3.5)
     homebrew.nix         homebrew.{enable,taps,brews,casks,masApps,onActivation}
     home.nix             home-manager: 当面は home.stateVersion と PATH まわりのみ
@@ -282,7 +284,23 @@ nixpkgs-unstable の `packages.json` (2026-09 取得) で照合。Brewfile の `
 | `rjyo/moshi/moshi-hook` | `homebrew.brews` に残す (§3.2) |
 | gcviewer / showkey / socket_vmnet / utimer | Phase 0-0 で `brew uninstall` + Brewfile から除去。Nix 側には何も書かない |
 | kcat | 同上。nixpkgs の `kcat` は aarch64-darwin でビルドできない — 依存の `libserdes` が `avro-c++` のヘッダを通せない (`Exception.hh` が `<fmt/core.h>` を include するが fmt 12 で `fmt::format` はそこから外れた)。`kcat/package.nix` に avro を切るオプションはない |
-| `neurosnap/tap/zmx` | nixpkgs に `zmx` あり → Nix 側。tap は不要になる (同一物か `nix run nixpkgs#zmx -- --version` で確認) |
+| `neurosnap/tap/zmx` | nixpkgs に `zmx` あり → Nix 側。tap は不要になる (同一物か `nix run nixpkgs#zmx -- --version` で確認)。**switch 前に手で外すこと** — 後述 |
+
+`zmx` を入れている端末では、`cleanup = "uninstall"` に任せてはいけない。Homebrew 6.0.0 以降は `HOMEBREW_REQUIRE_TAP_TRUST` が既定で有効で、cleanup は**未 trust の tap の formula を読み込めずに中断する**:
+
+```
+Error: Refusing to load formula neurosnap/tap/zmx from untrusted tap neurosnap/tap.
+```
+
+対話的な `brew trust` は `~/.config/homebrew/trust.json` に書くが、activation 下の brew は `sudo` が `XDG_CONFIG_HOME` を落とすため `~/.homebrew/trust.json` を読む (§3.2 / moshi-hook と同じ事情)。つまり trust を足しても activation 側に届くとは限らない。tap ごと手で消すのが確実で、消してしまえば cleanup が触る対象自体が無くなる:
+
+```sh
+brew trust neurosnap/tap     # uninstall が formula を読むために必要
+brew uninstall zmx
+brew untap neurosnap/tap
+```
+
+CA-20031962 で実際にここで止まった (Phase 3)。Kenya も `brew tap` に `neurosnap/tap` があれば同じ手順が要る。
 
 ### 4.3 依存としてしか使っていない行 → Nix リストから落とす (Nix はランタイム依存を自動で持つ)
 
@@ -485,7 +503,14 @@ nix の PATH は §3.7 のとおり生成される `/etc/zshenv` が引き継ぐ
 
 ### Phase 3: CA-20031962 (a12019, arm)
 
-`git pull` → `hosts/CA-20031962.nix` (graphviz を追加。cask `google-cloud-sdk` は共通の Nix パッケージに吸収されるので書かない。`handbrake` は 3 台とも非宣言なので switch で消える) → Phase 1 と同じインストーラー → **§5 を実施** → `darwin-rebuild switch`。Phase 2 の内容は既に main に入っているので 1 回で終わる想定だが、`/etc` の状態は端末ごとに違うので §5.2 は省略しない (§5.6 で 2 台の `environment.systemPath` を突き合わせておくと差分が早く分かる)。
+`git pull` → `hosts/CA-20031962.nix` (cask `google-cloud-sdk` は共通の Nix パッケージに吸収されるので書かない。`handbrake` は 3 台とも非宣言なので switch で消える) → Phase 1 と同じインストーラー → **§5 を実施** → `darwin-rebuild switch`。Phase 2 の内容は既に main に入っているので 1 回で終わる想定だが、`/etc` の状態は端末ごとに違うので §5.2 は省略しない (§5.6 で 2 台の `environment.systemPath` を突き合わせておくと差分が早く分かる)。
+
+**実施結果 (2026-09-19, 完了)**
+
+- graphviz は引き継がなかった。結果として `hosts/CA-20031962.nix` はプラットフォームと `primaryUser` の 2 行だけになり、CA-20033978 と同一の system derivation が出る (共通部分は `modules/common.nix` に抽出、`1b50e2e`)。
+- `/etc/pam.d/sudo_local` はこの端末でも手書きのままだったので、Phase 1 と同じく `sudo mv /etc/pam.d/sudo_local{,.before-nix-darwin}` が事前に必要だった。`/etc/zshrc` と `/etc/bashrc` はインストーラーが書き換えたもので既知ハッシュに一致し、activation が自動退避した。
+- cask cleanup は宣言どおり 18/18 に収束 (`google-cloud-sdk` と `handbrake` は削除)。formula は 309 件が削除された。
+- **想定外は 1 件のみ**: `zmx` が `neurosnap/tap` から入っており (§2 の記録が誤っていた)、untrusted tap のため cleanup が中断した。§4.2 の手順で手動除去してから switch をやり直して完了。
 
 ### Phase 4: Kenya (satoshi, x86_64, 26.05 固定)
 

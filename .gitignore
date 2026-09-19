@@ -112,5 +112,7 @@ hermes/.hermes/**
 !hermes/.hermes/SOUL.md
 
 ### Nix ###
-# darwin-rebuild build output symlink
-nix/result
+# darwin-rebuild build output symlinks. Unqualified because the symlink lands
+# in whatever directory the build was invoked from, not only in nix/.
+result
+result-*
