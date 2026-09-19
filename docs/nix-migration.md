@@ -51,6 +51,8 @@ nix/
     CA-20031962.nix      同上 (graphviz は不要と判断し引き継がない)
     Kenya.nix            nixpkgs.hostPlatform = "x86_64-darwin"; primaryUser = "satoshi"
                          networking.localHostName = "Kenya"、26.05 に無い 4 つを homebrew.brews
+                         (**訂正 2026-09-20**: localHostName の宣言は削除。homebrew.brews も空になり、
+                         herdr は llm-agents.nix の overlay へ、残り 3 つは削除)
                          (**訂正 2026-09-19**: code-minimap / helm-ls / z / antigravity / codex-app
                          は宣言せず cleanup に任せる。dotfiles 内に参照が 1 件も無いため)
   modules/
@@ -326,8 +328,22 @@ argo-workflows argocd asciinema atuin awscli bash bat bat-extras.batdiff bat-ext
   - `mycli`: eval は通るが `llm` 経由で `arrow-cpp` を引き、26.05 はこれを **x86_64-darwin でのみ `broken = true`** としている (aarch64 では false)。`meta` を見るだけの可用性チェックでは検出できず、`darwinConfigurations.Kenya` の eval で初めて出た。
   - `atuin`: **追加 2026-09-19 (Phase 4 実施後)**。26.05 にはあるが 18.15.2 で、Kenya が既に移行済みの履歴 DB を開けない (`migration <id> was previously applied but is missing in the resolved migrations`)。`_atuin_preexec` は `atuin history start` を**同期実行**するため、全コマンドが 4-8 秒待たされた。Homebrew への退避も不可 (下記) なので、**Kenya では atuin を使わない**。`zsh/.zshrc` の `atuin init` を `(( $+commands[atuin] ))` でガードし、`zsh/.zprofile` の `FZF_CTRL_R_COMMAND=''` も同条件にして Ctrl-R を fzf に戻す。
   - 後ろ 4 つ (`cloudflare-speed-cli` `herdr` `hunk` `mycli`) は homebrew/core にあるので `hosts/Kenya.nix` の `homebrew.brews` で維持する。tap は不要。
+    - **訂正 2026-09-20**: この 4 つは Homebrew から外した。`herdr` は [numtide/llm-agents.nix](https://github.com/numtide/llm-agents.nix) から取り、残り 3 つ (`cloudflare-speed-cli` `hunk` `mycli`) は Kenya では不要と判断して削除 (`cleanup = "uninstall"` が次の switch で消す)。Kenya の `homebrew.brews` は空になり、共通の `moshi-hook` だけが残る。詳細は §4.6。
 - CLI 系 cask 4 つ (`claude-code@latest` `codex` `grok-build` `antigravity-cli`) はここに含めた。`codex` は cask だが CLI で、GUI は別 cask `codex-app` (Kenya のみ)。`codex-app` と `antigravity` は Kenya にしか無く dotfiles から参照もされないので宣言せず、cleanup に任せる。
 - 残る cask は 3 台共通で 18 個 (Brewfile の `cask` 27 行 − フォント 3 − `gcloud-cli` 1 − CLI 4 − `handbrake-app` 1)。`handbrake-app` は Nix に移せない (nixpkgs の `handbrake` は `broken = true`、`meta.platforms` に `x86_64-darwin` が無い) が、使っていないので Homebrew にも残さない。`intellij-idea` も同様に非宣言 (Brewfile には元から無く、この端末だけの手動導入だった)。
+
+### 4.6 Kenya の herdr を llm-agents.nix から取る (2026-09-20)
+
+Homebrew が Tier 3 でこの構成の bottle を配らなくなった以上 (§Phase 4 の atuin 参照)、26.05 に無いものを Homebrew に逃がす手は使えない。代わりに [numtide/llm-agents.nix](https://github.com/numtide/llm-agents.nix) を flake input に足し、**Kenya だけ** `overlays.shared-nixpkgs` を当てて `pkgs.llm-agents.herdr` を使う。
+
+- その flake の `packages` 出力は `x86_64-linux / aarch64-linux / aarch64-darwin` の 3 つしか持たない (`systems` の定義)。**ただしこれはキャッシュを焼いている systems の一覧にすぎない。** `overlays.shared-nixpkgs` は `mkPackagesFor final` で消費側の pkgs に対してツリーを組み直すので、26.05/x86_64-darwin でも評価できる。
+- `packages/herdr/package.nix` 側は `meta.platforms = lib.platforms.linux ++ lib.platforms.darwin` で、バイナリ配布ではなくソースビルド (Rust + vendored libghostty-vt を zig でビルド)。したがって `antigravity-cli` / `grok-build` のような「上流に darwin-x64 の成果物が無い」制約に当たらない。
+- 26.05 の `zig` に `fetchDeps` があることも評価で確認した (`preBuild` が `zigDeps` を強制するため、drvPath が出た時点で確定)。
+- **実ビルドを Kenya で検証済み**: 約 4 分、`EXIT=0`、`versionCheckPhase` も通過。`/nix/store/vjcx7abz…-herdr-0.9.1`、`Mach-O 64-bit executable x86_64`、23M。Homebrew 版は 0.8.2 だったので 1 つ新しくなる。
+- キャッシュは効かない。`cache.numtide.com` は上記 3 systems 向けで、しかも overlay 経由は「消費側の nixpkgs rev が一致したときだけ」ヒットする (overlay のコメント)。input か依存が動くたびに再ビルドになる。
+- `inputs.nixpkgs.follows = "nixpkgs"` を付けて lock に 3 つ目の nixpkgs を増やさない。上流がそれを使うのは `lib` と自前 3 systems 用の `pkgsFor` だけで、x86_64-darwin は `pkgsFor.${system}.bun or pkgs.bun` の `or` に落ちる。
+- **`hunk` は同じ手が使えない。** `packages/hunk/package.nix` の `meta.platforms` が `x86_64-linux / aarch64-linux / aarch64-darwin` を明示しており、評価の時点で `Refusing to evaluate package 'hunk-0.22.0' … not available on the requested hostPlatform` になる。原因は依存の `bun-bin` (`bun build --compile` のランタイム) の `triples` に `darwin-x64` が無いこと。上流の bun 自体は `bun-darwin-x64.zip` を配っているので、やるなら `bun-bin` の triples + hash と `hunk.meta.platforms` を overlay で二重に上書きすることになる。今回は Kenya で hunk 自体が不要なので見送った。
+- 検証: ローカルで `darwinConfigurations.Kenya.system.drvPath` が評価でき、`environment.systemPackages` に上記 herdr の store path が入ること。arm64 2 台の `system.drvPath` が input 追加の前後で不変 (`j8hdqni0…`) であること。
 
 ## 5. 切り替え前監査 (全フェーズ共通の必須手順)
 
@@ -551,6 +567,7 @@ sudo nix --extra-experimental-features "nix-command flakes" \
   brew trust neurosnap/tap && brew uninstall zmx && brew untap neurosnap/tap
   ```
 - switch 後の確認: `herdr --version` / `speedtest` / `hunk --version` / `mycli --version` (Homebrew 側の 4 つ)、`brew tap` が `rjyo/moshi` のみ、`brew services list` に `moshi-hook`。
+  - **訂正 2026-09-20**: この 4 つは Homebrew から外れた (§4.6)。確認は `which herdr` が `/run/current-system/sw/bin/herdr`、`herdr --version` が 0.9.1、`brew list --formula` が `moshi-hook` のみ、に変わる。
 - AI エージェント CLI は 26.05 の版になる: codex 0.146.0、opencode 1.15.10、pi-coding-agent 0.75.4、skills 1.5.7 (いずれも x86_64-darwin の Hydra キャッシュあり、ローカルビルドなし)。`grok-build` と `antigravity-cli` は aarch64 限定にしたので Kenya には入らない。
 - cleanup で消える Kenya 固有物: cask 11 個 (`antigravity` `antigravity-cli` `claude-code@latest` `codex` `codex-app` `font-ipaexfont` `font-noto-sans-symbols-2` `font-symbols-only-nerd-font` `gcloud-cli` `grok-build` `handbrake-app`) と、leaf のうち `cmake` `code-minimap` `go-bindata` `go-md2man` `helm-ls` `kcat` `pam-reattach` `rust` `vivid` `z`。いずれも dotfiles から参照されていないか、既に方針が決まっている (§4.2 / §4.3)。
 - `/opt/homebrew -> /usr/local` リンクは `.zprofile` 修正後に不要になるので、動作確認後に削除。

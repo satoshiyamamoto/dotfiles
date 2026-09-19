@@ -13,6 +13,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # herdr for Kenya. Its own `packages` output skips x86_64-darwin, but the
+    # shared-nixpkgs overlay builds the tree against the consumer's pkgs, which
+    # is how that host gets it anyway -- see hosts/Kenya.nix. `follows` keeps a
+    # third nixpkgs out of the lock: upstream uses its own only for `lib` and
+    # for a per-system package set that x86_64-darwin never reaches.
+    llm-agents = {
+      url = "github:numtide/llm-agents.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixpkgs-2605.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     nix-darwin-2605 = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
