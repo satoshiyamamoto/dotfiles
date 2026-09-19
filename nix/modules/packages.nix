@@ -181,7 +181,6 @@ in
       unbound
       uv
       viddy
-      vivid
       watch
       wget
       worktrunk

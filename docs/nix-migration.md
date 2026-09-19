@@ -292,12 +292,13 @@ abseil avro-c bdw-gc boost brotli c-ares ca-certificates cairo certifi cryptogra
 
 ### 4.4 leaf として Nix へ移すもの (nixpkgs attr)
 
-argo-workflows argocd asciinema atuin awscli bash bat bat-extras.batdiff bat-extras.batgrep bat-extras.batman bat-extras.batpipe bat-extras.batwatch bat-extras.prettybat bk btop buf caddy cbonsai cloudflare-speed-cli cmatrix colima colordiff container coreutils devcontainer direnv docker docker-buildx docker-compose docker-credential-helpers duckdb exiftool eza fastfetch fd ffmpeg fzf gawk gh ghq delta glow gnupg go google-cloud-sdk google-java-format gws gping gradle protobuf grpc grpcurl kubernetes-helm herdr hey htop hunk imagemagick jd-diff-patch jq jwt-cli k9s kubectl kubectl-tree lazydocker lazygit lefthook litecli lolcat luarocks mas maven mermaid-cli minikube mise mosh mycli mysql84 tree-sitter neovim nkf nmap nyancat ripgrep opencode codex jdk jdk21 pandoc pgcli pnpm ponysay poppler zsh-powerlevel10k pwgen qemu rustup skills sl socat sops sourceHighlight starship stern stow stylua inetutils tfenv tldr tmux translate-shell tree ttyd unbound uv viddy vivid watch wget worktrunk yamlfmt yazi yq zellij zoxide zsh-autosuggestions zsh-syntax-highlighting zsh-you-should-use zmx nodejs
+argo-workflows argocd asciinema atuin awscli bash bat bat-extras.batdiff bat-extras.batgrep bat-extras.batman bat-extras.batpipe bat-extras.batwatch bat-extras.prettybat bk btop buf caddy cbonsai cloudflare-speed-cli cmatrix colima colordiff container coreutils devcontainer direnv docker docker-buildx docker-compose docker-credential-helpers duckdb exiftool eza fastfetch fd ffmpeg fzf gawk gh ghq delta glow gnupg go google-cloud-sdk google-java-format gws gping gradle protobuf grpc grpcurl kubernetes-helm herdr hey htop hunk imagemagick jd-diff-patch jq jwt-cli k9s kubectl kubectl-tree lazydocker lazygit lefthook litecli lolcat luarocks mas maven mermaid-cli minikube mise mosh mycli mysql84 tree-sitter neovim nkf nmap nyancat ripgrep opencode codex jdk jdk21 pandoc pgcli pnpm ponysay poppler zsh-powerlevel10k pwgen qemu rustup skills sl socat sops sourceHighlight starship stern stow stylua inetutils tfenv tldr tmux translate-shell tree ttyd unbound uv viddy watch wget worktrunk yamlfmt yazi yq zellij zoxide zsh-autosuggestions zsh-syntax-highlighting zsh-you-should-use zmx nodejs
 
 - `go "…"` 5 行 → `delve gopls gotools golangci-lint go-tools` (staticcheck は go-tools)。`GOPATH=$HOME/Projects` は維持。
 - `uv "…"` 4 行 → `ruff sqlfluff python313Packages.ipython python313Packages.docutils`。
 - `npm "…"` 3 行 → `biome prettier pi-coding-agent`。
 - `rustup component add rust-analyzer` は従来通り (CLAUDE.md メモ)。
+- `vivid` は移さない。`.zprofile` の `LS_COLORS` 生成が唯一の利用元で、その配線ごと落とした (`060fd5e`)。`eza` は自前の配色を持つ。
 - `grok-build` `antigravity-cli` は `lib.optionals stdenv.hostPlatform.isAarch64 [ grok-build antigravity-cli ]` で arm 2 台に限定する。unstable の `package.nix` が aarch64-darwin のハッシュしか持たず、26.05 は antigravity-cli を欠く。Kenya の grok-build だけ 26.05 の `grok-build` (0.2.93) を `hosts/Kenya.nix` に置く。
 - CLI 系 cask 4 つ (`claude-code@latest` `codex` `grok-build` `antigravity-cli`) はここに含めた。`codex` は cask だが CLI で、GUI は別 cask `codex-app` (Kenya のみ)。
 - 残る cask は 3 台共通で 18 個 (Brewfile の `cask` 27 行 − フォント 3 − `gcloud-cli` 1 − CLI 4 − `handbrake-app` 1)。`handbrake-app` は Nix に移せない (nixpkgs の `handbrake` は `broken = true`、`meta.platforms` に `x86_64-darwin` が無い) が、使っていないので Homebrew にも残さない。`intellij-idea` も同様に非宣言 (Brewfile には元から無く、この端末だけの手動導入だった)。
@@ -546,7 +547,7 @@ gh auth login && gh extension install dlvhdr/gh-dash
 
 | 行 | 現在 | 変更 |
 |---|---|---|
-| 14 | `/opt/homebrew/bin/vivid generate …` | `vivid generate …` (PATH 解決) |
+| 14 | `/opt/homebrew/bin/vivid generate …` | **削除**。`LS_COLORS` は 44 行下の `unset LS_COLORS` で毎回捨てられており最初から無効だった。`vivid` も `modules/packages.nix` から外す (`060fd5e`) |
 | 29-42 `path=(…)` | `/opt/homebrew/opt/mysql-client/bin`、`/opt/homebrew/opt/rustup/bin`、`/opt/homebrew/{,s}bin` | 先頭に `/etc/profiles/per-user/$USER/bin(N)` と `/run/current-system/sw/bin(N)` を追加。`mysql-client` / `rustup` の opt 行は削除 (Nix は bin に直接出す)。`/opt/homebrew/{,s}bin(N)` は残す (brew 本体と `moshi-hook`、cask が bin に出す CLI 用)。Kenya は `/usr/local/{,s}bin(N)` が既にある |
 | 44-49 `## Homebrew` | `HOMEBREW_PREFIX='/opt/homebrew'` 決め打ち | `HOMEBREW_PREFIX` 行を削除 (brew 自身が shellenv で決める。Kenya は `/usr/local`)。`HOMEBREW_BUNDLE_MAS_SKIP` は削除 (値が `''` で、`bundle/skipper.rb:67` が `split` した結果は空リスト。元から何もスキップしていなかった)。`HOMEBREW_CURLRC`、`HOMEBREW_NO_ENV_HINTS`、`HOMEBREW_NO_UPGRADE_AUTO_UPDATES_CASKS` は残す |
 | 70 `## Claude Code` | `CLAUDE_CODE_PACKAGE_MANAGER_AUTO_UPDATE=1` | **削除**。nixpkgs 版は `DISABLE_AUTOUPDATER=1` でラップされるので意味を持たない。`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` は残す |
