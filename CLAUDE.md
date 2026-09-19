@@ -20,16 +20,33 @@ Dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/). Each top-l
 
 Config files are placed under `<package>/.config/<tool>/` to follow the [XDG Base Directory Specification](https://specifications.freedesktop.org/basedir-spec/latest/) (`$XDG_CONFIG_HOME`). Prefer this layout when adding new packages. Place files directly under `<package>/` only when the tool does not support XDG (e.g., `~/.editorconfig`, `~/.bash_aliases`).
 
-## Homebrew / Brewfile
+## Nix (nix-darwin)
 
-`homebrew/.config/homebrew/Brewfile` is periodically regenerated with `brew bundle dump`, which strips every comment. Record package-specific caveats here instead of in the Brewfile.
+Packages come from the flake in `nix/`, applied by `darwin-rebuild`. The `.sync` shell function (`zsh/.zshrc`) runs stow and then the rebuild:
 
-- **hermes-agent is deliberately absent from the Brewfile.** Upstream lists both `brew install hermes-agent` and PyPI installs (`uv tool install`, `pip install`) as unsupported distribution methods that receive no further updates, and `hermes update` prints a deprecation notice on every run. Use the official installer instead — see [Hermes Agent](#hermes-agent).
-- **node comes from Homebrew, not mise.** `~/.config/mise` is a stow symlink into this repo, so `mise use -g node@lts` would write the tool into the version-controlled `mise/.config/mise/config.toml` instead of a machine-local file. Keep `brew "node"` in the Brewfile and let `brew bundle` own the version.
+```sh
+sudo /run/current-system/sw/bin/darwin-rebuild switch --flake <repo>/nix
+```
+
+The absolute path is required — `sudo` resets PATH, so a bare `darwin-rebuild` is not found.
+
+| Path | Holds |
+|------|-------|
+| `nix/flake.nix` | `darwinConfigurations`, one attribute per host, keyed by hostname |
+| `nix/hosts/<hostname>.nix` | Host-only settings: `stateVersion`, PAM, zsh, experimental features |
+| `nix/modules/packages.nix` | `environment.systemPackages`, `fonts.packages`, `pathsToLink` |
+| `nix/modules/homebrew.nix` | What stays on Homebrew: one tapped formula, the GUI casks, the Mac App Store apps |
+
+**Homebrew survives only as a cask/mas backend.** There is no Brewfile in this repo any more — nix-darwin generates one in the Nix store and runs `brew bundle` against it, so edits belong in `nix/modules/homebrew.nix`. `onActivation.cleanup = "uninstall"` makes that file the single source of truth: any formula or cask installed by hand is removed on the next switch. `masApps` is the exception, because Homebrew Bundle has no mas cleanup — deleting an entry there does not uninstall the app.
+
+**The migration is not finished.** Only CA-20033978 runs nix-darwin. CA-20031962 and Kenya are still Homebrew-only, have no `darwin-rebuild`, and no longer receive a Brewfile from stow, so packages there are whatever is already installed. `.sync` skips the rebuild on those machines and says so. Do not assume a Nix path exists before checking. Plan and current state: `docs/nix-migration.md`.
+
+- **hermes-agent is deliberately absent from `packages.nix`.** Upstream lists both `brew install hermes-agent` and PyPI installs (`uv tool install`, `pip install`) as unsupported distribution methods that receive no further updates, and `hermes update` prints a deprecation notice on every run. Use the official installer instead — see [Hermes Agent](#hermes-agent).
+- **node comes from nixpkgs, not mise.** `~/.config/mise` is a stow symlink into this repo, so `mise use -g node@lts` would write the tool into the version-controlled `mise/.config/mise/config.toml` instead of a machine-local file. Keep `nodejs` in `nix/modules/packages.nix` and let the flake own the version.
 
 ### Cask Quarantine — do not set `HOMEBREW_CASK_OPTS='--no-quarantine'`
 
-`--no-quarantine` was removed in Homebrew 6.x (deprecated in `ffe954753b`, 2025-10-23; removed in `ba25213c81`, 2026-07-30). `cask_opts_quarantine?` is gone from `env_config.rb` and `Cask::Installer` no longer takes a `quarantine:` argument. The flag is now **silently ignored** — `brew install --cask` exits 0 with no warning — so it looks like it still works. `brew config` echoes `HOMEBREW_CASK_OPTS` verbatim and is not evidence that the flag is honored. Supported values are only `--*dir`, `--language`, `--require-sha` and `--no-binaries` (`env_config.rb:228`).
+`--no-quarantine` was removed in Homebrew 6.x (deprecated in `ffe954753b`, 2025-10-23; removed in `ba25213c81`, 2026-07-30). `cask_opts_quarantine?` is gone from `env_config.rb` and `Cask::Installer` no longer takes a `quarantine:` argument. The flag is now **silently ignored** — `brew install --cask` exits 0 with no warning — so it looks like it still works. `brew config` echoes `HOMEBREW_CASK_OPTS` verbatim and is not evidence that the flag is honored. Supported values are only `--*dir`, `--language`, `--require-sha` and `--no-binaries` (`env_config.rb:228`). The same applies to nix-darwin's `homebrew.caskArgs`, which just renders those values into the generated Brewfile — do not put `no_quarantine = true` there either.
 
 The replacement is automatic and needs no configuration. `0a137ee80b` ("Preserve cask quarantine approval", 2026-07-11) makes `brew upgrade --cask` inherit the old version's Gatekeeper approval when both hold:
 
@@ -61,7 +78,7 @@ Drop `--skip-setup` only on a machine with no `~/.hermes/config.yaml` yet; the w
 - `~/.hermes` is shared by every install method, so switching methods keeps all config and state. The installer skips files that already exist, and `atomic_yaml_write` preserves symlinks (upstream #16743) — stow-linked `config.yaml` / `SOUL.md` are never clobbered.
 - **The `hermes` package deliberately stows only `config.yaml` and `SOUL.md`.** `~/.hermes/skills` belongs to Hermes (bundled skills seeded by the installer, hub installs, `.hub/` provenance, usage telemetry) and must stay out of stow's reach — see [Personal Skills](#personal-skills) for why.
 - The launchd plist points at `~/.hermes/hermes-agent/venv/bin/python`, which carries no version, so `hermes update` won't break the gateway. Re-run `hermes gateway install` only when switching install methods.
-- The installer shells out to `brew install` for missing system tools (ripgrep, ffmpeg, git). That is why `ffmpeg` is declared in the Brewfile — keep it there so the Brewfile stays in sync with what Hermes needs.
+- The installer shells out to `brew install` for missing system tools (ripgrep, ffmpeg, git). `ripgrep` and `ffmpeg` are declared in `nix/modules/packages.nix` — keep them there so the flake stays in sync with what Hermes needs. `git` is not declared anywhere: macOS ships Apple Git at `/usr/bin/git`, which is what this machine uses.
 
 ### Computer Use (cua-driver)
 
@@ -74,7 +91,7 @@ curl -fsSL https://raw.githubusercontent.com/trycua/cua/main/libs/cua-driver/scr
 - The installer unpacks to `/Applications/CuaDriver.app` and symlinks `~/.local/bin/cua-driver` to the executable. Hermes skips the install when `/Applications` is not writable.
 - Refresh with `hermes computer-use install --upgrade` (also called by `hermes update`). The installer always pulls the latest release, so re-running *is* the upgrade path — there is no version pin. Inspect with `hermes computer-use status` / `doctor`.
 - macOS TCC grants (Accessibility, Screen Recording) attach to `com.trycua.driver` itself — approve **Cua Driver** in System Settings, not the terminal or Hermes.
-- Unlike `ffmpeg`, it never appears in the Brewfile, and `brew bundle` alone will not restore it on a new machine.
+- Unlike `ffmpeg`, it is not declared in `nix/modules/packages.nix`, and a `darwin-rebuild switch` alone will not restore it on a new machine.
 
 Full notes: `~/Documents/knowledge/hermes.md` §8.
 
@@ -99,7 +116,9 @@ Three reasons not to put personal skills under `~/.hermes/skills` instead:
 
 ## Moshi (moshi-hook)
 
-`moshi-hook serve` runs as a Homebrew launchd agent (`brew "rjyo/moshi/moshi-hook", trusted: true`) and bridges AI coding agents to the Moshi mobile app. The `moshi` package stows only `~/.config/moshi/config.toml`; everything else moshi-hook owns lives in `~/Library/Application Support/Moshi/` (socket, `hook.log`, pairing state) and must stay out of the repo.
+`moshi-hook serve` runs as a Homebrew launchd agent — declared in `nix/modules/homebrew.nix` under `brews` with `restart_service = "changed"` — and bridges AI coding agents to the Moshi mobile app. The `moshi` package stows only `~/.config/moshi/config.toml`; everything else moshi-hook owns lives in `~/Library/Application Support/Moshi/` (socket, `hook.log`, pairing state) and must stay out of the repo.
+
+The tap is third-party, so Homebrew refuses to run its service until the formula is trusted: `brew trust --formula rjyo/moshi/moshi-hook` once per machine. nix-darwin's `trusted` option defaults to true but writes to the invoking user's trust store, and activation runs under `sudo`, so the manual command is the reliable path.
 
 `moshi-hook set` writes **through** the stow symlink rather than replacing it, so the CLI and the repo stay in sync — no `--no-folding` needed, unlike the Hermes skills case above. It also sorts the port list on write. Editing `config.toml` by hand is equivalent; `set` just saves you finding the file.
 
@@ -165,7 +184,7 @@ Add external nvim site paths via `performance.rtp.paths` in `lua/config/lazy.lua
 
 `mistweaverco/kulala.nvim` in `lua/plugins/coding.lua` replaced `rest-nvim/rest.nvim`, which was the only plugin here that needed lazy.nvim's luarocks/hererocks machinery.
 
-`kulala-core` — the backend that executes HTTP/gRPC/WebSocket/GraphQL requests and formats responses — is managed by the plugin itself, not by Homebrew: it is auto-downloaded from GitHub Releases into nvim's data dir on first use, so `brew bundle` alone will not restore it on a new machine. Override with `kulala_core.path` only when using a hand-installed binary. Check it with `:checkhealth kulala` (the plugin is lazy-loaded, so run `:Lazy load kulala.nvim` first in a non-`http` buffer). Neovim 0.12+ is required.
+`kulala-core` — the backend that executes HTTP/gRPC/WebSocket/GraphQL requests and formats responses — is managed by the plugin itself, not by Nix: it is auto-downloaded from GitHub Releases into nvim's data dir on first use, so a `darwin-rebuild switch` alone will not restore it on a new machine. Override with `kulala_core.path` only when using a hand-installed binary. Check it with `:checkhealth kulala` (the plugin is lazy-loaded, so run `:Lazy load kulala.nvim` first in a non-`http` buffer). Neovim 0.12+ is required.
 
 Keymaps come from kulala's own `global_keymaps = true` under the `<Leader>R` prefix (which-key group in `ui.lua`). The `keys` entries in the spec are lazy-load stubs for the subset kulala maps globally; the rest are filetype-local to `http`/`rest`. The lualine environment indicator reads `vim.g.kulala_selected_env` directly so that lualine never loads kulala.
 
@@ -182,7 +201,7 @@ Two reasons:
 
 Two consequences worth remembering:
 
-- `brew "tree-sitter-cli"` must still stay in the Brewfile, but for nvim-treesitter's own sake: it shells out to `tree-sitter build` for every parser it compiles (`install.lua:305-317`).
+- nixpkgs' `tree-sitter` (the CLI, in `nix/modules/packages.nix`) must stay declared, but for nvim-treesitter's own sake: it shells out to `tree-sitter build` for every parser it compiles (`install.lua:305-317`).
 - A bare `:TSUpdate` used to fail with `Parser not available for language "kulala_http"`. `config.get_installed()` builds its list by scanning `site/parser` and `site/queries`, so kulala's artifacts looked like nvim-treesitter's own; `norm_languages` returns that list verbatim for `'all'` (`config.lua:105-109`), and the unknown language then errors in `get_parser_install_info`. Re-enabling kulala's treesitter handling brings that back. The alternative fix — moving nvim-treesitter's own `install_dir` out of `site/` — was rejected as the bigger change.
 
 ### Investigating Plugins
@@ -225,7 +244,7 @@ fix(tmux): correct status bar character rendering
 refactor(zsh): reorder functions by type
 ```
 
-Common scopes: `nvim`, `zsh`, `tmux`, `git`, `starship`, `ghostty`, `homebrew`
+Common scopes: `nvim`, `zsh`, `tmux`, `git`, `starship`, `ghostty`, `nix`
 
 ## Before Making Any Edit
 

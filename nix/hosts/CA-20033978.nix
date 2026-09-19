@@ -30,8 +30,4 @@
     touchIdAuth = true;
     reattach = true;
   };
-
-  # Phase 0 keeps this empty on purpose: Homebrew still owns every package and
-  # every cask. environment.systemPackages arrives in Phase 2, the homebrew
-  # module right after it. See docs/nix-migration.md.
 }
