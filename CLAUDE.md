@@ -32,16 +32,19 @@ The absolute path is required — `sudo` resets PATH, so a bare `darwin-rebuild`
 
 | Path | Holds |
 |------|-------|
-| `nix/flake.nix` | `darwinConfigurations`, one attribute per host, keyed by hostname |
-| `nix/hosts/<hostname>.nix` | Host-only settings: `stateVersion`, PAM, zsh, experimental features |
+| `nix/flake.nix` | `darwinConfigurations`, one attribute per host, keyed by `scutil --get LocalHostName` |
+| `nix/hosts/<hostname>.nix` | Host-only settings: platform, primary user, and whatever that machine alone needs |
+| `nix/modules/common.nix` | Shared by every host: `stateVersion`, experimental features, zsh, PAM |
 | `nix/modules/packages.nix` | `environment.systemPackages`, `fonts.packages`, `pathsToLink` |
 | `nix/modules/homebrew.nix` | What stays on Homebrew: one tapped formula, the GUI casks, the Mac App Store apps |
 
 **Homebrew survives only as a cask/mas backend.** There is no Brewfile in this repo any more — nix-darwin generates one in the Nix store and runs `brew bundle` against it, so edits belong in `nix/modules/homebrew.nix`. `onActivation.cleanup = "uninstall"` makes that file the single source of truth: any formula or cask installed by hand is removed on the next switch. `masApps` is the exception, because Homebrew Bundle has no mas cleanup — deleting an entry there does not uninstall the app.
 
-**The migration is not finished.** Only CA-20033978 runs nix-darwin. CA-20031962 and Kenya are still Homebrew-only, have no `darwin-rebuild`, and no longer receive a Brewfile from stow, so packages there are whatever is already installed. `.sync` skips the rebuild on those machines and says so. Do not assume a Nix path exists before checking. Plan and current state: `docs/nix-migration.md`.
+**The migration is not finished.** CA-20033978 and CA-20031962 run nix-darwin; Kenya is declared in the flake but has not switched yet, so it has no `/nix` and no `darwin-rebuild`. It also no longer receives a Brewfile from stow, so its packages are whatever is already installed. `.sync` skips the rebuild there and says so. Do not assume a Nix path exists before checking. Plan and current state: `docs/nix-migration.md`.
 
-Kenya will pin nixpkgs 26.05 rather than follow unstable, because it is the only x86_64 Mac here and unstable has dropped `x86_64-darwin` from several of these packages' `meta.platforms`. That pin has an expiry: 26.05 goes EOL on 2026-12-31, so Kenya needs a channel bump — or a retirement — before then.
+**Kenya pins nixpkgs 26.05** rather than following unstable, via its own `nixpkgs-2605` / `nix-darwin-2605` inputs. It is the only x86_64 Mac here and 26.11 does not merely drop `x86_64-darwin` from a few `meta.platforms` — importing nixpkgs at all for that system throws `Nixpkgs 26.11 has dropped support for x86_64-darwin`, so no per-package override can rescue it. That pin has an expiry: 26.05 goes EOL on 2026-12-31, so Kenya needs a channel bump — or a retirement — before then.
+
+Five packages are therefore aarch64-only in `packages.nix`. `container` is Apple Silicon only outright; `antigravity-cli` and `grok-build` publish no darwin-x64 hash upstream; `cloudflare-speed-cli`, `herdr` and `hunk` are absent from 26.05; and `mycli` evaluates but pulls `arrow-cpp` through `llm`, which 26.05 marks broken on x86_64-darwin alone. The last four are declared as Homebrew formulae in `nix/hosts/Kenya.nix` instead.
 
 **The AI agent CLIs do not self-update.** `claude`, `codex`, `opencode`, `pi-coding-agent`, `grok-build` and `skills` all come from the Nix store, which is read-only, so an in-place updater could not work even if it tried; nixpkgs wraps `claude` with `DISABLE_AUTOUPDATER=1` and `opencode` with `DISABLE_AUTOUPDATE=true` outright. Their versions move only when the flake inputs are updated (`nix flake update` in `nix/`, then a switch), so a stale CLI is a lockfile question, not a broken updater.
 
@@ -122,7 +125,11 @@ Three reasons not to put personal skills under `~/.hermes/skills` instead:
 
 `moshi-hook serve` runs as a Homebrew launchd agent — declared in `nix/modules/homebrew.nix` under `brews` with `restart_service = "changed"` — and bridges AI coding agents to the Moshi mobile app. The `moshi` package stows only `~/.config/moshi/config.toml`; everything else moshi-hook owns lives in `~/Library/Application Support/Moshi/` (socket, `hook.log`, pairing state) and must stay out of the repo.
 
-The tap is third-party, so Homebrew refuses to run its service until the formula is trusted: `brew trust --formula rjyo/moshi/moshi-hook` once per machine. nix-darwin's `trusted` option defaults to true but writes to the invoking user's trust store, and activation runs under `sudo`, so the manual command is the reliable path.
+The tap is third-party, and since Homebrew 6.0.0 `HOMEBREW_REQUIRE_TAP_TRUST` refuses to load its formula until it is trusted. Activation is already covered: nix-darwin's `trusted` option defaults to **true for `brews` and `casks`** (and false only for `taps`), so the generated Brewfile carries `brew "rjyo/moshi/moshi-hook", ..., trusted: true`, and `brew bundle` writes that into the trust store itself before loading any entry (`Library/Homebrew/bundle/installer.rb`). No tap-wide grant is needed.
+
+What is *not* covered is anything undeclared. `cleanup = "uninstall"` cannot load an undeclared formula from an undeclared tap in order to remove it, and aborts activation — this is what happened on CA-20031962. Untap such leftovers by hand before the first switch.
+
+Interactive `brew` is a separate store: `brew trust` writes `$XDG_CONFIG_HOME/homebrew/trust.json` while a run without `XDG_CONFIG_HOME` reads `~/.homebrew/trust.json` (`Library/Homebrew/trust.rb`), so `brew trust --formula rjyo/moshi/moshi-hook` is still worth running once per machine for your own shell.
 
 `moshi-hook set` writes **through** the stow symlink rather than replacing it, so the CLI and the repo stay in sync — no `--no-folding` needed, unlike the Hermes skills case above. It also sorts the port list on write. Editing `config.toml` by hand is equivalent; `set` just saves you finding the file.
 

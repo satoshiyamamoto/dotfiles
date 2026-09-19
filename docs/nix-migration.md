@@ -50,7 +50,9 @@ nix/
     CA-20033978.nix      nixpkgs.hostPlatform = "aarch64-darwin"; system.primaryUser = "a12019"
     CA-20031962.nix      同上 (graphviz は不要と判断し引き継がない)
     Kenya.nix            nixpkgs.hostPlatform = "x86_64-darwin"; primaryUser = "satoshi"
-                         (26.05 系 inputs、+ code-minimap / helm-ls / z / antigravity / codex-app)
+                         networking.localHostName = "Kenya"、26.05 に無い 4 つを homebrew.brews
+                         (**訂正 2026-09-19**: code-minimap / helm-ls / z / antigravity / codex-app
+                         は宣言せず cleanup に任せる。dotfiles 内に参照が 1 件も無いため)
   modules/
     common.nix           全ホスト共通: stateVersion / experimental-features / programs.zsh /
                          security.pam (ホスト固有は hosts/ に残す)
@@ -317,8 +319,13 @@ argo-workflows argocd asciinema atuin awscli bash bat bat-extras.batdiff bat-ext
 - `npm "…"` 3 行 → `biome prettier pi-coding-agent`。
 - `rustup component add rust-analyzer` は従来通り (CLAUDE.md メモ)。
 - `vivid` は移さない。`.zprofile` の `LS_COLORS` 生成が唯一の利用元で、その配線ごと落とした (`060fd5e`)。`eza` は自前の配色を持つ。
-- `grok-build` `antigravity-cli` は `lib.optionals stdenv.hostPlatform.isAarch64 [ grok-build antigravity-cli ]` で arm 2 台に限定する。unstable の `package.nix` が aarch64-darwin のハッシュしか持たず、26.05 は antigravity-cli を欠く。Kenya の grok-build だけ 26.05 の `grok-build` (0.2.93) を `hosts/Kenya.nix` に置く。
-- CLI 系 cask 4 つ (`claude-code@latest` `codex` `grok-build` `antigravity-cli`) はここに含めた。`codex` は cask だが CLI で、GUI は別 cask `codex-app` (Kenya のみ)。
+- aarch64 限定は最終的に 7 つになった: `lib.optionals stdenv.hostPlatform.isAarch64 [ antigravity-cli cloudflare-speed-cli container grok-build herdr hunk mycli ]`。
+  - `grok-build` `antigravity-cli`: unstable の `package.nix` が aarch64-darwin のハッシュしか持たず、26.05 は antigravity-cli を欠く。(**訂正 2026-09-19**: 当初は Kenya に 26.05 の `grok-build` 0.2.93 を置く方針だったが、使っていないので置かない)
+  - `container`: Apple 純正ランタイムで Apple Silicon 専用。
+  - `cloudflare-speed-cli` `herdr` `hunk`: 26.05 に存在しない。
+  - `mycli`: eval は通るが `llm` 経由で `arrow-cpp` を引き、26.05 はこれを **x86_64-darwin でのみ `broken = true`** としている (aarch64 では false)。`meta` を見るだけの可用性チェックでは検出できず、`darwinConfigurations.Kenya` の eval で初めて出た。
+  - 後ろ 4 つは homebrew/core にあるので `hosts/Kenya.nix` の `homebrew.brews` で維持する。tap は不要。
+- CLI 系 cask 4 つ (`claude-code@latest` `codex` `grok-build` `antigravity-cli`) はここに含めた。`codex` は cask だが CLI で、GUI は別 cask `codex-app` (Kenya のみ)。`codex-app` と `antigravity` は Kenya にしか無く dotfiles から参照もされないので宣言せず、cleanup に任せる。
 - 残る cask は 3 台共通で 18 個 (Brewfile の `cask` 27 行 − フォント 3 − `gcloud-cli` 1 − CLI 4 − `handbrake-app` 1)。`handbrake-app` は Nix に移せない (nixpkgs の `handbrake` は `broken = true`、`meta.platforms` に `x86_64-darwin` が無い) が、使っていないので Homebrew にも残さない。`intellij-idea` も同様に非宣言 (Brewfile には元から無く、この端末だけの手動導入だった)。
 
 ## 5. 切り替え前監査 (全フェーズ共通の必須手順)
@@ -520,12 +527,31 @@ sudo nix --extra-experimental-features "nix-command flakes" \
   run nix-darwin/nix-darwin-26.05#darwin-rebuild -- switch --flake ~/Projects/src/github.com/satoshiyamamoto/dotfiles/nix
 ```
 
-- 事前に `git pull` して遅れを解消。
-- **§5 を実施。** この端末だけ brew prefix が `/usr/local`、user が `satoshi`、アーキテクチャが x86_64 なので、他 2 台の結果を流用しない。
-- 3 台とも `macos-setup.md` の手順で `/etc/pam.d/sudo_local` を手書きしているので、Phase 1 と同じく switch 前に `sudo mv /etc/pam.d/sudo_local{,.before-nix-darwin}` が要る (§3.6, §5.2)。
-- `hosts/Kenya.nix` は 26.05 系 inputs で組む。§4.4 のうち 26.05 にない / x86_64-darwin で壊れているパッケージが出たら、その場で `homebrew.brews` にフォールバック (推測で外さず、`nix build` のエラーで判断)。
-- switch 前に `darwin-rebuild build --flake …#Kenya && ./result/sw/bin/claude --version` で claude-code を通す (§3.5 は `let` 束縛なので `pkgs.claude-code` は 26.05 の 2.1.223 を指し、単体 `nix build` の対象にならない)。失敗したら §3.5 のフォールバックへ。
-- AI エージェント CLI は 26.05 の版になる: codex 0.146.0、opencode 1.15.10、pi-coding-agent 0.75.4、skills 1.5.7、grok-build 0.2.93 (いずれも x86_64-darwin の Hydra キャッシュあり、ローカルビルドなし)。grok-build は 1.0.34 → 0.2.93 の大幅な戻りなので switch 後に `grok --version` と一度の対話で動作確認し、壊れていれば cask に戻さず**外す**。antigravity-cli (`agy`) は Kenya では外す (GUI の `antigravity` cask は残す)。
+**事前調査の結果 (2026-09-19、SSH で実測)**
+
+| 項目 | 実測値 | 帰結 |
+|---|---|---|
+| `scutil --get LocalHostName` | `kenya` (小文字)。`ComputerName` / `HostName` / `hostname -s` は `Kenya` | flake の属性キーは LocalHostName で決まる (`pkgs/nix-tools/darwin-rebuild.sh:170`、`hostname -s` ではない)。**switch 前に手で `sudo scutil --set LocalHostName Kenya` に揃える**。そのうえで `networking.localHostName = "Kenya"` を宣言して再発を防ぐ。解決は activation より前に起きるので、初回だけは手動が必須 |
+| 機種 | Macmini8,1 (Mac mini 2018) | **Touch ID 非搭載**。`common.nix` の `touchIdAuth` は pam_tid が `sufficient` なので素通りするだけで無害 |
+| `/etc` 衝突 | `/etc/pam.d/sudo_local` **実体なし** (`.template` のみ)、`/etc/zshenv` なし、`/etc/zshrc` (`fb5827cb…`) と `/etc/bashrc` (`444c716a…`) は nix-darwin の `knownSha256Hashes` に一致 | **手動退避は不要**。Phase 1 / 3 とここが違う (**訂正 2026-09-19**: 「3 台とも sudo_local を手書きしている」という当初の記述は Kenya について誤りだった) |
+| `brew tap` | `neurosnap/tap`、`rjyo/moshi` | `neurosnap/tap` は zmx の供給元。zmx は全端末から外したので (§4.2)、**switch 前に手で untap する**。宣言されていない tap の formula は cleanup が読めず activation が中断する |
+| nix-darwin 26.05 | `maxStateVersion = 7` | `common.nix` の `system.stateVersion = 7` は無改造で通る |
+| `pam-reattach` | 26.05/x86_64 で 1.3 が入手可 | `common.nix` の `reattach = true` も無改造で通る |
+| repo | 18 コミット遅れ | 事前に `git pull` |
+
+- **§5 を実施。** この端末だけ brew prefix が `/usr/local`、user が `satoshi`、アーキテクチャが x86_64 なので、他 2 台の結果を流用しない。`homebrew.prefix` は hostPlatform から `/usr/local` が導かれるので明示不要 (確認済み)。
+- 26.05 で入手できない 4 つは `hosts/Kenya.nix` の `homebrew.brews` に落とした (§4.4)。`darwinConfigurations.Kenya` の eval を通すことが判定手段で、`meta` だけ見る可用性チェックでは `mycli` を取りこぼす。
+- claude-code は 26.05/x86_64 で評価済み: §3.5 の `callPackage "${inputs.nixpkgs}/pkgs/by-name/cl/claude-code/package.nix"` が **2.1.272** を解決し、`src` も `darwin-x64` を指す (26.05 の凍結版は 2.1.223)。unstable を丸ごと import しないので x86_64 の throw を踏まない。switch 前に `darwin-rebuild build --flake …#Kenya && ./result/sw/bin/claude --version` で実物を確認する。
+- **switch 前に手で済ませること** (Kenya は sudo にパスワードが要るのでリモートからは実行できない):
+
+  ```sh
+  sudo scutil --set LocalHostName Kenya
+  cd ~/Projects/src/github.com/satoshiyamamoto/dotfiles && git pull
+  brew trust neurosnap/tap && brew uninstall zmx && brew untap neurosnap/tap
+  ```
+- switch 後の確認: `herdr --version` / `speedtest` / `hunk --version` / `mycli --version` (Homebrew 側の 4 つ)、`brew tap` が `rjyo/moshi` のみ、`brew services list` に `moshi-hook`。
+- AI エージェント CLI は 26.05 の版になる: codex 0.146.0、opencode 1.15.10、pi-coding-agent 0.75.4、skills 1.5.7 (いずれも x86_64-darwin の Hydra キャッシュあり、ローカルビルドなし)。`grok-build` と `antigravity-cli` は aarch64 限定にしたので Kenya には入らない。
+- cleanup で消える Kenya 固有物: cask 11 個 (`antigravity` `antigravity-cli` `claude-code@latest` `codex` `codex-app` `font-ipaexfont` `font-noto-sans-symbols-2` `font-symbols-only-nerd-font` `gcloud-cli` `grok-build` `handbrake-app`) と、leaf のうち `cmake` `code-minimap` `go-bindata` `go-md2man` `helm-ls` `kcat` `pam-reattach` `rust` `vivid` `z`。いずれも dotfiles から参照されていないか、既に方針が決まっている (§4.2 / §4.3)。
 - `/opt/homebrew -> /usr/local` リンクは `.zprofile` 修正後に不要になるので、動作確認後に削除。
 - hermes gateway は brew 非依存 (§11.3)、moshi-hook は `homebrew.brews` で継続。
 

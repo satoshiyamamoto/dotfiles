@@ -72,12 +72,10 @@ in
       buf
       caddy
       cbonsai
-      cloudflare-speed-cli
       cmatrix
       codex
       colima
       colordiff
-      container
       coreutils
       delta
       delve
@@ -111,10 +109,8 @@ in
       grpc
       grpcurl
       gws
-      herdr
       hey
       htop
-      hunk
       imagemagick
       inetutils
       jd-diff-patch
@@ -138,7 +134,6 @@ in
       minikube
       mise
       mosh
-      mycli
       mysql84
       neovim
       nkf
@@ -194,13 +189,27 @@ in
       zsh-syntax-highlighting
       zsh-you-should-use
     ])
-    # Both declare platforms = lib.attrNames sourceData, and upstream publishes
-    # no darwin-x64 hash, so neither can follow the claude-code trick above.
+    # Everything below is unavailable on Kenya, the only x86_64 host.
+    #
+    # container is Apple's own runtime and Apple Silicon only. The rest cannot
+    # be had from 26.05, which Kenya pins: cloudflare-speed-cli, herdr and hunk
+    # are absent from it, and mycli pulls arrow-cpp through llm, which 26.05
+    # marks broken on x86_64-darwin alone. Kenya keeps all four on Homebrew
+    # instead (hosts/Kenya.nix).
+    #
+    # antigravity-cli and grok-build both declare
+    # platforms = lib.attrNames sourceData and upstream publishes no darwin-x64
+    # hash, so neither can follow the claude-code trick above.
     ++ lib.optionals pkgs.stdenv.hostPlatform.isAarch64 (
       with pkgs;
       [
         antigravity-cli
+        cloudflare-speed-cli
+        container
         grok-build
+        herdr
+        hunk
+        mycli
       ]
     );
 }
