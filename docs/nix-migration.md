@@ -284,9 +284,9 @@ nixpkgs-unstable の `packages.json` (2026-09 取得) で照合。Brewfile の `
 | `rjyo/moshi/moshi-hook` | `homebrew.brews` に残す (§3.2) |
 | gcviewer / showkey / socket_vmnet / utimer | Phase 0-0 で `brew uninstall` + Brewfile から除去。Nix 側には何も書かない |
 | kcat | 同上。nixpkgs の `kcat` は aarch64-darwin でビルドできない — 依存の `libserdes` が `avro-c++` のヘッダを通せない (`Exception.hh` が `<fmt/core.h>` を include するが fmt 12 で `fmt::format` はそこから外れた)。`kcat/package.nix` に avro を切るオプションはない |
-| `neurosnap/tap/zmx` | nixpkgs に `zmx` あり → Nix 側。tap は不要になる (同一物か `nix run nixpkgs#zmx -- --version` で確認)。**switch 前に手で外すこと** — 後述 |
+| `neurosnap/tap/zmx` | **使っていないので全端末から削除** (**訂正 2026-09-19**: 当初は nixpkgs の `zmx` へ移す方針だったが、そもそも不要と判明した)。`packages.nix` からも `zsh/.zshrc` の `zmx-sessions` ウィジェットと starship の `[env_var.ZMX_SESSION]` からも外した。tap も残らない。**switch 前に手で外すこと** — 後述 |
 
-`zmx` を入れている端末では、`cleanup = "uninstall"` に任せてはいけない。Homebrew 6.0.0 以降は `HOMEBREW_REQUIRE_TAP_TRUST` が既定で有効で、cleanup は**未 trust の tap の formula を読み込めずに中断する**:
+`zmx` が入ったままの端末では、`cleanup = "uninstall"` に任せてはいけない。Homebrew 6.0.0 以降は `HOMEBREW_REQUIRE_TAP_TRUST` が既定で有効で、cleanup は**未 trust の tap の formula を読み込めずに中断する**:
 
 ```
 Error: Refusing to load formula neurosnap/tap/zmx from untrusted tap neurosnap/tap.
@@ -310,7 +310,7 @@ abseil avro-c bdw-gc boost brotli c-ares ca-certificates cairo certifi cryptogra
 
 ### 4.4 leaf として Nix へ移すもの (nixpkgs attr)
 
-argo-workflows argocd asciinema atuin awscli bash bat bat-extras.batdiff bat-extras.batgrep bat-extras.batman bat-extras.batpipe bat-extras.batwatch bat-extras.prettybat bk btop buf caddy cbonsai cloudflare-speed-cli cmatrix colima colordiff container coreutils devcontainer direnv docker docker-buildx docker-compose docker-credential-helpers duckdb exiftool eza fastfetch fd ffmpeg fzf gawk gh ghq delta glow gnupg go google-cloud-sdk google-java-format gws gping gradle protobuf grpc grpcurl kubernetes-helm herdr hey htop hunk imagemagick jd-diff-patch jq jwt-cli k9s kubectl kubectl-tree lazydocker lazygit lefthook litecli lolcat luarocks mas maven mermaid-cli minikube mise mosh mycli mysql84 tree-sitter neovim nkf nmap nyancat ripgrep opencode codex jdk jdk21 pandoc pgcli pnpm ponysay poppler zsh-powerlevel10k pwgen qemu rustup skills sl socat sops sourceHighlight starship stern stow stylua inetutils tfenv tldr tmux translate-shell tree ttyd unbound uv viddy watch wget worktrunk yamlfmt yazi yq zellij zoxide zsh-autosuggestions zsh-syntax-highlighting zsh-you-should-use zmx nodejs
+argo-workflows argocd asciinema atuin awscli bash bat bat-extras.batdiff bat-extras.batgrep bat-extras.batman bat-extras.batpipe bat-extras.batwatch bat-extras.prettybat bk btop buf caddy cbonsai cloudflare-speed-cli cmatrix colima colordiff container coreutils devcontainer direnv docker docker-buildx docker-compose docker-credential-helpers duckdb exiftool eza fastfetch fd ffmpeg fzf gawk gh ghq delta glow gnupg go google-cloud-sdk google-java-format gws gping gradle protobuf grpc grpcurl kubernetes-helm herdr hey htop hunk imagemagick jd-diff-patch jq jwt-cli k9s kubectl kubectl-tree lazydocker lazygit lefthook litecli lolcat luarocks mas maven mermaid-cli minikube mise mosh mycli mysql84 tree-sitter neovim nkf nmap nyancat ripgrep opencode codex jdk jdk21 pandoc pgcli pnpm ponysay poppler zsh-powerlevel10k pwgen qemu rustup skills sl socat sops sourceHighlight starship stern stow stylua inetutils tfenv tldr tmux translate-shell tree ttyd unbound uv viddy watch wget worktrunk yamlfmt yazi yq zellij zoxide zsh-autosuggestions zsh-syntax-highlighting zsh-you-should-use nodejs
 
 - `go "…"` 5 行 → `delve gopls gotools golangci-lint go-tools` (staticcheck は go-tools)。`GOPATH=$HOME/Projects` は維持。
 - `uv "…"` 4 行 → `ruff sqlfluff python313Packages.ipython python313Packages.docutils`。

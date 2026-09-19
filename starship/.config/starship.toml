@@ -5,7 +5,6 @@ format = """
 [░▒▓](#a3aed2)\
 [ 󰀵 ](bg:#a3aed2 fg:#090c0c)\
 $hostname\
-${env_var.ZMX_SESSION}\
 [](bg:#769ff0 fg:#a3aed2)\
 $directory\
 $direnv\
@@ -128,12 +127,6 @@ disabled = false
 time_format = "%T"
 style = "fg:#090c0c bg:#a3aed2"
 format = '[ $time  ]($style)'
-
-[env_var.ZMX_SESSION]
-symbol = "⧖ "
-format = "[ $symbol$env_value ]($style)"
-description = "zmx session name"
-style = "bg:#a3aed2 fg:#090c0c"
 
 [custom.git_worktree]
 description = "Show an icon when inside a linked git worktree"

@@ -5,7 +5,6 @@ format = """
 [░▒▓](#a3aed2)\
 [  ](bg:#a3aed2 fg:#090c0c)\
 $hostname\
-${env_var.ZMX_SESSION}\
 [](bg:#769ff0 fg:#a3aed2)\
 $directory\
 $direnv\
@@ -76,12 +75,6 @@ format = "[$symbol[$percentage](fg:#e3e5e5) ]($style)"
 threshold = 20
 style = "fg:red"
 discharging_symbol = "󰁺 "
-
-[env_var.ZMX_SESSION]
-symbol = "⧖ "
-format = "[ $symbol$env_value ]($style)"
-description = "zmx session name"
-style = "bg:#a3aed2 fg:#090c0c"
 
 [custom.git_worktree]
 description = "Show an icon when inside a linked git worktree"

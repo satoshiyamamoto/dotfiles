@@ -188,7 +188,6 @@ in
       yazi
       yq
       zellij
-      zmx
       zoxide
       zsh-autosuggestions
       zsh-powerlevel10k

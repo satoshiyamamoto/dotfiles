@@ -140,11 +140,11 @@ wt-switch() {
 zle -N wt-switch
 bindkey '\ew' wt-switch        # alt+w for worktrees
 
-# The two session pickers below work both as ZLE widgets and as plain
-# commands. $WIDGET is only set while a widget runs, so it tells the two apart:
-# from a widget a TTY-taking command has to go through BUFFER and accept-line,
-# while called by name the function already owns the TTY and can run it
-# directly. Binding or unbinding a key then needs no change to the body
+# The session picker below works both as a ZLE widget and as a plain command.
+# $WIDGET is only set while a widget runs, so it tells the two apart: from a
+# widget a TTY-taking command has to go through BUFFER and accept-line, while
+# called by name the function already owns the TTY and can run it directly.
+# Binding or unbinding a key then needs no change to the body
 tmux-sessions() {
   local session
   session=$(tmux list-sessions 2>/dev/null | fzf \
@@ -166,39 +166,6 @@ tmux-sessions() {
   fi
 }
 zle -N tmux-sessions
-
-zmx-sessions() {
-  local display
-  display=$(zmx list 2>/dev/null | while IFS=$'\t' read -r name pid clients created dir; do
-    name=${name#*name=}
-    pid=${pid#*pid=}
-    clients=${clients#*clients=}
-    dir=${dir#*start_dir=}
-    [[ "$pid" != *[!0-9]* ]] || continue
-    printf "%-20s  pid:%-8s  clients:%-2s  %s\n" "$name" "$pid" "$clients" "$dir"
-  done)
-  [[ -z "$display" ]] && return
-
-  local selected session_name
-  selected=$(echo "$display" | fzf \
-    --height=40% \
-    --reverse \
-    --prompt="> " \
-    --preview='zmx history {1} --vt' \
-    --preview-window=right:50%:follow \
-  )
-  [[ -n "$WIDGET" ]] && zle reset-prompt
-  [[ -z "$selected" ]] && return
-
-  session_name=$(echo "$selected" | awk '{print $1}')
-  if [[ -n "$WIDGET" ]]; then
-    BUFFER="zmx attach ${(q)session_name}"
-    zle accept-line
-  else
-    zmx attach "$session_name"
-  fi
-}
-zle -N zmx-sessions
 
 #
 # Aliases
