@@ -12,6 +12,17 @@
     "flakes"
   ];
 
+  # nix-darwin generates /etc/zshrc, which is sourced before ~/.zshrc. Its
+  # defaults would run a plain `compinit` there, defeating the `zsh-defer
+  # compinit -C` in ~/.zshrc, and set a prompt that starship replaces anyway.
+  # programs.zsh.enable itself stays on: /etc/zshenv is what puts
+  # /run/current-system/sw/bin on PATH.
+  programs.zsh = {
+    enableCompletion = false;
+    enableBashCompletion = false;
+    promptInit = "";
+  };
+
   # Phase 0 keeps this empty on purpose: Homebrew still owns every package and
   # every cask. environment.systemPackages arrives in Phase 2, the homebrew
   # module right after it. See docs/nix-migration.md.

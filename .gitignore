@@ -106,3 +106,7 @@ hunk/.config/hunk/state.json
 hermes/.hermes/**
 !hermes/.hermes/config.yaml
 !hermes/.hermes/SOUL.md
+
+### Nix ###
+# darwin-rebuild build output symlink
+nix/result
