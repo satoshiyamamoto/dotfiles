@@ -50,179 +50,180 @@ in
       "grok-build"
     ];
 
-  environment.systemPackages =
-    [ claude-code ]
-    ++ (with pkgs; [
-      argo-workflows
-      argocd
-      asciinema
-      awscli
-      bash
-      bat
-      bat-extras.batdiff
-      bat-extras.batgrep
-      bat-extras.batman
-      bat-extras.batpipe
-      bat-extras.batwatch
-      bat-extras.prettybat
-      biome
-      bk
-      btop
-      buf
-      caddy
-      cbonsai
-      cmatrix
-      codex
-      colima
-      colordiff
-      coreutils
-      delta
-      delve
-      devcontainer
-      direnv
-      docker
-      docker-buildx
-      docker-compose
-      docker-credential-helpers
-      duckdb
-      exiftool
-      eza
-      fastfetch
-      fd
-      ffmpeg
-      fzf
-      gawk
-      gh
-      ghq
-      glow
-      gnupg
-      go
-      go-tools
-      golangci-lint
-      google-cloud-sdk
-      google-java-format
-      gopls
-      gotools
-      gping
-      gradle
-      grpc
-      grpcurl
-      gws
-      hey
-      htop
-      imagemagick
-      inetutils
-      jd-diff-patch
-      jdk
-      jdk21
-      jq
-      jwt-cli
-      k9s
-      kubectl
-      kubectl-tree
-      kubernetes-helm
-      lazydocker
-      lazygit
-      lefthook
-      litecli
-      lolcat
-      luarocks
-      mas
-      maven
-      mermaid-cli
-      minikube
-      mise
-      mosh
-      mysql84
-      neovim
-      nkf
-      nmap
-      nodejs
-      nyancat
-      opencode
-      pandoc
-      pgcli
-      pi-coding-agent
-      pnpm
-      ponysay
-      poppler
-      prettier
-      protobuf
-      pwgen
-      python313Packages.docutils
-      python313Packages.ipython
-      qemu
-      ripgrep
-      ruff
-      rustup
-      skills
-      sl
-      socat
-      sops
-      sourceHighlight
-      sqlfluff
-      starship
-      stern
-      stow
-      stylua
-      tfenv
-      tldr
-      tmux
-      translate-shell
-      tree
-      tree-sitter
-      ttyd
-      unbound
-      uv
-      viddy
-      watch
-      wget
-      worktrunk
-      yamlfmt
-      yazi
-      yq
-      zellij
-      zoxide
-      zsh-autosuggestions
-      zsh-powerlevel10k
-      zsh-syntax-highlighting
-      zsh-you-should-use
-    ])
-    # Everything below is unavailable on Kenya, the only x86_64 host.
-    #
-    # container is Apple's own runtime and Apple Silicon only. The rest cannot
-    # be had from 26.05, which Kenya pins: cloudflare-speed-cli, herdr and hunk
-    # are absent from it, and mycli pulls arrow-cpp through llm, which 26.05
-    # marks broken on x86_64-darwin alone. Of those, only herdr is wanted on
-    # Kenya, and it comes from numtide/llm-agents.nix there (hosts/Kenya.nix);
-    # cloudflare-speed-cli, hunk and mycli are not installed on that host at
-    # all. aarch64 keeps taking herdr from nixpkgs here, which is cached,
-    # rather than compiling it.
-    #
-    # atuin is here for a different reason: 26.05 has it, but at 18.15.2,
-    # older than whatever last migrated Kenya's SQLite history. An older client
-    # refuses a migrated database outright ("migration <id> was previously
-    # applied but is missing in the resolved migrations") and every
-    # `atuin history start` -- which runs synchronously in preexec -- then took
-    # 4-8 seconds instead of 10ms, stalling every single command. Homebrew
-    # cannot stand in either: it no longer bottles for macOS 15 / x86_64. So
-    # Kenya simply runs no atuin, and zsh/.zshrc skips `atuin init` where the
-    # binary is absent -- Ctrl-R falls back to fzf there (zsh/.zprofile).
-    #
-    # antigravity-cli and grok-build both declare
-    # platforms = lib.attrNames sourceData and upstream publishes no darwin-x64
-    # hash, so neither can follow the claude-code trick above.
-    ++ lib.optionals pkgs.stdenv.hostPlatform.isAarch64 (
-      with pkgs;
-      [
-        antigravity-cli
-        atuin
-        cloudflare-speed-cli
-        container
-        grok-build
-        herdr
-        hunk
-        mycli
-      ]
-    );
+  environment.systemPackages = [
+    claude-code
+  ]
+  ++ (with pkgs; [
+    argo-workflows
+    argocd
+    asciinema
+    awscli
+    bash
+    bat
+    bat-extras.batdiff
+    bat-extras.batgrep
+    bat-extras.batman
+    bat-extras.batpipe
+    bat-extras.batwatch
+    bat-extras.prettybat
+    biome
+    bk
+    btop
+    buf
+    caddy
+    cbonsai
+    cmatrix
+    codex
+    colima
+    colordiff
+    coreutils
+    delta
+    delve
+    devcontainer
+    direnv
+    docker
+    docker-buildx
+    docker-compose
+    docker-credential-helpers
+    duckdb
+    exiftool
+    eza
+    fastfetch
+    fd
+    ffmpeg
+    fzf
+    gawk
+    gh
+    ghq
+    glow
+    gnupg
+    go
+    go-tools
+    golangci-lint
+    google-cloud-sdk
+    google-java-format
+    gopls
+    gotools
+    gping
+    gradle
+    grpc
+    grpcurl
+    gws
+    hey
+    htop
+    imagemagick
+    inetutils
+    jd-diff-patch
+    jdk
+    jdk21
+    jq
+    jwt-cli
+    k9s
+    kubectl
+    kubectl-tree
+    kubernetes-helm
+    lazydocker
+    lazygit
+    lefthook
+    litecli
+    lolcat
+    luarocks
+    mas
+    maven
+    mermaid-cli
+    minikube
+    mise
+    mosh
+    mysql84
+    neovim
+    nkf
+    nmap
+    nodejs
+    nyancat
+    opencode
+    pandoc
+    pgcli
+    pi-coding-agent
+    pnpm
+    ponysay
+    poppler
+    prettier
+    protobuf
+    pwgen
+    python313Packages.docutils
+    python313Packages.ipython
+    qemu
+    ripgrep
+    ruff
+    rustup
+    skills
+    sl
+    socat
+    sops
+    sourceHighlight
+    sqlfluff
+    starship
+    stern
+    stow
+    stylua
+    tfenv
+    tldr
+    tmux
+    translate-shell
+    tree
+    tree-sitter
+    ttyd
+    unbound
+    uv
+    viddy
+    watch
+    wget
+    worktrunk
+    yamlfmt
+    yazi
+    yq
+    zellij
+    zoxide
+    zsh-autosuggestions
+    zsh-powerlevel10k
+    zsh-syntax-highlighting
+    zsh-you-should-use
+  ])
+  # Everything below is unavailable on Kenya, the only x86_64 host.
+  #
+  # container is Apple's own runtime and Apple Silicon only. The rest cannot
+  # be had from 26.05, which Kenya pins: cloudflare-speed-cli, herdr and hunk
+  # are absent from it, and mycli pulls arrow-cpp through llm, which 26.05
+  # marks broken on x86_64-darwin alone. Of those, only herdr is wanted on
+  # Kenya, and it comes from numtide/llm-agents.nix there (hosts/Kenya.nix);
+  # cloudflare-speed-cli, hunk and mycli are not installed on that host at
+  # all. aarch64 keeps taking herdr from nixpkgs here, which is cached,
+  # rather than compiling it.
+  #
+  # atuin is here for a different reason: 26.05 has it, but at 18.15.2,
+  # older than whatever last migrated Kenya's SQLite history. An older client
+  # refuses a migrated database outright ("migration <id> was previously
+  # applied but is missing in the resolved migrations") and every
+  # `atuin history start` -- which runs synchronously in preexec -- then took
+  # 4-8 seconds instead of 10ms, stalling every single command. Homebrew
+  # cannot stand in either: it no longer bottles for macOS 15 / x86_64. So
+  # Kenya simply runs no atuin, and zsh/.zshrc skips `atuin init` where the
+  # binary is absent -- Ctrl-R falls back to fzf there (zsh/.zprofile).
+  #
+  # antigravity-cli and grok-build both declare
+  # platforms = lib.attrNames sourceData and upstream publishes no darwin-x64
+  # hash, so neither can follow the claude-code trick above.
+  ++ lib.optionals pkgs.stdenv.hostPlatform.isAarch64 (
+    with pkgs;
+    [
+      antigravity-cli
+      atuin
+      cloudflare-speed-cli
+      container
+      grok-build
+      herdr
+      hunk
+      mycli
+    ]
+  );
 }

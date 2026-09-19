@@ -57,6 +57,17 @@ Six packages are therefore aarch64-only in `packages.nix`. `container` is Apple 
 - **hermes-agent is deliberately absent from `packages.nix`.** Upstream lists both `brew install hermes-agent` and PyPI installs (`uv tool install`, `pip install`) as unsupported distribution methods that receive no further updates, and `hermes update` prints a deprecation notice on every run. Use the official installer instead — see [Hermes Agent](#hermes-agent).
 - **node comes from nixpkgs, not mise.** `~/.config/mise` is a stow symlink into this repo, so `mise use -g node@lts` would write the tool into the version-controlled `mise/.config/mise/config.toml` instead of a machine-local file. Keep `nodejs` in `nix/modules/packages.nix` and let the flake own the version.
 
+### Nix Formatting
+
+Formatter: **nixfmt** (RFC 166 style) — no config file, the style is fixed. It is not declared in `packages.nix` and the flake exposes no `formatter` output, so fetch it on demand:
+
+```sh
+nix run nixpkgs#nixfmt-rfc-style -- $(find nix -name '*.nix')          # format
+nix run nixpkgs#nixfmt-rfc-style -- --check $(find nix -name '*.nix')  # verify
+```
+
+Run it before committing `.nix` changes. Formatting never alters evaluation — confirm with `nix eval --raw ./nix#darwinConfigurations.<host>.system.drvPath` before and after if a reformat touches more than the lines you edited.
+
 ### Cask Quarantine — do not set `HOMEBREW_CASK_OPTS='--no-quarantine'`
 
 `--no-quarantine` was removed in Homebrew 6.x (deprecated in `ffe954753b`, 2025-10-23; removed in `ba25213c81`, 2026-07-30). `cask_opts_quarantine?` is gone from `env_config.rb` and `Cask::Installer` no longer takes a `quarantine:` argument. The flag is now **silently ignored** — `brew install --cask` exits 0 with no warning — so it looks like it still works. `brew config` echoes `HOMEBREW_CASK_OPTS` verbatim and is not evidence that the flag is honored. Supported values are only `--*dir`, `--language`, `--require-sha` and `--no-binaries` (`env_config.rb:228`). The same applies to nix-darwin's `homebrew.caskArgs`, which just renders those values into the generated Brewfile — do not put `no_quarantine = true` there either.
