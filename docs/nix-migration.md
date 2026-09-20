@@ -48,6 +48,7 @@
 - [x] atuin の残骸を削除 (`~/.local/bin/atuin.disabled`、`~/.local/share/atuin`、`~/.atuin`、`~/.config/atuin`、計 289MB)
 - [x] CLAUDE.md の「Kenya は未 switch」記述を訂正 (`09da96d`)
 - [x] `nix/` 全体に nixfmt を適用し CLAUDE.md に手順を記載 (`93d4ee0`)
+- [x] `cloudflare-speed-cli` を削除し `speedtest` エイリアスも撤去 (macOS 標準の `networkQuality` で代替、§4.4)
 
 ### Phase 5: Stow → home-manager `home.file` (§6、別計画)
 
@@ -56,9 +57,11 @@
 
 ### 期限付き・保留の宿題
 
-- [ ] **Kenya の 26.05 EOL 対応 (2026-12-31 まで)** — チャンネル更新か端末の退役。x86_64-darwin は unstable に無いので実質は退役の検討 (§11.1)
-- [ ] `zsh/.zshrc` の `alias speedtest='cloudflare-speed-cli'` が Kenya でデッドエイリアスになっている (意図的に未対応)
-- [ ] `hunk` の bun-bin `darwin-x64` オーバーライド — Kenya では不要と判断して保留 (§4.6)
+いずれも 2026-09-20 に決着した。
+
+- [x] **Kenya の 26.05 EOL (2026-12-31)** — **据え置き**。EOL で止まるのは 26.05 ブランチへの backport だけで、既存 closure はそのまま動き続ける。x86_64-darwin は unstable に戻らないためチャンネル更新という選択肢自体が無く、flake から外すのは端末 (Macmini8,1、Hermes gateway と moshi-hook が常駐) の退役とセットでなければ意味がない。判断は退役を検討するタイミングで再評価する (§11.1)
+- [x] `zsh/.zshrc` の `alias speedtest` — エイリアスごと撤去し `cloudflare-speed-cli` も flake から削除。macOS 12+ が `networkQuality` を標準で持つため 3 台とも不要 (§4.4)
+- [x] `hunk` の bun-bin `darwin-x64` オーバーライド — **見送り確定**。Kenya に hunk は不要で、上流の bun-bin に darwin-x64 の triple が無い以上、書く理由が無い (§4.6)
 
 ## 1. 方針
 
@@ -383,6 +386,7 @@ argo-workflows argocd asciinema atuin awscli bash bat bat-extras.batdiff bat-ext
   - `grok-build` `antigravity-cli`: unstable の `package.nix` が aarch64-darwin のハッシュしか持たず、26.05 は antigravity-cli を欠く。(**訂正 2026-09-19**: 当初は Kenya に 26.05 の `grok-build` 0.2.93 を置く方針だったが、使っていないので置かない)
   - `container`: Apple 純正ランタイムで Apple Silicon 専用。
   - `cloudflare-speed-cli` `herdr` `hunk`: 26.05 に存在しない。
+    - **訂正 2026-09-20**: `cloudflare-speed-cli` は aarch64 からも削除した。macOS 12+ が `networkQuality` を標準で持ち、3 台すべてで不要と判断したため。`zsh/.zshrc` の `alias speedtest` も同時に撤去。aarch64 限定は 7 つになった。
   - `mycli`: eval は通るが `llm` 経由で `arrow-cpp` を引き、26.05 はこれを **x86_64-darwin でのみ `broken = true`** としている (aarch64 では false)。`meta` を見るだけの可用性チェックでは検出できず、`darwinConfigurations.Kenya` の eval で初めて出た。
   - `atuin`: **追加 2026-09-19 (Phase 4 実施後)**。26.05 にはあるが 18.15.2 で、Kenya が既に移行済みの履歴 DB を開けない (`migration <id> was previously applied but is missing in the resolved migrations`)。`_atuin_preexec` は `atuin history start` を**同期実行**するため、全コマンドが 4-8 秒待たされた。Homebrew への退避も不可 (下記) なので、**Kenya では atuin を使わない**。`zsh/.zshrc` の `atuin init` を `(( $+commands[atuin] ))` でガードし、`zsh/.zprofile` の `FZF_CTRL_R_COMMAND=''` も同条件にして Ctrl-R を fzf に戻す。
   - 後ろ 4 つ (`cloudflare-speed-cli` `herdr` `hunk` `mycli`) は homebrew/core にあるので `hosts/Kenya.nix` の `homebrew.brews` で維持する。tap は不要。

@@ -192,13 +192,12 @@ in
   # Everything below is unavailable on Kenya, the only x86_64 host.
   #
   # container is Apple's own runtime and Apple Silicon only. The rest cannot
-  # be had from 26.05, which Kenya pins: cloudflare-speed-cli, herdr and hunk
-  # are absent from it, and mycli pulls arrow-cpp through llm, which 26.05
-  # marks broken on x86_64-darwin alone. Of those, only herdr is wanted on
-  # Kenya, and it comes from numtide/llm-agents.nix there (hosts/Kenya.nix);
-  # cloudflare-speed-cli, hunk and mycli are not installed on that host at
-  # all. aarch64 keeps taking herdr from nixpkgs here, which is cached,
-  # rather than compiling it.
+  # be had from 26.05, which Kenya pins: herdr and hunk are absent from it,
+  # and mycli pulls arrow-cpp through llm, which 26.05 marks broken on
+  # x86_64-darwin alone. Of those, only herdr is wanted on Kenya, and it
+  # comes from numtide/llm-agents.nix there (hosts/Kenya.nix); hunk and mycli
+  # are not installed on that host at all. aarch64 keeps taking herdr from
+  # nixpkgs here, which is cached, rather than compiling it.
   #
   # atuin is here for a different reason: 26.05 has it, but at 18.15.2,
   # older than whatever last migrated Kenya's SQLite history. An older client
@@ -218,7 +217,6 @@ in
     [
       antigravity-cli
       atuin
-      cloudflare-speed-cli
       container
       grok-build
       herdr

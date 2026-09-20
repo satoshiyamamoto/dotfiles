@@ -240,7 +240,6 @@ alias lt='YSU_IGNORED_ALIASES=("ls") && eza --color=auto --icons=auto --long --h
 alias lzd='lazydocker'
 alias mv='mv -i'
 alias rm='rm -i'
-alias speedtest='cloudflare-speed-cli'
 alias tailscale='/Applications/Tailscale.app/Contents/MacOS/Tailscale'
 alias trans='trans --brief :ja'
 alias tree='eza --color=always --icons --tree'
