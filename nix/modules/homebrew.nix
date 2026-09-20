@@ -1,6 +1,7 @@
 # What stays on Homebrew: one formula from a personal tap, the GUI casks with no
-# nixpkgs equivalent, and the Mac App Store apps. docs/nix-migration.md section
-# 3.2 records why, and section 4.4 records how the Brewfile maps onto this.
+# nixpkgs equivalent, and the Mac App Store apps. Casks stay because nixpkgs
+# packages few macOS applications and none of them get Sparkle updates; mas
+# stays because nothing else can talk to the App Store.
 #
 # darwin-rebuild runs `brew bundle --file=<nix store Brewfile>`, so the Brewfile
 # in this repo is no longer read -- it is removed from the homebrew stow package

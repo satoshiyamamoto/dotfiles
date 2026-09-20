@@ -5,7 +5,8 @@
   # outright -- importing it at all throws "Nixpkgs 26.11 has dropped support
   # for x86_64-darwin", so no per-package override can save it. Hence a second
   # pair of inputs pinned to 26.05, which only warns. That pin expires with
-  # 26.05 on 2026-12-31; see docs/nix-migration.md.
+  # 26.05 on 2026-12-31, by which time Kenya needs a channel bump or a
+  # retirement -- see CLAUDE.md.
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nix-darwin = {

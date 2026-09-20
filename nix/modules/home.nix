@@ -1,6 +1,7 @@
-# Phase 5 of docs/nix-migration.md: what GNU Stow used to link, declared instead.
-# The layout under each package still mirrors $HOME, so the source paths below
-# read the same as the old stow tree -- only the linking changed.
+# Every dotfile link, replacing what GNU Stow used to do. The layout under each
+# package still mirrors $HOME, so the source paths below read the same as the
+# old stow tree -- only the linking changed. CLAUDE.md "Dotfile Links" explains
+# when an entry belongs in the store half and when it has to be `live`.
 { config, ... }:
 let
   repo = "Projects/src/github.com/satoshiyamamoto/dotfiles";

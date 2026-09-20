@@ -8,9 +8,6 @@
 # Dotfiles themselves are no longer this script's business -- home-manager links
 # them from nix/modules/home.nix. After the first switch, `.sync` (zsh/.zshrc)
 # is the only command needed.
-#
-# Migrating a machine that still has GNU Stow links is a separate, one-time
-# procedure: see docs/nix-migration.md.
 set -eu
 
 repo="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"

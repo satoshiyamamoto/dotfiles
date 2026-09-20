@@ -1,6 +1,6 @@
-# Packages shared by all three hosts. docs/nix-migration.md section 4 records how
-# the Brewfile maps onto this list, including the ~70 lines dropped because Nix
-# carries runtime dependencies itself.
+# Packages shared by all three hosts. This list came from the Brewfile, minus
+# the ~70 entries that were only there as runtime dependencies -- Nix carries
+# those itself, so nothing here names a library another package pulls in.
 {
   inputs,
   lib,
