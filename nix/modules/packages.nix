@@ -160,8 +160,16 @@ in
     prettier
     protobuf
     pwgen
-    python313Packages.docutils
-    python313Packages.ipython
+    # python3, not a pinned pythonNNN: the channel default is what every other
+    # python app in that channel is built against -- 3.14.7 on unstable, 3.13.15
+    # on Kenya's 26.05 pin. Following it keeps each host to one interpreter and
+    # inside the binary cache; pinning python314 would make Kenya build ipython
+    # and its 18 dependencies from source. Same reason the two package sets
+    # below are python3Packages rather than python313Packages, which was
+    # dragging a second interpreter into the closure on unstable.
+    python3
+    python3Packages.docutils
+    python3Packages.ipython
     qemu
     ripgrep
     ruff
