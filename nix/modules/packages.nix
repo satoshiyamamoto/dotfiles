@@ -114,7 +114,9 @@ in
     imagemagick
     inetutils
     jd-diff-patch
-    jdk
+    # jdk21, not jdk: on darwin every JDK attribute is Azul Zulu, and plain
+    # `jdk` is nixpkgs' default-LTS pointer -- today it resolves to the same
+    # derivation as jdk21, but it moves on its own when the default LTS bumps.
     jdk21
     jq
     jwt-cli
