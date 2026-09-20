@@ -23,9 +23,21 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Phase 5: stow replaced by home-manager (modules/home.nix). Paired with
+    # nixpkgs the same way nix-darwin is, so each host gets the home-manager
+    # that matches its channel.
+    home-manager = {
+      url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixpkgs-2605.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     nix-darwin-2605 = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
+      inputs.nixpkgs.follows = "nixpkgs-2605";
+    };
+    home-manager-2605 = {
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs-2605";
     };
   };
@@ -34,15 +46,23 @@
   # differ in case -- so `darwin-rebuild switch --flake <this directory>` needs
   # no host argument.
   outputs =
-    inputs@{ nix-darwin, nix-darwin-2605, ... }:
+    inputs@{
+      home-manager,
+      home-manager-2605,
+      nix-darwin,
+      nix-darwin-2605,
+      ...
+    }:
     let
       mkHost =
-        darwin: hostModule:
+        darwin: hm: hostModule:
         darwin.lib.darwinSystem {
           specialArgs = { inherit inputs; };
           modules = [
             hostModule
+            hm.darwinModules.home-manager
             ./modules/common.nix
+            ./modules/home.nix
             ./modules/homebrew.nix
             ./modules/packages.nix
           ];
@@ -50,9 +70,9 @@
     in
     {
       darwinConfigurations = {
-        "CA-20033978" = mkHost nix-darwin ./hosts/CA-20033978.nix;
-        "CA-20031962" = mkHost nix-darwin ./hosts/CA-20031962.nix;
-        "Kenya" = mkHost nix-darwin-2605 ./hosts/Kenya.nix;
+        "CA-20033978" = mkHost nix-darwin home-manager ./hosts/CA-20033978.nix;
+        "CA-20031962" = mkHost nix-darwin home-manager ./hosts/CA-20031962.nix;
+        "Kenya" = mkHost nix-darwin-2605 home-manager-2605 ./hosts/Kenya.nix;
       };
     };
 }

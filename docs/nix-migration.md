@@ -4,7 +4,7 @@
 
 ## 進捗 (2026-09-20 時点)
 
-**Phase 0-0〜4 完了。残るは Phase 5 のみ。** 3 台とも同一コミットに同期済み。
+**Phase 0-0〜5 完了 (CA-20033978)。** 残り 2 台は stow のリンクが残ったままなので、§6 Phase 5 の移行手順を各端末で一度だけ実施する必要がある。
 
 ### Phase 0-0: Nix にない formula を先に捨てる (§6)
 
@@ -50,10 +50,14 @@
 - [x] `nix/` 全体に nixfmt を適用し CLAUDE.md に手順を記載 (`93d4ee0`)
 - [x] `cloudflare-speed-cli` を削除し `speedtest` エイリアスも撤去 (macOS 標準の `networkQuality` で代替、§4.4)
 
-### Phase 5: Stow → home-manager `home.file` (§6、別計画)
+### Phase 5: Stow → home-manager `home.file` (§6)
 
-- [ ] `install.darwin.sh` の stow 一覧を `home.file` へ転記
-- [ ] `.sync` から stow 行を外し `darwin-rebuild switch` 1 本にする
+- [x] `nix/modules/home.nix` に 64 エントリを宣言し、flake に home-manager を配線
+- [x] `install.darwin.sh` を stow 実行から冪等なブートストラップへ書き換え
+- [x] `.sync` から stow 行を外し `darwin-rebuild switch` 1 本にする
+- [x] CA-20033978 を移行 (stow 解除 → `~/.claude` の state 移設 → switch)
+- [ ] CA-20031962 を移行 (§6 Phase 5 の手順をその端末上で実施)
+- [ ] Kenya を移行 (同上)
 
 ### 期限付き・保留の宿題
 
@@ -70,7 +74,7 @@
 | スタック | nix-darwin + home-manager (flake)。home-manager は nix-darwin モジュールとして組み込む |
 | CLI パッケージ | Brewfile の `brew` / `go` / `uv` / `npm` 行と CLI 系 cask を nixpkgs の `environment.systemPackages` へ |
 | GUI (cask / mas) | nix-darwin `homebrew` モジュールで宣言。Homebrew は GUI 専用バックエンドとして残す |
-| dotfiles のリンク | GNU Stow を維持したまま Nix 化し、home-manager `home.file` への移行は別計画 |
+| dotfiles のリンク | Phase 4 までは GNU Stow を維持し、Phase 5 で home-manager `home.file` へ移行 (§6 Phase 5) |
 | arm 2 台 (CA-20033978 / CA-20031962) | nixpkgs-unstable + nix-darwin master + home-manager master (今の brew と同じローリング)。インストーラーは NixOS/nix-installer |
 | Kenya (Intel) | Nix 化する。nixpkgs **26.05 固定** (EOL 2026-12-31 以降は凍結運用)。インストーラーは公式 nixos.org スクリプト (Intel バイナリを配る唯一の正規手段) |
 | gcloud | cask をやめ nixpkgs `google-cloud-sdk` へ |
@@ -639,9 +643,83 @@ sudo nix --extra-experimental-features "nix-command flakes" \
   - **Homebrew への退避は失敗した。** Homebrew は macOS 15 / x86_64 を [Tier 3](https://docs.brew.sh/Support-Tiers#tier-3) とし、この構成向けの bottle を配布しなくなった (`Homebrew no longer builds bottles for this configuration.`)。加えて `openssl@3` が pin されており `Error: You must \`brew unpin openssl@3\`` で停止する。unpin しても Rust のソースビルドになるため断念し、Kenya では atuin を無効化した。この制約は今後 `homebrew.brews` に何かを足せないことも意味する。
   - 残件: 18.20.1 の daemon を停止する。`~/.local/bin/atuin` と `~/.local/share/atuin` の DB (history 90M / records 146M) をどうするかは別途判断。
 
-### Phase 5: Stow → home-manager `home.file` (別計画)
+### Phase 5: Stow → home-manager `home.file`
 
-`install.darwin.sh` の stow 一覧を `home.file` に写す。`.sync` の stow 行が消え、`darwin-rebuild switch` 1 本になる。
+CA-20033978 で 2026-09-20 に実施。`nix/modules/home.nix` が stow の 39 パッケージを
+置き換え、`install.darwin.sh` は dotfiles を一切触らないブートストラップになり、
+`.sync` は `darwin-rebuild switch` 1 本になった。
+
+#### store と live の 2 種類
+
+`home.file` のエントリは 64 個で、リンク先が 2 種類ある。
+
+| 種類 | 数 | リンク先 | 対象 |
+|---|---|---|---|
+| store | 49 | `/nix/store/…` (読み取り専用) | ツールが読むだけの設定 |
+| live | 15 | `mkOutOfStoreSymlink` で作業ツリー直指し | ツールがそこへ**書く**設定 |
+
+live が要るのは 3 パターンで、根拠は `home.nix` のコメントに残した。
+
+1. ファイル自身を書き換える: `docker context use`、`moshi-hook set`、Codex と Claude Code の設定保存
+2. 同じディレクトリに兄弟ファイルを書く: `lazy-lock.json`、Karabiner の `automatic_backups`、brew の `trust.json`、hunk の `state.json`、`~/.vim` と `~/.config/tmux` のプラグイン
+3. ghostty のシェーダーが git submodule で、flake が store へコピーしない
+
+`starship` は store 側に置いた。`starship config` は書き込むが、**symlink 越しに書かず
+リンクごと通常ファイルに差し替える**ためで、single-hop の stow symlink でも同じ挙動を
+再現済み。live にしても何も得られない。
+
+`~/.claude` はディレクトリごとではなく `settings.json` 1 ファイルだけをリンクする。
+Claude Code は同じディレクトリに `projects/`、`history.jsonl`、`shell-snapshots/`、
+`.credentials.json` といったマシンローカルな state を置くので、ディレクトリリンクは
+それらを作業ツリーへ引きずり込む (stow がまさにそうなっていた)。
+
+#### 残り 2 台の移行手順 (1 回きり)
+
+**先に `.sync` を実行してはいけない。** stow のリンクが残ったまま switch すると、
+下記のとおりリポジトリ内のファイルが壊れる。端末上で次の順に実施する。
+
+```sh
+cd ~/Projects/src/github.com/satoshiyamamoto/dotfiles
+git pull
+
+# 1. stow を全解除する。home-manager が既に張ったリンクは絶対パスなので
+#    stow は `Ignoring an absolute symlink` と言って触らない (冪等)
+stow -D --target="$HOME" */
+
+# 2. ~/.claude の state をリポジトリ外へ移す。stow 解除で ~/.claude が消えると、
+#    起動中の Claude Code が即座に空のディレクトリを作り直し、state が
+#    <repo>/claude/.claude と ~/.claude に割れる (実際に踏んだ)
+rsync -a claude/.claude/ ~/.claude/
+rm -rf claude/.claude
+git checkout -- claude/.claude/settings.json
+
+# 3. switch
+sudo /run/current-system/sw/bin/darwin-rebuild switch --flake ./nix
+```
+
+確認: `git status` がクリーン、作業ツリーに `*.hm-bak` が無い、
+`ls -l ~/.config/nvim ~/.config/starship.toml` が前者は作業ツリー、後者は store を指す。
+
+#### なぜ stow を先に解除するのか
+
+stow は `~/.config/bat` のようなディレクトリを**畳み込んで** 1 本の symlink にする。
+その状態で home-manager が `~/.config/bat/config` を張ろうとすると、
+`modules/files.nix` の `legacyLink` が「親が symlink」の分岐 (低速パス) に入り、
+
+```sh
+if [[ -L "${targetPath%/*}" ]]; then   # 親が symlink → 低速パス
+  ...
+  mv "$targetPath" "$targetPath.$HOME_MANAGER_BACKUP_EXT"   # cmp より前に実行される
+```
+
+`backupFileExtension = "hm-bak"` を設定していると、内容が同一かを見る `cmp -s` に
+届く前に `mv` が走る。`$targetPath` は畳み込みリンク越しに**リポジトリ内の実ファイル**を
+指しているので、結果として追跡下のファイルが `config.hm-bak` にリネームされ、
+その場所に store の symlink が置かれる。サンドボックスで再現済み。
+
+`checkLinkTargets` は止めてくれない。`check-link-targets.sh` の `checkCollision()` は
+先に `cmp -s` を見て「同一なのでスキップされる」と**警告するだけ**で abort しないため、
+リンク段階の判定と食い違う。実際の switch でもその警告が出た上で低速パスが走った。
 
 ### 新端末 (Apple Silicon) の初期セットアップ
 
@@ -650,9 +728,6 @@ sudo nix --extra-experimental-features "nix-command flakes" \
 ```sh
 xcode-select --install                                 # git のため
 
-# Homebrew は先に入れる (GUI cask / mas 専用バックエンドとして残る)
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
 mkdir -p ~/Projects/{bin,pkg,src}
 mkdir -p ~/Projects/src/github.com/satoshiyamamoto
 git clone git@github.com:satoshiyamamoto/dotfiles.git
@@ -660,20 +735,19 @@ git clone git@github.com:satoshiyamamoto/dotfiles.git
 scutil --get LocalHostName                             # → nix/hosts/<hostname>.nix を追加し
                                                        #   flake.nix にキーを足して git add (commit 推奨)
 
-curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install --enable-flakes
-# 新しいシェルで
-sudo nix run nix-darwin/master#darwin-rebuild -- \
-  switch --flake ~/Projects/src/github.com/satoshiyamamoto/dotfiles/nix
+cd ~/Projects/src/github.com/satoshiyamamoto/dotfiles
+sh install.darwin.sh                                   # CLT / Homebrew / submodule / Nix / 初回 switch
 
-sh install.darwin.sh                                   # Phase 5 までは stow が残る
 atuin login && atuin sync --force
 gh auth login && gh extension install dlvhdr/gh-dash
 ```
 
-- **Homebrew を先に入れる**こと。nix-darwin の `homebrew` モジュールは brew を導入しない。`modules/homebrew.nix:1032-1036` は `${prefix}/bin/brew` がなければ `error: Homebrew is not installed, skipping...` を出すだけで switch 自体は成功するため、cask と mas が黙って入らない。
-- flake は git 管理外のファイルを無視する。`hosts/<hostname>.nix` を `git add` しないと `darwin-rebuild` がその構成を見つけられない。
+- `install.darwin.sh` が Command Line Tools、Homebrew、git submodule、Nix を順に入れ、最後に初回 switch まで済ませる。どの手順も既に入っていれば飛ばすので、途中で止まっても再実行でよい。Nix を入れた直後は `darwin-rebuild` がまだ無いため、`nix build` した closure の中の `darwin-rebuild` を直接叩く。
+- 先頭でホスト名を `nix/flake.nix` と照合し、`darwinConfigurations."<hostname>"` が無ければ**何も入れずに**終わる。flake は git 管理外のファイルを無視するので、`hosts/<hostname>.nix` の `git add` 忘れもここで分かる。
+- **Homebrew は brew 自身のインストーラーで入る。** nix-darwin の `homebrew` モジュールは brew を導入しない。`modules/homebrew.nix:1032-1036` は `${prefix}/bin/brew` がなければ `error: Homebrew is not installed, skipping...` を出すだけで switch 自体は成功するため、cask と mas が黙って入らない。
+- ghostty のシェーダーは git submodule で、`home.nix` が作業ツリーを直指しするため、未初期化だと ghostty が空ディレクトリを見る。スクリプトが毎回 `submodule update --init --recursive` を叩くのはそのため。
 - `mas` は同モジュールが自前で PATH に足す (`modules/homebrew.nix:181`) ので、masApps のために入れる必要はない (§4.4 には別用途で入れている)。
-- 2 回目以降の更新は `.sync` (= `darwin-rebuild switch`) だけ。`brew bundle` を手で叩く手順は消える。
+- 2 回目以降の更新は `.sync` (= `darwin-rebuild switch`) だけ。`brew bundle` も stow も手で叩く手順は消える。
 - Touch ID sudo の手編集も消える (§3.6)。
 
 ## 7. dotfiles 側の変更 (Phase 2 で実施)
@@ -694,13 +768,13 @@ gh auth login && gh extension install dlvhdr/gh-dash
 | 33 | `$HOMEBREW_PREFIX/share/zsh/site-functions(N)` | `/run/current-system/sw/share/zsh/site-functions(N)` (nix-darwin が補完を集約) |
 | 56-58 | `$HOMEBREW_PREFIX/share/zsh-*` | `/run/current-system/sw/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh`、`…/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh`、`…/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh` (Phase 2 step 1 の switch 後に実測。autosuggestions だけ `share/zsh/plugins/` 配下、syntax-highlighting だけ `share/` 直下で、3 つとも配置が違う。後者は §3.10 の `pathsToLink` 追加が前提) |
 | 59-61 | gcloud `path.zsh.inc` / `completion.zsh.inc` と `z.sh` | **削除**。nixpkgs `google-cloud-sdk` は `bin/gcloud` を PATH に、補完を `share/zsh/site-functions/_gcloud` (`#compdef` 付き) に出すので、行 33 の fpath 変更だけで補完が効く。3 行とも既にデッドだった。gcloud の 2 行が指す `Caskroom/google-cloud-sdk/` はこの端末の cask (`gcloud-cli`) と別名で存在せず、`z.sh` も 3 台とも無い (z は zoxide が代替) |
-| 104-107 `.sync` | `STOW_FLAGS=--restow sh install.darwin.sh` + `brew bundle -g` | stow 行は維持、`brew bundle -g` を `sudo /run/current-system/sw/bin/darwin-rebuild switch --flake "$dotfiles_dir/nix"` に置換 (`sudo` が PATH を捨てるので絶対パス) |
+| 104-107 `.sync` | `STOW_FLAGS=--restow sh install.darwin.sh` + `brew bundle -g` | `brew bundle -g` を `sudo /run/current-system/sw/bin/darwin-rebuild switch --flake "$dotfiles_dir/nix"` に置換 (`sudo` が PATH を捨てるので絶対パス)。stow 行はこの時点では維持し、Phase 5 で削除 |
 
 ### その他
 
 - `docker/.docker/config.json`: **変更不要**。§3.10 の `pathsToLink` が `/run/current-system/sw/libexec/docker/cli-plugins` に `docker-buildx` / `docker-compose` の 2 本を出すので、switch 後に `docker compose version` (5.5.1) と `docker buildx version` (v0.35.0) がそのまま通る。
 - `homebrew/` stow パッケージ: `Brewfile`、`trust.json`、`trust.json.lock` を `git rm` し `curlrc` のみ残す。`.gitignore` に `homebrew/.config/homebrew/trust.json*` を追加 (brew が `~/.config/homebrew/` に書き続けるため、stow 経由で repo に現れないように)。`Brewfile.lock.json` の行は不要になる。Brewfile ごと消えるので `brew "rust"` や CLI 系 cask の行単位削除は発生しない。
-- `install.darwin.sh`: stow 一覧はそのまま。末尾に `darwin-rebuild` は足さない (初回は `nix run` 経由、以後は `.sync`)。
+- `install.darwin.sh`: stow 一覧はそのまま。末尾に `darwin-rebuild` は足さない (初回は `nix run` 経由、以後は `.sync`)。→ Phase 5 でブートストラップ専用に全面書き換え (§6 Phase 5)。
 - `install.sh` (Linux): 変更なし。
 
 ## 8. CLAUDE.md の更新点

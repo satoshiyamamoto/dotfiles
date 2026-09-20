@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-Dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/). Each top-level directory is a Stow package that mirrors `$HOME`. Deployment symlinks package contents into the home directory.
+Dotfiles linked by [home-manager](https://nix-community.github.io/home-manager/), declared in `nix/modules/home.nix` and applied by the same `darwin-rebuild switch` as everything else. Each top-level directory still mirrors `$HOME` — the layout is what GNU Stow left behind — but nothing runs stow any more. See [Dotfile Links](#dotfile-links).
 
 **Install (macOS):**
 ```sh
-./install.darwin.sh   # runs: stow --verbose --adopt --target=$HOME <packages...>
+./install.darwin.sh   # Command Line Tools, Homebrew, submodules, Nix, first switch
 ```
 
 **Install (Linux):**
@@ -22,7 +22,7 @@ Config files are placed under `<package>/.config/<tool>/` to follow the [XDG Bas
 
 ## Nix (nix-darwin)
 
-Packages come from the flake in `nix/`, applied by `darwin-rebuild`. The `.sync` shell function (`zsh/.zshrc`) runs stow and then the rebuild:
+Packages **and dotfiles** come from the flake in `nix/`, applied by `darwin-rebuild`. The `.sync` shell function (`zsh/.zshrc`) pulls and then rebuilds — that is the whole of it:
 
 ```sh
 sudo /run/current-system/sw/bin/darwin-rebuild switch --flake <repo>/nix
@@ -37,10 +37,11 @@ The absolute path is required — `sudo` resets PATH, so a bare `darwin-rebuild`
 | `nix/modules/common.nix` | Shared by every host: `stateVersion`, experimental features, zsh, PAM |
 | `nix/modules/packages.nix` | `environment.systemPackages`, `fonts.packages`, `pathsToLink` |
 | `nix/modules/homebrew.nix` | What stays on Homebrew: one tapped formula, the GUI casks, the Mac App Store apps |
+| `nix/modules/home.nix` | home-manager's `home.file`: every dotfile link, store or live |
 
 **Homebrew survives only as a cask/mas backend.** There is no Brewfile in this repo any more — nix-darwin generates one in the Nix store and runs `brew bundle` against it, so edits belong in `nix/modules/homebrew.nix`. `onActivation.cleanup = "uninstall"` makes that file the single source of truth: any formula or cask installed by hand is removed on the next switch. `masApps` is the exception, because Homebrew Bundle has no mas cleanup — deleting an entry there does not uninstall the app.
 
-**All three Macs run nix-darwin.** CA-20033978, CA-20031962 and Kenya have each switched, so `darwin-rebuild` and a Nix store exist everywhere and `.sync` rebuilds on every host. The `[[ -x $darwin_rebuild ]]` guard in `.sync` stays as a safety net for a machine being set up from scratch, not because any host still needs it. What is left of the migration is Phase 5 -- stow to home-manager `home.file`, planned separately. Plan and record: `docs/nix-migration.md`.
+**All three Macs run nix-darwin.** CA-20033978, CA-20031962 and Kenya have each switched, so `darwin-rebuild` and a Nix store exist everywhere and `.sync` rebuilds on every host. The `[[ -x $darwin_rebuild ]]` guard in `.sync` stays as a safety net for a machine being set up from scratch, not because any host still needs it. Phase 5 -- stow to home-manager `home.file` -- is done on CA-20033978; the other two still carry stow links and need the one-time migration in `docs/nix-migration.md` §6 before `.sync` is safe to run there. Plan and record: `docs/nix-migration.md`.
 
 **Kenya pins nixpkgs 26.05** rather than following unstable, via its own `nixpkgs-2605` / `nix-darwin-2605` inputs. It is the only x86_64 Mac here and 26.11 does not merely drop `x86_64-darwin` from a few `meta.platforms` — importing nixpkgs at all for that system throws `Nixpkgs 26.11 has dropped support for x86_64-darwin`, so no per-package override can rescue it. That pin has an expiry: 26.05 goes EOL on 2026-12-31, so Kenya needs a channel bump — or a retirement — before then.
 
@@ -55,7 +56,24 @@ Six packages are therefore aarch64-only in `packages.nix`. `container` is Apple 
 **The AI agent CLIs do not self-update.** `claude`, `codex`, `opencode`, `pi-coding-agent`, `grok-build` and `skills` all come from the Nix store, which is read-only, so an in-place updater could not work even if it tried; nixpkgs wraps `claude` with `DISABLE_AUTOUPDATER=1` and `opencode` with `DISABLE_AUTOUPDATE=true` outright. Their versions move only when the flake inputs are updated (`nix flake update` in `nix/`, then a switch), so a stale CLI is a lockfile question, not a broken updater.
 
 - **hermes-agent is deliberately absent from `packages.nix`.** Upstream lists both `brew install hermes-agent` and PyPI installs (`uv tool install`, `pip install`) as unsupported distribution methods that receive no further updates, and `hermes update` prints a deprecation notice on every run. Use the official installer instead — see [Hermes Agent](#hermes-agent).
-- **node comes from nixpkgs, not mise.** `~/.config/mise` is a stow symlink into this repo, so `mise use -g node@lts` would write the tool into the version-controlled `mise/.config/mise/config.toml` instead of a machine-local file. Keep `nodejs` in `nix/modules/packages.nix` and let the flake own the version.
+- **node comes from nixpkgs, not mise.** `~/.config/mise/config.toml` is a read-only store link, so `mise use -g node@lts` cannot write a machine-local version at all — it fails on a read-only file rather than quietly editing the tracked config, which is what it did under stow. Keep `nodejs` in `nix/modules/packages.nix` and let the flake own the version.
+
+### Dotfile Links
+
+`nix/modules/home.nix` declares all 64 links, in two kinds:
+
+| Kind | Count | Points at | For |
+|------|-------|-----------|-----|
+| store | 49 | `/nix/store/…`, read-only | configs a tool only reads |
+| live | 15 | the working tree, via `mkOutOfStoreSymlink` | configs a tool **writes** |
+
+**Adding a file: default to store.** A store link is a copy, so the repo can never be dirtied by a tool, and a `switch` is what publishes an edit. Use `live` only when the tool writes where the link points — it rewrites the file itself (`docker context use`, `moshi-hook set`, Codex and Claude Code saving settings), or it drops siblings into the same directory (`lazy-lock.json`, Karabiner's `automatic_backups`, brew's `trust.json`, hunk's `state.json`, the plugin trees under `~/.vim` and `~/.config/tmux`). `.config/ghostty` is live for a third reason: its shaders are git submodules, which the flake never copies into the store.
+
+`starship` is store even though `starship config` writes, because it does not write **through** a symlink — it replaces the link with a regular file. A single-hop stow link behaved the same way, so this is not a home-manager regression and `live` would buy nothing. `kubeon`/`vpnoff` and friends in `zsh/.zshrc` therefore detach `~/.config/starship.toml` from the repo until the next switch relinks it.
+
+`~/.claude` is linked **per file**, not as a directory: Claude Code keeps machine-local state (`projects/`, `history.jsonl`, `shell-snapshots/`, `.credentials.json`) in the same directory, and only `settings.json` is tracked here. A directory link drags all of it into the working tree, which is exactly what stow did.
+
+An edit to a store-linked file needs a `switch` to take effect. An edit to a live-linked file is live immediately — and shows up in `git status`.
 
 ### Nix Formatting
 
@@ -99,8 +117,8 @@ Drop `--skip-setup` only on a machine with no `~/.hermes/config.yaml` yet; the w
 - Code lives in `~/.hermes/hermes-agent` (git checkout of `main` plus a Python 3.11 venv driven by Hermes' own uv at `~/.hermes/bin/uv`). The `hermes` command is a shim at `~/.local/bin/hermes`.
 - **Never pass `--branch <tag>`.** `git clone --depth 1 --branch <tag>` pins the refspec to that single tag and leaves no remote-tracking branch, so `hermes update` dies with `Branch 'main' not found on origin`. Recover with `git remote set-branches origin main && git fetch --depth 1 origin main`.
 - `hermes update` does a git pull on `main`. From a detached HEAD it switches to `main` automatically (autostashing local changes), so tag pinning and `hermes update` are mutually exclusive.
-- `~/.hermes` is shared by every install method, so switching methods keeps all config and state. The installer skips files that already exist, and `atomic_yaml_write` preserves symlinks (upstream #16743) — stow-linked `config.yaml` / `SOUL.md` are never clobbered.
-- **The `hermes` package deliberately stows only `config.yaml` and `SOUL.md`.** `~/.hermes/skills` belongs to Hermes (bundled skills seeded by the installer, hub installs, `.hub/` provenance, usage telemetry) and must stay out of stow's reach — see [Personal Skills](#personal-skills) for why.
+- `~/.hermes` is shared by every install method, so switching methods keeps all config and state. The installer skips files that already exist, and `atomic_yaml_write` preserves symlinks (upstream #16743) — the live-linked `config.yaml` / `SOUL.md` are never clobbered.
+- **The `hermes` package deliberately links only `config.yaml` and `SOUL.md`.** `~/.hermes/skills` belongs to Hermes (bundled skills seeded by the installer, hub installs, `.hub/` provenance, usage telemetry) and must stay out of the repo — see [Personal Skills](#personal-skills) for why.
 - The launchd plist points at `~/.hermes/hermes-agent/venv/bin/python`, which carries no version, so `hermes update` won't break the gateway. Re-run `hermes gateway install` only when switching install methods.
 - The installer shells out to `brew install` for missing system tools (ripgrep, ffmpeg, git). `ripgrep` and `ffmpeg` are declared in `nix/modules/packages.nix` — keep them there so the flake stays in sync with what Hermes needs. `git` is not declared anywhere: macOS ships Apple Git at `/usr/bin/git`, which is what this machine uses.
 
@@ -132,15 +150,15 @@ Hermes reads the `hermes/` tree via `skills.external_dirs` in `config.yaml`, poi
 
 Three reasons not to put personal skills under `~/.hermes/skills` instead:
 
-1. **Stow folding breaks `hermes skills install`.** If any part of `~/.hermes/skills` comes from stow, stow collapses the whole directory into one symlink pointing at this repo, and installs fail with `Installation blocked: '<repo path>' is not in the subpath of '/Users/<user>/.hermes/skills'`. Upstream bug: `install_from_quarantine()` in `tools/skills_hub.py` compares a `resolve()`d `install_dir` against an unresolved `_skills_dir()`. It raises *after* `shutil.move()`, so the skill lands on disk but never reaches `lock.json` — recover by re-running the install.
-2. **`--no-folding` dodges that but trips the trust check.** `skill_view()` resolves both sides before comparing against `_trusted_dirs`, so a symlinked `SKILL.md` under a real `~/.hermes/skills` logs `skill file is outside the trusted skills directory` on every load. Paths from `external_dirs` are in `_trusted_dirs`, so they stay quiet.
+1. **A directory link breaks `hermes skills install`.** If `~/.hermes/skills` is itself a symlink into this repo — which is what stow's folding produced, and what a directory entry in `home.file` would produce too — installs fail with `Installation blocked: '<repo path>' is not in the subpath of '/Users/<user>/.hermes/skills'`. Upstream bug: `install_from_quarantine()` in `tools/skills_hub.py` compares a `resolve()`d `install_dir` against an unresolved `_skills_dir()`. It raises *after* `shutil.move()`, so the skill lands on disk but never reaches `lock.json` — recover by re-running the install.
+2. **Per-file links dodge that but trip the trust check.** `skill_view()` resolves both sides before comparing against `_trusted_dirs`, so a symlinked `SKILL.md` under a real `~/.hermes/skills` logs `skill file is outside the trusted skills directory` on every load. Paths from `external_dirs` are in `_trusted_dirs`, so they stay quiet.
 3. `~/.hermes/skills` also accumulates ~48 MB of bundled skills plus `.hub/` state, which has no business in a dotfiles working tree.
 
 `hermes skills tap add satoshiyamamoto/skills` is the wrong tool for these: taps install a **copy** through the GitHub API, which needs auth for a private repo and drops the live link.
 
 ## Moshi (moshi-hook)
 
-`moshi-hook serve` runs as a Homebrew launchd agent — declared in `nix/modules/homebrew.nix` under `brews` with `restart_service = "changed"` — and bridges AI coding agents to the Moshi mobile app. The `moshi` package stows only `~/.config/moshi/config.toml`; everything else moshi-hook owns lives in `~/Library/Application Support/Moshi/` (socket, `hook.log`, pairing state) and must stay out of the repo.
+`moshi-hook serve` runs as a Homebrew launchd agent — declared in `nix/modules/homebrew.nix` under `brews` with `restart_service = "changed"` — and bridges AI coding agents to the Moshi mobile app. The `moshi` package links only `~/.config/moshi/config.toml`; everything else moshi-hook owns lives in `~/Library/Application Support/Moshi/` (socket, `hook.log`, pairing state) and must stay out of the repo.
 
 The tap is third-party, and since Homebrew 6.0.0 `HOMEBREW_REQUIRE_TAP_TRUST` refuses to load its formula until it is trusted. Activation is already covered: nix-darwin's `trusted` option defaults to **true for `brews` and `casks`** (and false only for `taps`), so the generated Brewfile carries `brew "rjyo/moshi/moshi-hook", ..., trusted: true`, and `brew bundle` writes that into the trust store itself before loading any entry (`Library/Homebrew/bundle/installer.rb`). No tap-wide grant is needed.
 
@@ -148,7 +166,7 @@ What is *not* covered is anything undeclared. `cleanup = "uninstall"` cannot loa
 
 Interactive `brew` is a separate store: `brew trust` writes `$XDG_CONFIG_HOME/homebrew/trust.json` while a run without `XDG_CONFIG_HOME` reads `~/.homebrew/trust.json` (`Library/Homebrew/trust.rb`), so `brew trust --formula rjyo/moshi/moshi-hook` is still worth running once per machine for your own shell.
 
-`moshi-hook set` writes **through** the stow symlink rather than replacing it, so the CLI and the repo stay in sync — no `--no-folding` needed, unlike the Hermes skills case above. It also sorts the port list on write. Editing `config.toml` by hand is equivalent; `set` just saves you finding the file.
+`moshi-hook set` writes **through** the symlink rather than replacing it, so the config has to be a `live` link (see [Dotfile Links](#dotfile-links)) — a store link would make the CLI fail on a read-only file. With it, the CLI and the repo stay in sync. It also sorts the port list on write. Editing `config.toml` by hand is equivalent; `set` just saves you finding the file.
 
 ### `scan_ports` is a deliberate allowlist — do not set it back to `all`
 

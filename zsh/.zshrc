@@ -95,21 +95,18 @@ y() {
   # Pull the latest changes from the remote repository
   git pull || { popd -q; return 1; }
 
-  # Refresh dotfile symlinks from the repo (--restow: repo is source of truth,
-  # no --adopt so unexpected local files surface as errors instead of overwriting)
-  STOW_FLAGS="--restow" sh install.darwin.sh || ret=$?
-
   # Rebuild the system from the flake: Nix packages, Homebrew casks and the
   # Mac App Store apps all come from nix/modules. sudo resets PATH, so
   # darwin-rebuild has to be called by its absolute path.
   #
-  # The migration is staged per machine (docs/nix-migration.md), so the binary
-  # is absent until a host joins. Skip rather than fail there: stow has already
-  # run, which is the only half of .sync those machines can still use.
+  # Dotfiles come from home-manager, which the same switch applies, so the
+  # rebuild is now the whole of .sync -- a machine without darwin-rebuild has
+  # nothing to sync and needs install.darwin.sh instead.
   if [[ -x $darwin_rebuild ]]; then
     sudo $darwin_rebuild switch --flake "$dotfiles_dir/nix" || ret=$?
   else
-    print -u2 ".sync: nix-darwin not installed on this host, skipping the rebuild"
+    print -u2 ".sync: nix-darwin is not installed here; run ./install.darwin.sh first"
+    ret=1
   fi
 
   popd -q
