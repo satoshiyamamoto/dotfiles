@@ -234,6 +234,12 @@ return {
     keys = {
       { "<Leader>tt", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Test File" },
       { "<Leader>tr", function() require("neotest").run.run() end, desc = "Test Nearest" },
+      { "<Leader>td", function() require("neotest").run.run({ strategy = "dap" }) end, desc = "Test Nearest (Debug)" },
+      {
+        "<Leader>tD",
+        function() require("neotest").run.run({ vim.fn.expand("%"), strategy = "dap" }) end,
+        desc = "Test File (Debug)",
+      },
       { "<Leader>tl", function() require("neotest").run.run_last() end, desc = "Test Last" },
       { "<Leader>ts", function() require("neotest").summary.toggle() end, desc = "Test Summary" },
       { "<Leader>to", function() require("neotest").output.open() end, desc = "Test Output" },
