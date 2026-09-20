@@ -77,7 +77,6 @@ local config = {
   settings = {
     java = {
       signatureHelp = { enabled = true },
-      test = { config_overrides = { vmArgs = "--add-opens=java.base/java.lang=ALL-UNNAMED" } },
     },
   },
   init_options = {
@@ -85,16 +84,14 @@ local config = {
   },
   on_attach = function(_, bufnr)
     local jdtls = require("jdtls")
-    vim.keymap.set("n", "<leader>tt", jdtls.test_class, { buffer = bufnr, desc = "Test Class (Debug)" })
-    vim.keymap.set("n", "<leader>tr", jdtls.test_nearest_method, { buffer = bufnr, desc = "Test Method (Debug)" })
+    local function map(lhs, rhs, desc) vim.keymap.set("n", lhs, rhs, { buffer = bufnr, desc = desc }) end
+
+    -- Per-call overrides for the jdtls debug functions, see |JdtDapConfig|.
+    local test_opts = { config_overrides = { vmArgs = "--add-opens=java.base/java.lang=ALL-UNNAMED" } }
+    map("<Leader>tt", function() jdtls.test_class(test_opts) end, "Test Class (Debug)")
+    map("<Leader>tr", function() jdtls.test_nearest_method(test_opts) end, "Test Method (Debug)")
   end,
 }
 
-require("jdtls").start_or_attach(config, {
-  dap = {
-    hotcodereplace = "auto",
-    config_overrides = {
-      vmArgs = "--add-opens=java.base/java.lang=ALL-UNNAMED",
-    },
-  },
-})
+-- `dap` must be set for nvim-jdtls to register the java dap adapter (setup.lua `if opts.dap then`).
+require("jdtls").start_or_attach(config, { dap = { hotcodereplace = "auto" } })
