@@ -10,18 +10,20 @@ local function glob(pattern) return vim.fn.glob(pattern, true, true) end
 local bundles = (function()
   local bundles = glob(jar_path("java-debug-adapter") .. "com.microsoft.java.debug.plugin-*.jar")
 
-  -- vscode-java-test configuration
-  local excluded_test_bundles = {
-    ["com.microsoft.java.test.runner-jar-with-dependencies.jar"] = true,
-    ["jacocoagent.jar"] = true,
-  }
-
-  for _, java_test_jar in ipairs(glob(jar_path("java-test") .. "*.jar")) do
-    local fname = vim.fn.fnamemodify(java_test_jar, ":t")
-    if not excluded_test_bundles[fname] then
-      table.insert(bundles, java_test_jar)
-    end
-  end
+  -- INFO: the vscode-java-test bundles only serve the jdtls built-in test runner, which is
+  -- disabled in favour of neotest-java (it drives tests itself and needs core jdtls commands
+  -- only). They also fail to resolve against jdtls 1.60.0. Uncomment to restore.
+  -- local excluded_test_bundles = {
+  --   ["com.microsoft.java.test.runner-jar-with-dependencies.jar"] = true,
+  --   ["jacocoagent.jar"] = true,
+  -- }
+  --
+  -- for _, java_test_jar in ipairs(glob(jar_path("java-test") .. "*.jar")) do
+  --   local fname = vim.fn.fnamemodify(java_test_jar, ":t")
+  --   if not excluded_test_bundles[fname] then
+  --     table.insert(bundles, java_test_jar)
+  --   end
+  -- end
 
   return bundles
 end)()
@@ -82,15 +84,17 @@ local config = {
   init_options = {
     bundles = bundles,
   },
-  on_attach = function(_, bufnr)
-    local jdtls = require("jdtls")
-    local function map(lhs, rhs, desc) vim.keymap.set("n", lhs, rhs, { buffer = bufnr, desc = desc }) end
-
-    -- Per-call overrides for the jdtls debug functions, see |JdtDapConfig|.
-    local test_opts = { config_overrides = { vmArgs = "--add-opens=java.base/java.lang=ALL-UNNAMED" } }
-    map("<Leader>tt", function() jdtls.test_class(test_opts) end, "Test Class (Debug)")
-    map("<Leader>tr", function() jdtls.test_nearest_method(test_opts) end, "Test Method (Debug)")
-  end,
+  -- INFO: these buffer-local maps would shadow neotest's global <Leader>tt/<Leader>tr in java
+  -- buffers, so the jdtls built-in test runner is disabled. Uncomment to restore.
+  -- on_attach = function(_, bufnr)
+  --   local jdtls = require("jdtls")
+  --   local function map(lhs, rhs, desc) vim.keymap.set("n", lhs, rhs, { buffer = bufnr, desc = desc }) end
+  --
+  --   -- Per-call overrides for the jdtls debug functions, see |JdtDapConfig|.
+  --   local test_opts = { config_overrides = { vmArgs = "--add-opens=java.base/java.lang=ALL-UNNAMED" } }
+  --   map("<Leader>tt", function() jdtls.test_class(test_opts) end, "Test Class (Debug)")
+  --   map("<Leader>tr", function() jdtls.test_nearest_method(test_opts) end, "Test Method (Debug)")
+  -- end,
 }
 
 -- `dap` must be set for nvim-jdtls to register the java dap adapter (setup.lua `if opts.dap then`).

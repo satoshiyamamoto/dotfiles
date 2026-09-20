@@ -244,7 +244,10 @@ return {
       require("neotest").setup({
         adapters = {
           require("neotest-golang"),
-          require("neotest-java")({}),
+          require("neotest-java")({
+            -- Deep reflection in the tests needs java.lang opened to the unnamed module.
+            jvm_args = { "--add-opens=java.base/java.lang=ALL-UNNAMED" },
+          }),
           require("neotest-python"),
         },
       })
