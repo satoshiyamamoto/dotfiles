@@ -31,6 +31,14 @@ in
     "/share/zsh-syntax-highlighting"
   ];
 
+  # nix-darwin has no programs.java, and home-manager's only sets
+  # home.sessionVariables, which lands in an hm-session-vars.sh that nothing
+  # here sources -- zsh is a plain dotfile link, not programs.zsh. This is the
+  # option that works: /etc/zshenv sources set-environment for every zsh.
+  # `.home` is what the JDK's own nix-support/setup-hook exports, which on
+  # darwin is the store root, not the Contents/Home inside it.
+  environment.variables.JAVA_HOME = "${pkgs.jdk21.home}";
+
   # Replaces the font-symbols-only-nerd-font / font-ipaexfont /
   # font-noto-sans-symbols-2 casks. noto-fonts is the only nixpkgs attribute
   # that ships NotoSansSymbols2, which tokyo-night-tmux needs for its segmented
