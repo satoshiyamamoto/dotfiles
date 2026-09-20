@@ -46,7 +46,6 @@ in
 
         home.file = {
           # Read-only copies in the Nix store.
-          ".config/alacritty/alacritty.toml".source = ../../alacritty/.config/alacritty/alacritty.toml;
           ".config/bat/config".source = ../../bat/.config/bat/config;
           ".config/bat/themes/tokyonight_day.tmTheme".source =
             ../../bat/.config/bat/themes/tokyonight_day.tmTheme;
@@ -58,7 +57,6 @@ in
             ../../bat/.config/bat/themes/tokyonight_storm.tmTheme;
           ".config/eza/theme.yml".source = ../../eza/.config/eza/theme.yml;
           ".config/fd/ignore".source = ../../fd/.config/fd/ignore;
-          ".config/flake8".source = ../../flake8/.config/flake8;
           ".config/gh-dash/config.yml".source = ../../gh-dash/.config/gh-dash/config.yml;
           ".config/gh/config.yml".source = ../../gh/.config/gh/config.yml;
           ".config/git/config".source = ../../git/.config/git/config;
