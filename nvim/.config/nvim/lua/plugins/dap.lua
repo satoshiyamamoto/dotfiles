@@ -247,6 +247,18 @@ return {
       { "<Leader>tS", function() require("neotest").run.stop() end, desc = "Test Stop" },
     },
     config = function()
+      -- neotest-golang's root_for_tests falls back to a repo-wide recursive
+      -- go.mod scan when no go.work/go.mod sits above cwd, costing ~8s in a
+      -- large non-Go repo only to return nil, and it caches nothing on that
+      -- path. No adapter option covers this, so patch root itself; require()
+      -- is cached, so the adapters list below picks this up.
+      local golang = require("neotest-golang")
+      local golang_root = golang.root
+      golang.root = function(dir)
+        local lib = require("neotest.lib")
+        return lib.files.match_root_pattern("go.work", "go.mod")(dir) and golang_root(dir) or nil
+      end
+
       require("neotest").setup({
         adapters = {
           require("neotest-golang"),
