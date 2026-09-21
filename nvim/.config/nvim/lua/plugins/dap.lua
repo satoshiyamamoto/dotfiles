@@ -255,6 +255,17 @@ return {
             jvm_args = { "--add-opens=java.base/java.lang=ALL-UNNAMED" },
           }),
           require("neotest-python"),
+          require("neotest-vitest"),
+          require("neotest-mocha")({
+            -- orion-web keeps its specs as plain `test/**/*.js`, which the default
+            -- `*.test.js` / `*.spec.js` matcher misses. Keep both forms.
+            is_test_file = function(path)
+              return path:match("/test/.*%.js$") ~= nil
+                or path:match("%.test%.[cm]?[jt]sx?$") ~= nil
+                or path:match("%.spec%.[cm]?[jt]sx?$") ~= nil
+            end,
+            env = { NODE_ENV = "test" },
+          }),
         },
       })
     end,
@@ -265,6 +276,8 @@ return {
       "nvim-treesitter/nvim-treesitter",
       "fredrikaverpil/neotest-golang",
       "rcasia/neotest-java",
+      "marilari88/neotest-vitest",
+      "adrigzr/neotest-mocha",
     },
   },
 
