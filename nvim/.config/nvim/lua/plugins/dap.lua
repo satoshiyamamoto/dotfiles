@@ -267,6 +267,12 @@ return {
             env = { NODE_ENV = "test" },
           }),
         },
+        discovery = {
+          -- neotest-java roots at the monorepo and has no node_modules exclusion of
+          -- its own, so a JS dependency tree costs ~5s per discovery pass. neotest
+          -- ANDs this with each adapter's own filter_dir.
+          filter_dir = function(name) return name ~= "node_modules" end,
+        },
       })
     end,
     dependencies = {
