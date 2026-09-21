@@ -247,11 +247,10 @@ return {
       { "<Leader>tS", function() require("neotest").run.stop() end, desc = "Test Stop" },
     },
     config = function()
-      -- neotest-golang's root_for_tests falls back to a repo-wide recursive
-      -- go.mod scan when no go.work/go.mod sits above cwd, costing ~8s in a
-      -- large non-Go repo only to return nil, and it caches nothing on that
-      -- path. No adapter option covers this, so patch root itself; require()
-      -- is cached, so the adapters list below picks this up.
+      -- Outside a Go tree, neotest-golang's root falls back to a repo-wide
+      -- recursive go.mod scan that returns nil without caching anything. Guard
+      -- it with a cheap upward lookup; the trade-off is that a repo whose only
+      -- go.mod sits below cwd is no longer detected.
       local golang = require("neotest-golang")
       local golang_root = golang.root
       golang.root = function(dir)
@@ -259,13 +258,50 @@ return {
         return lib.files.match_root_pattern("go.work", "go.mod")(dir) and golang_root(dir) or nil
       end
 
+      -- neotest-java rebuilds its module list on every run by walking the whole
+      -- project root, and its dir_scan has no exclusion mechanism of its own.
+      local function iter_java_entries(dir)
+        local entries = vim.fs.dir(dir:to_string())
+        return function()
+          for name, typ in entries do
+            if name ~= "node_modules" and name ~= ".git" then
+              return { path = dir:append(name), typ = typ }
+            end
+          end
+        end
+      end
+
+      -- ponytail: swapping an internal API. Drop this once the adapter exposes
+      -- an exclusion option of its own.
+      local java_scan = require("neotest-java.util.dir_scan")
+      package.loaded["neotest-java.util.dir_scan"] = function(dir, opts)
+        return java_scan(dir, opts, { iter_dir = iter_java_entries })
+      end
+
+      -- neotest-java's root finder falls back to the .git root alone, so it claims
+      -- every git repository and registers an adapter that discovers nothing but
+      -- still walks the whole tree. Require a build file, as its own higher
+      -- priorities already do.
+      local java = require("neotest-java")({
+        -- Deep reflection in the tests needs java.lang opened to the unnamed module.
+        jvm_args = { "--add-opens=java.base/java.lang=ALL-UNNAMED" },
+      })
+      local java_root = java.root
+      local has_build_file = require("neotest.lib").files.match_root_pattern(
+        "pom.xml",
+        "settings.gradle",
+        "settings.gradle.kts",
+        "build.gradle",
+        "build.gradle.kts",
+        "mvnw",
+        "gradlew"
+      )
+      java.root = function(dir) return has_build_file(dir) and java_root(dir) or nil end
+
       require("neotest").setup({
         adapters = {
-          require("neotest-golang"),
-          require("neotest-java")({
-            -- Deep reflection in the tests needs java.lang opened to the unnamed module.
-            jvm_args = { "--add-opens=java.base/java.lang=ALL-UNNAMED" },
-          }),
+          golang,
+          java,
           require("neotest-python"),
           require("neotest-vitest"),
           require("neotest-mocha")({
@@ -280,9 +316,8 @@ return {
           }),
         },
         discovery = {
-          -- neotest-java roots at the monorepo and has no node_modules exclusion of
-          -- its own, so a JS dependency tree costs ~5s per discovery pass. neotest
-          -- ANDs this with each adapter's own filter_dir.
+          -- neotest-java roots at the monorepo and has no node_modules exclusion
+          -- of its own. neotest ANDs this with each adapter's own filter_dir.
           filter_dir = function(name) return name ~= "node_modules" end,
         },
       })
