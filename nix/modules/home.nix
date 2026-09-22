@@ -46,6 +46,7 @@ in
 
         home.file = {
           # Read-only copies in the Nix store.
+          ".bash_aliases".source = ../../bash/.bash_aliases;
           ".config/bat/config".source = ../../bat/.config/bat/config;
           ".config/bat/themes/tokyonight_day.tmTheme".source =
             ../../bat/.config/bat/themes/tokyonight_day.tmTheme;

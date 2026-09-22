@@ -1,8 +1,18 @@
-# ailiases
+# Kept in sync with the Aliases section of zsh/.zshrc -- that file is the one
+# that gets used day to day, this one is for the Linux boxes install.sh sets up
+# (Debian's default ~/.bashrc sources ~/.bash_aliases).
+#
+# Three kinds of thing in .zshrc deliberately do not appear here:
+#   - macOS application paths: cisco, tailscale, icat (kitty's own kitten)
+#   - the YSU_IGNORED_ALIASES juggling, which belongs to the zsh you-should-use
+#     plugin and has no bash equivalent, so the eza calls below are bare
+#   - functions and ZLE widgets, which are zsh syntax
 alias cp='cp -i'
+alias curl='curl --silent'
 alias d='docker'
 alias dc='docker compose'
 alias dcd='docker compose down'
+alias dctx='docker context'
 alias dcu='docker compose up'
 alias dex='docker exec --interactive --tty'
 alias di='docker images'
@@ -19,19 +29,24 @@ alias g='git'
 alias ga='git add'
 alias gb='git branch'
 alias gc='git commit'
+alias gcg='git fetch --prune && git switch main && git reset --hard origin/main && git branch -vv | awk "/: gone]/{print (\$1 == \"*\" || \$1 == \"+\") ? \$2 : \$1}" | xargs --no-run-if-empty git branch --delete --force'
 alias gco='git checkout'
 alias gd='git diff'
 alias gf='git fetch'
 alias ghce='gh copilot explain'
 alias ghcs='gh copilot suggest'
-alias gl='git log --graph --pretty=format:"%x09%Cblue%h %C(yellow)%an%x09%C(auto)%d%Creset %s %Cgreen(%cr)"'
+alias gl='git log --graph --pretty=format:"%x09%C(blue)%h %C(magenta)%an%C(auto)%d%C(reset) %s %C(green)(%cr)"'
 alias gm='git merge'
 alias gp='git push'
+alias gpf='git push --force-with-lease'
 alias gpl='git pull'
-alias gr='git reset'
 alias grb='git rebase'
+alias grh='git reset'
+alias grs='git restore'
 alias gst='git status'
+alias gsta='git stash'
 alias gsw='git switch'
+alias gwt='git worktree'
 alias k='kubectl'
 alias kaf='kubectl apply --filename'
 alias kctx='kubectl config use-context'
@@ -50,12 +65,35 @@ alias kgs='kubectl get services'
 alias kl='kubectl logs'
 alias klf='kubectl logs --follow'
 alias kns='kubectl config set-context --current --namespace'
-alias l='ls -1A'
-alias la='ll -A'
-alias lk='ll -Sr'
-alias ll='ls -lh'
-alias lr='ll -R'
-alias ls='ls -G --color=auto'
-alias lt='ll -tr'
+alias kubeoff='starship config kubernetes.disabled true'
+alias kubeon='starship config kubernetes.disabled false'
+alias lg='lazygit'
+alias lzd='lazydocker'
 alias mv='mv -i'
 alias rm='rm -i'
+alias trans='trans --brief :ja'
+alias vpnoff='starship config custom.vpn.disabled true'
+alias vpnon='starship config custom.vpn.disabled false'
+
+# The ls family needs eza, which a bare Linux box may not have -- fall back to
+# GNU ls there. (The old `ls -G --color=auto` could not work either way: -G is
+# BSD ls, --color is GNU.) macOS gets GNU ls from nixpkgs' coreutils, so the
+# fallback is GNU on both platforms.
+if command -v eza >/dev/null 2>&1; then
+  alias l='eza --color=auto --icons=auto --all --oneline'
+  alias la='eza --color=always --icons --long --header --group --git --color-scale=all --all'
+  alias lk='eza --color=auto --icons=auto --long --header --group --git --git-repos --color-scale=all --sort=size --reverse'
+  alias ll='eza --color=auto --icons=auto --long --header --group --git --git-repos --color-scale=all'
+  alias lr='eza --color=auto --icons=auto --long --header --group --git --recurse'
+  alias ls='eza --color=auto --icons=auto'
+  alias lt='eza --color=auto --icons=auto --long --header --group --git --git-repos --color-scale=all --sort=newest'
+  alias tree='eza --color=always --icons --tree'
+else
+  alias l='ls --color=auto -1A'
+  alias la='ls --color=auto -lhA'
+  alias lk='ls --color=auto -lhSr'
+  alias ll='ls --color=auto -lh'
+  alias lr='ls --color=auto -lhR'
+  alias ls='ls --color=auto'
+  alias lt='ls --color=auto -lhtr'
+fi
