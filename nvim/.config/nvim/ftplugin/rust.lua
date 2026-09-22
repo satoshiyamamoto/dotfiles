@@ -5,14 +5,12 @@ local function rustlsp(...)
   return function() vim.cmd.RustLsp(cmd) end
 end
 
-local function map(lhs, rhs, desc) vim.keymap.set("n", lhs, rhs, { buffer = true, desc = desc }) end
-
-map("K", rustlsp("hover", "actions"), "Hover Actions (Rust)")
-map("<Leader>ra", rustlsp("codeAction"), "Code Action (Rust)")
-map("<Leader>rr", rustlsp("runnables"), "Runnables (Rust)")
-map("<Leader>rd", rustlsp("debuggables"), "Debuggables (Rust)")
-map("<Leader>rt", rustlsp("testables"), "Testables (Rust)")
-map("<Leader>rm", rustlsp("expandMacro"), "Expand Macro (Rust)")
-map("<Leader>re", rustlsp("explainError"), "Explain Error (Rust)")
-map("<Leader>rc", rustlsp("openCargo"), "Open Cargo.toml (Rust)")
-map("<Leader>rp", rustlsp("parentModule"), "Parent Module (Rust)")
+vim.keymap.set("n", "K", rustlsp("hover", "actions"), { buffer = true, desc = "Hover Actions (Rust)" })
+vim.keymap.set("n", "<Leader>ra", rustlsp("codeAction"), { buffer = true, desc = "Code Action (Rust)" })
+vim.keymap.set("n", "<Leader>rr", rustlsp("runnables"), { buffer = true, desc = "Runnables (Rust)" })
+vim.keymap.set("n", "<Leader>rd", rustlsp("debuggables"), { buffer = true, desc = "Debuggables (Rust)" })
+vim.keymap.set("n", "<Leader>rt", rustlsp("testables"), { buffer = true, desc = "Testables (Rust)" })
+vim.keymap.set("n", "<Leader>rm", rustlsp("expandMacro"), { buffer = true, desc = "Expand Macro (Rust)" })
+vim.keymap.set("n", "<Leader>re", rustlsp("explainError"), { buffer = true, desc = "Explain Error (Rust)" })
+vim.keymap.set("n", "<Leader>rc", rustlsp("openCargo"), { buffer = true, desc = "Open Cargo.toml (Rust)" })
+vim.keymap.set("n", "<Leader>rp", rustlsp("parentModule"), { buffer = true, desc = "Parent Module (Rust)" })
