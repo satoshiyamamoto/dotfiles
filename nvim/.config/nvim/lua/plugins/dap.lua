@@ -247,19 +247,19 @@ return {
       { "<Leader>tS", function() require("neotest").run.stop() end, desc = "Test Stop" },
     },
     config = function()
-      -- Outside a Go tree, neotest-golang's root falls back to a repo-wide
-      -- recursive go.mod scan that returns nil without caching anything. Guard
-      -- it with a cheap upward lookup; the trade-off is that a repo whose only
-      -- go.mod sits below cwd is no longer detected.
+      -- Go: outside a Go tree, neotest-golang's root falls back to a repo-wide
+      -- recursive go.mod scan that returns nil without caching anything. Guard it
+      -- with a cheap upward lookup; a repo whose only go.mod sits below cwd is no
+      -- longer detected.
       local golang = require("neotest-golang")
       local golang_root = golang.root
-      golang.root = function(dir)
-        local lib = require("neotest.lib")
-        return lib.files.match_root_pattern("go.work", "go.mod")(dir) and golang_root(dir) or nil
-      end
+      local has_go_mod = require("neotest.lib").files.match_root_pattern("go.work", "go.mod")
+      golang.root = function(dir) return has_go_mod(dir) and golang_root(dir) or nil end
 
-      -- neotest-java rebuilds its module list on every run by walking the whole
-      -- project root, and its dir_scan has no exclusion mechanism of its own.
+      -- Java: neotest-java rebuilds its module list on every run by walking the
+      -- whole project root, and its dir_scan has no exclusion mechanism of its own.
+      -- Swapping an internal API; drop it once the adapter takes an exclusion
+      -- option of its own.
       local function iter_java_entries(dir)
         local entries = vim.fs.dir(dir:to_string())
         return function()
@@ -270,9 +270,6 @@ return {
           end
         end
       end
-
-      -- ponytail: swapping an internal API. Drop this once the adapter exposes
-      -- an exclusion option of its own.
       local java_scan = require("neotest-java.util.dir_scan")
       package.loaded["neotest-java.util.dir_scan"] = function(dir, opts)
         return java_scan(dir, opts, { iter_dir = iter_java_entries })
@@ -302,18 +299,10 @@ return {
         adapters = {
           golang,
           java,
+          require("neotest-mocha"),
           require("neotest-python"),
+          require("rustaceanvim.neotest"),
           require("neotest-vitest"),
-          require("neotest-mocha")({
-            -- orion-web keeps its specs as plain `test/**/*.js`, which the default
-            -- `*.test.js` / `*.spec.js` matcher misses. Keep both forms.
-            is_test_file = function(path)
-              return path:match("/test/.*%.js$") ~= nil
-                or path:match("%.test%.[cm]?[jt]sx?$") ~= nil
-                or path:match("%.spec%.[cm]?[jt]sx?$") ~= nil
-            end,
-            env = { NODE_ENV = "test" },
-          }),
         },
         discovery = {
           -- neotest-java roots at the monorepo and has no node_modules exclusion
