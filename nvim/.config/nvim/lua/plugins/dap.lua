@@ -295,6 +295,29 @@ return {
       )
       java.root = function(dir) return has_build_file(dir) and java_root(dir) or nil end
 
+      -- Discovery: honour each project's .gitignore, not node_modules alone.
+      -- `--directory` collapses a fully ignored tree into one entry, so one git
+      -- call per root is enough. The result is cached for the session; editing
+      -- .gitignore needs a restart. node_modules is still matched by name, so a
+      -- root outside git keeps being filtered. nio.fn is required because
+      -- filter_dir runs in a fast event context, where vim.fn is not callable.
+      local ignored_cache = {}
+      local function filter_dir(name, rel_path, root)
+        local ignored = ignored_cache[root]
+        if not ignored then
+          ignored = {}
+          local cmd = { "git", "-C", root, "ls-files", "--others", "--ignored", "--exclude-standard", "--directory" }
+          local out = require("nio").fn.systemlist(cmd)
+          if vim.v.shell_error == 0 then
+            for _, path in ipairs(out) do
+              ignored[(path:gsub("/$", ""))] = true
+            end
+          end
+          ignored_cache[root] = ignored
+        end
+        return name ~= "node_modules" and not ignored[rel_path]
+      end
+
       require("neotest").setup({
         adapters = {
           golang,
@@ -305,9 +328,8 @@ return {
           require("neotest-vitest"),
         },
         discovery = {
-          -- neotest-java roots at the monorepo and has no node_modules exclusion
-          -- of its own. neotest ANDs this with each adapter's own filter_dir.
-          filter_dir = function(name) return name ~= "node_modules" end,
+          -- neotest ANDs this with each adapter's own filter_dir.
+          filter_dir = filter_dir,
         },
       })
     end,
