@@ -1,24 +1,14 @@
 # zmodload zsh/zprof
 
-# Editors
-export EDITOR='nvim'
+# Pager
 export PAGER='bat'
 export LESSOPEN="| src-hilite-lesspipe.sh %s"
 export LESS='--hilite-search --hilite-unread --ignore-case --long-prompt --no-init --raw-control-chars --chop-long-lines --window=4'
 
-# Language
-export LANG='en_US.UTF-8'
-
-## Colors
+# Colors
 export COLORTERM='truecolor'
 
 # Paths
-export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
-export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
-export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
-export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
-export GOPATH="$HOME/Projects"
-
 typeset -gU cdpath fpath path
 cdpath=(
   $HOME(N)

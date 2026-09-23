@@ -108,6 +108,7 @@ in
           ".puppeteerrc.cjs".source = ../../puppeteer/.puppeteerrc.cjs;
           ".testcontainers.properties".source = ../../testcontainers/.testcontainers.properties;
           ".zprofile".source = ../../zsh/.zprofile;
+          ".zshenv".source = ../../zsh/.zshenv;
           ".zshrc".source = ../../zsh/.zshrc;
 
           # Whole directories the tool owns, linked live.

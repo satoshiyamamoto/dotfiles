@@ -61,11 +61,11 @@ Six packages are therefore aarch64-only in `packages.nix`. `container` is Apple 
 
 ### Dotfile Links
 
-`nix/modules/home.nix` declares all 62 links, in two kinds:
+`nix/modules/home.nix` declares all 53 links, in two kinds:
 
 | Kind | Count | Points at | For |
 |------|-------|-----------|-----|
-| store | 47 | `/nix/store/…`, read-only | configs a tool only reads |
+| store | 38 | `/nix/store/…`, read-only | configs a tool only reads |
 | live | 15 | the working tree, via `mkOutOfStoreSymlink` | configs a tool **writes** |
 
 **Adding a file: default to store.** A store link is a copy, so the repo can never be dirtied by a tool, and a `switch` is what publishes an edit. Use `live` only when the tool writes where the link points — it rewrites the file itself (`docker context use`, `moshi-hook set`, Codex and Claude Code saving settings), or it drops siblings into the same directory (`lazy-lock.json`, Karabiner's `automatic_backups`, brew's `trust.json`, hunk's `state.json`, the plugin trees under `~/.vim` and `~/.config/tmux`). `.config/ghostty` is live for a third reason: its shaders are git submodules, which the flake never copies into the store.
