@@ -32,6 +32,7 @@ memories = false
 notifications = true
 notification_method = "auto"
 notification_condition = "unfocused"
+screen_reader_detection_done = true
 
 [tui.model_availability_nux]
 gpt-6-astra = 4
@@ -250,6 +251,10 @@ enabled = false
 path = "/Users/a12019/.codex/plugins/cache/ponytail/ponytail/4.9.0/skills/ponytail/SKILL.md"
 enabled = false
 
+[[skills.config]]
+path = "/Users/a12019/.codex/skills/hatch-pet/SKILL.md"
+enabled = false
+
 [projects."/Users/a12019"]
 trust_level = "untrusted"
 
@@ -375,10 +380,10 @@ NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = ""
 NODE_REPL_INSTRUCTIONS_USE_CASE_COMPUTER_USE = ""
 BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.911.61220"
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/a12019/.codex/plugins/cache/openai-bundled/browser/26.911.61220/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
+BROWSER_USE_CODEX_APP_VERSION = "26.924.22138"
+NODE_REPL_TRUSTED_SERVICES = '{"browser":"/Users/a12019/.codex/plugins/cache/openai-bundled/browser/26.924.22138/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
 SKY_CUA_SERVICE_PATH = "/Users/a12019/.codex/computer-use/Codex Computer Use.app"
-CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex"
+CODEX_CLI_PATH = "/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex"
 
 [mcp_servers.computer-use]
 command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
@@ -387,7 +392,7 @@ cwd = "."
 enabled = false
 
 [desktop]
-conversationDetailMode = "STEPS_COMMANDS"
+conversationDetailMode = "STEPS_PROSE"
 ambient-suggestions-enabled = true
 followUpQueueMode = "queue"
 realtimeVoiceScreenContextEnabled = true
