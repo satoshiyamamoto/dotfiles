@@ -303,8 +303,7 @@
       "mcp__plugin_context7_context7",
       "mcp__plugin_github_github",
       "mcp__plugin_playwright_playwright",
-      "mcp__plugin_prompts_chat_prompts_chat",
-      "mcp__claude_ai_Datadog_2__update_datadog_monitor"
+      "mcp__plugin_prompts_chat_prompts_chat"
     ],
     "ask": [
       "Bash(gh api -X DELETE:*)",
@@ -323,7 +322,8 @@
       "Bash(git reset:*)",
       "Bash(rm -rf:*)",
       "Edit(~/.claude/**)",
-      "Edit(~/Documents/**)"
+      "Edit(~/Documents/**)",
+      "mcp__claude_ai_Datadog_2__update_datadog_monitor"
     ],
     "defaultMode": "auto",
     "deny": [
