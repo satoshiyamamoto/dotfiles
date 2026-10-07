@@ -65,7 +65,8 @@ keybindings:
   issues: []
   prs: []
   branches: []
-repoPaths: {}
+repoPaths:
+  :owner/:repo: ~/Projects/src/github.com/:owner/:repo
 theme:
   ui:
     sectionsShowCount: true
