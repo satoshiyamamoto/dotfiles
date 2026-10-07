@@ -169,6 +169,12 @@ Interactive `brew` is a separate store: `brew trust` writes `$XDG_CONFIG_HOME/ho
 
 `moshi-hook set` writes **through** the symlink rather than replacing it, so the config has to be a `live` link (see [Dotfile Links](#dotfile-links)) — a store link would make the CLI fail on a read-only file. With it, the CLI and the repo stay in sync. It also sorts the port list on write. Editing `config.toml` by hand is equivalent; `set` just saves you finding the file.
 
+### Auto-update is on, and `install` replaces the live links
+
+`auto_update = "auto"` in `config.toml` is a deliberate exception to letting Homebrew own versions: the daemon upgrades itself through Homebrew (the Cellar keeps one version, and `onActivation.upgrade = false` means `brew bundle` never fights it). Each upgrade reruns `moshi-hook install --target claude/codex/hermes`, and unlike `set`, `install` does **not** write through the symlink — it replaces `~/.claude/settings.json`, `~/.codex/hooks.json`, `~/.codex/config.toml` and `~/.hermes/config.yaml` with regular files. A second such replacement used to abort the switch on the existing `.hm-bak`.
+
+`home.activation.adoptReplacedLiveFiles` in `nix/modules/home.nix` handles it: before `checkLinkTargets`, any `liveFiles` entry that has become a regular file is moved back over its repo copy, so the link is recreated and moshi's additions show up in `git diff`. It compares mtimes, not content — a repo copy newer than the file is left alone and the switch stops as before; `touch` the file in `$HOME` to adopt it anyway.
+
 ### `scan_ports` is a deliberate allowlist — do not set it back to `all`
 
 With the default `scan_ports = all`, moshi-hook HTTP-probes **every** loopback listener to decide which ones are dev servers (`gateway.listListeningPorts` -> `filterConfiguredScanPorts` -> `probeHTTPServer` -> `classifyServeSim`, detecting tokens like `Vite` / `Next.js` / `X-Powered-By`). Each probe is a bare `GET /` from Go's http.Client, sent twice per port — once with `Host: 127.0.0.1:<port>`, once with `Host: localhost:<port>`, identifiable by `User-Agent: Go-http-client/1.1`.
