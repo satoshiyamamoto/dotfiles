@@ -4,13 +4,21 @@
       {
         "hooks": [
           {
-            "command": "/usr/bin/osascript -e \"display notification \\\"Codex needs your attention\\\" with title \\\"Codex\\\"\" && /usr/bin/afplay /System/Library/Sounds/Ping.aiff",
+            "command": "/usr/bin/osascript -e \"display notification \\\"Codex needs your attention\\\" with title \\\"Codex\\\"\" \u0026\u0026 /usr/bin/afplay /System/Library/Sounds/Ping.aiff",
             "statusMessage": "Sending approval notification",
             "timeout": 5,
             "type": "command"
           }
         ],
         "matcher": "*"
+      },
+      {
+        "hooks": [
+          {
+            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' codex-hook",
+            "type": "command"
+          }
+        ]
       }
     ],
     "SessionStart": [
@@ -19,6 +27,34 @@
           {
             "command": "bash '/Users/a12019/.codex/herdr-agent-state.sh' session",
             "timeout": 10,
+            "type": "command"
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' codex-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' codex-hook",
+            "type": "command"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' codex-hook",
             "type": "command"
           }
         ]

@@ -2,3 +2,4 @@
 always_on_discovery = true
 scan_ports = [3000, 3001, 4180, 5173, 5174, 8080]
 usage_collection = true
+auto_update = "auto"
