@@ -25,7 +25,7 @@ in
     backupFileExtension = "hm-bak";
 
     users.${user} =
-      { config, ... }:
+      { config, lib, ... }:
       let
         # Link at the working tree rather than the Nix store. A package needs
         # this when its tool writes where the link points, which a store path
@@ -38,6 +38,25 @@ in
         # ghostty is here for a third reason: its shaders are git submodules,
         # which the flake does not copy into the store at all.
         live = path: config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/${repo}/${path}";
+
+        # Single files the tool rewrites, linked live.
+        #
+        # ~/.claude is linked per file, not as a directory: upstream splits
+        # that directory into user config and machine-local state
+        # (projects/, history.jsonl, shell-snapshots/, .credentials.json),
+        # and only settings.json is tracked here. A directory link would
+        # drag tens of thousands of state files into the working tree, which
+        # is what stow did.
+        liveFiles = {
+          ".claude/settings.json" = "claude/.claude/settings.json";
+          ".codex/config.toml" = "codex/.codex/config.toml";
+          ".codex/hooks.json" = "codex/.codex/hooks.json";
+          ".codex/rules/default.rules" = "codex/.codex/rules/default.rules";
+          ".config/moshi/config.toml" = "moshi/.config/moshi/config.toml";
+          ".docker/config.json" = "docker/.docker/config.json";
+          ".hermes/SOUL.md" = "hermes/.hermes/SOUL.md";
+          ".hermes/config.yaml" = "hermes/.hermes/config.yaml";
+        };
       in
       {
         # Matches the oldest home-manager in flake.nix (Kenya's 26.05); the
@@ -123,24 +142,22 @@ in
           ".config/nvim".source = live "nvim/.config/nvim";
           ".config/tmux".source = live "tmux/.config/tmux";
           ".vim".source = live "vim/.vim";
+        }
+        // lib.mapAttrs (_: p: { source = live p; }) liveFiles;
 
-          # Single files the tool rewrites, linked live.
-          #
-          # ~/.claude is linked per file, not as a directory: upstream splits
-          # that directory into user config and machine-local state
-          # (projects/, history.jsonl, shell-snapshots/, .credentials.json),
-          # and only settings.json is tracked here. A directory link would
-          # drag tens of thousands of state files into the working tree, which
-          # is what stow did.
-          ".claude/settings.json".source = live "claude/.claude/settings.json";
-          ".codex/config.toml".source = live "codex/.codex/config.toml";
-          ".codex/hooks.json".source = live "codex/.codex/hooks.json";
-          ".codex/rules/default.rules".source = live "codex/.codex/rules/default.rules";
-          ".config/moshi/config.toml".source = live "moshi/.config/moshi/config.toml";
-          ".docker/config.json".source = live "docker/.docker/config.json";
-          ".hermes/SOUL.md".source = live "hermes/.hermes/SOUL.md";
-          ".hermes/config.yaml".source = live "hermes/.hermes/config.yaml";
-        };
+        # moshi-hook's auto-update reruns `install`, which replaces these links
+        # with regular files, and a second replacement collides with the
+        # single-generation .hm-bak and aborts activation. Move the file back
+        # into the repo instead so the link is recreated; the moshi additions
+        # then show up in `git diff`. A repo copy newer than the file wins.
+        home.activation.adoptReplacedLiveFiles = lib.hm.dag.entryBefore [ "checkLinkTargets" ] (
+          lib.concatStrings (
+            lib.mapAttrsToList (t: p: ''
+              f="$HOME/${t}" r="$HOME/${repo}/${p}"
+              if [ -f "$f" ] && [ ! -L "$f" ] && [ ! "$r" -nt "$f" ]; then run mv "$f" "$r"; fi
+            '') liveFiles
+          )
+        );
       };
   };
 }
