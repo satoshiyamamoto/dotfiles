@@ -33,4 +33,12 @@
     })
   ];
   environment.systemPackages = [ pkgs.llm-agents.herdr ];
+
+  # Always-on server: never sleep, keep no hibernate image, wake on LAN and
+  # come back after a power cut. power.sleep.* goes through systemsetup and
+  # cannot reach standby / hibernatemode, so pmset sets the lot directly.
+  system.activationScripts.postActivation.text = ''
+    /usr/bin/pmset -a sleep 0 disksleep 0 displaysleep 0 standby 0 hibernatemode 0 \
+      powernap 0 proximitywake 0 womp 1 autorestart 1 tcpkeepalive 1
+  '';
 }
