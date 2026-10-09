@@ -1,5 +1,5 @@
-model = "gpt-6-astra"
-model_reasoning_effort = "low"
+model = "gpt-6.1-sol"
+model_reasoning_effort = "medium"
 personality = "pragmatic"
 approval_policy = "on-request"
 approvals_reviewer = "user"
@@ -37,6 +37,7 @@ screen_reader_detection_done = true
 
 [tui.model_availability_nux]
 gpt-6-astra = 4
+"gpt-6.1-sol" = 4
 
 [hooks.state]
 
