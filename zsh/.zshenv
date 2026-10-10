@@ -9,6 +9,7 @@
 export LANG='en_US.UTF-8'
 export EDITOR='nvim'
 export GOPATH="$HOME/Projects"
+export DOTFILES="$GOPATH/src/github.com/satoshiyamamoto/dotfiles"
 export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
