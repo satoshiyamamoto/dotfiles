@@ -153,19 +153,19 @@
       {
         "hooks": [
           {
-            "command": "bash '/Users/a12019/.claude/hooks/herdr-agent-state.sh' session",
-            "timeout": 10,
-            "type": "command"
-          }
-        ],
-        "matcher": "*"
-      },
-      {
-        "hooks": [
-          {
             "async": true,
             "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
             "type": "command"
+          }
+        ]
+      },
+      {
+        "matcher": "^(startup|resume|clear|compact|fork)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/a12019/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
           }
         ]
       }
