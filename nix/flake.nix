@@ -74,6 +74,7 @@
         "CA-20033978" = mkHost nix-darwin home-manager ./hosts/CA-20033978.nix;
         "CA-20031962" = mkHost nix-darwin home-manager ./hosts/CA-20031962.nix;
         "CA-20040831" = mkHost nix-darwin home-manager ./hosts/CA-20040831.nix;
+        "CA-20040386" = mkHost nix-darwin home-manager ./hosts/CA-20040386.nix;
         "Kenya" = mkHost nix-darwin-2605 home-manager-2605 ./hosts/Kenya.nix;
       };
     };
