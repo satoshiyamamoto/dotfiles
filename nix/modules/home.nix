@@ -150,11 +150,18 @@ in
         # single-generation .hm-bak and aborts activation. Move the file back
         # into the repo instead so the link is recreated; the moshi additions
         # then show up in `git diff`. A repo copy newer than the file wins.
+        # Only a path the previous generation linked is adopted: on a first
+        # switch the file is whatever the tool created on its own (Claude Code
+        # writes a bare {"theme": "auto"}), and adopting it would overwrite the
+        # tracked config. Such a file falls through to the usual .hm-bak.
         home.activation.adoptReplacedLiveFiles = lib.hm.dag.entryBefore [ "checkLinkTargets" ] (
           lib.concatStrings (
             lib.mapAttrsToList (t: p: ''
               f="$HOME/${t}" r="$HOME/${repo}/${p}"
-              if [ -f "$f" ] && [ ! -L "$f" ] && [ ! "$r" -nt "$f" ]; then run mv "$f" "$r"; fi
+              if [ -f "$f" ] && [ ! -L "$f" ] && [ ! "$r" -nt "$f" ] \
+                && [ -n "''${oldGenPath:-}" ] && [ -e "$oldGenPath/home-files/${t}" ]; then
+                run mv "$f" "$r"
+              fi
             '') liveFiles
           )
         );
