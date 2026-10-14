@@ -52,12 +52,19 @@ fi
 
 if [ -x /run/current-system/sw/bin/darwin-rebuild ]; then
   echo "==> nix-darwin is already installed; use .sync from here on"
-  exit 0
+else
+  # First switch only. darwin-rebuild does not exist yet, so build the system
+  # closure and run the copy that lives inside it.
+  echo "==> Building the system closure for $host"
+  system="$("$nix" build --no-link --print-out-paths "$repo/nix#darwinConfigurations.$host.system")"
+  echo "==> Activating"
+  sudo "$system/sw/bin/darwin-rebuild" switch --flake "$repo/nix"
 fi
 
-# First switch only. darwin-rebuild does not exist yet, so build the system
-# closure and run the copy that lives inside it.
-echo "==> Building the system closure for $host"
-system="$("$nix" build --no-link --print-out-paths "$repo/nix#darwinConfigurations.$host.system")"
-echo "==> Activating"
-sudo "$system/sw/bin/darwin-rebuild" switch --flake "$repo/nix"
+# lua-json5 (nvim) builds with cargo, and nixpkgs' rustup ships with no
+# default toolchain, so cargo refuses to run until one is chosen.
+rustup=/run/current-system/sw/bin/rustup
+if [ -x "$rustup" ] && ! "$rustup" default >/dev/null 2>&1; then
+  echo "==> Installing the stable Rust toolchain"
+  "$rustup" default stable
+fi
