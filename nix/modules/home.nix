@@ -25,7 +25,12 @@ in
     backupFileExtension = "hm-bak";
 
     users.${user} =
-      { config, lib, ... }:
+      {
+        config,
+        lib,
+        pkgs,
+        ...
+      }:
       let
         # Link at the working tree rather than the Nix store. A package needs
         # this when its tool writes where the link points, which a store path
@@ -165,6 +170,12 @@ in
             '') liveFiles
           )
         );
+
+        # bat reads only the compiled ~/.cache/bat, never themes/*.tmTheme
+        # directly, so the linked tokyonight themes are unknown until built.
+        home.activation.batCache = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+          run ${pkgs.bat}/bin/bat cache --build >/dev/null
+        '';
       };
   };
 }
