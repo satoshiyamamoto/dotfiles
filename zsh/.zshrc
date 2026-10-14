@@ -29,6 +29,7 @@ SAVEHIST=5000
 
 ## Completions
 fpath=(
+  $XDG_DATA_HOME/zsh/site-functions(N)
   $GOPATH/src/github.com/wbingli/zsh-claudecode-completion(N)
   /run/current-system/sw/share/zsh/site-functions(N)
   $fpath
