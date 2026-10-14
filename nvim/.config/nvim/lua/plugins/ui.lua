@@ -277,60 +277,65 @@ return {
         end,
       })
     end,
-    opts = {
-      options = {
-        theme = "auto",
-        component_separators = { left = "", right = "" },
-        section_separators = { left = "", right = "" },
-        globalstatus = true,
-      },
-      sections = {
-        lualine_x = {
-          {
-            require("noice").api.status.command.get,
-            cond = require("noice").api.status.command.has,
-            color = { fg = "#ff9e64" },
-          },
-          {
-            require("noice").api.status.mode.get,
-            cond = require("noice").api.status.mode.has,
-            color = { fg = "#ff9e64" },
-          },
-          {
-            require("noice").api.status.search.get,
-            cond = require("noice").api.status.search.has,
-            color = { fg = "#ff9e64" },
-          },
-          {
-            sidekick_cli_status,
-            color = function() return "Special" end,
-          },
-          {
-            function() return vim.bo.filetype == "http" and vim.g.kulala_selected_env or "" end,
-            icon = { "", color = { fg = "#428890" } },
-          },
-          "encoding",
-          "fileformat",
-          "filetype",
+    -- A function, not a table: a table is evaluated when the spec is parsed, before
+    -- lazy.nvim has installed noice on a fresh machine.
+    opts = function()
+      local noice = require("noice")
+      return {
+        options = {
+          theme = "auto",
+          component_separators = { left = "", right = "" },
+          section_separators = { left = "", right = "" },
+          globalstatus = true,
         },
-        lualine_z = {
-          "location",
-          {
-            "datetime",
-            style = "%-I:%M %p",
+        sections = {
+          lualine_x = {
+            {
+              noice.api.status.command.get,
+              cond = noice.api.status.command.has,
+              color = { fg = "#ff9e64" },
+            },
+            {
+              noice.api.status.mode.get,
+              cond = noice.api.status.mode.has,
+              color = { fg = "#ff9e64" },
+            },
+            {
+              noice.api.status.search.get,
+              cond = noice.api.status.search.has,
+              color = { fg = "#ff9e64" },
+            },
+            {
+              sidekick_cli_status,
+              color = function() return "Special" end,
+            },
+            {
+              function() return vim.bo.filetype == "http" and vim.g.kulala_selected_env or "" end,
+              icon = { "", color = { fg = "#428890" } },
+            },
+            "encoding",
+            "fileformat",
+            "filetype",
+          },
+          lualine_z = {
+            "location",
+            {
+              "datetime",
+              style = "%-I:%M %p",
+            },
           },
         },
-      },
-      inactive_sections = {
-        lualine_x = {
-          {
-            sidekick_cli_status,
-            color = function() return "Special" end,
+        inactive_sections = {
+          lualine_x = {
+            {
+              sidekick_cli_status,
+              color = function() return "Special" end,
+            },
+            "location",
           },
-          "location",
         },
-      },
-    },
+      }
+    end,
     dependencies = {
       { "folke/noice.nvim" },
       { "folke/tokyonight.nvim" },
