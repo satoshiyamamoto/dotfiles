@@ -77,11 +77,11 @@
       "Hidden Bar" = 1452453066;
       iMovie = 408981434;
       "JSON Peep" = 1458969831;
-      Keynote = 409183694;
+      Keynote = 361285480;
       Kindle = 302584613;
       Noir = 1592917505;
-      Numbers = 409203825;
-      Pages = 409201541;
+      Numbers = 361304891;
+      Pages = 361309726;
       Speedtest = 1153157709;
       Tailscale = 1475387142;
       Vimlike = 1584519802;
