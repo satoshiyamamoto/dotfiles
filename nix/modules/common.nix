@@ -29,4 +29,9 @@
     touchIdAuth = true;
     reattach = true;
   };
+
+  # Remote Login (System Settings > General > Sharing). The pane can show
+  # "this service is currently unavailable" on a fresh Mac; the module enables
+  # sshd through launchctl instead of systemsetup, so no Full Disk Access.
+  services.openssh.enable = true;
 }
