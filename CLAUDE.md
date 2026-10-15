@@ -13,7 +13,7 @@ Dotfiles linked by [home-manager](https://nix-community.github.io/home-manager/)
 
 **Install (Linux):**
 ```sh
-./install.sh          # manually symlinks a smaller set of configs
+./install.linux.sh    # manually symlinks a smaller set of configs
 ```
 
 ### Directory Structure Convention
