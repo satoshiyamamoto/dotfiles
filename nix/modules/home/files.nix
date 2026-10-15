@@ -37,7 +37,6 @@ let
     ".codex/hooks.json" = "codex/.codex/hooks.json";
     ".codex/rules/default.rules" = "codex/.codex/rules/default.rules";
     ".config/moshi/config.toml" = "moshi/.config/moshi/config.toml";
-    ".docker/config.json" = "docker/.docker/config.json";
     ".hermes/SOUL.md" = "hermes/.hermes/SOUL.md";
     ".hermes/config.yaml" = "hermes/.hermes/config.yaml";
   };
@@ -118,6 +117,10 @@ in
   }
   // lib.mapAttrs (_: p: { source = live p; }) liveFiles
   // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+    # Everything in it is per-Mac: currentContext names colima's context and
+    # credsStore is osxkeychain. Linux keeps a local config of its own, so
+    # its docker uses the default context, the host's /var/run/docker.sock.
+    ".docker/config.json".source = live "docker/.docker/config.json";
     ".config/git/config".source = ../../../git/.config/git/config;
     ".config/git/config.darwin".source = ../../../git/.config/git/config.darwin;
     ".config/kitty/macos-launch-services-cmdline".source =
