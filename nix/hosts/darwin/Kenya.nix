@@ -1,6 +1,11 @@
 # Mac mini 2018 (Macmini8,1, i7-8700B), user satoshi. The only x86_64 host, so
 # it builds against the 26.05 inputs in flake.nix rather than unstable.
-{ inputs, pkgs, ... }:
+{
+  config,
+  inputs,
+  pkgs,
+  ...
+}:
 {
   nixpkgs.hostPlatform = "x86_64-darwin";
   system.primaryUser = "satoshi";
@@ -18,7 +23,7 @@
   # x86_64-darwin because bun-bin, the `bun build --compile` runtime, has no
   # darwin-x64 triple there. cloudflare-speed-cli, hunk and mycli are simply
   # not wanted on this host, so with those three gone Homebrew keeps only the
-  # moshi-hook that modules/homebrew.nix declares for every machine.
+  # moshi-hook that modules/darwin/homebrew.nix declares for every machine.
   #
   # herdr's package.nix also takes `installAgentSkills`, a setup hook that
   # exists only in unstable. Backport just its setup-hook.sh: unstable's
@@ -32,7 +37,9 @@
       } "${inputs.nixpkgs}/pkgs/by-name/in/installAgentSkills/setup-hook.sh";
     })
   ];
-  environment.systemPackages = [ pkgs.llm-agents.herdr ];
+  # A home package like every other: /run/current-system/sw holds only what
+  # nix-darwin installs itself. useGlobalPkgs carries the overlay above over.
+  home-manager.users.${config.system.primaryUser}.home.packages = [ pkgs.llm-agents.herdr ];
 
   # Always-on server: never sleep, keep no hibernate image, wake on LAN and
   # come back after a power cut. power.sleep.* goes through systemsetup and

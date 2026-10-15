@@ -28,9 +28,14 @@ HISTSIZE=10000
 SAVEHIST=5000
 
 ## Completions
+# Where home.packages lands: the per-user profile under nix-darwin, ~/.nix-profile
+# under standalone home-manager. /run/current-system/sw keeps only what
+# nix-darwin itself installs.
+hm_profile=(/etc/profiles/per-user/$USER(N) $HOME/.nix-profile(N))
 fpath=(
   $XDG_DATA_HOME/zsh/site-functions(N)
   $GOPATH/src/github.com/wbingli/zsh-claudecode-completion(N)
+  $hm_profile[1]/share/zsh/site-functions(N)
   /run/current-system/sw/share/zsh/site-functions(N)
   $fpath
 )
@@ -53,9 +58,9 @@ autoload -Uz compinit && zsh-defer compinit -C && zsh-defer compdef _tailscale T
 # Plugins
 #
 __load_plugins() {
-  source "/run/current-system/sw/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
-  source "/run/current-system/sw/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-  source "/run/current-system/sw/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh"
+  source "$hm_profile[1]/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  source "$hm_profile[1]/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  source "$hm_profile[1]/share/zsh/plugins/you-should-use/you-should-use.plugin.zsh"
   (( $+commands[atuin] )) && eval "$(atuin init --disable-up-arrow zsh)"
   eval "$(direnv hook zsh)"
   eval "$(fzf --zsh)"

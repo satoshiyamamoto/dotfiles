@@ -6,7 +6,7 @@
 # re-running the script is safe.
 #
 # Dotfiles themselves are no longer this script's business -- home-manager links
-# them from nix/modules/home.nix. After the first switch, `.sync` (zsh/.zshrc)
+# them from nix/modules/home. After the first switch, `.sync` (zsh/.zshrc)
 # is the only command needed.
 set -eu
 
@@ -63,7 +63,7 @@ fi
 
 # lua-json5 (nvim) builds with cargo, and nixpkgs' rustup ships with no
 # default toolchain, so cargo refuses to run until one is chosen.
-rustup=/run/current-system/sw/bin/rustup
+rustup=/etc/profiles/per-user/$USER/bin/rustup
 if [ -x "$rustup" ] && ! "$rustup" default >/dev/null 2>&1; then
   echo "==> Installing the stable Rust toolchain"
   "$rustup" default stable

@@ -1,5 +1,5 @@
-# Settings every host shares. Anything that differs per machine -- platform,
-# primary user -- stays in hosts/<hostname>.nix.
+# System settings every Mac shares. Anything that differs per machine -- platform,
+# primary user -- stays in hosts/darwin/<hostname>.nix.
 {
   # Required: the default (system.maxStateVersion) trips an assertion in
   # nix-darwin's modules/system/version.nix. 7 is that current value, which is

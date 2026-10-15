@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-Dotfiles linked by [home-manager](https://nix-community.github.io/home-manager/), declared in `nix/modules/home.nix` and applied by the same `darwin-rebuild switch` as everything else. Each top-level directory still mirrors `$HOME` — the layout is what GNU Stow left behind — but nothing runs stow any more. See [Dotfile Links](#dotfile-links).
+Dotfiles linked by [home-manager](https://nix-community.github.io/home-manager/), declared in `nix/modules/home` and applied by the same `darwin-rebuild switch` as everything else. Each top-level directory still mirrors `$HOME` — the layout is what GNU Stow left behind — but nothing runs stow any more. See [Dotfile Links](#dotfile-links).
 
 **Install (macOS):**
 ```sh
@@ -33,35 +33,42 @@ The absolute path is required — `sudo` resets PATH, so a bare `darwin-rebuild`
 | Path | Holds |
 |------|-------|
 | `nix/flake.nix` | `darwinConfigurations`, one attribute per host, keyed by `scutil --get LocalHostName` |
-| `nix/hosts/<hostname>.nix` | Host-only settings: platform, primary user, and whatever that machine alone needs |
-| `nix/modules/common.nix` | Shared by every host: `stateVersion`, experimental features, zsh, PAM |
-| `nix/modules/packages.nix` | `environment.systemPackages`, `fonts.packages`, `pathsToLink` |
-| `nix/modules/homebrew.nix` | What stays on Homebrew: one tapped formula, the GUI casks, the Mac App Store apps |
-| `nix/modules/home.nix` | home-manager's `home.file`: every dotfile link, store or live |
+| `nix/hosts/darwin/<hostname>.nix` | Host-only settings: platform, primary user, and whatever that machine alone needs |
+| `nix/lib/unfree.nix` | The unfree packages allowed by name, shared because home-manager cannot set `nixpkgs.config` itself |
+| `nix/modules/darwin/system.nix` | macOS system settings every Mac shares: `stateVersion`, experimental features, zsh, PAM, sshd |
+| `nix/modules/darwin/environment.nix` | What has no home-manager equivalent on macOS: `fonts.packages`, `pathsToLink`, `JAVA_HOME`, `mas` |
+| `nix/modules/darwin/homebrew.nix` | What stays on Homebrew: one tapped formula, the GUI casks, the Mac App Store apps |
+| `nix/modules/darwin/home-manager.nix` | Wires `nix/modules/home` in for `system.primaryUser` |
+| `nix/modules/home/files.nix` | home-manager's `home.file`: every dotfile link, store or live |
+| `nix/modules/home/packages/` | `home.packages`, one file per purpose: `core`, `dev`, `cloud`, `ai`, `fun` |
 
-**Homebrew survives only as a cask/mas backend.** There is no Brewfile in this repo any more — nix-darwin generates one in the Nix store and runs `brew bundle` against it, so edits belong in `nix/modules/homebrew.nix`. `onActivation.cleanup = "uninstall"` makes that file the single source of truth: any formula or cask installed by hand is removed on the next switch. `masApps` is the exception, because Homebrew Bundle has no mas cleanup — deleting an entry there does not uninstall the app.
+**`nix/modules/home` is the platform-neutral core.** It holds only home-manager options and never reads nix-darwin's (`system.primaryUser` and friends), so the same modules can serve a standalone home-manager on Linux. Packages therefore live in `home.packages`, which nix-darwin puts in `/etc/profiles/per-user/$USER` — not in `/run/current-system/sw`, which keeps only what nix-darwin installs itself (`darwin-rebuild`, `nix`, `zsh`, `bash`, `mas`). Anything that hardcodes a tool's path must use the per-user profile; `zsh/.zshrc` resolves it once into `$hm_profile`.
+
+**home-manager's `buildEnv` does not ignore collisions**, unlike nix-darwin's system profile, which silently let the first package win. Two packages shipping the same file now fail the build, so settle each one with `lib.lowPrio` / `lib.hiPrio` — `minikube` bundles a `bin/kubectl` and is `lowPrio` in `cloud.nix` for that reason.
+
+**Homebrew survives only as a cask/mas backend.** There is no Brewfile in this repo any more — nix-darwin generates one in the Nix store and runs `brew bundle` against it, so edits belong in `nix/modules/darwin/homebrew.nix`. `onActivation.cleanup = "uninstall"` makes that file the single source of truth: any formula or cask installed by hand is removed on the next switch. `masApps` is the exception, because Homebrew Bundle has no mas cleanup — deleting an entry there does not uninstall the app.
 
 **All three Macs run nix-darwin.** CA-20033978, CA-20031962 and Kenya have each switched, so `darwin-rebuild` and a Nix store exist everywhere and `.sync` rebuilds on every host. The `[[ -x $darwin_rebuild ]]` guard in `.sync` stays as a safety net for a machine being set up from scratch, not because any host still needs it. The migration off Homebrew and GNU Stow is finished on all three; its plan and record was `docs/nix-migration.md`, removed once every phase landed and readable at `git show f2f4b62:docs/nix-migration.md`.
 
 **Kenya pins nixpkgs 26.05** rather than following unstable, via its own `nixpkgs-2605` / `nix-darwin-2605` inputs. It is the only x86_64 Mac here and 26.11 does not merely drop `x86_64-darwin` from a few `meta.platforms` — importing nixpkgs at all for that system throws `Nixpkgs 26.11 has dropped support for x86_64-darwin`, so no per-package override can rescue it. That pin has an expiry: 26.05 goes EOL on 2026-12-31, so Kenya needs a channel bump — or a retirement — before then.
 
-Six packages are therefore aarch64-only in `packages.nix`. `container` is Apple Silicon only outright; `antigravity-cli` and `grok-build` publish no darwin-x64 hash upstream; `herdr` and `hunk` are absent from 26.05; and `mycli` evaluates but pulls `arrow-cpp` through `llm`, which 26.05 marks broken on x86_64-darwin alone. Of those, only `herdr` is wanted on Kenya, which takes it from `numtide/llm-agents.nix` instead — see below.
+Six packages are therefore aarch64-only in `nix/modules/home/packages/default.nix`. `container` is Apple Silicon only outright; `antigravity-cli` and `grok-build` publish no darwin-x64 hash upstream; `herdr` and `hunk` are absent from 26.05; and `mycli` evaluates but pulls `arrow-cpp` through `llm`, which 26.05 marks broken on x86_64-darwin alone. Of those, only `herdr` is wanted on Kenya, which takes it from `numtide/llm-agents.nix` instead — see below.
 
 `atuin` is gated for a different reason: 26.05 ships 18.15.2, older than whatever last migrated Kenya's SQLite history, and an older client refuses a migrated database outright (`migration <id> was previously applied but is missing in the resolved migrations`). Because `_atuin_preexec` runs `atuin history start` **synchronously**, that failure cost 4-8 seconds on *every* command after the first switch. **Kenya therefore runs no atuin at all** — `zsh/.zshrc` guards `atuin init` with `(( $+commands[atuin] ))`, and `zsh/.zprofile` sets the `FZF_CTRL_R_COMMAND=''` that silences fzf's Ctrl-R only where atuin exists, so Kenya gets fzf's history search instead.
 
-**Homebrew cannot take over a package on Kenya any more.** Homebrew has declared macOS 15 / x86_64 a [Tier 3](https://docs.brew.sh/Support-Tiers#tier-3) configuration and stopped bottling for it, so a new formula there means a source build — that, plus a pinned `openssl@3`, is why the atuin fallback was abandoned. Kenya's `homebrew.brews` is empty as a result: `cloudflare-speed-cli`, `hunk` and `mycli` were dropped as unwanted, `herdr` moved to Nix, and only the `moshi-hook` that `nix/modules/homebrew.nix` declares for every machine is left.
+**Homebrew cannot take over a package on Kenya any more.** Homebrew has declared macOS 15 / x86_64 a [Tier 3](https://docs.brew.sh/Support-Tiers#tier-3) configuration and stopped bottling for it, so a new formula there means a source build — that, plus a pinned `openssl@3`, is why the atuin fallback was abandoned. Kenya's `homebrew.brews` is empty as a result: `cloudflare-speed-cli`, `hunk` and `mycli` were dropped as unwanted, `herdr` moved to Nix, and only the `moshi-hook` that `nix/modules/darwin/homebrew.nix` declares for every machine is left.
 
 **Kenya's `herdr` comes from `numtide/llm-agents.nix`**, wired in as a flake input and applied on that host alone through `overlays.shared-nixpkgs`, which builds the upstream package tree against the consumer's own `pkgs` (hence `pkgs.llm-agents.herdr` on 26.05). The flake's `packages` output skips `x86_64-darwin` — that is just the systems it caches for — while herdr's own `meta.platforms` covers it and the package is built from source, so nothing upstream blocks it. The cost is that it compiles on the machine: Rust plus a vendored libghostty-vt through zig, about four minutes on the 2018 Mac mini, repeated whenever the input or a dependency moves. `hunk` cannot follow the same route — it pins `meta.platforms` without `x86_64-darwin` because `bun-bin`, the `bun build --compile` runtime, has no `darwin-x64` triple there.
 
 **The AI agent CLIs do not self-update.** `claude`, `codex`, `opencode`, `pi-coding-agent`, `grok-build` and `skills` all come from the Nix store, which is read-only, so an in-place updater could not work even if it tried; nixpkgs wraps `claude` with `DISABLE_AUTOUPDATER=1` and `opencode` with `DISABLE_AUTOUPDATE=true` outright. Their versions move only when the flake inputs are updated (`nix flake update` in `nix/`, then a switch), so a stale CLI is a lockfile question, not a broken updater.
 
-- **hermes-agent is deliberately absent from `packages.nix`.** Upstream lists both `brew install hermes-agent` and PyPI installs (`uv tool install`, `pip install`) as unsupported distribution methods that receive no further updates, and `hermes update` prints a deprecation notice on every run. Use the official installer instead — see [Hermes Agent](#hermes-agent).
-- **vim is macOS' own, not nixpkgs'.** `/usr/bin/vim` 9.1, the same deal as `git` — no `vim` in `packages.nix`, and the 36 vim-plug plugins under the live-linked `~/.vim` run on it. Declaring `vim` would shadow it with a differently compiled build, so leave it alone unless a feature Apple's vim lacks is actually needed.
-- **node comes from nixpkgs, not mise.** `~/.config/mise/config.toml` is a read-only store link, so `mise use -g node@lts` cannot write a machine-local version at all — it fails on a read-only file rather than quietly editing the tracked config, which is what it did under stow. Keep `nodejs` in `nix/modules/packages.nix` and let the flake own the version.
+- **hermes-agent is deliberately absent from `nix/modules/home/packages`.** Upstream lists both `brew install hermes-agent` and PyPI installs (`uv tool install`, `pip install`) as unsupported distribution methods that receive no further updates, and `hermes update` prints a deprecation notice on every run. Use the official installer instead — see [Hermes Agent](#hermes-agent).
+- **vim is macOS' own, not nixpkgs'.** `/usr/bin/vim` 9.1, the same deal as `git` — no `vim` in `nix/modules/home/packages`, and the 36 vim-plug plugins under the live-linked `~/.vim` run on it. Declaring `vim` would shadow it with a differently compiled build, so leave it alone unless a feature Apple's vim lacks is actually needed.
+- **node comes from nixpkgs, not mise.** `~/.config/mise/config.toml` is a read-only store link, so `mise use -g node@lts` cannot write a machine-local version at all — it fails on a read-only file rather than quietly editing the tracked config, which is what it did under stow. Keep `nodejs` in `nix/modules/home/packages/dev.nix` and let the flake own the version.
 
 ### Dotfile Links
 
-`nix/modules/home.nix` declares all 53 links, in two kinds:
+`nix/modules/home/files.nix` declares all 53 links, in two kinds:
 
 | Kind | Count | Points at | For |
 |------|-------|-----------|-----|
@@ -78,7 +85,7 @@ An edit to a store-linked file needs a `switch` to take effect. An edit to a liv
 
 ### Nix Formatting
 
-Formatter: **nixfmt** (RFC 166 style) — no config file, the style is fixed. It is not declared in `packages.nix` and the flake exposes no `formatter` output, so fetch it on demand:
+Formatter: **nixfmt** (RFC 166 style) — no config file, the style is fixed. It is not declared in `nix/modules/home/packages` and the flake exposes no `formatter` output, so fetch it on demand:
 
 ```sh
 nix run nixpkgs#nixfmt-rfc-style -- $(find nix -name '*.nix')          # format
@@ -121,7 +128,7 @@ Drop `--skip-setup` only on a machine with no `~/.hermes/config.yaml` yet; the w
 - `~/.hermes` is shared by every install method, so switching methods keeps all config and state. The installer skips files that already exist, and `atomic_yaml_write` preserves symlinks (upstream #16743) — the live-linked `config.yaml` / `SOUL.md` are never clobbered.
 - **The `hermes` package deliberately links only `config.yaml` and `SOUL.md`.** `~/.hermes/skills` belongs to Hermes (bundled skills seeded by the installer, hub installs, `.hub/` provenance, usage telemetry) and must stay out of the repo — see [Personal Skills](#personal-skills) for why.
 - The launchd plist points at `~/.hermes/hermes-agent/venv/bin/python`, which carries no version, so `hermes update` won't break the gateway. Re-run `hermes gateway install` only when switching install methods.
-- The installer shells out to `brew install` for missing system tools (ripgrep, ffmpeg, git). `ripgrep` and `ffmpeg` are declared in `nix/modules/packages.nix` — keep them there so the flake stays in sync with what Hermes needs. `git` is not declared anywhere: macOS ships Apple Git at `/usr/bin/git`, which is what this machine uses.
+- The installer shells out to `brew install` for missing system tools (ripgrep, ffmpeg, git). `ripgrep` and `ffmpeg` are declared in `nix/modules/home/packages/core.nix` — keep them there so the flake stays in sync with what Hermes needs. `git` is not declared anywhere: macOS ships Apple Git at `/usr/bin/git`, which is what this machine uses.
 
 ### Computer Use (cua-driver)
 
@@ -134,7 +141,7 @@ curl -fsSL https://raw.githubusercontent.com/trycua/cua/main/libs/cua-driver/scr
 - The installer unpacks to `/Applications/CuaDriver.app` and symlinks `~/.local/bin/cua-driver` to the executable. Hermes skips the install when `/Applications` is not writable.
 - Refresh with `hermes computer-use install --upgrade` (also called by `hermes update`). The installer always pulls the latest release, so re-running *is* the upgrade path — there is no version pin. Inspect with `hermes computer-use status` / `doctor`.
 - macOS TCC grants (Accessibility, Screen Recording) attach to `com.trycua.driver` itself — approve **Cua Driver** in System Settings, not the terminal or Hermes.
-- Unlike `ffmpeg`, it is not declared in `nix/modules/packages.nix`, and a `darwin-rebuild switch` alone will not restore it on a new machine.
+- Unlike `ffmpeg`, it is not declared in `nix/modules/home/packages`, and a `darwin-rebuild switch` alone will not restore it on a new machine.
 
 Full notes: `~/Documents/knowledge/hermes.md` §8.
 
@@ -159,7 +166,7 @@ Three reasons not to put personal skills under `~/.hermes/skills` instead:
 
 ## Moshi (moshi-hook)
 
-`moshi-hook serve` runs as a Homebrew launchd agent — declared in `nix/modules/homebrew.nix` under `brews` with `restart_service = "changed"` — and bridges AI coding agents to the Moshi mobile app. The `moshi` package links only `~/.config/moshi/config.toml`; everything else moshi-hook owns lives in `~/Library/Application Support/Moshi/` (socket, `hook.log`, pairing state) and must stay out of the repo.
+`moshi-hook serve` runs as a Homebrew launchd agent — declared in `nix/modules/darwin/homebrew.nix` under `brews` with `restart_service = "changed"` — and bridges AI coding agents to the Moshi mobile app. The `moshi` package links only `~/.config/moshi/config.toml`; everything else moshi-hook owns lives in `~/Library/Application Support/Moshi/` (socket, `hook.log`, pairing state) and must stay out of the repo.
 
 The tap is third-party, and since Homebrew 6.0.0 `HOMEBREW_REQUIRE_TAP_TRUST` refuses to load its formula until it is trusted. Activation is already covered: nix-darwin's `trusted` option defaults to **true for `brews` and `casks`** (and false only for `taps`), so the generated Brewfile carries `brew "rjyo/moshi/moshi-hook", ..., trusted: true`, and `brew bundle` writes that into the trust store itself before loading any entry (`Library/Homebrew/bundle/installer.rb`). No tap-wide grant is needed.
 
@@ -173,7 +180,7 @@ Interactive `brew` is a separate store: `brew trust` writes `$XDG_CONFIG_HOME/ho
 
 `auto_update = "auto"` in `config.toml` is a deliberate exception to letting Homebrew own versions: the daemon upgrades itself through Homebrew (the Cellar keeps one version, and `onActivation.upgrade = false` means `brew bundle` never fights it). Each upgrade reruns `moshi-hook install --target claude/codex/hermes`, and unlike `set`, `install` does **not** write through the symlink — it replaces `~/.claude/settings.json`, `~/.codex/hooks.json`, `~/.codex/config.toml` and `~/.hermes/config.yaml` with regular files. A second such replacement used to abort the switch on the existing `.hm-bak`.
 
-`home.activation.adoptReplacedLiveFiles` in `nix/modules/home.nix` handles it: before `checkLinkTargets`, any `liveFiles` entry that has become a regular file is moved back over its repo copy, so the link is recreated and moshi's additions show up in `git diff`. It compares mtimes, not content — a repo copy newer than the file is left alone and the switch stops as before; `touch` the file in `$HOME` to adopt it anyway. Only paths the previous home-manager generation linked are adopted, so a first switch — or a newly added `liveFiles` entry — never overwrites the repo with whatever the tool created on its own (Claude Code's bare `{"theme": "auto"}` did exactly that on CA-20040831); such a file goes to `.hm-bak` instead.
+`home.activation.adoptReplacedLiveFiles` in `nix/modules/home/files.nix` handles it: before `checkLinkTargets`, any `liveFiles` entry that has become a regular file is moved back over its repo copy, so the link is recreated and moshi's additions show up in `git diff`. It compares mtimes, not content — a repo copy newer than the file is left alone and the switch stops as before; `touch` the file in `$HOME` to adopt it anyway. Only paths the previous home-manager generation linked are adopted, so a first switch — or a newly added `liveFiles` entry — never overwrites the repo with whatever the tool created on its own (Claude Code's bare `{"theme": "auto"}` did exactly that on CA-20040831); such a file goes to `.hm-bak` instead.
 
 ### `scan_ports` is a deliberate allowlist — do not set it back to `all`
 
@@ -254,7 +261,7 @@ Two reasons:
 
 Two consequences worth remembering:
 
-- nixpkgs' `tree-sitter` (the CLI, in `nix/modules/packages.nix`) must stay declared, but for nvim-treesitter's own sake: it shells out to `tree-sitter build` for every parser it compiles (`install.lua:305-317`).
+- nixpkgs' `tree-sitter` (the CLI, in `nix/modules/home/packages/core.nix`) must stay declared, but for nvim-treesitter's own sake: it shells out to `tree-sitter build` for every parser it compiles (`install.lua:305-317`).
 - A bare `:TSUpdate` used to fail with `Parser not available for language "kulala_http"`. `config.get_installed()` builds its list by scanning `site/parser` and `site/queries`, so kulala's artifacts looked like nvim-treesitter's own; `norm_languages` returns that list verbatim for `'all'` (`config.lua:105-109`), and the unknown language then errors in `get_parser_install_info`. Re-enabling kulala's treesitter handling brings that back. The alternative fix — moving nvim-treesitter's own `install_dir` out of `site/` — was rejected as the bigger change.
 
 ### Investigating Plugins

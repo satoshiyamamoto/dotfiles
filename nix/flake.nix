@@ -24,7 +24,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Phase 5: stow replaced by home-manager (modules/home.nix). Paired with
+    # Phase 5: stow replaced by home-manager (modules/home). Paired with
     # nixpkgs the same way nix-darwin is, so each host gets the home-manager
     # that matches its channel.
     home-manager = {
@@ -55,27 +55,27 @@
       ...
     }:
     let
-      mkHost =
+      mkDarwin =
         darwin: hm: hostModule:
         darwin.lib.darwinSystem {
           specialArgs = { inherit inputs; };
           modules = [
             hostModule
             hm.darwinModules.home-manager
-            ./modules/common.nix
-            ./modules/home.nix
-            ./modules/homebrew.nix
-            ./modules/packages.nix
+            ./modules/darwin/environment.nix
+            ./modules/darwin/home-manager.nix
+            ./modules/darwin/homebrew.nix
+            ./modules/darwin/system.nix
           ];
         };
     in
     {
       darwinConfigurations = {
-        "CA-20033978" = mkHost nix-darwin home-manager ./hosts/CA-20033978.nix;
-        "CA-20031962" = mkHost nix-darwin home-manager ./hosts/CA-20031962.nix;
-        "CA-20040831" = mkHost nix-darwin home-manager ./hosts/CA-20040831.nix;
-        "CA-20040386" = mkHost nix-darwin home-manager ./hosts/CA-20040386.nix;
-        "Kenya" = mkHost nix-darwin-2605 home-manager-2605 ./hosts/Kenya.nix;
+        "CA-20033978" = mkDarwin nix-darwin home-manager ./hosts/darwin/CA-20033978.nix;
+        "CA-20031962" = mkDarwin nix-darwin home-manager ./hosts/darwin/CA-20031962.nix;
+        "CA-20040831" = mkDarwin nix-darwin home-manager ./hosts/darwin/CA-20040831.nix;
+        "CA-20040386" = mkDarwin nix-darwin home-manager ./hosts/darwin/CA-20040386.nix;
+        "Kenya" = mkDarwin nix-darwin-2605 home-manager-2605 ./hosts/darwin/Kenya.nix;
       };
     };
 }
