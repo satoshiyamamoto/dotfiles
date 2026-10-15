@@ -1,5 +1,6 @@
 # Kept in sync with the Aliases section of zsh/.zshrc -- that file is the one
-# that gets used day to day, this one is for the Linux boxes install.linux.sh sets up
+# that gets used day to day, this one is for bash on the Linux boxes, before
+# ~/.bash_profile hands an interactive login over to zsh
 # (Debian's default ~/.bashrc sources ~/.bash_aliases).
 #
 # Three kinds of thing in .zshrc deliberately do not appear here:

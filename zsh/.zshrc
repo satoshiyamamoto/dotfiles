@@ -92,26 +92,29 @@ y() {
 }
 
 .sync() {
-  local dotfiles_dir ret=0 darwin_rebuild=/run/current-system/sw/bin/darwin-rebuild
+  local dotfiles_dir=$DOTFILES ret=0 darwin_rebuild=/run/current-system/sw/bin/darwin-rebuild
+  local home_manager=$HOME/.nix-profile/bin/home-manager
 
-  # Resolve dotfiles directory path and navigate into it
-  dotfiles_dir="$(zoxide query dotfiles)" || return 1
   pushd -q "$dotfiles_dir" || return 1
 
   # Pull the latest changes from the remote repository
   git pull || { popd -q; return 1; }
 
-  # Rebuild the system from the flake: Nix packages, Homebrew casks and the
-  # Mac App Store apps all come from nix/modules. sudo resets PATH, so
-  # darwin-rebuild has to be called by its absolute path.
+  # Rebuild from the flake. On macOS that is nix-darwin: Nix packages,
+  # Homebrew casks and the Mac App Store apps all come from nix/modules, and
+  # sudo resets PATH, so darwin-rebuild has to be called by its absolute path.
+  # On Linux it is a standalone home-manager, which needs no sudo and finds its
+  # configuration by "$USER@$(hostname -s)".
   #
-  # Dotfiles come from home-manager, which the same switch applies, so the
-  # rebuild is now the whole of .sync -- a machine without darwin-rebuild has
-  # nothing to sync and needs install.darwin.sh instead.
+  # Dotfiles come from home-manager either way, so the rebuild is the whole of
+  # .sync -- a machine with neither has nothing to sync and needs its
+  # install.*.sh first.
   if [[ -x $darwin_rebuild ]]; then
     sudo $darwin_rebuild switch --flake "$dotfiles_dir/nix" || ret=$?
+  elif [[ -x $home_manager ]]; then
+    $home_manager switch -b hm-bak --flake "$dotfiles_dir/nix" || ret=$?
   else
-    print -u2 ".sync: nix-darwin is not installed here; run ./install.darwin.sh first"
+    print -u2 ".sync: no darwin-rebuild or home-manager here; run ./install.${${OSTYPE%%[0-9]*}%%-*}.sh first"
     ret=1
   fi
 

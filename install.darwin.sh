@@ -16,7 +16,7 @@ nix=/nix/var/nix/profiles/default/bin/nix
 
 # Fail before installing anything if this machine has no entry in the flake.
 # Nix may not exist yet, so read flake.nix as text rather than evaluating it.
-if ! grep -q "\"$host\" = mkHost" "$repo/nix/flake.nix"; then
+if ! grep -q "\"$host\" = mkDarwin" "$repo/nix/flake.nix"; then
   echo "install.darwin.sh: nix/flake.nix has no darwinConfigurations.\"$host\"" >&2
   exit 1
 fi

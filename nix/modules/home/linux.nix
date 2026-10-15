@@ -13,9 +13,14 @@
   # Here it lands in hm-session-vars.sh, which zsh/.zshenv sources.
   home.sessionVariables.JAVA_HOME = "${pkgs.jdk21.home}";
 
-  # zsh itself: nix-darwin's programs.zsh installs it on macOS, and a
-  # distribution may not ship it at all (Ubuntu does not).
-  home.packages = [ pkgs.zsh ];
+  # What macOS supplies outside Nix and a distribution may not ship at all
+  # (Ubuntu ships neither): zsh, which nix-darwin's programs.zsh installs on
+  # macOS, and a C compiler, which the Command Line Tools provide there.
+  # nvim-treesitter compiles every parser with `cc`, and cargo links with it.
+  home.packages = with pkgs; [
+    gcc
+    zsh
+  ];
 
   # The login shell stays the distribution's bash: an LDAP account usually
   # cannot chsh, and /etc/shells would need the store path anyway. Hand
