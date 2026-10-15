@@ -1,5 +1,5 @@
 {
-  description = "nix-darwin configuration for satoshiyamamoto/dotfiles";
+  description = "nix-darwin and home-manager configurations for satoshiyamamoto/dotfiles";
 
   # Kenya is the only x86_64 Mac here and nixpkgs 26.11 refuses that platform
   # outright -- importing it at all throws "Nixpkgs 26.11 has dropped support
@@ -52,6 +52,7 @@
       home-manager-2605,
       nix-darwin,
       nix-darwin-2605,
+      nixpkgs,
       ...
     }:
     let
@@ -68,8 +69,33 @@
             ./modules/darwin/system.nix
           ];
         };
+
+      # Linux hosts run home-manager on its own over a distribution's Nix, so
+      # only the platform-neutral core plus the Linux glue applies. useGlobalPkgs
+      # is a nix-darwin notion; here the unfree list goes straight into pkgs.
+      mkHome =
+        system: hostModule:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = import nixpkgs {
+            inherit system;
+            config.allowUnfreePredicate =
+              pkg: builtins.elem (nixpkgs.lib.getName pkg) (import ./lib/unfree.nix);
+          };
+          extraSpecialArgs = { inherit inputs; };
+          modules = [
+            hostModule
+            ./modules/home
+            ./modules/home/linux.nix
+          ];
+        };
     in
     {
+      # Keys are "$USER@$(hostname -s)", one of the names `home-manager switch
+      # --flake <this directory>` tries on its own.
+      homeConfigurations = {
+        "satoshi_yamamoto@devcontainer01" = mkHome "x86_64-linux" ./hosts/linux/devcontainer01.nix;
+      };
+
       darwinConfigurations = {
         "CA-20033978" = mkDarwin nix-darwin home-manager ./hosts/darwin/CA-20033978.nix;
         "CA-20031962" = mkDarwin nix-darwin home-manager ./hosts/darwin/CA-20031962.nix;

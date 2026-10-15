@@ -1,13 +1,16 @@
 # Terminal toys. Nothing depends on these.
-{ pkgs, ... }:
+{ available, pkgs, ... }:
 {
-  home.packages = with pkgs; [
-    bk
-    cbonsai
-    cmatrix
-    lolcat
-    nyancat
-    ponysay
-    sl
-  ];
+  home.packages = available (
+    with pkgs;
+    [
+      bk
+      cbonsai
+      cmatrix
+      lolcat
+      nyancat
+      ponysay
+      sl
+    ]
+  );
 }

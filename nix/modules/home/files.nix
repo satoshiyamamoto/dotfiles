@@ -59,9 +59,6 @@ in
     ".config/fd/ignore".source = ../../../fd/.config/fd/ignore;
     ".config/gh-dash/config.yml".source = ../../../gh-dash/.config/gh-dash/config.yml;
     ".config/gh/config.yml".source = ../../../gh/.config/gh/config.yml;
-    ".config/git/config".source = ../../../git/.config/git/config;
-    ".config/git/config.darwin".source = ../../../git/.config/git/config.darwin;
-    ".config/git/config.linux".source = ../../../git/.config/git/config.linux;
     ".config/git/ignore".source = ../../../git/.config/git/ignore;
     ".config/glow/glow.yml".source = ../../../glow/.config/glow/glow.yml;
     ".config/herdr/config.toml".source = ../../../herdr/.config/herdr/config.toml;
@@ -71,8 +68,6 @@ in
     ".config/kitty/current-theme.conf".source = ../../../kitty/.config/kitty/current-theme.conf;
     ".config/kitty/kitty-icon.sh".source = ../../../kitty/.config/kitty/kitty-icon.sh;
     ".config/kitty/kitty.conf".source = ../../../kitty/.config/kitty/kitty.conf;
-    ".config/kitty/macos-launch-services-cmdline".source =
-      ../../../kitty/.config/kitty/macos-launch-services-cmdline;
     ".config/kitty/themes/tokyo-night-kitty.conf".source =
       ../../../kitty/.config/kitty/themes/tokyo-night-kitty.conf;
     ".config/lazygit/config.yml".source = ../../../lazygit/.config/lazygit/config.yml;
@@ -116,14 +111,29 @@ in
 
     # Whole directories the tool owns, linked live.
     ".config/ghostty".source = live "ghostty/.config/ghostty";
-    ".config/homebrew".source = live "homebrew/.config/homebrew";
     ".config/hunk".source = live "hunk/.config/hunk";
-    ".config/karabiner".source = live "karabiner/.config/karabiner";
     ".config/nvim".source = live "nvim/.config/nvim";
     ".config/tmux".source = live "tmux/.config/tmux";
     ".vim".source = live "vim/.vim";
   }
-  // lib.mapAttrs (_: p: { source = live p; }) liveFiles;
+  // lib.mapAttrs (_: p: { source = live p; }) liveFiles
+  // lib.optionalAttrs pkgs.stdenv.hostPlatform.isDarwin {
+    ".config/git/config".source = ../../../git/.config/git/config;
+    ".config/git/config.darwin".source = ../../../git/.config/git/config.darwin;
+    ".config/kitty/macos-launch-services-cmdline".source =
+      ../../../kitty/.config/kitty/macos-launch-services-cmdline;
+    ".config/homebrew".source = live "homebrew/.config/homebrew";
+    ".config/karabiner".source = live "karabiner/.config/karabiner";
+  }
+  // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+    # git/config includes config.darwin by name. install.linux.sh used to sed
+    # that in place, which a read-only store copy cannot take, so Linux gets
+    # the same file with the include pointed at config.linux instead.
+    ".config/git/config".text = builtins.replaceStrings [ "config.darwin" ] [ "config.linux" ] (
+      builtins.readFile ../../../git/.config/git/config
+    );
+    ".config/git/config.linux".source = ../../../git/.config/git/config.linux;
+  };
 
   # moshi-hook's auto-update reruns `install`, which replaces these links
   # with regular files, and a second replacement collides with the

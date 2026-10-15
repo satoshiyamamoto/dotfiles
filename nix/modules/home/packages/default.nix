@@ -4,7 +4,16 @@
 #
 # Split by purpose so that a host can import only the groups it wants.
 { lib, pkgs, ... }:
+let
+  # Every group filters its list through this, so a package whose
+  # meta.platforms leaves out the host -- mas on Linux, container anywhere but
+  # Apple Silicon -- drops out on its own instead of failing evaluation.
+  # Hand-written gating below is only for what evaluates but is unwanted.
+  available = lib.filter (lib.meta.availableOn pkgs.stdenv.hostPlatform);
+in
 {
+  _module.args = { inherit available; };
+
   imports = [
     ./ai.nix
     ./cloud.nix
@@ -13,7 +22,7 @@
     ./fun.nix
   ];
 
-  # Everything below is unavailable on Kenya, the only x86_64 host.
+  # Everything below is unavailable on Kenya, the only x86_64 Mac.
   #
   # container is Apple's own runtime and Apple Silicon only. The rest cannot
   # be had from 26.05, which Kenya pins: herdr and hunk are absent from it,
@@ -36,16 +45,18 @@
   # antigravity-cli and grok-build both declare
   # platforms = lib.attrNames sourceData and upstream publishes no darwin-x64
   # hash, so neither can follow the claude-code trick in ./ai.nix.
-  home.packages = lib.optionals pkgs.stdenv.hostPlatform.isAarch64 (
-    with pkgs;
-    [
-      antigravity-cli
-      atuin
-      container
-      grok-build
-      herdr
-      hunk
-      mycli
-    ]
+  home.packages = lib.optionals (pkgs.stdenv.hostPlatform.system != "x86_64-darwin") (
+    available (
+      with pkgs;
+      [
+        antigravity-cli
+        atuin
+        container
+        grok-build
+        herdr
+        hunk
+        mycli
+      ]
+    )
   );
 }

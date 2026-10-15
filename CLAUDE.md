@@ -32,8 +32,9 @@ The absolute path is required — `sudo` resets PATH, so a bare `darwin-rebuild`
 
 | Path | Holds |
 |------|-------|
-| `nix/flake.nix` | `darwinConfigurations`, one attribute per host, keyed by `scutil --get LocalHostName` |
+| `nix/flake.nix` | `darwinConfigurations` keyed by `scutil --get LocalHostName`; `homeConfigurations` keyed by `$USER@$(hostname -s)` |
 | `nix/hosts/darwin/<hostname>.nix` | Host-only settings: platform, primary user, and whatever that machine alone needs |
+| `nix/hosts/linux/<hostname>.nix` | The account (`home.username` / `home.homeDirectory`) of a standalone home-manager host |
 | `nix/lib/unfree.nix` | The unfree packages allowed by name, shared because home-manager cannot set `nixpkgs.config` itself |
 | `nix/modules/darwin/system.nix` | macOS system settings every Mac shares: `stateVersion`, experimental features, zsh, PAM, sshd |
 | `nix/modules/darwin/environment.nix` | What has no home-manager equivalent on macOS: `fonts.packages`, `pathsToLink`, `JAVA_HOME`, `mas` |
@@ -41,8 +42,11 @@ The absolute path is required — `sudo` resets PATH, so a bare `darwin-rebuild`
 | `nix/modules/darwin/home-manager.nix` | Wires `nix/modules/home` in for `system.primaryUser` |
 | `nix/modules/home/files.nix` | home-manager's `home.file`: every dotfile link, store or live |
 | `nix/modules/home/packages/` | `home.packages`, one file per purpose: `core`, `dev`, `cloud`, `ai`, `fun` |
+| `nix/modules/home/linux.nix` | Standalone-only glue: `targets.genericLinux`, the `home-manager` command, `JAVA_HOME` |
 
 **`nix/modules/home` is the platform-neutral core.** It holds only home-manager options and never reads nix-darwin's (`system.primaryUser` and friends), so the same modules can serve a standalone home-manager on Linux. Packages therefore live in `home.packages`, which nix-darwin puts in `/etc/profiles/per-user/$USER` — not in `/run/current-system/sw`, which keeps only what nix-darwin installs itself (`darwin-rebuild`, `nix`, `zsh`, `bash`, `mas`). Anything that hardcodes a tool's path must use the per-user profile; `zsh/.zshrc` resolves it once into `$hm_profile`.
+
+**Platform gating is automatic.** Every package group passes its list through `available` (`lib.meta.availableOn` for the host platform, defined in `packages/default.nix`), so a package whose `meta.platforms` leaves the host out — `container` on Linux — drops out instead of failing evaluation. Write a condition by hand only for something that evaluates but is unwanted, like Kenya's block. Dotfiles that only mean something on macOS (Karabiner, Homebrew, kitty's launch-services file) sit in an `isDarwin` block in `files.nix`; on Linux the store copy of `git/config` has its `config.darwin` include rewritten to `config.linux`.
 
 **home-manager's `buildEnv` does not ignore collisions**, unlike nix-darwin's system profile, which silently let the first package win. Two packages shipping the same file now fail the build, so settle each one with `lib.lowPrio` / `lib.hiPrio` — `minikube` bundles a `bin/kubectl` and is `lowPrio` in `cloud.nix` for that reason.
 

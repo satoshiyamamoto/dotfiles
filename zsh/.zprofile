@@ -18,6 +18,8 @@ cdpath=(
 path=(
   /etc/profiles/per-user/$USER/bin(N)
   /run/current-system/sw/bin(N)
+  $HOME/.nix-profile/bin(N)
+  /nix/var/nix/profiles/default/bin(N)
   $GOPATH/bin(N)
   $HOME/.cargo/bin(N)
   $HOME/.local/bin(N)

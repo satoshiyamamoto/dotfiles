@@ -1,5 +1,10 @@
 # AI coding agents. The AI CLIs are not self-updating -- see CLAUDE.md.
-{ inputs, pkgs, ... }:
+{
+  available,
+  inputs,
+  pkgs,
+  ...
+}:
 let
   # claude-code from nixpkgs-unstable on every host. Kenya's nixpkgs is 26.05,
   # whose claude-code is frozen at 2.1.223, so build unstable's package.nix with
@@ -16,13 +21,15 @@ let
       });
 in
 {
-  home.packages = [
-    claude-code
-  ]
-  ++ (with pkgs; [
-    codex
-    opencode
-    pi-coding-agent
-    skills
-  ]);
+  home.packages = available (
+    [
+      claude-code
+    ]
+    ++ (with pkgs; [
+      codex
+      opencode
+      pi-coding-agent
+      skills
+    ])
+  );
 }
