@@ -19,9 +19,11 @@
   # nvim-treesitter compiles every parser with `cc`, and cargo links with it.
   # git too: the shared config sets merge.conflictStyle = zdiff3, which needs
   # 2.35, and a distribution's git can be older (Ubuntu 22.04 ships 2.34).
+  # git-credential-manager is a cask on macOS (../darwin/homebrew.nix).
   home.packages = with pkgs; [
     gcc
     git
+    git-credential-manager
     zsh
   ];
 

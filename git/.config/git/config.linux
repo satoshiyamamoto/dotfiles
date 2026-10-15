@@ -29,3 +29,13 @@
   smudge = git-lfs smudge -- %f
   process = git-lfs filter-process
   required = true
+
+# The same GCM as macOS, from Nix (nix/modules/home/linux.nix) instead of the
+# cask, found on PATH as git-credential-manager. A headless host has neither
+# a Keychain nor a Secret Service, and the gpg store needs `pass init` first,
+# so tokens go to ~/.gcm/store in plain files -- mode 600, the same footing as
+# gh's own hosts.yml. GitHub sign-in falls back to the device-code flow.
+[credential]
+	helper =
+	helper = manager
+	credentialStore = plaintext
