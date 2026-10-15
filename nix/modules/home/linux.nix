@@ -17,8 +17,11 @@
   # (Ubuntu ships neither): zsh, which nix-darwin's programs.zsh installs on
   # macOS, and a C compiler, which the Command Line Tools provide there.
   # nvim-treesitter compiles every parser with `cc`, and cargo links with it.
+  # git too: the shared config sets merge.conflictStyle = zdiff3, which needs
+  # 2.35, and a distribution's git can be older (Ubuntu 22.04 ships 2.34).
   home.packages = with pkgs; [
     gcc
+    git
     zsh
   ];
 

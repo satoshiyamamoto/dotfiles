@@ -132,7 +132,7 @@ Drop `--skip-setup` only on a machine with no `~/.hermes/config.yaml` yet; the w
 - `~/.hermes` is shared by every install method, so switching methods keeps all config and state. The installer skips files that already exist, and `atomic_yaml_write` preserves symlinks (upstream #16743) — the live-linked `config.yaml` / `SOUL.md` are never clobbered.
 - **The `hermes` package deliberately links only `config.yaml` and `SOUL.md`.** `~/.hermes/skills` belongs to Hermes (bundled skills seeded by the installer, hub installs, `.hub/` provenance, usage telemetry) and must stay out of the repo — see [Personal Skills](#personal-skills) for why.
 - The launchd plist points at `~/.hermes/hermes-agent/venv/bin/python`, which carries no version, so `hermes update` won't break the gateway. Re-run `hermes gateway install` only when switching install methods.
-- The installer shells out to `brew install` for missing system tools (ripgrep, ffmpeg, git). `ripgrep` and `ffmpeg` are declared in `nix/modules/home/packages/core.nix` — keep them there so the flake stays in sync with what Hermes needs. `git` is not declared anywhere: macOS ships Apple Git at `/usr/bin/git`, which is what this machine uses.
+- The installer shells out to `brew install` for missing system tools (ripgrep, ffmpeg, git). `ripgrep` and `ffmpeg` are declared in `nix/modules/home/packages/core.nix` — keep them there so the flake stays in sync with what Hermes needs. `git` is not declared for macOS: Apple Git at `/usr/bin/git` is what the Macs use. Linux takes nixpkgs' `git` from `nix/modules/home/linux.nix`, because the shared config's `zdiff3` needs git 2.35 and a distribution's can be older.
 
 ### Computer Use (cua-driver)
 
