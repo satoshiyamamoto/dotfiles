@@ -17,6 +17,11 @@
   # Nix's glibc cannot see an LDAP account (sssd), so k9s exits at startup.
   home.sessionVariables.KUBECACHEDIR = "${config.home.homeDirectory}/.kube/cache";
 
+  # Ubuntu only: /etc/bash.bashrc runs `groups` for its sudo hint after the Nix
+  # hook put Nix's coreutils first, which cannot name LDAP groups either and
+  # warns at every login. This file is the hint's own off switch.
+  home.file.".sudo_as_admin_successful".text = "";
+
   # What macOS supplies outside Nix and a distribution may not ship at all
   # (Ubuntu ships neither): zsh, which nix-darwin's programs.zsh installs on
   # macOS, and a C compiler, which the Command Line Tools provide there.
