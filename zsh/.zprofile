@@ -25,7 +25,6 @@ path=(
   $HOME/.local/bin(N)
   $HOME/{,s}bin(N)
   /opt/ca-data-pf/cdap-cli/(N)
-  /opt/cycloud-io/cycloud-cli(N)
   /opt/homebrew/{,s}bin(N)
   /usr/local/{,s}bin(N)
   /{,s}bin(N)
