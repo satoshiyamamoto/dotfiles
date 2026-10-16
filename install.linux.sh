@@ -27,6 +27,9 @@ if ! [ -x "$nix" ]; then
   echo "==> Installing Nix"
   curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install --enable-flakes
 fi
+# The installer's profile.d hook only reaches new shells, and home-manager's
+# activation calls nix-build by name, so put Nix on this shell's PATH too.
+PATH=/nix/var/nix/profiles/default/bin:$PATH
 
 # The previous version of this script linked these straight into the working
 # tree. Left in place, ~/.config/git would make home-manager write its links
