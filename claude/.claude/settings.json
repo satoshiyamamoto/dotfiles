@@ -1,226 +1,4 @@
 {
-  "autoCompactWindow": 200000,
-  "deniedMcpServers": [],
-  "effortLevel": "high",
-  "enabledPlugins": {
-    "agent-skills@addy-agent-skills": true,
-    "apple-notes@apple-notes-mcp": true,
-    "aws-core@claude-plugins-official": true,
-    "cc-plugin-you-should-know@builtin": true,
-    "code-review@claude-plugins-official": true,
-    "code-simplifier@claude-plugins-official": true,
-    "commit-commands@claude-plugins-official": true,
-    "context7@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true,
-    "github@claude-plugins-official": false,
-    "gopls-lsp@claude-plugins-official": true,
-    "jdtls-lsp@claude-plugins-official": true,
-    "lua-lsp@claude-plugins-official": true,
-    "mattpocock-skills@claude-plugins-official": true,
-    "playwright@claude-plugins-official": true,
-    "ponytail@ponytail": true,
-    "pr-review-toolkit@claude-plugins-official": true,
-    "pyright-lsp@claude-plugins-official": true,
-    "rust-analyzer-lsp@claude-plugins-official": true,
-    "satoshiyamamoto-skills@satoshiyamamoto": true,
-    "security-guidance@claude-plugins-official": true,
-    "serena@synced": false,
-    "skill-creator@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": true,
-    "worktrunk@worktrunk": true
-  },
-  "extraKnownMarketplaces": {
-    "addy-agent-skills": {
-      "source": {
-        "repo": "addyosmani/agent-skills",
-        "source": "github"
-      }
-    },
-    "apple-notes-mcp": {
-      "source": {
-        "repo": "sweetrb/apple-notes-mcp",
-        "source": "github"
-      }
-    },
-    "ponytail": {
-      "source": {
-        "repo": "DietrichGebert/ponytail",
-        "source": "github"
-      }
-    },
-    "satoshiyamamoto": {
-      "source": {
-        "path": "/Users/a12019/Projects/src/github.com/satoshiyamamoto/skills",
-        "source": "directory"
-      }
-    },
-    "worktrunk": {
-      "source": {
-        "repo": "max-sixty/worktrunk",
-        "source": "github"
-      }
-    }
-  },
-  "hooks": {
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "command": "osascript -e 'display notification \"Claude Code needs your attention\" with title \"Claude Code\"'; afplay /System/Library/Sounds/Ping.aiff",
-            "type": "command"
-          }
-        ],
-        "matcher": "permission_prompt"
-      },
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
-            "type": "command"
-          }
-        ],
-        "matcher": "permission_prompt"
-      }
-    ],
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "async": false,
-            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
-            "type": "command"
-          }
-        ],
-        "matcher": "AskUserQuestion"
-      },
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
-            "type": "command"
-          }
-        ],
-        "matcher": "ExitPlanMode"
-      }
-    ],
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
-            "type": "command"
-          }
-        ],
-        "matcher": "AskUserQuestion"
-      },
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
-            "type": "command"
-          }
-        ],
-        "matcher": "ExitPlanMode"
-      }
-    ],
-    "SessionEnd": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
-            "type": "command"
-          }
-        ]
-      },
-      {
-        "matcher": "^(startup|resume|clear|compact|fork)$",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash '/Users/a12019/.claude/hooks/herdr-agent-state.sh' session",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "async": true,
-            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "WorktreeCreate": [
-      {
-        "hooks": [
-          {
-            "command": "jq -r '.name' | xargs -I{} wt switch --create {} --no-cd --format=json | jq -r '.path'",
-            "timeout": 30,
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "WorktreeRemove": [
-      {
-        "hooks": [
-          {
-            "command": "jq -r '.worktree_path' | xargs wt remove --foreground",
-            "timeout": 15,
-            "type": "command"
-          }
-        ]
-      }
-    ]
-  },
-  "language": "japanese",
-  "modelSettings": {
-    "claude-opus-5-5": {
-      "effortLevel": "medium"
-    }
-  },
   "permissions": {
     "allow": [
       "Bash(* --help *)",
@@ -269,17 +47,6 @@
       "mcp__plugin_github_github",
       "mcp__plugin_playwright_playwright"
     ],
-    "ask": [
-      "Bash(gh api -X DELETE:*)",
-      "Bash(gh api -X PATCH:*)",
-      "Bash(gh api -X POST:*)",
-      "Bash(gh api -X PUT:*)",
-      "Bash(gh pr merge:*)",
-      "Bash(gh release create:*)",
-      "Edit(~/Documents/**)",
-      "mcp__claude_ai_Datadog_2__update_datadog_monitor"
-    ],
-    "defaultMode": "auto",
     "deny": [
       "Bash(git push --force:*)",
       "Bash(git push -f:*)",
@@ -307,16 +74,249 @@
       "Read(~/.npmrc)",
       "Read(~/.ssh/**)",
       "Read(~/Library/Keychains/**)"
+    ],
+    "ask": [
+      "Bash(gh api -X DELETE:*)",
+      "Bash(gh api -X PATCH:*)",
+      "Bash(gh api -X POST:*)",
+      "Bash(gh api -X PUT:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(gh release create:*)",
+      "Edit(~/Documents/**)",
+      "mcp__claude_ai_Datadog_2__update_datadog_monitor"
+    ],
+    "defaultMode": "auto"
+  },
+  "skillOverrides": {},
+  "deniedMcpServers": [],
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'display notification \"Claude Code needs your attention\" with title \"Claude Code\"'; afplay /System/Library/Sounds/Ping.aiff"
+          }
+        ]
+      },
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
+            "async": false
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
+            "async": true
+          }
+        ]
+      },
+      {
+        "matcher": "ExitPlanMode",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "AskUserQuestion",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
+            "async": true
+          }
+        ]
+      },
+      {
+        "matcher": "ExitPlanMode",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
+            "async": true
+          }
+        ]
+      },
+      {
+        "matcher": "^(startup|resume|clear|compact|fork)$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/a12019/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' claude-hook",
+            "async": true
+          }
+        ]
+      }
+    ],
+    "WorktreeCreate": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.name' | xargs -I{} wt switch --create {} --no-cd --format=json | jq -r '.path'",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "WorktreeRemove": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.worktree_path' | xargs wt remove --foreground",
+            "timeout": 15
+          }
+        ]
+      }
     ]
   },
-  "pluginConfigs": {},
-  "skillOverrides": {},
-  "skipWorkflowUsageWarning": true,
   "statusLine": {
-    "command": "wt list statusline --format=claude-code",
-    "type": "command"
+    "type": "command",
+    "command": "wt list statusline --format=claude-code"
   },
+  "enabledPlugins": {
+    "agent-skills@addy-agent-skills": true,
+    "apple-notes@apple-notes-mcp": true,
+    "aws-core@claude-plugins-official": true,
+    "cc-plugin-you-should-know@builtin": true,
+    "code-review@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "github@claude-plugins-official": false,
+    "gopls-lsp@claude-plugins-official": true,
+    "jdtls-lsp@claude-plugins-official": true,
+    "lua-lsp@claude-plugins-official": true,
+    "mattpocock-skills@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "ponytail@ponytail": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "pyright-lsp@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "satoshiyamamoto-skills@satoshiyamamoto": true,
+    "security-guidance@claude-plugins-official": true,
+    "serena@synced": false,
+    "skill-creator@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "worktrunk@worktrunk": true
+  },
+  "extraKnownMarketplaces": {
+    "addy-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "addyosmani/agent-skills"
+      }
+    },
+    "apple-notes-mcp": {
+      "source": {
+        "source": "github",
+        "repo": "sweetrb/apple-notes-mcp"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    },
+    "satoshiyamamoto": {
+      "source": {
+        "source": "directory",
+        "path": "/Users/a12019/Projects/src/github.com/satoshiyamamoto/skills"
+      }
+    },
+    "worktrunk": {
+      "source": {
+        "source": "github",
+        "repo": "max-sixty/worktrunk"
+      }
+    }
+  },
+  "language": "japanese",
+  "effortLevel": "high",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "medium"
+    }
+  },
+  "autoCompactWindow": 200000,
+  "pluginConfigs": {},
+  "tui": "fullscreen",
+  "skipWorkflowUsageWarning": true,
   "theme": "auto",
-  "tui": "default",
   "voiceEnabled": true
 }
