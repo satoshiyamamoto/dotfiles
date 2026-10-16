@@ -316,6 +316,7 @@
     "command": "wt list statusline --format=claude-code",
     "type": "command"
   },
+  "theme": "auto",
   "tui": "default",
   "voiceEnabled": true
 }
