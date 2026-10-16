@@ -37,7 +37,7 @@ $time\
 [hostname]
 style = "bg:#a3aed2 fg:#090c0c"
 format = '[$hostname]($style)'
-trim_at = ".local"
+trim_at = "."
 ssh_only = true
 
 [directory]
