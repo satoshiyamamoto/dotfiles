@@ -22,11 +22,6 @@ return {
   -- HTTP
   {
     "mistweaverco/kulala.nvim",
-    -- v6 runs requests through kulala-core, now closed-source behind a license token and no longer
-    -- downloadable from GitHub; v5.3.4 is the last release that sends them with curl
-    tag = "v5.3.4",
-    -- v5.3.4's kulala-fmt submodule breaks lazy's checkout when moving off v6; requests don't use it
-    submodules = false,
     ft = { "http", "rest" },
     -- Load before session save/restore hooks run
     event = { "SessionLoadPost", "VimLeavePre" },
@@ -42,8 +37,10 @@ return {
     opts = {
       global_keymaps = true,
       global_keymaps_prefix = "<Leader>R",
-      -- The LSP works off kulala's own `kulala_http` parser, which `config` below takes the
-      -- buffers away from. Request execution and the response UI do not go through it.
+      -- kulala's own `kulala_http` grammar makes the value in `@var = ...` mandatory and errors on
+      -- the empty placeholders these files use; leave highlighting to nvim-treesitter's `http`.
+      -- Requests go through kulala-core and don't need it. The LSP is built on it, so it goes too.
+      treesitter = { enable = false },
       -- `keymaps = false` is kulala's default, kept explicit.
       lsp = { enable = false, keymaps = false },
       ui = {
@@ -51,13 +48,6 @@ return {
         max_response_size = 10 * 1024 * 1024,
       },
     },
-    config = function(_, opts)
-      require("kulala").setup(opts)
-      -- v5.3.4 has no `treesitter.enable` and always maps http/rest to its own `kulala_http`,
-      -- which makes the value in `@var = ...` mandatory and errors on the empty placeholders
-      -- these files use; hand the filetypes back to nvim-treesitter's `http`
-      vim.treesitter.language.register("http", { "http", "rest" })
-    end,
   },
 
   {
