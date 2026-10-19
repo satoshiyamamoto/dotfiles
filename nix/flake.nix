@@ -97,8 +97,6 @@
       };
 
       darwinConfigurations = {
-        "CA-20033978" = mkDarwin nix-darwin home-manager ./hosts/darwin/CA-20033978.nix;
-        "CA-20031962" = mkDarwin nix-darwin home-manager ./hosts/darwin/CA-20031962.nix;
         "CA-20040831" = mkDarwin nix-darwin home-manager ./hosts/darwin/CA-20040831.nix;
         "CA-20040386" = mkDarwin nix-darwin home-manager ./hosts/darwin/CA-20040386.nix;
         "Kenya" = mkDarwin nix-darwin-2605 home-manager-2605 ./hosts/darwin/Kenya.nix;
