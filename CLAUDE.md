@@ -212,7 +212,7 @@ All plugins live under `lua/plugins/`, one file per category. Before adding a pl
 | File | Contents |
 |------|----------|
 | `ai.lua` | AI tools: sidekick.nvim (Claude/Codex/Gemini), claudecode.nvim |
-| `coding.lua` | Editing helpers: flash, surround, gitsigns, colorizer, todo-comments, IME, nvim-httpyac (HTTP) |
+| `coding.lua` | Editing helpers: flash, surround, gitsigns, colorizer, todo-comments, IME, kulala.nvim (HTTP) |
 | `completion.lua` | blink.cmp, LuaSnip, nvim-autopairs |
 | `dap.lua` | nvim-dap adapters/configs, dap-ui, neotest, venv-selector |
 | `formatting.lua` | conform.nvim (formatters), nvim-lint (linters) |
@@ -244,16 +244,29 @@ Settings that apply only to a specific filetype (options, keymaps, highlights) g
 
 Add external nvim site paths via `performance.rtp.paths` in `lua/config/lazy.lua`, not `vim.opt.rtp:append()` (lazy.nvim overwrites the latter).
 
-### HTTP Client (nvim-httpyac)
+### HTTP Client (kulala.nvim)
 
-`abidibo/nvim-httpyac` in `lua/plugins/coding.lua` replaced `mistweaverco/kulala.nvim`, whose v6 moved request execution into `kulala-core` — a closed-source binary that needs a license token. It is a thin wrapper: each request writes the buffer to a `.tmp_httpyac_*` file beside the original and runs the [httpyac](https://httpyac.github.io/) CLI on it, so all JetBrains `.http` semantics (`{{var}}`, `@var = value`, `http-client.env.json` merged with `http-client.private.env.json`, `> {% %}` handlers) come from httpyac. `httpyac` is declared in `nix/modules/home/packages/dev.nix` — the plugin only finds it on `PATH`.
+`mistweaverco/kulala.nvim` in `lua/plugins/coding.lua` replaced `rest-nvim/rest.nvim`, which was the only plugin here that needed lazy.nvim's luarocks/hererocks machinery.
 
-- **Commands exist only in `http` buffers** — the plugin defines them in a `FileType http` autocmd, so the `<Leader>r*` keys (as in the plugin's README) in the spec are `ft = "http"` too (which-key group in `ui.lua`).
-- **`:NvimHttpYacEnv` does not walk up.** It lists environments from the file's directory, `cwd` and `cwd/env` only. httpyac itself reads env files anywhere from `cwd` down to the request file, so with env files in `orion-classic/api/` and `cwd` at the repo root the request resolves but the picker says `No environments found`; pass the env by hand instead (`:NvimHttpYac --env dev`). The reverse fails outright: with `cwd` *below* the env files (e.g. `api/orion-api/`), httpyac never sees them and errors with `expression <VAR> throws error`.
-- **An empty `@token =` is an error** in httpyac (`ReferenceError: token is not defined`), where kulala sent an empty value.
-- The lualine environment indicator reads `package.loaded["nvim-httpyac"].current_env`, so lualine never loads the plugin.
+`kulala-core` — the backend that executes HTTP/gRPC/WebSocket/GraphQL requests and formats responses — is managed by the plugin itself, not by Nix: it is auto-downloaded from GitHub Releases into nvim's data dir on first use, so a `darwin-rebuild switch` alone will not restore it on a new machine. Override with `kulala_core.path` only when using a hand-installed binary. Check it with `:checkhealth kulala` (the plugin is lazy-loaded, so run `:Lazy load kulala.nvim` first in a non-`http` buffer). Neovim 0.12+ is required.
 
-Highlighting is nvim-treesitter's own `http` parser, in the `require("nvim-treesitter").install({...})` list in `lua/plugins/treesitter.lua`. kulala's `kulala_http` grammar was kept off for its whole life because it makes the value in `@var = ...` mandatory, and a placeholder line like `@token =` swallowed the next request's `POST` keyword (91 ERROR nodes vs 0 on `orion-classic/api/orion-api/requests.http`). nixpkgs' `tree-sitter` CLI in `core.nix` stays declared for nvim-treesitter, which shells out to `tree-sitter build` for every parser.
+Keymaps come from kulala's own `global_keymaps = true` under the `<Leader>R` prefix (which-key group in `ui.lua`). The `keys` entries in the spec are lazy-load stubs for the subset kulala maps globally; the rest are filetype-local to `http`/`rest`. The lualine environment indicator reads `vim.g.kulala_selected_env` directly so that lualine never loads kulala.
+
+#### Highlighting: `treesitter = { enable = false }`, use nvim-treesitter's `http`
+
+kulala ships its own `kulala_http` grammar and, left enabled, clones `tree-sitter-kulala-http` into `~/.local/share/nvim/kulala.nvim/`, builds it, and installs `site/parser/kulala_http.dylib` plus `site/queries/kulala_http/`. **That is disabled here** (`treesitter = { enable = false }` in `lua/plugins/coding.lua`); `http` is in the `require("nvim-treesitter").install({...})` list in `lua/plugins/treesitter.lua` instead, and the FileType autocmd there starts it like any other language.
+
+Two reasons:
+
+1. **`kulala_http` errors on value-less variables.** `variable_declaration` makes the value mandatory (`grammar.js:297-306`, still true on upstream `main`), so a placeholder line like `@token =` is a parse error. On `orion-classic/api/orion-api/requests.http` that is **91 ERROR nodes vs 0** for the standard parser, and each one spans three lines — swallowing the `POST` keyword of the request that follows, which then loses its highlight.
+2. Everything else is close enough: `###` separators, `< ./body.json`, `>> ./response.json`, `{% script %}`, `{{var}}` and the json/xml/graphql injections all parse the same under both. Only kulala-specific `run #name` / `import ./other.http` (misread as a request URL) and multi-line query params (flat `target_url` instead of `query_param`) degrade, and neither produces an error.
+
+**The trade-off is kulala's LSP layer.** `config/init.lua:34` gates `require("kulala.cmd.lsp").start()` on `Parser.is_up_to_date()`, i.e. on `parser/kulala_http.*` and `queries/kulala_http/*.scm` being findable on `runtimepath`. With the parser gone, inlay hints, completion, hover, code actions, document symbols and folding are all off (`cmd/lsp.lua:143` needs the parser directly for folding), so the spec says `lsp = { enable = false, keymaps = false }` outright rather than leaving a block that cannot take effect (`keymaps = false` is already kulala's default — it maps `K` and `<leader>l*` only when asked). Request execution (`<Leader>Rs`) and the response UI are unaffected — `parser/document.lua` is plain Lua and `ui/init.lua` passes an explicit language to `vim.treesitter.start`.
+
+Two consequences worth remembering:
+
+- nixpkgs' `tree-sitter` (the CLI, in `nix/modules/home/packages/core.nix`) must stay declared, but for nvim-treesitter's own sake: it shells out to `tree-sitter build` for every parser it compiles (`install.lua:305-317`).
+- A bare `:TSUpdate` used to fail with `Parser not available for language "kulala_http"`. `config.get_installed()` builds its list by scanning `site/parser` and `site/queries`, so kulala's artifacts looked like nvim-treesitter's own; `norm_languages` returns that list verbatim for `'all'` (`config.lua:105-109`), and the unknown language then errors in `get_parser_install_info`. Re-enabling kulala's treesitter handling brings that back. The alternative fix — moving nvim-treesitter's own `install_dir` out of `site/` — was rejected as the bigger change.
 
 ### Investigating Plugins
 

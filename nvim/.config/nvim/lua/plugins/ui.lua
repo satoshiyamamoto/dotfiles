@@ -187,7 +187,7 @@ return {
     opts = {
       spec = {
         { "<leader>o", group = "overseer" },
-        { "<leader>r", group = "httpyac" },
+        { "<leader>R", group = "kulala" },
       },
     },
     keys = {
@@ -310,10 +310,7 @@ return {
               color = function() return "Special" end,
             },
             {
-              function()
-                local httpyac = package.loaded["nvim-httpyac"]
-                return vim.bo.filetype == "http" and httpyac and httpyac.current_env or ""
-              end,
+              function() return vim.bo.filetype == "http" and vim.g.kulala_selected_env or "" end,
               icon = { "", color = { fg = "#428890" } },
             },
             "encoding",

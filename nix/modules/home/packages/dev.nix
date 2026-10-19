@@ -20,8 +20,6 @@
       grpc
       grpcurl
       hey
-      # nvim-httpyac shells out to it to send .http requests
-      httpyac
       jd-diff-patch
       # jdk21, not jdk: on darwin every JDK attribute is Azul Zulu, and plain
       # `jdk` is nixpkgs' default-LTS pointer -- today it resolves to the same
