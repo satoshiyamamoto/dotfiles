@@ -22,6 +22,11 @@ return {
   -- HTTP
   {
     "mistweaverco/kulala.nvim",
+    -- v6 runs requests through kulala-core, now closed-source behind a license token and no longer
+    -- downloadable from GitHub; v5.3.4 is the last release that sends them with curl
+    tag = "v5.3.4",
+    -- v5.3.4's kulala-fmt submodule breaks lazy's checkout when moving off v6; requests don't use it
+    submodules = false,
     ft = { "http", "rest" },
     -- Load before session save/restore hooks run
     event = { "SessionLoadPost", "VimLeavePre" },
