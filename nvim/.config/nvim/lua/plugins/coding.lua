@@ -21,35 +21,20 @@ return {
 
   -- HTTP
   {
-    "mistweaverco/kulala.nvim",
-    ft = { "http", "rest" },
-    -- Load before session save/restore hooks run
-    event = { "SessionLoadPost", "VimLeavePre" },
+    -- Runs the `httpyac` CLI from nixpkgs; its commands exist only in http buffers
+    "abidibo/nvim-httpyac",
+    ft = "http",
     keys = {
-      -- Lazy-load stubs for the keymaps kulala registers globally;
-      -- the rest are only mapped inside http/rest buffers.
-      { "<Leader>Rs", desc = "Send Request" },
-      { "<Leader>Ra", desc = "Send All Requests" },
-      { "<Leader>Rr", desc = "Replay Last Request" },
-      { "<Leader>Ro", desc = "Open Kulala" },
-      { "<Leader>Rb", desc = "Open Scratchpad" },
+      { "<Leader>rr", "<Cmd>NvimHttpYac<CR>", ft = "http", desc = "Run request under cursor" },
+      { "<Leader>ra", "<Cmd>NvimHttpYacAll<CR>", ft = "http", desc = "Run all requests" },
+      { "<Leader>rp", "<Cmd>NvimHttpYacPicker<CR>", ft = "http", desc = "Pick a named request" },
+      { "<Leader>re", "<Cmd>NvimHttpYacEnv<CR>", ft = "http", desc = "Select environment" },
+      { "<Leader>rc", "<Cmd>NvimHttpYacEnvClear<CR>", ft = "http", desc = "Clear environment" },
+      { "<Leader>rq", "<Cmd>NvimHttpYacSequence<CR>", ft = "http", desc = "Toggle sequence recording" },
+      { "<Leader>rs", "<Cmd>NvimHttpYacSequencePicker<CR>", ft = "http", desc = "Sequence picker" },
+      { "<Leader>ry", "<Cmd>NvimHttpYacCopyCmd<CR>", ft = "http", desc = "Copy httpyac command to clipboard" },
     },
-    opts = {
-      global_keymaps = true,
-      global_keymaps_prefix = "<Leader>R",
-      -- Highlight with nvim-treesitter's `http` parser instead of kulala's own
-      -- `kulala_http`: the latter makes the value in `@var = ...` mandatory and
-      -- errors on the empty placeholders these files use.
-      treesitter = { enable = false },
-      -- config/init.lua gates the LSP on that parser, so it could never start
-      -- anyway; say so outright. Request execution and the response UI do not
-      -- go through it. `keymaps = false` is kulala's default, kept explicit.
-      lsp = { enable = false, keymaps = false },
-      ui = {
-        -- Show the body in the result panel instead of a path to the temp file
-        max_response_size = 10 * 1024 * 1024,
-      },
-    },
+    opts = {},
   },
 
   {
