@@ -12,7 +12,7 @@
       [
         argo-workflows
         argocd
-        awscli
+        awscli2
         docker
         docker-buildx
         docker-compose
