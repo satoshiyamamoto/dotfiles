@@ -82,6 +82,11 @@
               pkg: builtins.elem (nixpkgs.lib.getName pkg) (import ./lib/unfree.nix);
             # shortcut: diff-cover 10.5.1, which sqlfluff depends on, fails an
             # HTML-output test on x86_64-linux only; drop this once it is cached.
+            # TODO(2026-10-21): remove this overlay when the following prints "fixed"
+            # on devcontainer01, then switch to confirm sqlfluff still builds:
+            #   nix path-info --store https://cache.nixos.org \
+            #     "$(nix eval --raw github:NixOS/nixpkgs/nixpkgs-unstable#sqlfluff.outPath)" \
+            #     >/dev/null 2>&1 && echo fixed || echo still-broken
             overlays = [
               (final: prev: {
                 pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
