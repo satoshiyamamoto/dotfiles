@@ -60,3 +60,29 @@ if [ -x "$rustup" ] && ! "$rustup" default >/dev/null 2>&1; then
   echo "==> Installing the stable Rust toolchain"
   "$rustup" default stable
 fi
+
+# cycloud and cdap stay out of the flake so they can update themselves, and
+# their repos are internal, so take the latest release through gh's own login.
+# Once installed they are left alone: later updates are theirs to make.
+gh="$HOME/.nix-profile/bin/gh"
+os="$(uname -s | tr '[:upper:]' '[:lower:]')"
+arch="$(uname -m | sed 's/x86_64/amd64/; s/aarch64/arm64/')"
+# <repo> <binary> <asset prefix>
+fetch_release() {
+  [ -x "$HOME/.local/bin/$2" ] && return
+  echo "==> Installing $2"
+  # Unpack beside, then move, so an interrupted download leaves no binary
+  # behind for the -x check above to mistake for a finished install.
+  tmp="$(mktemp -d)"
+  "$gh" release download --repo "$1" --pattern "$3_${os}_${arch}.tar.gz" -O - |
+    tar -xzf - -C "$tmp" "$2"
+  mv "$tmp/$2" "$HOME/.local/bin/$2"
+  rmdir "$tmp"
+}
+if [ -x "$gh" ] && "$gh" auth status --active >/dev/null 2>&1; then
+  mkdir -p "$HOME/.local/bin"
+  fetch_release cycloud-io/cycloud-cli cycloud cycloud
+  fetch_release ca-data-pf/cdap-cli cdap 'cdap-cli_*'
+else
+  echo "==> Skipping cycloud and cdap: run 'gh auth login', then re-run this script" >&2
+fi
