@@ -136,6 +136,16 @@ in
       builtins.readFile ../../../git/.config/git/config
     );
     ".config/git/config.linux".source = ../../../git/.config/git/config.linux;
+    # The login shell stays the distribution's bash -- an LDAP account usually
+    # cannot chsh -- so a saved herdr machine's server inherits SHELL=/bin/bash.
+    # Login mode because the profile's PATH is set in .zprofile, and "auto"
+    # means non-login off macOS.
+    ".config/herdr/config.toml".text = builtins.readFile ../../../herdr/.config/herdr/config.toml + ''
+
+      [terminal]
+      default_shell = "${config.home.profileDirectory}/bin/zsh"
+      shell_mode = "login"
+    '';
   };
 
   # moshi-hook's auto-update reruns `install`, which replaces these links
