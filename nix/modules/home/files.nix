@@ -14,8 +14,8 @@ let
   # Link at the working tree rather than the Nix store. A package needs
   # this when its tool writes where the link points, which a store path
   # -- read-only -- cannot allow:
-  #   - it rewrites the file itself: `docker context use`,
-  #     `moshi-hook set`, Codex and Claude Code saving settings
+  #   - it rewrites the file itself: `docker context use`, Codex and
+  #     Claude Code saving settings
   #   - it writes siblings into the same directory: lazy-lock.json,
   #     Karabiner's automatic_backups, brew's trust.json, hunk's
   #     state.json, and the plugin trees under ~/.vim and ~/.config/tmux
@@ -36,7 +36,6 @@ let
     ".codex/config.toml" = "codex/.codex/config.toml";
     ".codex/hooks.json" = "codex/.codex/hooks.json";
     ".codex/rules/default.rules" = "codex/.codex/rules/default.rules";
-    ".config/moshi/config.toml" = "moshi/.config/moshi/config.toml";
     ".hermes/SOUL.md" = "hermes/.hermes/SOUL.md";
     ".hermes/config.yaml" = "hermes/.hermes/config.yaml";
   };
@@ -147,27 +146,6 @@ in
       shell_mode = "login"
     '';
   };
-
-  # moshi-hook's auto-update reruns `install`, which replaces these links
-  # with regular files, and a second replacement collides with the
-  # single-generation .hm-bak and aborts activation. Move the file back
-  # into the repo instead so the link is recreated; the moshi additions
-  # then show up in `git diff`. A repo copy newer than the file wins.
-  # Only a path the previous generation linked is adopted: on a first
-  # switch the file is whatever the tool created on its own (Claude Code
-  # writes a bare {"theme": "auto"}), and adopting it would overwrite the
-  # tracked config. Such a file falls through to the usual .hm-bak.
-  home.activation.adoptReplacedLiveFiles = lib.hm.dag.entryBefore [ "checkLinkTargets" ] (
-    lib.concatStrings (
-      lib.mapAttrsToList (t: p: ''
-        f="$HOME/${t}" r="$HOME/${repo}/${p}"
-        if [ -f "$f" ] && [ ! -L "$f" ] && [ ! "$r" -nt "$f" ] \
-          && [ -n "''${oldGenPath:-}" ] && [ -e "$oldGenPath/home-files/${t}" ]; then
-          run mv "$f" "$r"
-        fi
-      '') liveFiles
-    )
-  );
 
   # bat reads only the compiled ~/.cache/bat, never themes/*.tmTheme
   # directly, so the linked tokyonight themes are unknown until built.

@@ -11,50 +11,14 @@
           }
         ],
         "matcher": "*"
-      },
-      {
-        "hooks": [
-          {
-            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' codex-hook",
-            "type": "command"
-          }
-        ]
       }
     ],
     "SessionStart": [
       {
         "hooks": [
           {
-            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' codex-hook",
-            "type": "command"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
             "command": "bash \"$HOME/.codex/herdr-agent-state.sh\" session",
             "timeout": 10,
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' codex-hook",
-            "type": "command"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "command": "'/opt/homebrew/opt/moshi-hook/bin/moshi-hook' codex-hook",
             "type": "command"
           }
         ]

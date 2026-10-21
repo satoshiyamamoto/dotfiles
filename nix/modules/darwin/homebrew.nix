@@ -1,7 +1,7 @@
-# What stays on Homebrew: one formula from a personal tap, the GUI casks with no
-# nixpkgs equivalent, and the Mac App Store apps. Casks stay because nixpkgs
-# packages few macOS applications and none of them get Sparkle updates; mas
-# stays because nothing else can talk to the App Store.
+# What stays on Homebrew: the GUI casks with no nixpkgs equivalent and the Mac
+# App Store apps. Casks stay because nixpkgs packages few macOS applications
+# and none of them get Sparkle updates; mas stays because nothing else can talk
+# to the App Store.
 #
 # darwin-rebuild runs `brew bundle --file=<nix store Brewfile>`, so the Brewfile
 # in this repo is no longer read -- it is removed from the homebrew stow package
@@ -24,27 +24,6 @@
 
     # No caskArgs. --no-quarantine has been a silent no-op since Homebrew 6.x
     # and upgrades inherit Gatekeeper approval on their own -- see CLAUDE.md.
-
-    taps = [ "rjyo/moshi" ];
-
-    # The only formula left. `trusted` defaults to true for brews and casks
-    # (false only for taps), so the Brewfile gets `trusted: true` here and
-    # HOMEBREW_REQUIRE_TAP_TRUST -- on by default since Homebrew 6.0.0 -- is
-    # satisfied without a tap-wide grant. That is not the same as running
-    # `brew trust`: brew bundle writes the Brewfile's trust entries itself
-    # before loading anything (Library/Homebrew/bundle/installer.rb), so it
-    # also works under the sudo that drops XDG_CONFIG_HOME.
-    #
-    # What has no `trusted:` line is anything NOT declared here, which is how
-    # `cleanup = "uninstall"` aborted on CA-20031962: it cannot load an
-    # undeclared formula from an undeclared tap in order to remove it. Such
-    # leftovers have to be untapped by hand before the first switch.
-    brews = [
-      {
-        name = "rjyo/moshi/moshi-hook";
-        restart_service = "changed";
-      }
-    ];
 
     # Fonts moved to fonts.packages, gcloud-cli and the four CLI casks
     # (claude-code@latest, codex, grok-build, antigravity-cli) to nixpkgs.

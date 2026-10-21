@@ -38,7 +38,7 @@ The absolute path is required — `sudo` resets PATH, so a bare `darwin-rebuild`
 | `nix/lib/unfree.nix` | The unfree packages allowed by name, shared because home-manager cannot set `nixpkgs.config` itself |
 | `nix/modules/darwin/system.nix` | macOS system settings every Mac shares: `stateVersion`, experimental features, zsh, PAM, sshd |
 | `nix/modules/darwin/environment.nix` | What has no home-manager equivalent on macOS: `fonts.packages`, `pathsToLink`, `JAVA_HOME`, `mas` |
-| `nix/modules/darwin/homebrew.nix` | What stays on Homebrew: one tapped formula, the GUI casks, the Mac App Store apps |
+| `nix/modules/darwin/homebrew.nix` | What stays on Homebrew: the GUI casks and the Mac App Store apps |
 | `nix/modules/darwin/home-manager.nix` | Wires `nix/modules/home` in for `system.primaryUser` |
 | `nix/modules/home/files.nix` | home-manager's `home.file`: every dotfile link, store or live |
 | `nix/modules/home/packages/` | `home.packages`, one file per purpose: `core`, `dev`, `cloud`, `ai`, `fun` |
@@ -60,7 +60,9 @@ Six packages are therefore aarch64-only in `nix/modules/home/packages/default.ni
 
 `atuin` is gated for a different reason: 26.05 ships 18.15.2, older than whatever last migrated Kenya's SQLite history, and an older client refuses a migrated database outright (`migration <id> was previously applied but is missing in the resolved migrations`). Because `_atuin_preexec` runs `atuin history start` **synchronously**, that failure cost 4-8 seconds on *every* command after the first switch. **Kenya therefore runs no atuin at all** — `zsh/.zshrc` guards `atuin init` with `(( $+commands[atuin] ))`, and `zsh/.zprofile` sets the `FZF_CTRL_R_COMMAND=''` that silences fzf's Ctrl-R only where atuin exists, so Kenya gets fzf's history search instead.
 
-**Homebrew cannot take over a package on Kenya any more.** Homebrew has declared macOS 15 / x86_64 a [Tier 3](https://docs.brew.sh/Support-Tiers#tier-3) configuration and stopped bottling for it, so a new formula there means a source build — that, plus a pinned `openssl@3`, is why the atuin fallback was abandoned. Kenya's `homebrew.brews` is empty as a result: `cloudflare-speed-cli`, `hunk` and `mycli` were dropped as unwanted, `herdr` moved to Nix, and only the `moshi-hook` that `nix/modules/darwin/homebrew.nix` declares for every machine is left.
+**Homebrew cannot take over a package on Kenya any more.** Homebrew has declared macOS 15 / x86_64 a [Tier 3](https://docs.brew.sh/Support-Tiers#tier-3) configuration and stopped bottling for it, so a new formula there means a source build — that, plus a pinned `openssl@3`, is why the atuin fallback was abandoned. Kenya installs no formula as a result: `cloudflare-speed-cli`, `hunk` and `mycli` were dropped as unwanted and `herdr` moved to Nix. No Mac declares a formula or tap any more — `moshi-hook`, the last one, went with the Moshi subscription.
+
+**Untap a tap by hand before removing it from `homebrew.nix`.** `cleanup = "uninstall"` cannot load an undeclared formula from an undeclared third-party tap in order to remove it (Homebrew 6's `HOMEBREW_REQUIRE_TAP_TRUST` refuses it), and aborts activation — this is what happened on CA-20031962. Run `brew uninstall <formula> && brew untap <tap>` on each Mac first, then switch.
 
 **Kenya's `herdr` comes from `numtide/llm-agents.nix`**, wired in as a flake input and applied on that host alone through `overlays.shared-nixpkgs`, which builds the upstream package tree against the consumer's own `pkgs` (hence `pkgs.llm-agents.herdr` on 26.05). The flake's `packages` output skips `x86_64-darwin` — that is just the systems it caches for — while herdr's own `meta.platforms` covers it and the package is built from source, so nothing upstream blocks it. The cost is that it compiles on the machine: Rust plus a vendored libghostty-vt through zig, about four minutes on the 2018 Mac mini, repeated whenever the input or a dependency moves. `hunk` cannot follow the same route — it pins `meta.platforms` without `x86_64-darwin` because `bun-bin`, the `bun build --compile` runtime, has no `darwin-x64` triple there.
 
@@ -72,14 +74,14 @@ Six packages are therefore aarch64-only in `nix/modules/home/packages/default.ni
 
 ### Dotfile Links
 
-`nix/modules/home/files.nix` declares all 53 links, in two kinds:
+`nix/modules/home/files.nix` declares all 52 links, in two kinds:
 
 | Kind | Count | Points at | For |
 |------|-------|-----------|-----|
 | store | 38 | `/nix/store/…`, read-only | configs a tool only reads |
-| live | 15 | the working tree, via `mkOutOfStoreSymlink` | configs a tool **writes** |
+| live | 14 | the working tree, via `mkOutOfStoreSymlink` | configs a tool **writes** |
 
-**Adding a file: default to store.** A store link is a copy, so the repo can never be dirtied by a tool, and a `switch` is what publishes an edit. Use `live` only when the tool writes where the link points — it rewrites the file itself (`docker context use`, `moshi-hook set`, Codex and Claude Code saving settings), or it drops siblings into the same directory (`lazy-lock.json`, Karabiner's `automatic_backups`, brew's `trust.json`, hunk's `state.json`, the plugin trees under `~/.vim` and `~/.config/tmux`). `.config/ghostty` is live for a third reason: its shaders are git submodules, which the flake never copies into the store.
+**Adding a file: default to store.** A store link is a copy, so the repo can never be dirtied by a tool, and a `switch` is what publishes an edit. Use `live` only when the tool writes where the link points — it rewrites the file itself (`docker context use`, Codex and Claude Code saving settings), or it drops siblings into the same directory (`lazy-lock.json`, Karabiner's `automatic_backups`, brew's `trust.json`, hunk's `state.json`, the plugin trees under `~/.vim` and `~/.config/tmux`). `.config/ghostty` is live for a third reason: its shaders are git submodules, which the flake never copies into the store.
 
 `starship` is store even though `starship config` writes, because it does not write **through** a symlink — it replaces the link with a regular file. A single-hop stow link behaved the same way, so this is not a home-manager regression and `live` would buy nothing. `kubeon`/`vpnoff` and friends in `zsh/.zshrc` therefore detach `~/.config/starship.toml` from the repo until the next switch relinks it.
 
@@ -167,38 +169,6 @@ Three reasons not to put personal skills under `~/.hermes/skills` instead:
 3. `~/.hermes/skills` also accumulates ~48 MB of bundled skills plus `.hub/` state, which has no business in a dotfiles working tree.
 
 `hermes skills tap add satoshiyamamoto/skills` is the wrong tool for these: taps install a **copy** through the GitHub API, which needs auth for a private repo and drops the live link.
-
-## Moshi (moshi-hook)
-
-`moshi-hook serve` runs as a Homebrew launchd agent — declared in `nix/modules/darwin/homebrew.nix` under `brews` with `restart_service = "changed"` — and bridges AI coding agents to the Moshi mobile app. The `moshi` package links only `~/.config/moshi/config.toml`; everything else moshi-hook owns lives in `~/Library/Application Support/Moshi/` (socket, `hook.log`, pairing state) and must stay out of the repo.
-
-The tap is third-party, and since Homebrew 6.0.0 `HOMEBREW_REQUIRE_TAP_TRUST` refuses to load its formula until it is trusted. Activation is already covered: nix-darwin's `trusted` option defaults to **true for `brews` and `casks`** (and false only for `taps`), so the generated Brewfile carries `brew "rjyo/moshi/moshi-hook", ..., trusted: true`, and `brew bundle` writes that into the trust store itself before loading any entry (`Library/Homebrew/bundle/installer.rb`). No tap-wide grant is needed.
-
-What is *not* covered is anything undeclared. `cleanup = "uninstall"` cannot load an undeclared formula from an undeclared tap in order to remove it, and aborts activation — this is what happened on CA-20031962. Untap such leftovers by hand before the first switch.
-
-Interactive `brew` is a separate store: `brew trust` writes `$XDG_CONFIG_HOME/homebrew/trust.json` while a run without `XDG_CONFIG_HOME` reads `~/.homebrew/trust.json` (`Library/Homebrew/trust.rb`), so `brew trust --formula rjyo/moshi/moshi-hook` is still worth running once per machine for your own shell.
-
-`moshi-hook set` writes **through** the symlink rather than replacing it, so the config has to be a `live` link (see [Dotfile Links](#dotfile-links)) — a store link would make the CLI fail on a read-only file. With it, the CLI and the repo stay in sync. It also sorts the port list on write. Editing `config.toml` by hand is equivalent; `set` just saves you finding the file.
-
-### Auto-update is on, and `install` replaces the live links
-
-`auto_update = "auto"` in `config.toml` is a deliberate exception to letting Homebrew own versions: the daemon upgrades itself through Homebrew (the Cellar keeps one version, and `onActivation.upgrade = false` means `brew bundle` never fights it). Each upgrade reruns `moshi-hook install --target claude/codex/hermes`, and unlike `set`, `install` does **not** write through the symlink — it replaces `~/.claude/settings.json`, `~/.codex/hooks.json`, `~/.codex/config.toml` and `~/.hermes/config.yaml` with regular files. A second such replacement used to abort the switch on the existing `.hm-bak`.
-
-`home.activation.adoptReplacedLiveFiles` in `nix/modules/home/files.nix` handles it: before `checkLinkTargets`, any `liveFiles` entry that has become a regular file is moved back over its repo copy, so the link is recreated and moshi's additions show up in `git diff`. It compares mtimes, not content — a repo copy newer than the file is left alone and the switch stops as before; `touch` the file in `$HOME` to adopt it anyway. Only paths the previous home-manager generation linked are adopted, so a first switch — or a newly added `liveFiles` entry — never overwrites the repo with whatever the tool created on its own (Claude Code's bare `{"theme": "auto"}` did exactly that on CA-20040831); such a file goes to `.hm-bak` instead.
-
-### `scan_ports` is a deliberate allowlist — do not set it back to `all`
-
-With the default `scan_ports = all`, moshi-hook HTTP-probes **every** loopback listener to decide which ones are dev servers (`gateway.listListeningPorts` -> `filterConfiguredScanPorts` -> `probeHTTPServer` -> `classifyServeSim`, detecting tokens like `Vite` / `Next.js` / `X-Powered-By`). Each probe is a bare `GET /` from Go's http.Client, sent twice per port — once with `Host: 127.0.0.1:<port>`, once with `Host: localhost:<port>`, identifiable by `User-Agent: Go-http-client/1.1`.
-
-claudecode.nvim serves WebSocket only, on a random port in 10000-65535, so those probes make it answer 400 `Bad WebSocket upgrade request: Missing or invalid Upgrade header` (body is exactly 64 bytes, so `Content-Length: 64` is the fingerprint) and log a WARN. That path then trips an upstream bug: `server/client.lua` schedules `client.tcp_handle:close()` without the `is_closing()` guard that `server/tcp.lua` `_remove_client` has, so when the peer hangs up first Neovim reports `handle 0x... is already closing` with `[C]: in function 'close'`. Both messages are noise — the Claude Code CLI's own `/ide` handshake is valid and unaffected.
-
-Because the claudecode.nvim port is random, an allowlist is the only fix that survives a restart. **Ranges are not supported** — `moshi-hook set scan-ports 3000-3005` fails with `invalid scan port "3000-3005" (use 1-65535)` (that `1-65535` is the valid range for a *single* port, not range syntax). Only `all`, `none`, or comma-separated individual ports are accepted.
-
-The listed ports come from what this machine actually runs: 3000 (`next dev` / `remix dev` / `wrangler pages dev`, and orion-classic's web app), 8080 (orion-classic's admin app), 5173 (`vite`), 3001 / 5174 (the Next.js and Vite fallbacks when the default is taken), and 4180 (oauth2-proxy in orion-classic's `docker-compose.yml`, which is the URL you actually open in a browser).
-
-Two ports from that compose file are deliberately **not** listed: redis on 6379 speaks no HTTP, and imgproxy on 18080 serves signed-URL image transforms rather than a browsable page, so listing it would only buy an extra probe. Ports outside the list are invisible to the Moshi app — Chrome's `:9222` DevTools endpoint no longer shows up in `moshi-hook servers`, which is the intended trade-off.
-
-Scan-port changes apply on the next discovery refresh (no restart); boolean settings such as `always-on-discovery` need the daemon restarted. Verify with `moshi-hook set` (lists every setting) and `moshi-hook servers` (JSON of what was discovered).
 
 ## Neovim Configuration
 

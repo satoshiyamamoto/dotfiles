@@ -22,8 +22,7 @@
   # hunk cannot come the same way: it pins meta.platforms without
   # x86_64-darwin because bun-bin, the `bun build --compile` runtime, has no
   # darwin-x64 triple there. cloudflare-speed-cli, hunk and mycli are simply
-  # not wanted on this host, so with those three gone Homebrew keeps only the
-  # moshi-hook that modules/darwin/homebrew.nix declares for every machine.
+  # not wanted on this host, so Homebrew installs no formula here at all.
   #
   # herdr's package.nix also takes `installAgentSkills`, a setup hook that
   # exists only in unstable. Backport just its setup-hook.sh: unstable's
