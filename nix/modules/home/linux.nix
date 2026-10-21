@@ -35,21 +35,4 @@
     git-credential-manager
     zsh
   ];
-
-  # The login shell stays the distribution's bash: an LDAP account usually
-  # cannot chsh, and /etc/shells would need the store path anyway. Hand
-  # interactive logins over to zsh instead. Non-interactive ones -- `ssh host
-  # cmd`, scp, VS Code's remote server -- never get here. SHELL is set so that
-  # tmux and friends start zsh for new panes too. ~/.profile is what bash would
-  # have read without this file, so it still runs first.
-  home.file.".bash_profile".text = ''
-    [ -f "$HOME/.profile" ] && . "$HOME/.profile"
-    case $- in
-      *i*)
-        if [ -x "$HOME/.nix-profile/bin/zsh" ]; then
-          SHELL="$HOME/.nix-profile/bin/zsh" exec "$HOME/.nix-profile/bin/zsh" -l
-        fi
-        ;;
-    esac
-  '';
 }
