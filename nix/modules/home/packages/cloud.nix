@@ -16,7 +16,6 @@
         docker
         docker-buildx
         docker-compose
-        docker-credential-helpers
         google-cloud-sdk
         gws
         k9s
@@ -35,6 +34,11 @@
       ]
     )
     # A VM to run dockerd in is only needed on macOS; Linux uses the host's own
-    # Docker Engine through /var/run/docker.sock.
-    ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [ pkgs.colima ];
+    # Docker Engine through /var/run/docker.sock. The credential helpers too:
+    # macOS' config.json names osxkeychain, while Linux has no config.json, so
+    # docker picks secretservice off PATH and a headless host cannot answer it.
+    ++ lib.optionals pkgs.stdenv.hostPlatform.isDarwin [
+      pkgs.colima
+      pkgs.docker-credential-helpers
+    ];
 }
