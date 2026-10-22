@@ -141,16 +141,15 @@
     "command": "wt list statusline --format=claude-code"
   },
   "enabledPlugins": {
-    "agent-skills@addy-agent-skills": true,
     "apple-notes@apple-notes-mcp": true,
-    "aws-core@claude-plugins-official": true,
+    "aws-core@claude-plugins-official": false,
     "cc-plugin-you-should-know@builtin": true,
     "code-review@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
     "commit-commands@claude-plugins-official": true,
     "context7@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true,
-    "github@claude-plugins-official": false,
+    "github@claude-plugins-official": true,
     "gopls-lsp@claude-plugins-official": true,
     "jdtls-lsp@claude-plugins-official": true,
     "lua-lsp@claude-plugins-official": true,
@@ -165,7 +164,14 @@
     "serena@synced": false,
     "skill-creator@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "worktrunk@worktrunk": true
+    "worktrunk@worktrunk": true,
+    "agent-skills@addy-agent-skills": true,
+    "terraform@synced": false,
+    "supabase@synced": false,
+    "linear@synced": false,
+    "laravel-boost@synced": false,
+    "telegram@synced": false,
+    "imessage@synced": false
   },
   "extraKnownMarketplaces": {
     "addy-agent-skills": {
