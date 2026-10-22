@@ -24,7 +24,10 @@ pane_gaps = true
 agent_panel_sort = "priority"
 tab_bar_right = [
   { type = "zoom" },
-  { type = "hostname" },
+  # The hostname entry has no trim option, so the command below trims it like
+  # starship's hostname.trim_at = "."
+  # { type = "hostname" },
+  { type = "command", command = "hostname -s", interval_seconds = 3600 },
   { type = "datetime", format = "%H:%M" },
   # { type = "text", text = "prod" },
   # { type = "command", command = "~/.config/herdr/status.sh", interval_seconds = 5, timeout_seconds = 2 },
