@@ -58,6 +58,16 @@ return {
   },
 
   {
+    "leejh903/codex.nvim",
+    lazy = false,
+    config = function()
+      require("codex").setup()
+      require("codex.current_file").setup()
+      require("codex").start()
+    end,
+  },
+
+  {
     -- WebSocket MCP server for /ide integration (UI is delegated to sidekick.nvim)
     "coder/claudecode.nvim",
     dependencies = { "folke/snacks.nvim" },
