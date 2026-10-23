@@ -15,7 +15,8 @@ let
   # this when its tool writes where the link points, which a store path
   # -- read-only -- cannot allow:
   #   - it rewrites the file itself: `docker context use`, Codex and
-  #     Claude Code saving settings
+  #     Claude Code saving settings, herdr-radar's managed blocks in
+  #     herdr's config.toml
   #   - it writes siblings into the same directory: lazy-lock.json,
   #     Karabiner's automatic_backups, brew's trust.json, hunk's
   #     state.json, and the plugin trees under ~/.vim and ~/.config/tmux
@@ -36,6 +37,7 @@ let
     ".codex/config.toml" = "codex/.codex/config.toml";
     ".codex/hooks.json" = "codex/.codex/hooks.json";
     ".codex/rules/default.rules" = "codex/.codex/rules/default.rules";
+    ".config/herdr/config.toml" = "herdr/.config/herdr/config.toml";
     ".hermes/SOUL.md" = "hermes/.hermes/SOUL.md";
     ".hermes/config.yaml" = "hermes/.hermes/config.yaml";
   };
@@ -59,7 +61,6 @@ in
     ".config/gh/config.yml".source = ../../../gh/.config/gh/config.yml;
     ".config/git/ignore".source = ../../../git/.config/git/ignore;
     ".config/glow/glow.yml".source = ../../../glow/.config/glow/glow.yml;
-    ".config/herdr/config.toml".source = ../../../herdr/.config/herdr/config.toml;
     ".config/k9s/aliases.yaml".source = ../../../k9s/.config/k9s/aliases.yaml;
     ".config/k9s/config.yaml".source = ../../../k9s/.config/k9s/config.yaml;
     ".config/k9s/skins/transparent.yaml".source = ../../../k9s/.config/k9s/skins/transparent.yaml;
@@ -135,16 +136,6 @@ in
       builtins.readFile ../../../git/.config/git/config
     );
     ".config/git/config.linux".source = ../../../git/.config/git/config.linux;
-    # The login shell stays the distribution's bash -- an LDAP account usually
-    # cannot chsh -- so a saved herdr machine's server inherits SHELL=/bin/bash.
-    # Login mode because the profile's PATH is set in .zprofile, and "auto"
-    # means non-login off macOS.
-    ".config/herdr/config.toml".text = builtins.readFile ../../../herdr/.config/herdr/config.toml + ''
-
-      [terminal]
-      default_shell = "${config.home.profileDirectory}/bin/zsh"
-      shell_mode = "login"
-    '';
   };
 
   # bat reads only the compiled ~/.cache/bat, never themes/*.tmTheme
