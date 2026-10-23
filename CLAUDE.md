@@ -74,20 +74,24 @@ Six packages are therefore aarch64-only in `nix/modules/home/packages/default.ni
 
 ### Dotfile Links
 
-`nix/modules/home/files.nix` declares all 52 links, in two kinds:
+`nix/modules/home/files.nix` declares all 51 links, in two kinds:
 
 | Kind | Count | Points at | For |
 |------|-------|-----------|-----|
 | store | 38 | `/nix/store/…`, read-only | configs a tool only reads |
-| live | 14 | the working tree, via `mkOutOfStoreSymlink` | configs a tool **writes** |
+| live | 13 | the working tree, via `mkOutOfStoreSymlink` | configs a tool **writes** |
 
-**Adding a file: default to store.** A store link is a copy, so the repo can never be dirtied by a tool, and a `switch` is what publishes an edit. Use `live` only when the tool writes where the link points — it rewrites the file itself (`docker context use`, Codex and Claude Code saving settings), or it drops siblings into the same directory (`lazy-lock.json`, Karabiner's `automatic_backups`, brew's `trust.json`, hunk's `state.json`, the plugin trees under `~/.vim` and `~/.config/tmux`). `.config/ghostty` is live for a third reason: its shaders are git submodules, which the flake never copies into the store.
+**Adding a file: default to store.** A store link is a copy, so the repo can never be dirtied by a tool, and a `switch` is what publishes an edit. Use `live` only when the tool writes where the link points — it rewrites the file itself (`docker context use` and Claude Code saving settings), or it drops siblings into the same directory (`lazy-lock.json`, Karabiner's `automatic_backups`, brew's `trust.json`, hunk's `state.json`, the plugin trees under `~/.vim` and `~/.config/tmux`). `.config/ghostty` is live for a third reason: its shaders are git submodules, which the flake never copies into the store.
 
 `starship` is store even though `starship config` writes, because it does not write **through** a symlink — it replaces the link with a regular file. A single-hop stow link behaved the same way, so this is not a home-manager regression and `live` would buy nothing. `kubeon`/`vpnoff` and friends in `zsh/.zshrc` therefore detach `~/.config/starship.toml` from the repo until the next switch relinks it.
 
 `~/.claude` is linked **per file**, not as a directory: Claude Code keeps machine-local state (`projects/`, `history.jsonl`, `shell-snapshots/`, `.credentials.json`) in the same directory, and only `settings.json` is tracked here. A directory link drags all of it into the working tree, which is exactly what stow did.
 
 An edit to a store-linked file needs a `switch` to take effect. An edit to a live-linked file is live immediately — and shows up in `git status`.
+
+**Codex config is local.** Track shared defaults in `codex/.codex/config.toml.example`; home-manager copies it to `~/.codex/config.toml` with mode `0600` only when no file or symlink exists. Later switches preserve the local file. Merge desired example changes manually. Keep project trust, hook trust hashes, absolute skill/cache paths, app-managed MCP/marketplace settings, and desktop state out of the example. `hooks.json` and `rules/default.rules` remain live-linked.
+
+**Migrating another machine: before pulling this change or running `.sync`,** back up the contents of the old `~/.codex/config.toml` symlink outside the repo, then replace that symlink with a writable regular file containing the same bytes (mode `0600`). Do this while Codex/ChatGPT is not saving settings. The update deletes the old tracked target; pulling first can leave a dangling link and lose local-only settings. Then pull and switch. Do not seed an existing setup from the example.
 
 ### Nix Formatting
 

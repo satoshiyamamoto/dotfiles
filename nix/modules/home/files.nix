@@ -14,8 +14,8 @@ let
   # Link at the working tree rather than the Nix store. A package needs
   # this when its tool writes where the link points, which a store path
   # -- read-only -- cannot allow:
-  #   - it rewrites the file itself: `docker context use`, Codex and
-  #     Claude Code saving settings
+  #   - it rewrites the file itself: `docker context use` and Claude Code
+  #     saving settings
   #   - it writes siblings into the same directory: lazy-lock.json,
   #     Karabiner's automatic_backups, brew's trust.json, hunk's
   #     state.json, and the plugin trees under ~/.vim and ~/.config/tmux
@@ -33,7 +33,6 @@ let
   # is what stow did.
   liveFiles = {
     ".claude/settings.json" = "claude/.claude/settings.json";
-    ".codex/config.toml" = "codex/.codex/config.toml";
     ".codex/hooks.json" = "codex/.codex/hooks.json";
     ".codex/rules/default.rules" = "codex/.codex/rules/default.rules";
     ".hermes/SOUL.md" = "hermes/.hermes/SOUL.md";
@@ -146,6 +145,13 @@ in
       shell_mode = "login"
     '';
   };
+
+  # Codex saves runtime state alongside settings; seed a writable local file once.
+  home.activation.codexConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    if [ ! -e "$HOME/.codex/config.toml" ] && [ ! -L "$HOME/.codex/config.toml" ]; then
+      run ${pkgs.coreutils}/bin/install -Dm600 ${../../../codex/.codex/config.toml.example} "$HOME/.codex/config.toml"
+    fi
+  '';
 
   # bat reads only the compiled ~/.cache/bat, never themes/*.tmTheme
   # directly, so the linked tokyonight themes are unknown until built.

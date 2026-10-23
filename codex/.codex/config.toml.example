@@ -1,0 +1,118 @@
+# Shared defaults for new machines; existing ~/.codex/config.toml stays local.
+# Merge later changes manually; never copy runtime state or credentials here.
+model = "gpt-6.1-sol"
+model_reasoning_effort = "medium"
+personality = "pragmatic"
+approval_policy = "on-request"
+approvals_reviewer = "user"
+allow_login_shell = true
+default_permissions = ":danger-full-access"
+web_search = "live"
+project_doc_max_bytes = 32768
+service_tier = "default"
+
+[history]
+persistence = "save-all"
+
+[shell_environment_policy]
+inherit = "all"
+ignore_default_excludes = false
+
+[features]
+daemon_auto_start = false
+hooks = true
+js_repl = false
+memories = false
+
+[tui]
+notifications = true
+notification_method = "auto"
+notification_condition = "unfocused"
+
+[plugins."github@openai-curated"]
+enabled = true
+
+[plugins."google-drive@openai-curated"]
+enabled = true
+
+[plugins."agent-skills@agent-skills"]
+enabled = true
+
+[plugins."mattpocock-skills@mattpocock"]
+enabled = true
+
+[plugins."ponytail@ponytail"]
+enabled = true
+
+[marketplaces.agent-skills]
+source_type = "git"
+source = "https://github.com/addyosmani/agent-skills.git"
+
+[marketplaces.mattpocock]
+source_type = "git"
+source = "https://github.com/mattpocock/skills.git"
+
+[marketplaces.ponytail]
+source_type = "git"
+source = "https://github.com/DietrichGebert/ponytail.git"
+
+[permissions.dev-autonomous.filesystem]
+glob_scan_max_depth = 4
+":root" = "read"
+":tmpdir" = "write"
+":slash_tmp" = "write"
+"~/Projects/src" = "write"
+"~/.agents/skills" = "read"
+"~/.codex/hooks" = "read"
+"~/.codex/hooks.json" = "read"
+"~/.codex/plugins" = "read"
+"~/.codex/sessions" = "read"
+"~/.codex/skills" = "read"
+"~/.aws" = "deny"
+"~/.config/gcloud" = "deny"
+"~/.config/gh" = "deny"
+"~/.codex/auth.json" = "deny"
+"~/.codex/log" = "write"
+"~/.codex/shell_snapshots" = "write"
+"~/.codex/tmp" = "write"
+"~/.docker/config.json" = "deny"
+"~/.git-credentials" = "deny"
+"~/.gnupg" = "deny"
+"~/.kube" = "deny"
+"~/.netrc" = "deny"
+"~/.npmrc" = "deny"
+"~/.ssh" = "deny"
+"~/Library/Keychains" = "deny"
+"~/**/*.key" = "deny"
+"~/**/*.pem" = "deny"
+"~/**/.env*" = "deny"
+"~/**/secrets/**" = "deny"
+
+[permissions.dev-autonomous.network]
+enabled = true
+mode = "limited"
+allow_local_binding = false
+
+[permissions.dev-autonomous.network.domains]
+"127.0.0.1" = "allow"
+"api.github.com" = "allow"
+"api.openai.com" = "allow"
+"auth.docker.io" = "allow"
+"chatgpt.com" = "allow"
+"crates.io" = "allow"
+"developers.openai.com" = "allow"
+"files.pythonhosted.org" = "allow"
+"ghcr.io" = "allow"
+"github.com" = "allow"
+"localhost" = "allow"
+"objects.githubusercontent.com" = "allow"
+"pkg-containers.githubusercontent.com" = "allow"
+"production.cloudflare.docker.com" = "allow"
+"proxy.golang.org" = "allow"
+"pypi.org" = "allow"
+"raw.githubusercontent.com" = "allow"
+"registry-1.docker.io" = "allow"
+"registry.npmjs.org" = "allow"
+"repo.maven.apache.org" = "allow"
+"static.crates.io" = "allow"
+"sum.golang.org" = "allow"
