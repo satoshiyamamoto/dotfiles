@@ -22,6 +22,17 @@ if ! grep -q "\"$target\" = mkHome" "$repo/nix/flake.nix"; then
   exit 1
 fi
 
+# Nix raises its soft stack limit to 60 MiB, but cannot exceed the hard limit.
+stack_hard="$(ulimit -Hs)"
+if [ "$stack_hard" != unlimited ] && [ "$stack_hard" -lt 61440 ]; then
+  echo "==> Raising the stack hard limit to 60 MiB for $USER"
+  printf '%s hard stack 61440\n' "$USER" |
+    sudo tee "/etc/security/limits.d/99-nix-stack-$USER.conf" >/dev/null
+  # PAM applies the file at login; update this installer process immediately.
+  sudo prlimit --pid "$$" --stack=:62914560
+  echo "==> Log out and back in to apply the stack limit to your terminal too"
+fi
+
 # Nix itself, multi-user. The installer asks for sudo and needs systemd.
 if ! [ -x "$nix" ]; then
   echo "==> Installing Nix"
