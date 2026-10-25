@@ -1,6 +1,11 @@
 # What a standalone home-manager on a non-NixOS Linux needs on top of the shared
 # core. Imported by mkHome in flake.nix, never by nix-darwin.
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
   # XDG_DATA_DIRS, terminfo and locale glue for Nix packages running on a
   # distribution's own userland.
@@ -34,5 +39,10 @@
     git
     git-credential-manager
     zsh
+    # Only the proxy loads NSS modules; clients keep their normal library paths.
+    (writeShellScriptBin "nsncd" ''
+      export LD_LIBRARY_PATH=${lib.makeLibraryPath [ sssd ]}
+      exec ${nsncd}/bin/nsncd "$@"
+    '')
   ];
 }

@@ -1,9 +1,8 @@
 #!/bin/sh
 # Bootstrap a Linux host to the point where home-manager can take over: Nix
-# itself, then the first switch. Nothing here depends on the distribution --
-# home-manager's targets.genericLinux absorbs the differences -- so Ubuntu,
-# Debian and Arch all run the same steps. Each step is skipped when it is
-# already in place, so re-running the script is safe.
+# itself, then the first switch and the host's NSS proxy when LDAP is used.
+# Packages come from Nix on every distribution; systemd manages the proxy.
+# Re-running the script is safe.
 #
 # Packages and dotfiles come from nix/modules/home. After the first switch,
 # `.sync` (zsh/.zshrc) is the only command needed.
@@ -62,6 +61,31 @@ else
   echo "==> Activating home-manager for $target"
   HOME_MANAGER_BACKUP_EXT=hm-bak "$nix" --extra-experimental-features 'nix-command flakes' \
     run "$repo/nix#homeConfigurations.\"$target\".activationPackage"
+fi
+
+# Nix clients cannot load the host's LDAP NSS module, so use a shared proxy.
+if grep -Eq '^(passwd|group):.*[[:space:]]sss([[:space:]]|$)' /etc/nsswitch.conf; then
+  if ! [ -x "$HOME/.nix-profile/bin/nsncd" ]; then
+    "$HOME/.nix-profile/bin/home-manager" switch -b hm-bak --flake "$repo/nix"
+  fi
+  echo "==> Configuring the NSS proxy"
+  sudo tee /etc/systemd/system/nsncd.service >/dev/null <<EOF
+[Unit]
+Description=NSS proxy for Nix clients
+After=sssd.service
+
+[Service]
+ExecStart="$HOME/.nix-profile/bin/nsncd"
+DynamicUser=yes
+RuntimeDirectory=nscd
+Type=notify
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+EOF
+  sudo systemctl daemon-reload
+  sudo systemctl enable --now nsncd.service
 fi
 
 # lua-json5 (nvim) builds with cargo, and nixpkgs' rustup ships with no
