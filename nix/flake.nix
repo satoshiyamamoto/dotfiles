@@ -56,28 +56,12 @@
       ...
     }:
     let
-      # shortcut: diff-cover 10.5.1, which sqlfluff depends on, fails its
-      # HTML-output tests on Linux and macOS alike; drop this once it is cached.
-      # TODO(2026-10-21): remove this overlay when the following prints "fixed"
-      # on every host, then switch to confirm sqlfluff still builds:
-      #   nix path-info --store https://cache.nixos.org \
-      #     "$(nix eval --raw github:NixOS/nixpkgs/nixpkgs-unstable#sqlfluff.outPath)" \
-      #     >/dev/null 2>&1 && echo fixed || echo still-broken
-      diffCoverOverlay = final: prev: {
-        pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-          (pyfinal: pyprev: {
-            diff-cover = pyprev.diff-cover.overridePythonAttrs { doCheck = false; };
-          })
-        ];
-      };
-
       mkDarwin =
         darwin: hm: hostModule:
         darwin.lib.darwinSystem {
           specialArgs = { inherit inputs; };
           modules = [
             hostModule
-            { nixpkgs.overlays = [ diffCoverOverlay ]; }
             hm.darwinModules.home-manager
             ./modules/darwin/environment.nix
             ./modules/darwin/home-manager.nix
@@ -96,7 +80,6 @@
             inherit system;
             config.allowUnfreePredicate =
               pkg: builtins.elem (nixpkgs.lib.getName pkg) (import ./lib/unfree.nix);
-            overlays = [ diffCoverOverlay ];
           };
           extraSpecialArgs = { inherit inputs; };
           modules = [
