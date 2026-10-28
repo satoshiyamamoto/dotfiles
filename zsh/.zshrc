@@ -137,14 +137,7 @@ git-repos() {
   zle accept-line
 }
 zle -N git-repos
-bindkey '\er' git-repos        # alt+r for repos
-
-wt-switch() {
-  BUFFER="wt switch"
-  zle accept-line
-}
-zle -N wt-switch
-bindkey '\ew' wt-switch        # alt+w for worktrees
+bindkey '^G' git-repos         # ctrl+g for repos
 
 # The session picker below works both as a ZLE widget and as a plain command.
 # $WIDGET is only set while a widget runs, so it tells the two apart: from a
@@ -252,6 +245,9 @@ alias trans='trans --brief :ja'
 alias tree='eza --color=always --icons --tree'
 alias vpnon='starship config custom.vpn.disabled false'
 alias vpnoff='starship config custom.vpn.disabled true'
+alias wtl='wt list'
+alias wtr='wt remove'
+alias wts='wt switch'
 
 #
 # Prompt
