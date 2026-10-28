@@ -14,6 +14,12 @@ export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
-# Standalone home-manager (Linux) writes home.sessionVariables -- JAVA_HOME
-# among them -- here. nix-darwin hosts get theirs from /etc/zshenv instead.
-[[ -r $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh ]] && source $HOME/.nix-profile/etc/profile.d/hm-session-vars.sh
+# nix-darwin with useUserPackages installs these in /etc/profiles/per-user;
+# standalone home-manager (Linux) installs them in ~/.nix-profile.
+for _hm_profile in "/etc/profiles/per-user/$USER" "$HOME/.nix-profile"; do
+  if [[ -r "$_hm_profile/etc/profile.d/hm-session-vars.sh" ]]; then
+    source "$_hm_profile/etc/profile.d/hm-session-vars.sh"
+    break
+  fi
+done
+unset _hm_profile

@@ -56,6 +56,8 @@ end
 
 local cmd = {
   "jdtls",
+  "--java-executable",
+  vim.env.JDTLS_JAVA_HOME .. "/bin/java",
   "-data",
   get_workspace_dir(root_dir),
 }

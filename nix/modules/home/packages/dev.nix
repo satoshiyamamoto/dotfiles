@@ -1,6 +1,9 @@
 # Language toolchains, build tools, linters/formatters and database clients.
 { available, pkgs, ... }:
 {
+  # JDT LS needs Java 25; project builds keep Java 21.
+  home.sessionVariables.JDTLS_JAVA_HOME = "${pkgs.jdk25.home}";
+
   home.packages = available (
     with pkgs;
     [
