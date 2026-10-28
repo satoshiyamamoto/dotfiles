@@ -20,6 +20,12 @@ return {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
+    init = function()
+      -- Herdr supports Kitty placeholders but is not recognized by Snacks.
+      if vim.env.TERM_PROGRAM == "herdr" then
+        vim.env.SNACKS_GHOSTTY = vim.env.SNACKS_GHOSTTY or "true"
+      end
+    end,
     opts = {
       dashboard = {},
       explorer = {},

@@ -63,6 +63,15 @@ else
     run "$repo/nix#homeConfigurations.\"$target\".activationPackage"
 fi
 
+# Ubuntu 24.04+ restricts the user namespaces Chromium needs for its sandbox.
+# Keep the host restriction and allow only Nix Chromium's executable paths.
+if [ -r /proc/sys/kernel/apparmor_restrict_unprivileged_userns ] &&
+  [ "$(cat /proc/sys/kernel/apparmor_restrict_unprivileged_userns)" = 1 ]; then
+  echo "==> Configuring Chromium's AppArmor sandbox permission"
+  sudo install -o root -g root -m 0644 "$HOME/.config/apparmor.d/nix-chromium" /etc/apparmor.d/nix-chromium
+  sudo /sbin/apparmor_parser -r /etc/apparmor.d/nix-chromium
+fi
+
 # Nix clients cannot load the host's LDAP NSS module, so use a shared proxy.
 if grep -Eq '^(passwd|group):.*[[:space:]]sss([[:space:]]|$)' /etc/nsswitch.conf; then
   if ! [ -x "$HOME/.nix-profile/bin/nsncd" ]; then

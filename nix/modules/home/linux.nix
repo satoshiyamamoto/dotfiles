@@ -14,6 +14,9 @@
   # The `home-manager` command itself. On macOS darwin-rebuild does its job.
   programs.home-manager.enable = true;
 
+  # Let Chromium find Japanese fonts when rendering Mermaid diagrams.
+  fonts.fontconfig.enable = true;
+
   # macOS gets this from nix-darwin's /etc/zshenv (../darwin/environment.nix).
   # Here it lands in hm-session-vars.sh, which zsh/.zshenv sources.
   home.sessionVariables.JAVA_HOME = "${pkgs.jdk21.home}";
@@ -27,6 +30,17 @@
   # warns at every login. This file is the hint's own off switch.
   home.file.".sudo_as_admin_successful".text = "";
 
+  # Ubuntu's AppArmor userns restriction blocks Chromium's sandbox. The Linux
+  # installer applies this host policy with sudo; home-manager owns its source.
+  home.file.".config/apparmor.d/nix-chromium".text = ''
+    abi <abi/4.0>,
+    include <tunables/global>
+
+    profile nix-chromium /nix/store/*-chromium-unwrapped-*/libexec/chromium/chromium flags=(unconfined) {
+      userns,
+    }
+  '';
+
   # What macOS supplies outside Nix and a distribution may not ship at all
   # (Ubuntu ships neither): zsh, which nix-darwin's programs.zsh installs on
   # macOS, and a C compiler, which the Command Line Tools provide there.
@@ -38,6 +52,7 @@
     gcc
     git
     git-credential-manager
+    ipaexfont
     zsh
     # Only the proxy loads NSS modules; clients keep their normal library paths.
     (writeShellScriptBin "nsncd" ''
