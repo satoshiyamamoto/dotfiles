@@ -10,6 +10,7 @@ default_permissions = ":danger-full-access"
 web_search = "live"
 project_doc_max_bytes = 32768
 service_tier = "default"
+check_for_update_on_startup = false
 
 [history]
 persistence = "save-all"
