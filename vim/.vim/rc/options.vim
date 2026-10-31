@@ -17,6 +17,7 @@ set completeopt=menuone,noselect
 set shortmess+=cI
 set helplang=ja,en
 set laststatus=2
+set showcmd
 set updatetime=100
 set timeoutlen=300
 set ttimeoutlen=10
