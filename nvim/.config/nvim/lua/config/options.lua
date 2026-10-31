@@ -7,6 +7,7 @@ vim.opt.smartcase = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 vim.opt.laststatus = 3
+vim.opt.cmdheight = 0
 vim.opt.fillchars:append({ diff = " " })
 vim.opt.termguicolors = true
 vim.opt.completeopt = { "menuone", "noselect" }

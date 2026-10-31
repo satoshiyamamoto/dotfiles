@@ -193,7 +193,7 @@ All plugins live under `lua/plugins/`, one file per category. Before adding a pl
 | `git.lua` | Git-specific plugins (currently empty, reserved) |
 | `lsp.lua` | nvim-lspconfig, mason-lspconfig, mason.nvim |
 | `treesitter.lua` | nvim-treesitter, context, textobjects, render-markdown |
-| `ui.lua` | snacks.nvim, noice, lualine, bufferline, themes, trouble, oil, which-key |
+| `ui.lua` | snacks.nvim, lualine, bufferline, themes, trouble, oil, which-key |
 
 ### LSP Server Configs
 

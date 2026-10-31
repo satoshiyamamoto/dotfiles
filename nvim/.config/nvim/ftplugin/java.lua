@@ -76,6 +76,7 @@ local config = {
   capabilities = capabilities,
   exit_timeout = 1000,
   handlers = {
+    -- Standard LspProgress already reports startup; avoid duplicate status echoes.
     ["language/status"] = function() end,
   },
   settings = {

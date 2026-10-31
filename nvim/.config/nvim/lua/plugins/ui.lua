@@ -1,4 +1,5 @@
 local sidekick_cli_sessions = {}
+local ui_status = { msg_showcmd = "", msg_showmode = "" }
 
 local function sidekick_cli_status()
   local count = vim.tbl_count(sidekick_cli_sessions)
@@ -10,7 +11,8 @@ end
 
 local function refresh_lualine_status()
   if package.loaded.lualine then
-    require("lualine").refresh({ place = { "statusline" } })
+    require("lualine").refresh({ place = { "statusline" }, force = true })
+    vim.api.nvim__redraw({ statusline = true, flush = true })
   end
 end
 
@@ -75,39 +77,6 @@ return {
   },
 
   -- Notifications / UI enhancements
-  {
-    "folke/noice.nvim",
-    event = { "VeryLazy" },
-    opts = {
-      presets = {
-        bottom_search = true,
-        command_palette = true,
-        long_message_to_split = true,
-        inc_rename = false,
-        lsp_doc_border = false,
-      },
-      routes = {
-        {
-          filter = {
-            event = "msg_show",
-            any = {
-              { find = "%d+L, %d+B" },
-              { find = "; after #%d+" },
-              { find = "; before #%d+" },
-              -- FIXME: https://github.com/folke/noice.nvim/issues/1097
-              { kind = "shell_out" },
-              { kind = "shell_err" },
-            },
-          },
-          view = "mini",
-        },
-      },
-    },
-    dependencies = {
-      { "MunifTanjim/nui.nvim" },
-    },
-  },
-
   {
     "folke/trouble.nvim",
     event = { "VeryLazy" },
@@ -191,6 +160,7 @@ return {
     "folke/which-key.nvim",
     event = { "VeryLazy" },
     opts = {
+      win = { row = -1 }, -- Keep the global statusline visible with cmdheight=0.
       spec = {
         { "<leader>o", group = "overseer" },
         { "<leader>R", group = "kulala" },
@@ -229,10 +199,6 @@ return {
       vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#161b22" })
       vim.api.nvim_set_hl(0, "@property.json", { fg = "#6bc46d" })
       vim.api.nvim_set_hl(0, "@property.json", { fg = "#6bc46d" })
-      require("notify").setup({
-        render = "default",
-        background_colour = "#000000",
-      })
     end,
   },
 
@@ -271,6 +237,27 @@ return {
     "nvim-lualine/lualine.nvim",
     event = { "VeryLazy" },
     init = function()
+      vim.api.nvim_create_autocmd("UIEnter", {
+        once = true,
+        callback = function()
+          -- Mirror status text without taking over ui2's message rendering.
+          vim.ui_attach(vim.api.nvim_create_namespace("dotfiles.lualine_status"), {
+            ext_messages = true,
+            set_cmdheight = false,
+          }, function(event, content)
+            if ui_status[event] == nil then
+              return
+            end
+            ui_status[event] =
+              table.concat(vim.tbl_map(function(chunk) return chunk[2] end, content)):gsub("%%", "%%%%")
+            if vim.in_fast_event() then
+              vim.schedule(refresh_lualine_status)
+            else
+              refresh_lualine_status()
+            end
+          end)
+        end,
+      })
       vim.api.nvim_create_autocmd("User", {
         group = vim.api.nvim_create_augroup("dotfiles_sidekick_cli_lualine_status", { clear = true }),
         pattern = { "SidekickCliAttach", "SidekickCliDetach" },
@@ -283,10 +270,7 @@ return {
         end,
       })
     end,
-    -- A function, not a table: a table is evaluated when the spec is parsed, before
-    -- lazy.nvim has installed noice on a fresh machine.
     opts = function()
-      local noice = require("noice")
       return {
         options = {
           theme = "auto",
@@ -296,19 +280,10 @@ return {
         },
         sections = {
           lualine_x = {
+            { function() return ui_status.msg_showcmd end, color = { fg = "#ff9e64" } },
+            { function() return ui_status.msg_showmode end, color = { fg = "#ff9e64" } },
             {
-              noice.api.status.command.get,
-              cond = noice.api.status.command.has,
-              color = { fg = "#ff9e64" },
-            },
-            {
-              noice.api.status.mode.get,
-              cond = noice.api.status.mode.has,
-              color = { fg = "#ff9e64" },
-            },
-            {
-              noice.api.status.search.get,
-              cond = noice.api.status.search.has,
+              "searchcount",
               color = { fg = "#ff9e64" },
             },
             {
@@ -343,7 +318,6 @@ return {
       }
     end,
     dependencies = {
-      { "folke/noice.nvim" },
       { "folke/tokyonight.nvim" },
       { "projekt0n/github-nvim-theme" },
     },

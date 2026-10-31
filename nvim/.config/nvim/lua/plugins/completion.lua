@@ -5,6 +5,7 @@ return {
     version = "*",
     opts = {
       snippets = { preset = "luasnip" },
+      signature = { enabled = true },
       completion = {
         accept = {
           auto_brackets = { enabled = true },
