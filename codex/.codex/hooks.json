@@ -22,6 +22,15 @@
             "type": "command"
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "command": "bash '/Users/a12019/.codex/herdr-agent-state.sh' session",
+            "timeout": 10,
+            "type": "command"
+          }
+        ]
       }
     ]
   }
