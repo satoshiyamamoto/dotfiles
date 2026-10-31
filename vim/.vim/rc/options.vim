@@ -28,6 +28,10 @@ let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 set t_ut=
 set t_RB=
+" shortcut: Disable screen switching to keep :! output visible in Herdr machine panes; remove after an upstream fix.
+if $HERDR_ENV ==# '1'
+  set t_ti= t_te=
+endif
 set background=dark
 set cursorline
 if exists('&cursorlineopt')
