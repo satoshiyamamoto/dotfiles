@@ -212,7 +212,6 @@
       "effortLevel": "medium"
     }
   },
-  "autoCompactWindow": 200000,
   "pluginConfigs": {},
   "tui": "fullscreen",
   "skipWorkflowUsageWarning": true,
