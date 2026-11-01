@@ -222,6 +222,12 @@ return {
           sidebars = "transparent", -- style for sidebars, see below
           floats = "transparent", -- style for floating windows
         },
+        on_highlights = function(hl, colors)
+          hl.LspHover = { fg = colors.fg_float, bg = colors.bg }
+          hl.LspHoverBorder = { fg = colors.border_highlight, bg = colors.bg }
+          hl.BlinkCmpMenu.bg = colors.bg
+          hl.BlinkCmpDoc.bg = colors.bg
+        end,
       })
       vim.cmd("colorscheme tokyonight")
       vim.api.nvim_set_hl(0, "VertSplit", { fg = "#000000" })

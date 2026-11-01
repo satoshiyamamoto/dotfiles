@@ -7,17 +7,17 @@ return {
       snippets = { preset = "luasnip" },
       signature = { enabled = true },
       completion = {
-        accept = {
-          auto_brackets = { enabled = true },
-        },
         menu = {
+          winblend = 10,
           draw = {
             treesitter = { "lsp" },
+            columns = { { "label", "label_description", gap = 1 }, { "kind_icon", "kind" } },
           },
         },
         documentation = {
           auto_show = true,
           auto_show_delay_ms = 200,
+          window = { border = "none", winblend = 10 },
         },
       },
     },

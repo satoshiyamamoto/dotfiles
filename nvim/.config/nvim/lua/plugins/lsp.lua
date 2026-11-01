@@ -8,6 +8,18 @@ return {
         exit_timeout = 1000,
       })
 
+      local open_floating_preview = vim.lsp.util.open_floating_preview
+      vim.lsp.util.open_floating_preview = function(contents, syntax, opts)
+        local buf, win = open_floating_preview(contents, syntax, opts)
+        if opts and (opts.focus_id == "textDocument/hover" or opts.focus_id == "rust-analyzer-hover-actions") then
+          -- Markdown's window namespace otherwise overrides the hover background.
+          vim.api.nvim_win_set_hl_ns(win, -1)
+          vim.wo[win].winhighlight = "Normal:LspHover,NormalNC:LspHover,FloatBorder:LspHoverBorder"
+          vim.wo[win].winblend = 10
+        end
+        return buf, win
+      end
+
       -- vim.lsp.enable() is called automatically by mason-lspconfig
       -- via `automatic_enable = true` (default) for each installed server.
     end,
