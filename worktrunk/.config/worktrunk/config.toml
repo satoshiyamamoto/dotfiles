@@ -12,7 +12,35 @@ cp {{ primary_worktree_path }}/.env* {{ worktree_path }}/ 2>/dev/null || true
 [ -f {{ worktree_path }}/.envrc ] && direnv allow {{ worktree_path }} || true
 """
 
+[post-switch]
+herdr = """
+if [ "${HERDR_ENV:-}" = "1" ]; then
+  herdr worktree open --cwd "{{ primary_worktree_path }}" --path "{{ worktree_path }}" --focus
+fi
+"""
+
 [post-remove]
+herdr = """
+set -e
+# Outside Herdr, the server may not be running.
+workspaces=$(herdr workspace list) || exit 0
+workspace_id=$(printf '%s' "$workspaces" | jq -r --arg path {{ worktree_path }} '
+  .result.workspaces[]
+  | select(.worktree.is_linked_worktree == true and .worktree.checkout_path == $path)
+  | .workspace_id')
+[ -n "$workspace_id" ] || exit 0
+parent_id=$(printf '%s' "$workspaces" | jq -r --arg id "$workspace_id" '
+  .result.workspaces as $workspaces
+  | $workspaces[] | select(.workspace_id == $id and .focused) as $removed
+  | $workspaces[]
+  | select(.worktree.is_linked_worktree == false and .worktree.repo_key == $removed.worktree.repo_key)
+  | .workspace_id')
+herdr workspace close "$workspace_id"
+if [ -n "$parent_id" ]; then
+  herdr workspace focus "$parent_id"
+fi
+"""
+
 merge-claude-sessions = """
 worktree=$HOME/.claude/projects/$(printf %s {{ worktree_path }} | sed 's/[^a-zA-Z0-9]/-/g')
 primary=$HOME/.claude/projects/$(printf %s {{ primary_worktree_path }} | sed 's/[^a-zA-Z0-9]/-/g')

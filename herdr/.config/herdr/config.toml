@@ -10,6 +10,14 @@ switch_workspace = "prefix+shift+1..9"
 focus_agent = "prefix+alt+1..9"
 
 [[keys.command]]
+key = "prefix+shift+g"
+type = "popup"
+command = "wt switch --no-cd"
+description = "run worktrunk"
+width = "90%"
+height = "85%"
+
+[[keys.command]]
 key = "prefix+alt+g"
 type = "popup"
 command = "lazygit"
