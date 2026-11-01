@@ -19,14 +19,37 @@ let
           platforms = old.meta.platforms ++ [ "x86_64-darwin" ];
         };
       });
+  # shortcut: nixpkgs has no x86_64-darwin rusty_v8, update this pin with Codex.
+  codex =
+    if pkgs.stdenv.hostPlatform.system == "x86_64-darwin" then
+      pkgs.stdenvNoCC.mkDerivation {
+        pname = "codex";
+        version = "0.165.0";
+        src = pkgs.fetchurl {
+          url = "https://github.com/openai/codex/releases/download/rust-v0.165.0/codex-package-x86_64-apple-darwin.tar.gz";
+          hash = "sha256-eS7KsFlgBr2fKGQwsnkKpIf9QPyi81HKMTrYWZFyAiY=";
+        };
+        sourceRoot = ".";
+        dontFixup = true;
+        installPhase = ''
+          mkdir -p "$out"
+          cp -R . "$out"
+        '';
+        meta = pkgs.codex.meta // {
+          platforms = [ "x86_64-darwin" ];
+          sourceProvenance = with pkgs.lib.sourceTypes; [ binaryNativeCode ];
+        };
+      }
+    else
+      pkgs.codex;
 in
 {
   home.packages = available (
     [
       claude-code
+      codex
     ]
     ++ (with pkgs; [
-      codex
       opencode
       pi-coding-agent
       skills
