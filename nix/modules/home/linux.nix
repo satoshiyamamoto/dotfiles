@@ -53,6 +53,7 @@
     git
     git-credential-manager
     ipaexfont
+    tailscale
     zsh
     # Only the proxy loads NSS modules; clients keep their normal library paths.
     (writeShellScriptBin "nsncd" ''

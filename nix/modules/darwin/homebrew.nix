@@ -62,7 +62,6 @@
       Numbers = 361304891;
       Pages = 361309726;
       Speedtest = 1153157709;
-      Tailscale = 1475387142;
       Vimlike = 1584519802;
       Xcode = 497799835;
     };

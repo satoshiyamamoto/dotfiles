@@ -1,11 +1,12 @@
 #!/bin/sh
 # Bootstrap a Linux host to the point where home-manager can take over: Nix
 # itself, then the first switch and the host's NSS proxy when LDAP is used.
-# Packages come from Nix on every distribution; systemd manages the proxy.
+# Packages come from Nix on every distribution; systemd manages host services.
 # Re-running the script is safe.
 #
 # Packages and dotfiles come from nix/modules/home. After the first switch,
-# `.sync` (zsh/.zshrc) is the only command needed.
+# `.sync` (zsh/.zshrc) updates user packages and dotfiles. Re-run this script
+# after flake updates to update the system Tailscale daemon too.
 set -eu
 
 repo="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
@@ -96,6 +97,25 @@ EOF
   sudo systemctl daemon-reload
   sudo systemctl enable --now nsncd.service
 fi
+
+# Keep the root service independent of the user's writable profile and GC.
+echo "==> Configuring Tailscale"
+if ! [ -x "$HOME/.nix-profile/bin/tailscale" ]; then
+  "$HOME/.nix-profile/bin/home-manager" switch -b hm-bak --flake "$repo/nix"
+fi
+sudo "$nix" --extra-experimental-features 'nix-command flakes' build \
+  "$repo/nix#tailscale" --out-link /nix/var/nix/profiles/tailscale
+sudo install -o root -g root -m 0644 \
+  /nix/var/nix/profiles/tailscale/lib/systemd/system/tailscaled.service \
+  /etc/systemd/system/tailscaled.service
+# nixpkgs removes EnvironmentFile from the upstream unit; supply its defaults.
+sudo mkdir -p /etc/systemd/system/tailscaled.service.d
+printf '[Service]\nEnvironment="PORT=41641" "FLAGS="\n' |
+  sudo tee /etc/systemd/system/tailscaled.service.d/nix.conf >/dev/null
+sudo systemctl daemon-reload
+sudo systemctl enable tailscaled.service
+sudo systemctl restart tailscaled.service
+echo "==> First connection: sudo /nix/var/nix/profiles/tailscale/bin/tailscale up"
 
 # lua-json5 (nvim) builds with cargo, and nixpkgs' rustup ships with no
 # default toolchain, so cargo refuses to run until one is chosen.

@@ -51,7 +51,7 @@ zstyle ':completion:*:(ssh|scp):*:hosts' ignored-patterns loopback ip6-loopback 
 zstyle ':completion:*' completer _complete _approximate
 zstyle ':completion:*:approximate:*' max-errors 1 numeric
 autoload -Uz $ZSH_DEFER_HOME/zsh-defer
-autoload -Uz compinit && zsh-defer compinit -C && zsh-defer compdef _tailscale Tailscale
+autoload -Uz compinit && zsh-defer compinit -C
 
 
 #
@@ -240,7 +240,6 @@ alias lt='YSU_IGNORED_ALIASES=("ls") && eza --color=auto --icons=auto --long --h
 alias lzd='lazydocker'
 alias mv='mv -i'
 alias rm='rm -i'
-alias tailscale='/Applications/Tailscale.app/Contents/MacOS/Tailscale'
 alias trans='trans --brief :ja'
 alias tree='eza --color=always --icons --tree'
 alias vpnon='starship config custom.vpn.disabled false'

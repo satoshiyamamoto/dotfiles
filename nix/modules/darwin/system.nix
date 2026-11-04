@@ -34,4 +34,9 @@
   # "this service is currently unavailable" on a fresh Mac; the module enables
   # sshd through launchctl instead of systemsetup, so no Full Disk Access.
   services.openssh.enable = true;
+
+  services.tailscale.enable = true;
+
+  # tailscaled writes this file and rejects links outside /etc/resolver.
+  environment.etc."resolver/ts.net".enable = false;
 }

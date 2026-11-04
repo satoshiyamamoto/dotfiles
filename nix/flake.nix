@@ -90,6 +90,9 @@
         };
     in
     {
+      # The Linux installer roots the system daemon independently of user generations.
+      packages.x86_64-linux.tailscale = nixpkgs.legacyPackages.x86_64-linux.tailscale;
+
       # Keys are "$USER@$(hostname -s)", one of the names `home-manager switch
       # --flake <this directory>` tries on its own.
       homeConfigurations = {
