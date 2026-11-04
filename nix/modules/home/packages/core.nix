@@ -65,7 +65,6 @@
         worktrunk
         yazi
         yq
-        zellij
         zoxide
         zsh-autosuggestions
         zsh-powerlevel10k

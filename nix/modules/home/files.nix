@@ -98,7 +98,6 @@ in
     ".config/yazi/theme.toml".source = ../../../yazi/.config/yazi/theme.toml;
     ".config/zed/keymap.json".source = ../../../zed/.config/zed/keymap.json;
     ".config/zed/settings.json".source = ../../../zed/.config/zed/settings.json;
-    ".config/zellij/config.kdl".source = ../../../zellij/.config/zellij/config.kdl;
     ".editorconfig".source = ../../../editorconfig/.editorconfig;
     ".puppeteerrc.cjs".source = ../../../puppeteer/.puppeteerrc.cjs;
     ".testcontainers.properties".source = ../../../testcontainers/.testcontainers.properties;
