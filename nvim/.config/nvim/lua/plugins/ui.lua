@@ -160,6 +160,7 @@ return {
     "folke/which-key.nvim",
     event = { "VeryLazy" },
     opts = {
+      plugins = { registers = false },
       win = { row = -1 }, -- Keep the global statusline visible with cmdheight=0.
       spec = {
         { "<leader>o", group = "overseer" },
