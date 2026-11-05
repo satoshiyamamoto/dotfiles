@@ -17,3 +17,18 @@ vim.opt.timeoutlen = 300
 vim.opt.grepprg = "rg --vimgrep --hidden"
 vim.opt.grepformat = "%f:%l:%c:%m"
 vim.opt.helplang = "ja,en"
+
+if vim.env.SSH_CONNECTION or vim.env.REX_SESSION then
+  local osc52 = require("vim.ui.clipboard.osc52")
+  vim.g.clipboard = {
+    name = "OSC 52",
+    copy = {
+      ["+"] = osc52.copy("+"),
+      ["*"] = osc52.copy("*"),
+    },
+    paste = {
+      ["+"] = osc52.paste("+"),
+      ["*"] = osc52.paste("*"),
+    },
+  }
+end
