@@ -72,6 +72,7 @@
             ./modules/darwin/home-manager.nix
             ./modules/darwin/homebrew.nix
             ./modules/darwin/system.nix
+            ./modules/darwin/rex.nix
           ];
         };
 
