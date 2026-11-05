@@ -38,7 +38,11 @@
   ];
   # A home package like every other: /run/current-system/sw holds only what
   # nix-darwin installs itself. useGlobalPkgs carries the overlay above over.
-  home-manager.users.${config.system.primaryUser}.home.packages = [ pkgs.llm-agents.herdr ];
+  home-manager.users.${config.system.primaryUser} = {
+    home.packages = [ pkgs.llm-agents.herdr ];
+    # The official Rex flake has no x86_64-darwin package; keep the app's CLI.
+    programs.rex.package = null;
+  };
 
   # Always-on server: never sleep, keep no hibernate image, wake on LAN and
   # come back after a power cut. power.sleep.* goes through systemsetup and

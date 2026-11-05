@@ -32,6 +32,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    rex = {
+      url = "https://pkgs.superlogical.com/rex/nix/preview.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixpkgs-2605.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
     nix-darwin-2605 = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";

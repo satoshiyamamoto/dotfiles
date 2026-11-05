@@ -5,6 +5,7 @@
   imports = [
     ./files.nix
     ./packages
+    ./rex.nix
   ];
 
   # Matches the oldest home-manager in flake.nix (Kenya's 26.05); the option

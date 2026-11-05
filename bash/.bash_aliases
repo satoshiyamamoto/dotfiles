@@ -8,6 +8,12 @@
 #   - the YSU_IGNORED_ALIASES juggling, which belongs to the zsh you-should-use
 #     plugin and has no bash equivalent, so the eza calls below are bare
 #   - functions and ZLE widgets, which are zsh syntax
+
+# Rex starts the LDAP login shell; hand its interactive login terminals to zsh.
+if [[ $- == *i* && -n ${REX_BLOCK:-} && -x $HOME/.nix-profile/bin/zsh ]] && shopt -q login_shell; then
+  exec "$HOME/.nix-profile/bin/zsh" -l
+fi
+
 alias cp='cp -i'
 alias curl='curl --silent'
 alias d='docker'

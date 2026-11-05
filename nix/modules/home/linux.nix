@@ -14,6 +14,8 @@
   # The `home-manager` command itself. On macOS darwin-rebuild does its job.
   programs.home-manager.enable = true;
 
+  services.rex.enable = true;
+
   # Let Chromium find Japanese fonts when rendering Mermaid diagrams.
   fonts.fontconfig.enable = true;
 

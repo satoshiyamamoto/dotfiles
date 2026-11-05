@@ -3,4 +3,9 @@
 {
   home.username = "satoshi_yamamoto";
   home.homeDirectory = "/home/satoshi_yamamoto";
+
+  services.rex.tailscale = {
+    enable = true;
+    hostname = "devcontainer01-rex";
+  };
 }
