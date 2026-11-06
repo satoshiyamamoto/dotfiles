@@ -87,7 +87,9 @@
     ],
     "defaultMode": "auto"
   },
-  "skillOverrides": {},
+  "skillOverrides": {
+    "auto-mode-setup": "off"
+  },
   "deniedMcpServers": [],
   "hooks": {
     "Notification": [
