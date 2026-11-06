@@ -42,15 +42,25 @@ let
       }
     else
       pkgs.codex;
+  # shortcut: opencode 2.2.5 has a mismatched dependency hash in nixpkgs; remove after an upstream fix.
+  opencode =
+    if pkgs.opencode.version == "2.2.5" then
+      pkgs.opencode.overrideAttrs (old: {
+        node_modules = old.node_modules.overrideAttrs {
+          outputHash = "sha256-dIveiaiPFGSItwLyeMuPDxTE9gpvvnlTCB/+nG24qCc=";
+        };
+      })
+    else
+      pkgs.opencode;
 in
 {
   home.packages = available (
     [
       claude-code
       codex
+      opencode
     ]
     ++ (with pkgs; [
-      opencode
       pi-coding-agent
       skills
     ])
