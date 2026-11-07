@@ -47,7 +47,11 @@ let
     if pkgs.opencode.version == "2.2.5" then
       pkgs.opencode.overrideAttrs (old: {
         node_modules = old.node_modules.overrideAttrs {
-          outputHash = "sha256-dIveiaiPFGSItwLyeMuPDxTE9gpvvnlTCB/+nG24qCc=";
+          outputHash =
+            if pkgs.stdenv.hostPlatform.isLinux then
+              "sha256-prx9dX7kUvs/E3zopkaPk5LXh3xJAy5sZeum/W8L7cA="
+            else
+              "sha256-dIveiaiPFGSItwLyeMuPDxTE9gpvvnlTCB/+nG24qCc=";
         };
       })
     else
