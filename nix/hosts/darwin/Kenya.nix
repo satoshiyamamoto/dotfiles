@@ -38,10 +38,12 @@
   ];
   # A home package like every other: /run/current-system/sw holds only what
   # nix-darwin installs itself. useGlobalPkgs carries the overlay above over.
-  home-manager.users.${config.system.primaryUser} = {
+  home-manager.users.${config.system.primaryUser} = { config, ... }: {
     home.packages = [ pkgs.llm-agents.herdr ];
     # The official Rex flake has no x86_64-darwin package; keep the app's CLI.
     programs.rex.package = null;
+    home.file.".local/bin/rex".source =
+      config.lib.file.mkOutOfStoreSymlink "/Applications/Rex Beta.app/Contents/Helpers/Rex Server.rex/Contents/MacOS/rex";
   };
 
   # Always-on server: never sleep, keep no hibernate image, wake on LAN and
