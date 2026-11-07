@@ -5,8 +5,8 @@
     "Workspace.lightThemeID" = "merino-light";
     "Workspace.darkThemeID" = "custom-91657586-A225-4004-82D6-46482E371DCB";
     "Workspace.darkUsesExtendedThemePalette" = true;
-    "Workspace.interfaceStyle" = "useTheme";
-    "Workspace.usesPaneGlass" = false;
+    "Workspace.interfaceStyle" = "blendTheme";
+    "Workspace.usesPaneGlass" = true;
     "Workspace.terminalUsesDisplayP3" = true;
     "Workspace.terminalUseThemePalette" = false;
     "Workspace.terminalImproveTextContrast" = false;
@@ -17,6 +17,7 @@
     "Workspace.terminalCellHeightPercent" = 24.0;
     "Workspace.terminalCharacterSpacing" = "0";
     "Workspace.terminalSmoothScrolling" = true;
+    "Workspace.terminalOptionKeyBehavior" = "actsAsAlt";
     "Workspace.tabStyle" = "vertical";
     "Workspace.sidebarPosition" = "left";
     "Workspace.tabIconCount" = 3;
