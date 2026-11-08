@@ -23,8 +23,8 @@ return {
     priority = 1000,
     lazy = false,
     init = function()
-      -- Herdr supports Kitty placeholders but is not recognized by Snacks.
-      if vim.env.TERM_PROGRAM == "herdr" then
+      -- Rex and Herdr support Kitty placeholders but are not recognized by Snacks.
+      if vim.env.TERM_PROGRAM == "rex" or vim.env.TERM_PROGRAM == "herdr" then
         vim.env.SNACKS_GHOSTTY = vim.env.SNACKS_GHOSTTY or "true"
       end
     end,
