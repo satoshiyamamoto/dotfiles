@@ -1,0 +1,10 @@
+{
+  "zoom": 1,
+  "sounds": {
+    "enabled": true
+  },
+  "minimum_contrast": 1,
+  "appearance": "dark",
+  "font": "Operator Mono SSm Lig",
+  "option_as_alt": "on"
+}

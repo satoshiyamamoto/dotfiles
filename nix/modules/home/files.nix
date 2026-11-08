@@ -37,6 +37,8 @@ let
     ".codex/rules/default.rules" = "codex/.codex/rules/default.rules";
     ".hermes/SOUL.md" = "hermes/.hermes/SOUL.md";
     ".hermes/config.yaml" = "hermes/.hermes/config.yaml";
+    # Desktop Settings resolves symlinks when saving, so GUI edits reach the repo.
+    ".config/herdr-app/settings.json" = "herdr/.config/herdr-app/settings.json";
   };
 in
 {
