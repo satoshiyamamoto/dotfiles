@@ -16,6 +16,7 @@ rex.host({
 
 -- Keep programs that use ctrl+b themselves working (the prefix is a sequence start).
 rex.bind("ctrl+b>ctrl+b", "pane.send_key", { key = "ctrl+b" })
+rex.bind("ctrl+/", "pane.send_key", { key = "ctrl+/" })
 
 -- tmux
 rex.bind("ctrl+b>shift+\\", "pane.split", { direction = "right" })
