@@ -17,6 +17,8 @@
     "Workspace.terminalCellHeightPercent" = 24.0;
     "Workspace.terminalCharacterSpacing" = "0";
     "Workspace.terminalSmoothScrolling" = true;
+    "Workspace.cursorShadersEnabled" = true;
+    "Workspace.cursorShader" = "warp";
     "Workspace.terminalOptionKeyBehavior" = "actsAsAlt";
     "Workspace.tabStyle" = "vertical";
     "Workspace.sidebarPosition" = "left";
