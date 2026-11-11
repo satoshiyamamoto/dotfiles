@@ -45,6 +45,9 @@ enabled = true
 [plugins."ponytail@ponytail"]
 enabled = true
 
+[plugins."apple-notes@apple-notes-mcp"]
+enabled = true
+
 [marketplaces.agent-skills]
 source_type = "git"
 source = "https://github.com/addyosmani/agent-skills.git"
@@ -56,6 +59,11 @@ source = "https://github.com/mattpocock/skills.git"
 [marketplaces.ponytail]
 source_type = "git"
 source = "https://github.com/DietrichGebert/ponytail.git"
+
+[marketplaces.apple-notes-mcp]
+source_type = "git"
+source = "https://github.com/sweetrb/apple-notes-mcp.git"
+ref = "v2.15.8"
 
 [permissions.dev-autonomous.filesystem]
 glob_scan_max_depth = 4
