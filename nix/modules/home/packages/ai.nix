@@ -41,30 +41,25 @@ let
         };
       }
     else
-      pkgs.codex;
-  # shortcut: opencode 2.2.5 has a mismatched dependency hash in nixpkgs; remove after an upstream fix.
-  opencode =
-    if pkgs.opencode.version == "2.2.5" then
-      pkgs.opencode.overrideAttrs (old: {
-        node_modules = old.node_modules.overrideAttrs {
-          outputHash =
-            if pkgs.stdenv.hostPlatform.isLinux then
-              "sha256-prx9dX7kUvs/E3zopkaPk5LXh3xJAy5sZeum/W8L7cA="
-            else
-              "sha256-dIveiaiPFGSItwLyeMuPDxTE9gpvvnlTCB/+nG24qCc=";
-        };
-      })
-    else
-      pkgs.opencode;
+      # shortcut: nixpkgs codex omits system libraries required by Cargo; remove when fixed upstream.
+      pkgs.codex.overrideAttrs (old: {
+        buildInputs = old.buildInputs ++ [
+          pkgs.aws-lc
+          pkgs.oniguruma
+          pkgs.sqlite
+          pkgs.zlib
+          pkgs.zstd
+        ];
+      });
 in
 {
   home.packages = available (
     [
       claude-code
       codex
-      opencode
     ]
     ++ (with pkgs; [
+      opencode
       pi-coding-agent
       skills
     ])

@@ -59,7 +59,11 @@
         tree
         tree-sitter
         unbound
-        viddy
+        # shortcut: nixpkgs viddy omits SQLite dependencies; remove when fixed upstream.
+        (viddy.overrideAttrs (old: {
+          nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ pkg-config ];
+          buildInputs = (old.buildInputs or [ ]) ++ [ sqlite ];
+        }))
         watch
         wget
         worktrunk
