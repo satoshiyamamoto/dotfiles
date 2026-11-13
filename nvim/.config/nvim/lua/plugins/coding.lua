@@ -31,11 +31,24 @@ return {
       { "<Leader>Rs", desc = "Send Request" },
       { "<Leader>Ra", desc = "Send All Requests" },
       { "<Leader>Rr", desc = "Replay Last Request" },
-      { "<Leader>Ro", desc = "Open Kulala" },
+      { "<Leader>Ro", desc = "Toggle Kulala" },
       { "<Leader>Rb", desc = "Open Scratchpad" },
     },
     opts = {
-      global_keymaps = true,
+      global_keymaps = {
+        ["Open kulala"] = {
+          "<Leader>Ro",
+          function()
+            local ui = require("kulala.ui")
+            if ui.get_kulala_window() then
+              ui.close_kulala_buffer()
+            else
+              require("kulala").open()
+            end
+          end,
+          desc = "Toggle Kulala",
+        },
+      },
       global_keymaps_prefix = "<Leader>R",
       -- kulala's own `kulala_http` grammar makes the value in `@var = ...` mandatory and errors on
       -- the empty placeholders these files use; leave highlighting to nvim-treesitter's `http`.
