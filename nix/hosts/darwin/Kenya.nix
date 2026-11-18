@@ -44,16 +44,6 @@
     programs.rex.package = null;
     home.file.".local/bin/rex".source =
       config.lib.file.mkOutOfStoreSymlink "/Applications/Rex Beta.app/Contents/Helpers/Rex Server.rex/Contents/MacOS/rex";
-    # Universal Control dialled Kenya over AWDL (ForceAWDL) every ~30 s once
-    # the MacBook Pro was unlocked, and each attempt trapped the Broadcom
-    # firmware (first at 2026-11-17 22:45:53). Handoff rides AWDL too.
-    targets.darwin.currentHostDefaults = {
-      "com.apple.universalcontrol".Disable = true;
-      "com.apple.coreservices.useractivityd" = {
-        ActivityAdvertisingAllowed = false;
-        ActivityReceivingAllowed = false;
-      };
-    };
   };
 
   # Wi-Fi firmware can wedge with the link still associated: configd logs
