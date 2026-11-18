@@ -44,12 +44,15 @@
     programs.rex.package = null;
     home.file.".local/bin/rex".source =
       config.lib.file.mkOutOfStoreSymlink "/Applications/Rex Beta.app/Contents/Helpers/Rex Server.rex/Contents/MacOS/rex";
-    # Keep Handoff off: its Continuity traffic runs over AWDL, and the
-    # Broadcom firmware here traps on AWDL peer activity (2026-11-17 onward).
-    # Apple Watch Auto Unlock has no defaults key; turn it off in Settings.
-    targets.darwin.currentHostDefaults."com.apple.coreservices.useractivityd" = {
-      ActivityAdvertisingAllowed = false;
-      ActivityReceivingAllowed = false;
+    # Universal Control dialled Kenya over AWDL (ForceAWDL) every ~30 s once
+    # the MacBook Pro was unlocked, and each attempt trapped the Broadcom
+    # firmware (first at 2026-11-17 22:45:53). Handoff rides AWDL too.
+    targets.darwin.currentHostDefaults = {
+      "com.apple.universalcontrol".Disable = true;
+      "com.apple.coreservices.useractivityd" = {
+        ActivityAdvertisingAllowed = false;
+        ActivityReceivingAllowed = false;
+      };
     };
   };
 
