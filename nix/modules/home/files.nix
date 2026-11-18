@@ -81,6 +81,7 @@ in
     # and a second one would collide with the single-generation .hm-bak
     # and abort activation, so it is overwritten rather than backed up.
     ".config/starship-minimal.toml".source = ../../../starship/.config/starship-minimal.toml;
+    ".config/starship-minimal.toml".force = true;
     ".config/starship.toml".source = ../../../starship/.config/starship.toml;
     ".config/starship.toml".force = true;
     ".config/worktrunk/config.toml".source = ../../../worktrunk/.config/worktrunk/config.toml;
