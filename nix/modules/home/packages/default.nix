@@ -42,6 +42,8 @@ in
   # Kenya simply runs no atuin, and zsh/.zshrc skips `atuin init` where the
   # binary is absent -- Ctrl-R falls back to fzf there (zsh/.zprofile).
   #
+  # codex-security is absent from 26.05 too, and is not installed on Kenya.
+  #
   # antigravity-cli and grok-build both declare
   # platforms = lib.attrNames sourceData and upstream publishes no darwin-x64
   # hash, so neither can follow the claude-code trick in ./ai.nix.
@@ -51,6 +53,7 @@ in
       [
         antigravity-cli
         atuin
+        codex-security
         container
         grok-build
         herdr
