@@ -41,16 +41,7 @@ let
         };
       }
     else
-      # shortcut: nixpkgs codex omits system libraries required by Cargo; remove when fixed upstream.
-      pkgs.codex.overrideAttrs (old: {
-        buildInputs = old.buildInputs ++ [
-          pkgs.aws-lc
-          pkgs.oniguruma
-          pkgs.sqlite
-          pkgs.zlib
-          pkgs.zstd
-        ];
-      });
+      pkgs.codex;
 in
 {
   home.packages = available (
