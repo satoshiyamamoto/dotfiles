@@ -44,6 +44,13 @@
     programs.rex.package = null;
     home.file.".local/bin/rex".source =
       config.lib.file.mkOutOfStoreSymlink "/Applications/Rex Beta.app/Contents/Helpers/Rex Server.rex/Contents/MacOS/rex";
+    # Keep Handoff off: its Continuity traffic runs over AWDL, and the
+    # Broadcom firmware here traps on AWDL peer activity (2026-11-17 onward).
+    # Apple Watch Auto Unlock has no defaults key; turn it off in Settings.
+    targets.darwin.currentHostDefaults."com.apple.coreservices.useractivityd" = {
+      ActivityAdvertisingAllowed = false;
+      ActivityReceivingAllowed = false;
+    };
   };
 
   # Wi-Fi firmware can wedge with the link still associated: configd logs
