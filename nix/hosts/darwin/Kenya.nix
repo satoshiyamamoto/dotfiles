@@ -49,7 +49,7 @@
   # Wi-Fi firmware can wedge with the link still associated: configd logs
   # `router ARP failure: en1` forever and auto-join never retries because it
   # believes it is connected (2026-11-17 22:46 to 11-18 11:45). Power-cycle
-  # the radio after three straight minutes without the gateway.
+  # the radio after a straight minute without the gateway.
   launchd.daemons.wifi-watchdog = {
     script = ''
       route=$(/sbin/route -n get default 2>/dev/null) || exit 0
@@ -67,7 +67,7 @@
       sleep 5
       /usr/sbin/networksetup -setairportpower en1 on
     '';
-    serviceConfig.StartInterval = 60;
+    serviceConfig.StartInterval = 20;
   };
 
   # Always-on server: never sleep, keep no hibernate image, wake on LAN and
