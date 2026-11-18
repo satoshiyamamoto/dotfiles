@@ -46,6 +46,30 @@
       config.lib.file.mkOutOfStoreSymlink "/Applications/Rex Beta.app/Contents/Helpers/Rex Server.rex/Contents/MacOS/rex";
   };
 
+  # Wi-Fi firmware can wedge with the link still associated: configd logs
+  # `router ARP failure: en1` forever and auto-join never retries because it
+  # believes it is connected (2026-11-17 22:46 to 11-18 11:45). Power-cycle
+  # the radio after three straight minutes without the gateway.
+  launchd.daemons.wifi-watchdog = {
+    script = ''
+      route=$(/sbin/route -n get default 2>/dev/null) || exit 0
+      [ "$(echo "$route" | /usr/bin/awk '/interface:/{print $2}')" = en1 ] || exit 0
+      gw=$(echo "$route" | /usr/bin/awk '/gateway:/{print $2}')
+      count_file=/var/run/wifi-watchdog.count
+      if /sbin/ping -c 3 -t 5 -q "$gw" >/dev/null 2>&1; then
+        rm -f "$count_file"; exit 0
+      fi
+      n=$(( $(cat "$count_file" 2>/dev/null || echo 0) + 1 ))
+      if [ "$n" -lt 3 ]; then echo "$n" > "$count_file"; exit 0; fi
+      rm -f "$count_file"
+      /usr/bin/logger -t wifi-watchdog "gateway $gw unreachable for 3 checks; power-cycling en1"
+      /usr/sbin/networksetup -setairportpower en1 off
+      sleep 5
+      /usr/sbin/networksetup -setairportpower en1 on
+    '';
+    serviceConfig.StartInterval = 60;
+  };
+
   # Always-on server: never sleep, keep no hibernate image, wake on LAN and
   # come back after a power cut. power.sleep.* goes through systemsetup and
   # cannot reach standby / hibernatemode, so pmset sets the lot directly.
