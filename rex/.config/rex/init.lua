@@ -1,13 +1,6 @@
 -- Migrated from tmux, Herdr, Ghostty and kitty.
 
 rex.host({
-  id = "host:0a1bce78-f25e-48d6-b50a-213951fc80c1",
-  label = "Home",
-  endpoint = "https://kenya-rex.tail4ad78.ts.net",
-  icon = "globe",
-})
-
-rex.host({
   id = "host:3483188f-66ba-415c-93f5-c8ff97c051dc",
   label = "Work",
   endpoint = "https://devcontainer01-rex.tail4ad78.ts.net",
